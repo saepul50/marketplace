@@ -1,5 +1,5 @@
 <?php
 
-    class ShopCategory extends PageController{
+    class ShopCategory extends Page{
         
     }
