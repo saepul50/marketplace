@@ -11,6 +11,7 @@ Change it, enhance it and most importantly enjoy it!
 <!--<![endif]-->
 <!--[if IE 6 ]><html lang="$ContentLocale" class="ie ie6"><![endif]-->
 <!--[if IE 7 ]><html lang="$ContentLocale" class="ie ie7"><![endif]-->
+
 <!--[if IE 8 ]><html lang="$ContentLocale" class="ie ie8"><![endif]-->
 <head>
 	<% base_tag %>
@@ -22,7 +23,17 @@ Change it, enhance it and most importantly enjoy it!
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 	<![endif]-->
-
+	<% require themedCSS("linearicons") %>
+	<% require themedCSS('magnific-popup') %>
+	<% require themedCSS('main') %>
+	<% require themedCSS('font-awesome.min') %>
+	<% require themedCSS('themify-icons') %>
+	<% require themedCSS('bootstrap') %>
+	<% require themedCSS('owl.carousel') %>
+	<% require themedCSS('nice-select') %>
+	<% require themedCSS('nouislider.min') %>
+	<% require themedCSS('ion.rangeSlider') %>
+	<% require themedCSS('ion.rangeSlider.skinFlat') %>
 	<link rel="shortcut icon" href="$resourceURL('themes/simple/images/favicon.ico')" />
 
 	<% require themedCSS('main') %>
