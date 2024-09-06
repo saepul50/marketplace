@@ -24,7 +24,7 @@
 								<li class="nav-item"><a class="nav-link" href="{$BaseHref}/productdetails">Product Details</a></li>
 								<li class="nav-item"><a class="nav-link" href="{$BaseHref}/productcheckout">Product Checkout</a></li>
 								<li class="nav-item"><a class="nav-link" href="{$BaseHref}/cart">Shopping Cart</a></li>
-								<li class="nav-item"><a class="nav-link" href="confirmation.html">Confirmation</a></li>
+								<li class="nav-item"><a class="nav-link" href="{$BaseHref}/confirm">Confirmation</a></li>
 							</ul>
 						</li>
 						<li class="nav-item submenu dropdown">
@@ -47,24 +47,24 @@
 						<li class="nav-item"><a class="nav-link" href="{$BaseHref}/contact">Contact</a></li>
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
-						<li class="nav-item"><a href="" class="cart"><span class="ti-bag"></span></a></li>
+						<li class="nav-item"><a href="{$BaseHref}/cart" class="cart"><span class="ti-bag"></span></a></li>
 						<li class="nav-item">
 							<button class="search"><span class="lnr lnr-magnifier" id="search"></span></button>
 							
-						</li>
-					</ul>
+							</li>
+						</ul>
+					</div>
 				</div>
-			</div>
-		</nav>
-	</div>
-	<div class="search_input" id="search_input_box">
-		<div class="container">
-			<form class="d-flex justify-content-between">
-				<input type="text" class="form-control" id="search_input" placeholder="Search Here">
-				<button type="submit" class="btn"></button>
-				<span class="lnr lnr-cross" id="close_search" title="Close Search"></span>
-			</form>
+			</nav>
 		</div>
-	</div>
-</header>
-<!-- End Header Area -->
+		<div class="search_input" id="search_input_box">
+			<div class="container">
+				<form class="d-flex justify-content-between">
+					<input type="text" class="form-control" id="search_input" placeholder="Search Here">
+					<button type="submit" class="btn"></button>
+					<span class="lnr lnr-cross" id="close_search" title="Close Search"></span>
+				</form>
+			</div>
+		</div>
+	</header>
+	<!-- End Header Area -->
