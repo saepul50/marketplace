@@ -24,6 +24,17 @@ Change it, enhance it and most importantly enjoy it!
 	<![endif]-->
 
 	<link rel="shortcut icon" href="$resourceURL('themes/simple/images/favicon.ico')" />
+
+	<% require themedCSS('main') %>
+	<% require themedCSS('linearicons') %>
+	<% require themedCSS('font-awesome.min') %>
+	<% require themedCSS('themify-icons') %>
+	<% require themedCSS('bootstrap') %>
+	<% require themedCSS('owl.carousel') %>
+	<% require themedCSS('nice-select') %>
+	<% require themedCSS('nouislider.min') %>
+	<% require themedCSS('ion.rangeSlider.skinFlat') %>
+	<% require themedCSS('magnific-popup') %>
 </head>
 <body class="$ClassName.ShortName<% if not $Menu(2) %> no-sidebar<% end_if %>" <% if $i18nScriptDirection %>dir="$i18nScriptDirection"<% end_if %>>
 <% include Header %>
@@ -34,6 +45,18 @@ Change it, enhance it and most importantly enjoy it!
 </div>
 <% include Footer %>
 
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+<% require themedJavascript('jquery.ajaxchimp.min') %>
+<% require themedJavascript('jquery.nice-select.min') %>
+<% require themedJavascript('jquery.sticky') %>
+<% require themedJavascript('nouislider.min') %>
+<% require themedJavascript('countdown') %>
+<% require themedJavascript('jquery.magnific-popup.min') %>
+<% require themedJavascript('owl.carousel.min') %>
+<% require themedJavascript('gmaps.min') %>
+<% require themedJavascript('main') %>
+<script src="js/vendor/bootstrap.min.js"></script>
+<!--gmaps Js-->
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCjCGmQ0Uq4exrzdcL6rvxywDDOvfAu6eE"></script>
 </body>
 </html>
