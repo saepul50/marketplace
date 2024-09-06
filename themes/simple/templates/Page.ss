@@ -66,7 +66,8 @@ Change it, enhance it and most importantly enjoy it!
 <% require themedJavascript('owl.carousel.min') %>
 <% require themedJavascript('gmaps.min') %>
 <% require themedJavascript('main') %>
-<script src="js/vendor/bootstrap.min.js"></script>
+<% require themedJavascript('bootstrap.min') %>
+<% require themedJavascript('jquery-2.2.4.min') %>
 <!--gmaps Js-->
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCjCGmQ0Uq4exrzdcL6rvxywDDOvfAu6eE"></script>
 </body>
