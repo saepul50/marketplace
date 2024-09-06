@@ -7,7 +7,4 @@
 		$Form
 		$CommentsForms
     <p>halo</p>
-</div> --%>
-
-
-
+</div>
