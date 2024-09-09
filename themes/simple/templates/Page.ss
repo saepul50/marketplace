@@ -29,7 +29,9 @@ crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 
 	<% base_tag %>
-	<title>MarketPlace</title>
+	<title>$SiteConfig.Title</title>
+	<!-- Favicon-->
+	<link rel="shortcut icon" href="$SiteConfig.Favicon.getURL()">
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -48,7 +50,6 @@ crossorigin="anonymous" referrerpolicy="no-referrer" />
 	<% require themedCSS('nouislider.min') %>
 	<% require themedCSS('ion.rangeSlider') %>
 	<% require themedCSS('ion.rangeSlider.skinFlat') %>
-	<link rel="shortcut icon" href="$resourceURL('themes/simple/images/favicon.ico')" />
 
 	<% require themedCSS('main') %>
 	<% require themedCSS('linearicons') %>

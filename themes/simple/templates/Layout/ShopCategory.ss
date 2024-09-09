@@ -554,7 +554,7 @@
             <div class="col-lg-3">
                 <div class="ctg-right">
                     <a href="#" target="_blank">
-                        <img class="img-fluid d-block mx-auto" src="img/category/c5.jpg" alt="">
+                        <img class="img-fluid d-block mx-auto" src="$SiteConfig.SuperSaleImage.getURL()" alt="">
                     </a>
                 </div>
             </div>

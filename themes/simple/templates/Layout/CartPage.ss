@@ -127,7 +127,7 @@
                                 <div class="cupon_text d-flex align-items-center">
                                     <input type="text" placeholder="Coupon Code">
                                     <a class="primary-btn" href="#">Apply</a>
-                                    <a class="gray_btn" href="#">Close Coupon</a>
+                                    <a class="gray_btn" href="#" style="font-size:small">Close Coupon</a>
                                 </div>
                             </td>
                         </tr>
@@ -190,8 +190,8 @@
 
                             </td>
                             <td>
-                                <div class="checkout_btn_inner d-flex align-items-center">
-                                    <a class="gray_btn" href="#">Continue Shopping</a>
+                                <div class="checkout_btn_inner d-flex align-items-center gap-2">
+                                    <a class="gray_btn fw-bold " style="font-size: x-small" href="#"><strong>Continue Shopping</strong></a>
                                     <a class="primary-btn" href="#">Proceed to checkout</a>
                                 </div>
                             </td>

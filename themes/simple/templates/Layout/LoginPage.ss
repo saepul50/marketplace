@@ -20,7 +20,7 @@
         <div class="row">
             <div class="col-lg-6">
                 <div class="login_box_img">
-                    <img class="img-fluid" src="" alt="">
+                    <img class="img-fluid" src="$SiteConfig.LoginImage.getURL()" alt="">
                     <div class="hover">
                         <h4>New to our website?</h4>
                         <p>There are advances being made in science and technology everyday, and a good example of this is the</p>
@@ -65,7 +65,7 @@
         <div class="row">
             <div class="col-lg-6">
                 <div class="login_box_img">
-                    <img class="img-fluid" src="" alt="">
+                    <img class="img-fluid" src="$SiteConfig.LoginImage.getURL()" alt="">
                     <div class="hover">
                         <h4>New to our website?</h4>
                         <p>There are advances being made in science and technology everyday, and a good example of this is the</p>
