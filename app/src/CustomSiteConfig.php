@@ -10,7 +10,9 @@ use SilverStripe\Forms\TextField;
 class CustomSiteConfig extends Extension
 {
     private static $db = [
-        // 'Title' => 'Text',
+        'Email' => 'Varchar',
+        'Alamat' => 'Varchar',
+        'Nomer' => 'Varchar',
     ];
     private static $has_one = [
         'Image' => Image::class,
@@ -40,6 +42,9 @@ class CustomSiteConfig extends Extension
 
     public function updateCMSFields(FieldList $fields)
     {
+        $fields->addFieldToTab('Root.Main', TextField::create('Email', 'Email Messasge Redirect To'));
+        $fields->addFieldToTab('Root.Main', TextField::create('Alamat', 'Alamat'));
+        $fields->addFieldToTab('Root.Main', TextField::create('Nomer', 'Nomer'));
         $fields->addFieldToTab('Root.Main', UploadField::create('Image', 'Image Navbar'));
         $fields->addFieldToTab('Root.Main', UploadField::create('HomeImage', 'Home Image'));
         $fields->addFieldToTab('Root.Main', UploadField::create('Background', 'Background Banner'));

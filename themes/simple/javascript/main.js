@@ -560,7 +560,7 @@ $(document).ready(function () {
 
   $(document).ready(function () {
     $("#contactForm").submit(function () {
-      $.post("http://localhost/marketplace/login/proseslogin",
+      $.post("{$BaseHref}/login/proseslogin",
         {
           Email: $("#email").val(),
           Password: $("#password").val()
@@ -569,7 +569,7 @@ $(document).ready(function () {
           var response = JSON.parse(data);
           if (response.success) {
             console.log(response);
-            window.location.href = "http://localhost/marketplace";
+            window.location.href = "{$BaseHref}";
           }
         }).fail(function () {
           alert("Error");
@@ -587,7 +587,7 @@ $(document).ready(function () {
   $("#regisform").submit(function (event) {
     event.preventDefault(); // Prevents the form from doing a default refresh
 
-    $.post("http://localhost/marketplace/regis/prosesregister", {
+    $.post("{$BaseHref}/regis/prosesregister", {
         FirstName: $("#firstname").val(),
         Email: $("#email").val(),
         Username: $("#Surname").val(),
@@ -605,7 +605,7 @@ $(document).ready(function () {
             confirmButtonText: "GO"
           }).then((result) => {
             if (result.isConfirmed) {
-              window.location.href = "http://localhost/marketplace/member"; // Replace with your actual redirect URL
+              window.location.href = "{$BaseHref}/login"; // Replace with your actual redirect URL
             }
           });
         } else {
