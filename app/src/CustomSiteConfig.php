@@ -18,7 +18,9 @@ class CustomSiteConfig extends Extension
         'SuperSaleImage' => Image::class,
         'LoginImage' => Image::class,
         'Favicon' => Image::class,
-        'InstagramImage' => Image::class,
+    ];
+    private static $many_many = [
+        'InstagramImage' => Image::class
     ];
     private static $owns = [
         'Image',

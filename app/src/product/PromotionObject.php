@@ -8,12 +8,14 @@ use SilverStripe\Forms\DropdownField;
 use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\LiteralField;
 use SilverStripe\Forms\NumericField;
+use SilverStripe\Forms\TextareaField;
 use SilverStripe\Forms\TextField;
 
     class PromotionObject extends DataObject{
         private static $db = [
             'PromoText1' => 'Text',
             'PromoText2' => 'Text',
+            'PromoText3' => 'Text',
             'PromoPrice' => 'Decimal',
             'ProductImagesID' => 'Int',
             'ProductImagesInputID' => 'Int',
@@ -29,6 +31,9 @@ use SilverStripe\Forms\TextField;
             'Product' => ProductObject::class,
             'ProductImages' => Image::class,
             'ProductImagesInput' => Image::class
+        ];
+        private static $owns = [
+            'ProductImagesInput'
         ];
         private static $summary_fields = [
             'Product.Title' => 'Product Name',
@@ -50,6 +55,7 @@ use SilverStripe\Forms\TextField;
                     ->setValue($this->Product->ProductID),
                 TextField::create('PromoText1', 'Text 1'),
                 TextField::create('PromoText2', 'Text 2'),
+                TextareaField::create('PromoText3', 'Text 3'),
                 NumericField::create('PromoPrice', 'Promo Price (%)')
                     ->setDescription('Enter a percentage value (0-100)   e.g., 10 for 10%'),
                 UploadField::create('ProductImagesInput', 'Upload Promo Image (Optional)')

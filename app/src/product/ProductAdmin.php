@@ -10,16 +10,4 @@ use SilverStripe\Admin\ModelAdmin;
             ProductBrandObject::class,
             ShopCategoryObject::class,
         ];
-        private static $url_handlers = [
-            'get-subcategories' => 'getSubCategories',
-        ];
-    
-        public function getSubCategories($request) {
-            $categoryID = $request->getVar('categoryID');
-            $subCategories = ShopSubCategoryObject::get()
-                ->filter('ProductCategoryID', $categoryID)
-                ->map('ID', 'Title')
-                ->toArray();
-            return json_encode($subCategories);
-        }
     }

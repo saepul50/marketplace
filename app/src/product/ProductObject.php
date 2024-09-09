@@ -14,6 +14,7 @@ use SilverStripe\Forms\DropdownField;
 use SilverStripe\Forms\GridField\GridField;
 use SilverStripe\Forms\GridField\GridFieldConfig_RecordEditor;
 use SilverStripe\Forms\GridField\GridFieldDataColumns;
+use SilverStripe\View\Requirements;
 
     class ProductObject extends DataObject{
        
@@ -56,7 +57,7 @@ use SilverStripe\Forms\GridField\GridFieldDataColumns;
         }
         return null;
     }
-    public function getVariant(){
+    public function getVariants(){
         return $this->ProductVariants();
     }
     
@@ -122,20 +123,52 @@ use SilverStripe\Forms\GridField\GridFieldDataColumns;
         }
         return 'Out of Stock';
     }
-    public function validate() {
-        $result = parent::validate();
+    // public function validate() {
+    //     $result = parent::validate();
 
-        if ($this->ProductVariants()->count() === 0) {
-            $result->addMessage('You must add at least one variant before saving this product.');
-        }
+    //     if ($this->ProductVariants()->count() === 0) {
+    //         $result->addMessage('You must add at least one variant before saving this product.');
+    //     }
 
-        return $result;
-    }
+    //     return $result;
+    // }
     public function getCMSFields() {
         $categories = ShopCategoryObject::get()->map('ID', 'Title')->toArray();
-        $subCategories = ShopSubCategoryObject::get()->map('ID', 'Title')->toArray();
         $brands = ProductBrandObject::get()->map('ID', 'Title')->toArray();
         $sortVariants = $this->ProductVariants()->sort('VariantName');
+        
+        $categoryField = DropdownField::create('ProductCategoryID', 'Category', $categories)
+            ->setEmptyString('Select a Category');
+    
+        // Initial subcategory field
+        $subCategoryField = CheckboxSetField::create('ProductSubCategory', 'Sub Category', []);
+    
+        // Populate subcategory field based on selected category during form submission
+        if ($this->ProductCategoryID) {
+            $validSubCategories = ShopSubCategoryObject::get()->filter('ProductCategoryID', $this->ProductCategoryID)->map('ID', 'Title')->toArray();
+            $subCategoryField->setSource($validSubCategories);
+        }
+    
+        Requirements::customScript(<<<JS
+            (function($) {
+                $('#Form_ItemEditForm_ProductCategoryID').change(function() {
+                    var categoryID = $(this).val();
+                    $.ajax({
+                        url: '/marketplace/productdetails/getSubCategories/' + categoryID,
+                        success: function(data) {
+                            var subCategories = JSON.parse(data);
+                            var checkboxSetField = $('#Form_ItemEditForm_ProductSubCategory');
+                            checkboxSetField.empty();
+                            $.each(subCategories, function(id, title) {
+                                checkboxSetField.append('<label><input type="checkbox" name="ProductSubCategory[]" value="' + id + '"> ' + title + '</label><br>');
+                            });
+                        }
+                    });
+                });
+            })(jQuery);
+        JS
+        );
+    
         $fields = new FieldList(
             TextField::create('Title', 'Product Name'),
             TextField::create('Rating'),
@@ -146,22 +179,23 @@ use SilverStripe\Forms\GridField\GridFieldDataColumns;
             UploadField::create('ProductVideo'),
             DropdownField::create('ProductBrandsID', 'Brand', $brands)
                 ->setEmptyString('Select a Brand'),
-            $categoryField = DropdownField::create('ProductCategoryID', 'Category', $categories)
-                ->setEmptyString('Select a Category'),
-            CheckboxSetField::create('ProductSubCategory', 'Sub Category', $subCategories),
+            $categoryField,
+            $subCategoryField,
             GridField::create(
                 'ProductVariants',
                 'Variants',
                 $sortVariants,
-                GridFieldConfig_RecordEditor::create(),
+                GridFieldConfig_RecordEditor::create()
             ),
             GridField::create(
                 'Promotion',
                 'Promotion',
                 $this->Promotion(),
-                GridFieldConfig_RecordEditor::create(),
+                GridFieldConfig_RecordEditor::create()
             )
         );
+    
         return $fields;
     }
+    
 }

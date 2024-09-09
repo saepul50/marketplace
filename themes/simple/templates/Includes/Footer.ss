@@ -1,5 +1,4 @@
 <!-- start footer Area -->
-<% require themedCSS('main') %>
 	<footer class="footer-area section_gap">
 		<div class="container">
 			<div class="row">
@@ -45,6 +44,9 @@
 					<div class="single-footer-widget mail-chimp">
 						<h6 class="mb-20">Instragram Feed</h6>
 						<ul class="instafeed d-flex flex-wrap">
+							<% loop $SiteConfig.InstagramImage %>
+								<li><img class="img-fluid d-block mx-auto" src="$getURL()" alt=""></li>
+							<% end_loop %>
 						</ul>
 					</div>
 				</div>
