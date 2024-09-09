@@ -29,7 +29,7 @@
                 </div>
             </div>
             <div class="col-lg-6">
-                <div class="login_form_inner">
+                <div class="login_form_inner" style="padding-top: 110px !important;">
                     <h3>Log in to enter</h3>
                     <form class="row login_form"  method="post" id="contactForm" >
                          <div class="col-md-12 form-group">
