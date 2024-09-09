@@ -558,4 +558,29 @@ $(document).ready(function(){
         });
       }
 
+      $(document).ready(function () {
+        $("#contactForm").submit(function(){
+            $.post("http://localhost/marketplace/login/proseslogin",
+            {
+                Email: $("#email").val(),
+                Password:  $("#password").val()
+            } )
+            .done(function (data) {
+                var response = JSON.parse(data);
+                if (response.success) {
+                  console.log(response);
+                    window.location.href="http://localhost/marketplace";
+                }
+            }).fail(function () {
+                alert("Error");
+            });
+            return false;
+        });
+    }); 
+    $('.navbar-nav .nav-item').click(function(){
+      $('.navbar-nav .nav-item.active').removeClass('active');
+      $(this).addClass('active');
+  })
+
 });
+
