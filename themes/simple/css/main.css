@@ -1205,10 +1205,7 @@ h1, h2, h3, h4, h5, h6 {
 
 /* banner area css
 ============================================================================================ */
-.banner-area {
-  /* background: url(../img/banner/banner-bg.jpg) center no-repeat; */
-  background-size: cover;
-  position: relative; }
+
   @media (max-width: 768px) {
     .banner-area .fullscreen {
       height: 650px !important; } }
@@ -1297,7 +1294,7 @@ h1, h2, h3, h4, h5, h6 {
       background: linear-gradient(90deg, #ffba00 0%, #ff6c00 100%); } }
 
 #category .organic-breadcrumb {
-  margin-bottom: 100px; }
+  margin-bottom: 100px !important; }
 
 .breadcrumb-banner {
   padding: 90px 0 100px 0; }

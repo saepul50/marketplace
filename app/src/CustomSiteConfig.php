@@ -13,14 +13,17 @@ class CustomSiteConfig extends Extension
     ];
     private static $has_one = [
         'Image' => Image::class,
+        'Background' => Image::class,
     ];
     private static $owns = [
-        'Image'
+        'Image',
+        'Background',
     ];
 
 
     public function updateCMSFields(FieldList $fields)
     {
         $fields->addFieldToTab('Root.Main', UploadField::create('Image', 'Image Navbar'));
+        $fields->addFieldToTab('Root.Main', UploadField::create('Background', 'Background Banner'));
     }
 }

@@ -1,13 +1,13 @@
 	<!-- Start Banner Area -->
-	<section class="banner-area organic-breadcrumb">
+	<section class="banner-area organic-breadcrumb" style ="background: url($SiteConfig.Background.getURL()) center no-repeat;background-size: cover; position: relative ">
 		<div class="container">
 			<div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
 				<div class="col-first">
 					<h1>Product Details Page</h1>
 					<nav class="d-flex align-items-center">
-						<a href="index.html">Home<span class="lnr lnr-arrow-right"></span></a>
-						<a href="#">Shop<span class="lnr lnr-arrow-right"></span></a>
-						<a href="single-product.html">product-details</a>
+						<a href="{$BaseHref}">Home<span class="lnr lnr-arrow-right"></span></a>
+						<a href="{$BaseHref}/shopcategory">Shop<span class="lnr lnr-arrow-right"></span></a>
+						<a href="{$BaseHref}/productdetails">product-details</a>
 					</nav>
 				</div>
 			</div>
