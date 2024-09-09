@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => 'silverstripe/installer',
-        'pretty_version' => '5.2.0',
-        'version' => '5.2.0.0',
-        'reference' => NULL,
+        'pretty_version' => 'dev-main',
+        'version' => 'dev-main',
+        'reference' => '6314d9fb9f565823ce610d9cd9dfd29d56f305b9',
         'type' => 'silverstripe-recipe',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -562,6 +562,15 @@
             'aliases' => array(),
             'dev_requirement' => true,
         ),
+        'sheadawson/silverstripe-dependentdropdownfield' => array(
+            'pretty_version' => '3.0.0',
+            'version' => '3.0.0.0',
+            'reference' => 'bb05e746eebb45960c24f183f68378e028043bff',
+            'type' => 'silverstripe-vendormodule',
+            'install_path' => __DIR__ . '/../sheadawson/silverstripe-dependentdropdownfield',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
         'silverstripe-themes/simple' => array(
             'pretty_version' => '3.3.2',
             'version' => '3.3.2.0',
@@ -662,9 +671,9 @@
             'dev_requirement' => false,
         ),
         'silverstripe/installer' => array(
-            'pretty_version' => '5.2.0',
-            'version' => '5.2.0.0',
-            'reference' => NULL,
+            'pretty_version' => 'dev-main',
+            'version' => 'dev-main',
+            'reference' => '6314d9fb9f565823ce610d9cd9dfd29d56f305b9',
             'type' => 'silverstripe-recipe',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

@@ -3904,6 +3904,63 @@
             "install-path": "../sebastian/version"
         },
         {
+            "name": "sheadawson/silverstripe-dependentdropdownfield",
+            "version": "3.0.0",
+            "version_normalized": "3.0.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sheadawson/silverstripe-dependentdropdownfield.git",
+                "reference": "bb05e746eebb45960c24f183f68378e028043bff"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/sheadawson/silverstripe-dependentdropdownfield/zipball/bb05e746eebb45960c24f183f68378e028043bff",
+                "reference": "bb05e746eebb45960c24f183f68378e028043bff",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.4",
+                "silverstripe/framework": "^4.11 || ^5",
+                "silverstripe/vendor-plugin": "^1 || ^2"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^9.5"
+            },
+            "time": "2023-02-22T18:12:14+00:00",
+            "type": "silverstripe-vendormodule",
+            "extra": {
+                "installer-name": "dependentdropdownfield",
+                "branch-alias": {
+                    "dev-master": "2.0.x-dev"
+                },
+                "expose": [
+                    "client"
+                ]
+            },
+            "installation-source": "dist",
+            "autoload": {
+                "psr-4": {
+                    "Sheadawson\\DependentDropdown\\": "src/",
+                    "Sheadawson\\DependentDropdown\\Tests\\": "tests/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "description": "A silverstripe dropdown field that has it's options populated via ajax, based on the value of the field it depends on",
+            "homepage": "https://github.com/sheadawson/silverstripe-dependentdropdownfield",
+            "keywords": [
+                "dropdown",
+                "silverstripe"
+            ],
+            "support": {
+                "issues": "https://github.com/sheadawson/silverstripe-dependentdropdownfield/issues",
+                "source": "https://github.com/sheadawson/silverstripe-dependentdropdownfield/tree/3.0.0"
+            },
+            "install-path": "../sheadawson/silverstripe-dependentdropdownfield"
+        },
+        {
             "name": "silverstripe-themes/simple",
             "version": "3.3.2",
             "version_normalized": "3.3.2.0",
