@@ -140,10 +140,8 @@ use SilverStripe\View\Requirements;
         $categoryField = DropdownField::create('ProductCategoryID', 'Category', $categories)
             ->setEmptyString('Select a Category');
     
-        // Initial subcategory field
         $subCategoryField = CheckboxSetField::create('ProductSubCategory', 'Sub Category', []);
     
-        // Populate subcategory field based on selected category during form submission
         if ($this->ProductCategoryID) {
             $validSubCategories = ShopSubCategoryObject::get()->filter('ProductCategoryID', $this->ProductCategoryID)->map('ID', 'Title')->toArray();
             $subCategoryField->setSource($validSubCategories);
