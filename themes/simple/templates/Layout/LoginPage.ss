@@ -1,12 +1,12 @@
 <!-- Start Banner Area -->
-<section class="banner-area organic-breadcrumb">
+<section class="banner-area organic-breadcrumb" style ="background: url($SiteConfig.Background.getURL()) center no-repeat;background-size: cover; position: relative ">
     <div class="container">
         <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
             <div class="col-first">
                 <h1>Login/Register</h1>
                 <nav class="d-flex align-items-center">
-                    <a href="index.html">Home<span class="lnr lnr-arrow-right"></span></a>
-                    <a href="category.html">Login/Register</a>
+                    <a href="{$BaseHref}">Home<span class="lnr lnr-arrow-right"></span></a>
+                    <a href="{$BaseHref}/login">Login/Register</a>
                 </nav>
             </div>
         </div>
@@ -20,7 +20,7 @@
         <div class="row">
             <div class="col-lg-6">
                 <div class="login_box_img">
-                    <img class="img-fluid" src="" alt="">
+                    <img class="img-fluid" src="$SiteConfig.LoginImage.getURL()" alt="">
                     <div class="hover">
                         <h4>New to our website?</h4>
                         <p>There are advances being made in science and technology everyday, and a good example of this is the</p>
@@ -65,7 +65,7 @@
         <div class="row">
             <div class="col-lg-6">
                 <div class="login_box_img">
-                    <img class="img-fluid" src="" alt="">
+                    <img class="img-fluid" src="$SiteConfig.LoginImage.getURL()" alt="">
                     <div class="hover">
                         <h4>New to our website?</h4>
                         <p>There are advances being made in science and technology everyday, and a good example of this is the</p>

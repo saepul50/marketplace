@@ -24,10 +24,12 @@
 
 <body>
 
-	
+	<%-- <% with $SiteConfig %>
+		<img class="img-fluid" src="$Image.getURL()" alt="">
+		<% end_with %> --%>
 
 	<!-- start banner Area -->
-	<section class="banner-area">
+	<section class="banner-area" style ="background: url($SiteConfig.Background.getURL()) center no-repeat;background-size: cover; position: relative ">
 		<div class="container">
 			<div class="row fullscreen align-items-center justify-content-start">
 				<div class="col-lg-12">
@@ -65,6 +67,7 @@
 							</div>
 							<div class="col-lg-7">
 								<div class="banner-img">
+									
 								</div>
 							</div>
 						</div>

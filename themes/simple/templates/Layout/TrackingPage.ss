@@ -1,3 +1,19 @@
+<section class="banner-area organic-breadcrumb" style ="background: url($SiteConfig.Background.getURL()) center no-repeat;background-size: cover; position: relative ">
+    <div class="container">
+        <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+            <div class="col-first">
+                <h1>Order Tracking</h1>
+                <nav class="d-flex align-items-center">
+                    <a href="{$BaseHref}">Home<span class="lnr lnr-arrow-right"></span></a>
+                    <a href="{$BaseHref}/tracking">Tracking</a>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End Banner Area -->
+
+
 <section class="tracking_box_area section_gap">
     <div class="container">
         <div class="tracking_box_inner">

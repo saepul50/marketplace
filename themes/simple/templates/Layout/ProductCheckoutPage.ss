@@ -1,12 +1,12 @@
   <!-- Start Banner Area -->
-  <section class="banner-area organic-breadcrumb">
+  <section class="banner-area organic-breadcrumb" style ="background: url($SiteConfig.Background.getURL()) center no-repeat;background-size: cover; position: relative ">
     <div class="container">
         <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
             <div class="col-first">
                 <h1>Checkout</h1>
                 <nav class="d-flex align-items-center">
-                    <a href="index.html">Home<span class="lnr lnr-arrow-right"></span></a>
-                    <a href="single-product.html">Checkout</a>
+                    <a href="{$BaseHref}">Home<span class="lnr lnr-arrow-right"></span></a>
+                    <a href="{$BaseHref}/productdetails">Checkout</a>
                 </nav>
             </div>
         </div>
@@ -19,18 +19,17 @@
     <div class="container">
         <div class="returning_customer">
             <div class="check_title">
-                <h2>Returning Customer? <a href="#">Click here to login</a></h2>
+                <h2>Returning Customer? <a href="{$BaseHref}/login">Click here to login</a></h2>
             </div>
             <p>If you have shopped with us before, please enter your details in the boxes below. If you are a new
                 customer, please proceed to the Billing & Shipping section.</p>
             <form class="row contact_form" action="#" method="post" novalidate="novalidate">
                 <div class="col-md-6 form-group p_star">
-                    <input type="text" class="form-control" id="name" name="name">
-                    <span class="placeholder" data-placeholder="Username or Email"></span>
+                    <input type="text" class="form-control" id="name" name="name" placeholder="Email">
+
                 </div>
                 <div class="col-md-6 form-group p_star">
-                    <input type="password" class="form-control" id="password" name="password">
-                    <span class="placeholder" data-placeholder="Password"></span>
+                    <input type="password" class="form-control" id="password" name="password"  placeholder="Password">
                 </div>
                 <div class="col-md-12 form-group">
                     <button type="submit" value="submit" class="primary-btn">login</button>
@@ -55,23 +54,19 @@
                     <h3>Billing Details</h3>
                     <form class="row contact_form" action="#" method="post" novalidate="novalidate">
                         <div class="col-md-6 form-group p_star">
-                            <input type="text" class="form-control" id="first" name="name">
-                            <span class="placeholder" data-placeholder="First name"></span>
+                            <input type="text" class="form-control" id="first" name="name" placeholder="First Name">
                         </div>
                         <div class="col-md-6 form-group p_star">
-                            <input type="text" class="form-control" id="last" name="name">
-                            <span class="placeholder" data-placeholder="Last name"></span>
+                            <input type="text" class="form-control" id="last" name="name"  placeholder="Last Name">
                         </div>
                         <div class="col-md-12 form-group">
                             <input type="text" class="form-control" id="company" name="company" placeholder="Company name">
                         </div>
                         <div class="col-md-6 form-group p_star">
-                            <input type="text" class="form-control" id="number" name="number">
-                            <span class="placeholder" data-placeholder="Phone number"></span>
+                            <input type="text" class="form-control" id="number" name="number"  placeholder="Number">
                         </div>
                         <div class="col-md-6 form-group p_star">
-                            <input type="text" class="form-control" id="email" name="compemailany">
-                            <span class="placeholder" data-placeholder="Email Address"></span>
+                            <input type="text" class="form-control" id="email" name="compemailany"  placeholder="Email ">
                         </div>
                         <div class="col-md-12 form-group p_star">
                             <select class="country_select">
@@ -81,16 +76,13 @@
                             </select>
                         </div>
                         <div class="col-md-12 form-group p_star">
-                            <input type="text" class="form-control" id="add1" name="add1">
-                            <span class="placeholder" data-placeholder="Address line 01"></span>
+                            <input type="text" class="form-control" id="add1" name="add1"  placeholder="Address Line 1">
                         </div>
                         <div class="col-md-12 form-group p_star">
-                            <input type="text" class="form-control" id="add2" name="add2">
-                            <span class="placeholder" data-placeholder="Address line 02"></span>
+                            <input type="text" class="form-control" id="add2" name="add2"  placeholder="Address Line 2">
                         </div>
                         <div class="col-md-12 form-group p_star">
-                            <input type="text" class="form-control" id="city" name="city">
-                            <span class="placeholder" data-placeholder="Town/City"></span>
+                            <input type="text" class="form-control" id="city" name="city"  placeholder="Town/City">
                         </div>
                         <div class="col-md-12 form-group p_star">
                             <select class="country_select">
