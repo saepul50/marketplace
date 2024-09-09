@@ -29,7 +29,7 @@
 		<% end_with %> --%>
 
 	<!-- start banner Area -->
-	<section class="banner-area" style ="background: url($SiteConfig.Background.getURL()) center no-repeat;background-size: cover; position: relative ">
+	<section class="banner-area  organic-breadcrumb" style ="  background: url($SiteConfig.HomeImage.getURL()) center no-repeat;">
 		<div class="container">
 			<div class="row fullscreen align-items-center justify-content-start">
 				<div class="col-lg-12">
@@ -740,7 +740,7 @@
 	<section class="exclusive-deal-area">
 		<div class="container-fluid">
 			<div class="row justify-content-center align-items-center">
-				<div class="col-lg-6 no-padding exclusive-left">
+				<div class="col-lg-6 no-padding exclusive-left" style="background: url($SiteConfig.HotDealImage.getURL()) center no-repeat;  background-size: cover; text-align: center; padding: 275px 0;">
 					<div class="row clock_sec clockdiv" id="clockdiv">
 						<div class="col-lg-12">
 							<h1>Exclusive Hot Deal Ends Soon!</h1>

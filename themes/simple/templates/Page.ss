@@ -26,7 +26,8 @@ crossorigin="anonymous" referrerpolicy="no-referrer" />
 href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css"
 integrity="sha512-sMXtMNL1zRzolHYKEujM2AqCLUR9F2C4/05cdbxjjLSRvMQIciEPCQZo++nk7go3BtSuK9kfa/s+a4f4i5pLkw=="
 crossorigin="anonymous" referrerpolicy="no-referrer" />
-
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.12.4/dist/sweetalert2.all.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.12.4/dist/sweetalert2.min.css" rel="stylesheet">
 
 	<% base_tag %>
 	<title>$SiteConfig.Title</title>
@@ -50,7 +51,6 @@ crossorigin="anonymous" referrerpolicy="no-referrer" />
 	<% require themedCSS('nouislider.min') %>
 	<% require themedCSS('ion.rangeSlider') %>
 	<% require themedCSS('ion.rangeSlider.skinFlat') %>
-
 	<% require themedCSS('main') %>
 	<% require themedCSS('linearicons') %>
 	<% require themedCSS('font-awesome.min') %>
