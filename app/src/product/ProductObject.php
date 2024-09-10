@@ -20,6 +20,7 @@ use SilverStripe\View\Requirements;
        
     private static $db = [
         'Title' => 'Text',
+        'Features'=> 'Text',
         'Description'=> 'Text',
         'Spesifikasi'=> 'Text',
         'Rating' => 'Decimal',
@@ -170,6 +171,7 @@ use SilverStripe\View\Requirements;
         $fields = new FieldList(
             TextField::create('Title', 'Product Name'),
             TextField::create('Rating'),
+            TextAreaField::create('Features'),
             TextAreaField::create('Description'),
             UploadField::create('ProductImages', 'Product Images')
                 ->setAllowedFileCategories('image/supported')

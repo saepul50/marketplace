@@ -25,22 +25,17 @@ class  LoginPageController extends PageController{
         $loginHandler = new LoginHandler('auth', $MemberAuthenticator);
         
         
-        // Attempt to authenticate the user
         $member = $loginHandler->checkLogin($data, $request);
 
         if ($member) {
-            // Successful login
             $loginHandler->performLogin($member, $data, $request);
-            
             return json_encode([
                 'success' => true,
                 'message' => 'Success'
                 
             ]);
 
-        } else {
-        
-            // Authentication failed
+        } else {        
             return json_encode([
                 'success' => false,
                 'message' => 'The provided details dont seem to be correct. Please try again.'

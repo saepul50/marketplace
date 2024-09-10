@@ -31,7 +31,7 @@
             <div class="col-lg-6">
                 <div class="login_form_inner">
                     <h3>Log in to enter</h3>
-                    <form class="row login_form"  method="post" id="contactForm" >
+                    <form class="row login_form"  method="post" id="loginForm" >
                         <div class="col-md-12 form-group">
                             <input type="email" class="form-control" id="email" name="email" placeholder="Username" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Username'" required>
                         </div>
@@ -76,7 +76,7 @@
             <div class="col-lg-6">
                 <div class="login_form_inner">
                     <h3>Registrasi</h3>
-                    <form class="row login_form" action="contact_process.php" method="post" id="contactForm1" novalidate="novalidate">
+                    <form class="row login_form" method="post" id="contactForm1" novalidate="novalidate">
                         <div class="col-md-12 form-group">
                             <input type="text" class="form-control" id="name" name="name" placeholder="Username" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Username'">
                         </div>
@@ -99,42 +99,3 @@
         </div>
     </div>
 </section>
-
-
-<script>
-   $(document).ready(function () {
-    $("#contactForm").on('submit', function(e){
-        e.preventDefault(); // Prevent form from reloading the page
-        console.log("Form submission triggered");
-
-        $.post("http://localhost/marketplace/login/proseslogin", 
-        {
-            Email: $("#email").val(),
-            Password: $("#password").val()
-        })
-        .done(function (data) {
-            console.log("Form submission successful, response:", data);
-            try {
-                var response = JSON.parse(data);
-                if (response.success) {
-                    console.log("Login successful, redirecting...");
-                    window.location.href = "{$BaseHref}";
-                } else {
-                    console.log("Login failed");
-                    alert("Login failed. Please try again.");
-                }
-            } catch (error) {
-                console.log("Error parsing JSON:", error);
-                alert("Unexpected response from server.");
-            }
-        })
-        .fail(function () {
-            console.log("AJAX request failed");
-            alert("Error in form submission. Please try again.");
-        });
-    });
-});
-</script>
-    <div>
-    <div>
-

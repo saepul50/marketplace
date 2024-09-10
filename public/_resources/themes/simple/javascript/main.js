@@ -563,29 +563,90 @@ $(document).ready(function(){
         });
       }
 
-      $(document).ready(function () {
-        $("#contactForm").submit(function(){
-            $.post("http://localhost/marketplace/login/proseslogin",
-            {
-                Email: $("#email").val(),
-                Password:  $("#password").val()
-            } )
-            .done(function (data) {
-                var response = JSON.parse(data);
-                if (response.success) {
-                  console.log(response);
-                    window.location.href="http://localhost/marketplace";
-                }
-            }).fail(function () {
-                alert("Error");
+      $("#loginForm").submit(function(){
+          $.post("http://localhost/marketplace/login/proseslogin",
+          {
+              Email: $("#email").val(),
+              Password:  $("#password").val()
+          } )
+          .done(function (data) {
+              var response = JSON.parse(data);
+              if (response.success) {
+                console.log(response);
+                  window.location.href="http://localhost/marketplace";
+              }
+          }).fail(function () {
+              alert("Error");
+          });
+          return false;
+      });
+      $("#regisform").submit(function (event) {
+        event.preventDefault();
+    
+        $.post("{$BaseHref}/register/prosesregister", {
+            FirstName: $("#firstname").val(),
+            Email: $("#email").val(),
+            Username: $("#Surname").val(),
+            Password: $("#password").val(),
+            ConfirmPassword: $("#password2").val()
+          })
+          .done(function (data) {
+            var response = JSON.parse(data);
+            if (response.success) {
+              window.location.href = "{$BaseHref}/login";
+            } else {
+              alert("error");
+            }
+    
+          }).fail(function () {
+            Swal.fire({
+              icon: "error",
+              title: "Error",
+              text: "There was an issue with your registration. Please try again later.",
+              confirmButtonColor: "#d33",
             });
-            return false;
-        });
-    }); 
+          });
+    
+        return false;
+      });
+      $("#Comment").on('click', function(e){
+        e.preventDefault();
+        var formData = new FormData();
+        var comment = $("#commentMessage").val();
+        formData.append('Comments', comment);
+        $.ajax({
+          url: "productdetails/comment",
+          type: "POST",
+          data: formData,
+          contentType: false,
+          processData: false,
+          success: function (results) {
+              alert("success");
+            },
+          error: function () {
+            alert("fail");
+          }
+      });
+      });
     $('.navbar-nav .nav-item').click(function(){
       $('.navbar-nav .nav-item.active').removeClass('active');
       $(this).addClass('active');
-  })
+    })
+    $('.nav-link').on('click', function (e) {
+      e.preventDefault();
+
+      $('.nav-link').removeClass('active');
+      $('.tab-pane').removeClass('show active');
+
+      $(this).addClass('active');
+
+      var targetId = $(this).attr('href');
+      $('.tab-pane').each(function() {
+          if ($(this).attr('id') === targetId) {
+              $(this).addClass('show active');
+          }
+      });
+    });
 
 });
 
