@@ -57,7 +57,7 @@
         <div class="row">
             <div class="col-lg-6">
                 <div class="login_form_inner p-0">
-                    <h3 class="pt-5 py-2">Registrasi</h3>
+                    <h3 class="m-0 pt-4">Registrasi</h3>
                     <form class="row login_form" method="post" id="contactForm1" novalidate="novalidate">
                         <div class="col-md-12 form-group">
                             <input type="text" class="form-control" id="username" placeholder="Username" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Username'">
@@ -76,8 +76,7 @@
                         </div>
                         <div class="col-md-12 form-group">
                             <button id="register" class="primary-btn">register</button>
-                            <a href="#">Forgot Password?</a>
-                        </div>
+                        </div>  
                     </form>
                 </div>
             </div>

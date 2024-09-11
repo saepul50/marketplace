@@ -36,8 +36,8 @@ class  LoginPageController extends PageController{
         
         if($member){
             $loginHandler->performLogin($member, $data, $request);
-            $session = $request->getSession();
-            $session->set('MemberID', $member->ID);
+            // $session = $request->getSession();
+            // $session->set('MemberID', $member->ID);
             // Debug::show(''. $member->FirstName);
             return json_encode([
                 'success' => true

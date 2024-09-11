@@ -572,7 +572,8 @@ $(document).ready(function () {
         .done(function (data) {
           var response = JSON.parse(data);
           if (response.success) {
-            window.location.href = "/marketplace";
+            alert("sukses");
+            window.location.href = "";
           } else {
             alert("gagal login")
           }
@@ -602,6 +603,33 @@ $(document).ready(function () {
           }).fail(function () {
             alert("errorfail");
           });
+      });
+      $("#addCart").on('click', function(e){
+        e.preventDefault();
+        var formData = new FormData();
+        for (const item of $(".s_product_inner")){
+          var dataProduct = [
+            ProductID = $(this).find("#productId").text(),
+            ProductTitle = $(this).find("#productTitle").text(),
+            ProductImage = $(this).find("#productImage").attr("src"),
+            ProductPrice = $(this).find("#productPrice").text(),
+            ProductQuantity = $(this).find("#sst").val(),
+          ];
+        }
+        formData.append('Comments', comment);
+        $.ajax({
+          url: "productdetails/comment",
+          type: "POST",
+          data: formData,
+          contentType: false,
+          processData: false,
+          success: function (results) {
+              alert("success");
+            },
+          error: function () {
+            alert("fail");
+          }
+        });
       });
       $("#Comment").on('click', function(e){
         e.preventDefault();
@@ -641,6 +669,5 @@ $(document).ready(function () {
           }
       });
     });
-
 });
 

@@ -32,6 +32,7 @@
 				<div class="col-lg-5 offset-lg-1">
 					<div class="s_product_text">
 						<h3>$Product.Title</h3>
+						<p class="d-none" id="productId">$Product.ID</p>
 						<% if $Product.Promotion %>
 							<h2 class="mb-1">$Product.rangePriceDiscounted</h2>
 							<h6 class="l-through my-1">$Product.rangePrice</h6>
@@ -65,7 +66,7 @@
 							</button>
 						</div>
 						<div class="card_area d-flex align-items-center">
-							<a class="primary-btn" href="#">Add to Cart</a>
+							<button class="primary-btn" id="addCart">Add to Cart</button>
 							<a class="icon_btn" href="#"><i class="lnr lnr lnr-diamond"></i></a>
 							<a class="icon_btn" href="#"><i class="lnr lnr lnr-heart"></i></a>
 						</div>

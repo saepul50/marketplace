@@ -8,6 +8,8 @@ use SilverStripe\Security\Security;
         protected function init() {
             parent::init();
             $member = Security::getCurrentUser();
+            // Debug::show($member);
+            // die();
             if (!$member) {
                 return $this->redirect('login');
             }

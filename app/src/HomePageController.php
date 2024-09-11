@@ -7,7 +7,12 @@ use SilverStripe\Security\Security;
 class HomePageController extends PageController{
     protected function init() {
         parent::init();
-        
+        $member = Security::getCurrentUser();
+        // Debug::show($member);
+        // die();
+        if (!$member) {
+            return $this->redirect('login');
+        }
     }
     public function ProductObjects() {
         return ProductObject::get();

@@ -196,7 +196,7 @@
 					<!-- single product -->
 					<% loop $ProductObjects.Limit(8) %>
 						<% if $ProductCategoryID = 1 %>
-							<a href="/marketplace/productdetails/view/$ID">
+							<a href="{$BaseHref}/productdetails/view/$ID">
 								<div class="col-lg-3 col-md-6">
 									<div class="single-product">
 										<% with $ProductImages.First %>
@@ -256,7 +256,7 @@
 				<div class="row">
 					<% loop $ProductObjects.Limit(8) %>
 					<% if $ProductCategoryID = 2 %>
-						<a href="/marketplace/productdetails/view/$ID">
+						<a href="{$BaseHref}/productdetails/view/$ID">
 							<div class="col-lg-3 col-md-6">
 								<div class="single-product">
 									<% with $ProductImages.First %>
