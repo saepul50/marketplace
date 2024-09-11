@@ -24,7 +24,7 @@
 
 <body>
 	<!-- start banner Area -->
-	<section class="banner-area" style ="background: url($SiteConfig.Background.getURL()) center no-repeat;background-size: cover; position: relative ">
+	<section class="banner-area  organic-breadcrumb" style ="  background: url($SiteConfig.HomeImage.getURL()) center no-repeat;">
 		<div class="container">
 			<div class="row fullscreen align-items-center justify-content-start">
 				<div class="col-lg-12">
@@ -308,7 +308,7 @@
 	<section class="exclusive-deal-area">
 		<div class="container-fluid">
 			<div class="row justify-content-center align-items-center">
-				<div class="col-lg-6 no-padding exclusive-left">
+				<div class="col-lg-6 no-padding exclusive-left" style="background: url($SiteConfig.HotDealImage.getURL()) center no-repeat;  background-size: cover; text-align: center; padding: 275px 0;">
 					<div class="row clock_sec clockdiv" id="clockdiv">
 						<div class="col-lg-12">
 							<h1>Exclusive Hot Deal Ends Soon!</h1>
@@ -395,129 +395,4 @@
 	</section>
 	<!-- End brand Area -->
 
-	<!-- Start related-product Area -->
-	<section class="related-product-area section_gap_bottom">
-		<div class="container">
-			<div class="row justify-content-center">
-				<div class="col-lg-6 text-center">
-					<div class="section-title">
-						<h1>Deals of the Week</h1>
-						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore
-							magna aliqua.</p>
-					</div>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-lg-9">
-					<div class="row">
-						<div class="col-lg-4 col-md-4 col-sm-6 mb-20">
-							<div class="single-related-product d-flex">
-								<div class="desc">
-									<a href="#" class="title">Black lace Heels</a>
-									<div class="price">
-										<h6>$189.00</h6>
-										<h6 class="l-through">$210.00</h6>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-lg-4 col-md-4 col-sm-6 mb-20">
-							<div class="single-related-product d-flex">
-								<div class="desc">
-									<a href="#" class="title">Black lace Heels</a>
-									<div class="price">
-										<h6>$189.00</h6>
-										<h6 class="l-through">$210.00</h6>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-lg-4 col-md-4 col-sm-6 mb-20">
-							<div class="single-related-product d-flex">
-								<div class="desc">
-									<a href="#" class="title">Black lace Heels</a>
-									<div class="price">
-										<h6>$189.00</h6>
-										<h6 class="l-through">$210.00</h6>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-lg-4 col-md-4 col-sm-6 mb-20">
-							<div class="single-related-product d-flex">
-								<div class="desc">
-									<a href="#" class="title">Black lace Heels</a>
-									<div class="price">
-										<h6>$189.00</h6>
-										<h6 class="l-through">$210.00</h6>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-lg-4 col-md-4 col-sm-6 mb-20">
-							<div class="single-related-product d-flex">
-								<div class="desc">
-									<a href="#" class="title">Black lace Heels</a>
-									<div class="price">
-										<h6>$189.00</h6>
-										<h6 class="l-through">$210.00</h6>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-lg-4 col-md-4 col-sm-6 mb-20">
-							<div class="single-related-product d-flex">
-								<div class="desc">
-									<a href="#" class="title">Black lace Heels</a>
-									<div class="price">
-										<h6>$189.00</h6>
-										<h6 class="l-through">$210.00</h6>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-lg-4 col-md-4 col-sm-6">
-							<div class="single-related-product d-flex">
-								<div class="desc">
-									<a href="#" class="title">Black lace Heels</a>
-									<div class="price">
-										<h6>$189.00</h6>
-										<h6 class="l-through">$210.00</h6>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-lg-4 col-md-4 col-sm-6">
-							<div class="single-related-product d-flex">
-								<div class="desc">
-									<a href="#" class="title">Black lace Heels</a>
-									<div class="price">
-										<h6>$189.00</h6>
-										<h6 class="l-through">$210.00</h6>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-lg-4 col-md-4 col-sm-6">
-							<div class="single-related-product d-flex">
-								<div class="desc">
-									<a href="#" class="title">Black lace Heels</a>
-									<div class="price">
-										<h6>$189.00</h6>
-										<h6 class="l-through">$210.00</h6>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-lg-3">
-					<div class="ctg-right">
-						<a href="#" target="_blank">
-						</a>
-					</div>
-				</div>
-			</div>
-		</div>
-	</section>
-	<!-- End related-product Area -->
+	<% include DealsOfTheWeek %>

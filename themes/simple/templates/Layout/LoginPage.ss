@@ -3,10 +3,10 @@
     <div class="container">
         <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
             <div class="col-first">
-                <h1>Login/Register</h1>
+                <h1>Login</h1>
                 <nav class="d-flex align-items-center">
                     <a href="{$BaseHref}">Home<span class="lnr lnr-arrow-right"></span></a>
-                    <a href="{$BaseHref}/login">Login/Register</a>
+                    <a href="{$BaseHref}/login">Login</a>
                 </nav>
             </div>
         </div>
@@ -29,7 +29,7 @@
                 </div>
             </div>
             <div class="col-lg-6">
-                <div class="login_form_inner">
+                <div class="login_form_inner" style="padding-top: 110px !important;">
                     <h3>Log in to enter</h3>
                     <form class="row login_form"  method="post" id="loginForm" >
                         <div class="col-md-12 form-group">

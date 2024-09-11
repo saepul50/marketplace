@@ -46,7 +46,6 @@ crossorigin="anonymous" referrerpolicy="no-referrer" /> --%>
 	<% require themedCSS('nouislider.min') %>
 	<% require themedCSS('ion.rangeSlider') %>
 	<% require themedCSS('ion.rangeSlider.skinFlat') %>
-
 	<% require themedCSS('main') %>
 	<% require themedCSS('linearicons') %>
 	<% require themedCSS('font-awesome.min') %>

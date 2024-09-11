@@ -1294,10 +1294,10 @@ h1, h2, h3, h4, h5, h6 {
   @media (max-width: 767px) {
     .organic-breadcrumb {
       background: none;
-      background: -webkit-linear-gradient(90deg, #ffba00 0%, #ff6c00 100%);
-      background: -moz-linear-gradient(90deg, #ffba00 0%, #ff6c00 100%);
-      background: -o-linear-gradient(90deg, #ffba00 0%, #ff6c00 100%);
-      background: linear-gradient(90deg, #ffba00 0%, #ff6c00 100%); } }
+      background: -webkit-linear-gradient(90deg, #ffba00 0%, #ff6c00 100%)  !important;
+      background: -moz-linear-gradient(90deg, #ffba00 0%, #ff6c00 100%)  !important;
+      background: -o-linear-gradient(90deg, #ffba00 0%, #ff6c00 100%)  !important;
+      background: linear-gradient(90deg, #ffba00 0%, #ff6c00 100%)  !important; } }
 
 #category .organic-breadcrumb {
   margin-bottom: 100px; }
@@ -4799,7 +4799,7 @@ label {
   box-shadow: 0px 10px 30px 0px rgba(0, 0, 0, 0.07);
   height: 100%;
   text-align: center;
-  padding-top: 115px; }
+  padding-top: 20px; }
   .login_form_inner h3 {
     color: #222222;
     text-transform: uppercase;
