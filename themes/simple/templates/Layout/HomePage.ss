@@ -71,7 +71,9 @@
 					<div class="single-features">
 						<div class="f-icon">
 						</div>
+						<% if $Member %>
 						<h6>Free Delivery</h6>
+						<% end_if %>
 						<p>Free Shipping on all order</p>
 					</div>
 				</div>

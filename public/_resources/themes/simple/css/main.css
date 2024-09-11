@@ -4723,9 +4723,23 @@ label {
 .login_box_area .login_box_img {
   margin-right: -30px;
   position: relative; }
+.login_box_area .login_box_imge {
+  margin-left: -30px;
+  position: relative; }
   .login_box_area .login_box_img img {
     width: 100%; }
+  .login_box_area .login_box_imge img {
+    width: 100%; }
   .login_box_area .login_box_img:before {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    content: "";
+    background: #000;
+    opacity: .5; }
+  .login_box_area .login_box_imge:before {
     position: absolute;
     left: 0;
     top: 0;
@@ -4741,7 +4755,18 @@ label {
     text-align: center;
     width: 100%;
     transform: translateY(-50%); }
+  .login_box_area .login_box_imge .hover {
+    position: absolute;
+    top: 50%;
+    left: 0px;
+    text-align: center;
+    width: 100%;
+    transform: translateY(-50%); }
     .login_box_area .login_box_img .hover h4 {
+      font-size: 24px;
+      color: #fff;
+      margin-bottom: 15px; }
+    .login_box_area .login_box_imge .hover h4 {
       font-size: 24px;
       color: #fff;
       margin-bottom: 15px; }
@@ -4749,11 +4774,25 @@ label {
       max-width: 380px;
       margin: 0px auto 25px;
       color: #fff; }
+    .login_box_area .login_box_imge .hover p {
+      max-width: 380px;
+      margin: 0px auto 25px;
+      color: #fff; }
+    .login_box_area .login_box_imge:before .hover p {
+      max-width: 380px;
+      margin: 0px auto 25px;
+      color: #fff; }
     .login_box_area .login_box_img .hover .primary-btn {
       border-radius: 0px;
       line-height: 38px;
       text-transform: uppercase; }
+    .login_box_area .login_box_imge .hover .primary-btn {
+      border-radius: 0px;
+      line-height: 38px;
+      text-transform: uppercase; }
       .login_box_area .login_box_img .hover .primary-btn:hover:before {
+        left: 260px; }
+      .login_box_area .login_box_imge .hover .primary-btn:hover:before {
         left: 260px; }
 
 .login_form_inner {

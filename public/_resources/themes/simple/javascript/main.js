@@ -562,52 +562,46 @@ $(document).ready(function(){
           ]
         });
       }
-
-      $("#loginForm").submit(function(){
-          $.post("http://localhost/marketplace/login/proseslogin",
-          {
-              Email: $("#email").val(),
-              Password:  $("#password").val()
-          } )
-          .done(function (data) {
-              var response = JSON.parse(data);
-              if (response.success) {
-                console.log(response);
-                  window.location.href="http://localhost/marketplace";
-              }
-          }).fail(function () {
-              alert("Error");
-          });
-          return false;
+      $("#loginn").on('click', function (event) {
+        event.preventDefault();
+        $.post("/marketplace/login/proseslogin",
+        {
+            Email: $("#emaillogin").val(),
+            Password:  $("#passwordlogin").val()
+        })
+        .done(function (data) {
+          var response = JSON.parse(data);
+          if (response.success) {
+            window.location.href = "/marketplace";
+          } else {
+            alert("gagal login")
+          }
+        })
+        .fail(function () {
+          alert("gaiso1")
+        });
       });
-      $("#regisform").submit(function (event) {
+      $("#register").on('click', function (event) {
         event.preventDefault();
     
-        $.post("{$BaseHref}/register/prosesregister", {
-            FirstName: $("#firstname").val(),
-            Email: $("#email").val(),
-            Username: $("#Surname").val(),
-            Password: $("#password").val(),
-            ConfirmPassword: $("#password2").val()
+        $.post("/marketplace/login/prosesregistrasi", {
+            FirstName: $("#username").val(),
+            SurName: $("#surname").val(),
+            Email: $("#emailregister").val(),
+            Password: $("#passwordregister").val(),
+            ConfirmPassword: $("#confirmpassword").val()
           })
           .done(function (data) {
             var response = JSON.parse(data);
             if (response.success) {
-              window.location.href = "{$BaseHref}/login";
+              window.location.href = "/marketplace/login";
             } else {
               alert("error");
             }
-    
+            
           }).fail(function () {
-            Swal.fire({
-              icon: "error",
-              title: "Error",
-              text: "There was an issue with your registration. Please try again later.",
-              confirmButtonColor: "#d33",
-            });
+            alert("errorfail");
           });
-    
-        return false;
       });
       $("#Comment").on('click', function(e){
         e.preventDefault();
@@ -626,16 +620,16 @@ $(document).ready(function(){
           error: function () {
             alert("fail");
           }
-      });
+        });
       });
     $('.navbar-nav .nav-item').click(function(){
       $('.navbar-nav .nav-item.active').removeClass('active');
       $(this).addClass('active');
-    })
-    $('.nav-link').on('click', function (e) {
+    });
+    $('.nav-linked').on('click', function (e) {
       e.preventDefault();
 
-      $('.nav-link').removeClass('active');
+      $('.nav-linked').removeClass('active');
       $('.tab-pane').removeClass('show active');
 
       $(this).addClass('active');

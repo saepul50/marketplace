@@ -5,6 +5,13 @@ use SilverStripe\Dev\Debug;
 use SilverStripe\Security\Security;
 
     class ProductDetailsController extends PageController{
+        protected function init() {
+            parent::init();
+            $member = Security::getCurrentUser();
+            if (!$member) {
+                return $this->redirect('login');
+            }
+        }
         private static $allowed_actions = [
             'getSubCategories',
             'view',
@@ -31,7 +38,7 @@ use SilverStripe\Security\Security;
                 $postComment = $request->postVar('Comments');
                 $member = Security::getCurrentUser();
                 $memberName = $member ? $member->FirstName : 'Guest';
-                Debug::show($memberName);
+                Debug::show($member);
                 die();
             }
         }
