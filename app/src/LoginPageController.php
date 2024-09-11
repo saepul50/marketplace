@@ -15,7 +15,6 @@ class  LoginPageController extends PageController{
     {
         $name = $request->postVar('Email');
         $pw = $request->postVar('Password');
-        
         $data = [
             'Email' => $name,
             'Password' => $pw
@@ -27,7 +26,7 @@ class  LoginPageController extends PageController{
         
         // Attempt to authenticate the user
         $member = $loginHandler->checkLogin($data, $request);
-
+        // Debug::show($member);
         if ($member) {
             // Successful login
             $loginHandler->performLogin($member, $data, $request);

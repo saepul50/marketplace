@@ -29,6 +29,7 @@ class RegisPageController extends PageController{
         $member->FirstName = $first_name;
         $member->Surname = $username;
         $member->Email = $email;
+        $member->changePassword($password_1);   
         $member->write();
         
         return json_encode([
