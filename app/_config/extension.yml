@@ -1,3 +1,6 @@
 Silverstripe\SiteConfig\SiteConfig:
   extensions:
     - App\Extension\CustomSiteConfig
+SilverStripe\Security\Member:
+  extensions:
+    - MyMemberExtension
