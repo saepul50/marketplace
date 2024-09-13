@@ -65,7 +65,7 @@
                             </td>
                             <td>
                                 <h5 id="totalPriceCheckout"></h5>
-                                <h5 class="totalPriceNFCheckout" id="totalPriceNFCheckout"></h5>
+                                <h5 class="totalPriceNFCheckout d-none" id="totalPriceNFCheckout"></h5>
                             </td>
                         </tr>
                     <% end_loop %>
@@ -98,7 +98,8 @@
                                 <h5>Subtotal</h5>
                             </td>
                             <td>
-                                <input id="subTotalPriceCheckout"></input>
+                                <h5 id="subTotalPriceCheckout"></h5>
+                                <h5 class="d-none" id="subTotalPriceNFCheckout"></h5>
                             </td>
                         </tr>
                         <%-- <tr class="shipping_area">

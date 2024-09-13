@@ -713,32 +713,6 @@ $(document).ready(function () {
         var isChecked = $(this).is(':checked');
         $(".productCheckbox").prop('checked', isChecked);
       });
-      document.querySelectorAll('.cartProduct').forEach(itemCart => {
-        const priceElement = itemCart.querySelector('#totalPriceNFCheckout');
-      
-        if (priceElement) {
-          let priceText = priceElement.textContent;
-          console.log(priceText);
-        }
-      });
-      function FinalPrice() {
-        let priceElements = [];
-    
-      
-
-        // let totalPrice = 0;
-        // priceElements.forEach(element => {
-        //     const price = parseInt(element);
-
-        //     if (!isNaN(price)) {
-        //         totalPrice += price;
-        //     }
-        // });
-
-        // return totalPrice;
-      }
-      FinalPrice();
-
       function formatNumber(number) {
         let parts = number.toString().split('.');
         let integerPart = parts[0];
@@ -763,7 +737,23 @@ $(document).ready(function () {
         const totalPrice = (priceNumber * quantity).toFixed(0);
         totalPriceElement.textContent = `Rp. ${formatNumber(totalPrice)}`;
         totalPriceElementNF.textContent = totalPrice;
-        // console.log(totalPriceElement.textContent)
+      }
+      
+      function updateSubtotal() {
+        let subtotal = 0;
+        document.querySelectorAll('.cartProduct').forEach(item => {
+          const totalPriceElementNF = item.querySelector('#totalPriceNFCheckout');
+          const totalPrice = parseInt(totalPriceElementNF.textContent);
+          // console.log(totalPrice)
+          if (!isNaN(totalPrice)) {
+            subtotal += totalPrice;
+          }
+        });
+      
+        const subtotalElement = document.querySelector('#subTotalPriceCheckout');
+        const subtotalElementNF = document.querySelector('#subTotalPriceNFCheckout');
+        subtotalElement.textContent = `Rp. ${formatNumber(subtotal.toString())}`;
+        subtotalElementNF.textContent = subtotal;
       }
       document.querySelectorAll('.cartProduct').forEach(item => {
         const decrementButton = item.querySelector('#decrementButton');
@@ -771,28 +761,32 @@ $(document).ready(function () {
         const quantityInput = item.querySelector('#quantityInput');
         const priceElement = item.querySelector('#itemPrice');
         const totalPriceElement = item.querySelector('#totalPriceCheckout');
-        const totalPriceElementNF = item.querySelector('#totalPriceNFCheckout');
+        const totalPriceElementNF = item.querySelector('#totalPriceNFCheckout');      
         decrementButton.addEventListener('click', function() {
           if (quantityInput.value > 1) {
             quantityInput.value = parseInt(quantityInput.value, 10) - 1;
             updateTotalPrice(quantityInput, priceElement, totalPriceElement, totalPriceElementNF);
+            updateSubtotal();
           }
-      });
+        });
 
-      incrementButton.addEventListener('click', function() {
-          quantityInput.value = parseInt(quantityInput.value, 10) + 1;
+        incrementButton.addEventListener('click', function() {
+            quantityInput.value = parseInt(quantityInput.value, 10) + 1;
+            updateTotalPrice(quantityInput, priceElement, totalPriceElement, totalPriceElementNF);
+            updateSubtotal();
+      });
+      
+        quantityInput.addEventListener('input', function() {
+          quantityInput.value = quantityInput.value.replace(/[^0-9]/g, '');
+          if (!quantityInput.value || quantityInput.value<1) {
+            quantityInput.value = 1;
+            // console.log(quantityInput.value)
+          }
           updateTotalPrice(quantityInput, priceElement, totalPriceElement, totalPriceElementNF);
-      });
-
-      quantityInput.addEventListener('input', function() {
-        quantityInput.value = quantityInput.value.replace(/[^0-9]/g, '');
-        if (!quantityInput.value || quantityInput.value<1) {
-          quantityInput.value = 1;
-          // console.log(quantityInput.value)
-        }
+          updateSubtotal();
+        });
         updateTotalPrice(quantityInput, priceElement, totalPriceElement, totalPriceElementNF);
       });
-        updateTotalPrice(quantityInput, priceElement, totalPriceElement, totalPriceElementNF);
-    });
+      updateSubtotal();
 });
 
