@@ -52,10 +52,17 @@ class CartPageController extends PageController{
                     ->filter('ProductVariantID', $ProductVariantID)
                     ->filter('MemberID', Security::getCurrentUser()->ID)
                     ->first();
+                $existingCartId2 = CartObject::get()
+                    ->filter('ProductCategoryId', $ProductCategoryId)
+                    ->filter('MemberID', Security::getCurrentUser()->ID)
+                    ->first();
                 
                 if ($existingCartItem) {
                     $existingCartItem->ProductQuantity += $ProductQuantity;
                     $existingCartItem->write();
+                } else if ($existingCartId2->$ProductCategoryId = 2) {
+                    $existingCartId2->ProductQuantity += $ProductQuantity;
+                    $existingCartId2->write();
                 } else {
                     $cartItem = CartObject::create();
                     $cartItem->ProductID = $ProductID;
