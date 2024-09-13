@@ -44,56 +44,61 @@ $(document).ready(function () {
   ============================*/
   $(".sticky-header").sticky();
 
-  /*=================================
-  Javascript for banner area carousel
-  ==================================*/
-  $(".active-banner-slider").owlCarousel({
-    items: 1,
-    autoplay: false,
-    autoplayTimeout: 5000,
-    loop: true,
-    nav: true,
-    navText: ["<img src='img/banner/prev.png'>", "<img src='img/banner/next.png'>"],
-    dots: false
-  });
+    /*=================================
+    Javascript for banner area carousel
+    ==================================*/
+    $(".active-banner-slider").owlCarousel({
+        items:1,
+        autoplay:true,
+        autoplayTimeout: 3000,
+        loop:true,
+        nav:true,
+        navText:[
+          "<img src='_resources/themes/simple/images/banner/prev.png'>",
+          "<img src='_resources/themes/simple/images/banner/next.png'>"
+        ],
+        dots:false
+    });
 
-  /*=================================
-  Javascript for product area carousel
-  ==================================*/
-  $(".active-product-area").owlCarousel({
-    items: 1,
-    autoplay: false,
-    autoplayTimeout: 5000,
-    loop: true,
-    nav: true,
-    navText: ["<img src='img/product/prev.png'>", "<img src='img/product/next.png'>"],
-    dots: false
-  });
+    /*=================================
+    Javascript for product area carousel
+    ==================================*/
+    $(".active-product-area").owlCarousel({
+        items:1,
+        autoplay:false,
+        autoplayTimeout: 5000,
+        loop:true,
+        nav:true,
+        navText:[
+          "<img src='_resources/themes/simple/images/banner/prev.png'>",
+          "<img src='_resources/themes/simple/images/banner/next.png'>"
+        ],
+        dots:false
+    });
 
-  /*=================================
-  Javascript for single product area carousel
-  ==================================*/
-  $(".s_Product_carousel").owlCarousel({
-    items: 1,
-    autoplay: false,
-    autoplayTimeout: 5000,
-    loop: true,
-    nav: false,
-    dots: true
-  });
-
-  /*=================================
-  Javascript for exclusive area carousel
-  ==================================*/
-  $(".active-exclusive-product-slider").owlCarousel({
-    items: 1,
-    autoplay: false,
-    autoplayTimeout: 5000,
-    loop: true,
-    nav: true,
-    navText: ["<img src='img/product/prev.png'>", "<img src='img/product/next.png'>"],
-    dots: false
-  });
+    /*=================================
+    Javascript for single product area carousel
+    ==================================*/
+    $(".s_Product_carousel").owlCarousel({
+      items:1,
+      autoplay:false,
+      autoplayTimeout: 5000,
+      loop:true,
+      nav:false,
+      dots:true
+    });
+    
+    /*=================================
+    Javascript for exclusive area carousel
+    ==================================*/
+    $(".active-exclusive-product-slider").owlCarousel({
+        items:1,
+        autoplay:false,
+        autoplayTimeout: 5000,
+        loop:true,
+        nav:true,
+        dots:false
+    });
 
   //--------- Accordion Icon Change ---------//
 
@@ -351,293 +356,443 @@ $(document).ready(function () {
   /*  Google map js
     /*----------------------------------------------------*/
 
-  if ($("#mapBox").length) {
-    var $lat = $("#mapBox").data("lat");
-    var $lon = $("#mapBox").data("lon");
-    var $zoom = $("#mapBox").data("zoom");
-    var $marker = $("#mapBox").data("marker");
-    var $info = $("#mapBox").data("info");
-    var $markerLat = $("#mapBox").data("mlat");
-    var $markerLon = $("#mapBox").data("mlon");
-    var map = new GMaps({
-      el: "#mapBox",
-      lat: $lat,
-      lng: $lon,
-      scrollwheel: false,
-      scaleControl: true,
-      streetViewControl: false,
-      panControl: true,
-      disableDoubleClickZoom: true,
-      mapTypeControl: false,
-      zoom: $zoom,
-      styles: [
-        {
-          featureType: "water",
-          elementType: "geometry.fill",
-          stylers: [
+    if ($("#mapBox").length) {
+        var $lat = $("#mapBox").data("lat");
+        var $lon = $("#mapBox").data("lon");
+        var $zoom = $("#mapBox").data("zoom");
+        var $marker = $("#mapBox").data("marker");
+        var $info = $("#mapBox").data("info");
+        var $markerLat = $("#mapBox").data("mlat");
+        var $markerLon = $("#mapBox").data("mlon");
+        var map = new GMaps({
+          el: "#mapBox",
+          lat: $lat,
+          lng: $lon,
+          scrollwheel: false,
+          scaleControl: true,
+          streetViewControl: false,
+          panControl: true,
+          disableDoubleClickZoom: true,
+          mapTypeControl: false,
+          zoom: $zoom,
+          styles: [
             {
-              color: "#dcdfe6"
-            }
-          ]
-        },
-        {
-          featureType: "transit",
-          stylers: [
-            {
-              color: "#808080"
+              featureType: "water",
+              elementType: "geometry.fill",
+              stylers: [
+                {
+                  color: "#dcdfe6"
+                }
+              ]
             },
             {
-              visibility: "off"
-            }
-          ]
-        },
-        {
-          featureType: "road.highway",
-          elementType: "geometry.stroke",
-          stylers: [
-            {
-              visibility: "on"
+              featureType: "transit",
+              stylers: [
+                {
+                  color: "#808080"
+                },
+                {
+                  visibility: "off"
+                }
+              ]
             },
             {
-              color: "#dcdfe6"
-            }
-          ]
-        },
-        {
-          featureType: "road.highway",
-          elementType: "geometry.fill",
-          stylers: [
-            {
-              color: "#ffffff"
-            }
-          ]
-        },
-        {
-          featureType: "road.local",
-          elementType: "geometry.fill",
-          stylers: [
-            {
-              visibility: "on"
+              featureType: "road.highway",
+              elementType: "geometry.stroke",
+              stylers: [
+                {
+                  visibility: "on"
+                },
+                {
+                  color: "#dcdfe6"
+                }
+              ]
             },
             {
-              color: "#ffffff"
+              featureType: "road.highway",
+              elementType: "geometry.fill",
+              stylers: [
+                {
+                  color: "#ffffff"
+                }
+              ]
             },
             {
-              weight: 1.8
-            }
-          ]
-        },
-        {
-          featureType: "road.local",
-          elementType: "geometry.stroke",
-          stylers: [
-            {
-              color: "#d7d7d7"
-            }
-          ]
-        },
-        {
-          featureType: "poi",
-          elementType: "geometry.fill",
-          stylers: [
-            {
-              visibility: "on"
+              featureType: "road.local",
+              elementType: "geometry.fill",
+              stylers: [
+                {
+                  visibility: "on"
+                },
+                {
+                  color: "#ffffff"
+                },
+                {
+                  weight: 1.8
+                }
+              ]
             },
             {
-              color: "#ebebeb"
-            }
-          ]
-        },
-        {
-          featureType: "administrative",
-          elementType: "geometry",
-          stylers: [
-            {
-              color: "#a7a7a7"
-            }
-          ]
-        },
-        {
-          featureType: "road.arterial",
-          elementType: "geometry.fill",
-          stylers: [
-            {
-              color: "#ffffff"
-            }
-          ]
-        },
-        {
-          featureType: "road.arterial",
-          elementType: "geometry.fill",
-          stylers: [
-            {
-              color: "#ffffff"
-            }
-          ]
-        },
-        {
-          featureType: "landscape",
-          elementType: "geometry.fill",
-          stylers: [
-            {
-              visibility: "on"
+              featureType: "road.local",
+              elementType: "geometry.stroke",
+              stylers: [
+                {
+                  color: "#d7d7d7"
+                }
+              ]
             },
             {
-              color: "#efefef"
-            }
-          ]
-        },
-        {
-          featureType: "road",
-          elementType: "labels.text.fill",
-          stylers: [
-            {
-              color: "#696969"
-            }
-          ]
-        },
-        {
-          featureType: "administrative",
-          elementType: "labels.text.fill",
-          stylers: [
-            {
-              visibility: "on"
+              featureType: "poi",
+              elementType: "geometry.fill",
+              stylers: [
+                {
+                  visibility: "on"
+                },
+                {
+                  color: "#ebebeb"
+                }
+              ]
             },
             {
-              color: "#737373"
-            }
-          ]
-        },
-        {
-          featureType: "poi",
-          elementType: "labels.icon",
-          stylers: [
+              featureType: "administrative",
+              elementType: "geometry",
+              stylers: [
+                {
+                  color: "#a7a7a7"
+                }
+              ]
+            },
             {
-              visibility: "off"
-            }
-          ]
-        },
-        {
-          featureType: "poi",
-          elementType: "labels",
-          stylers: [
+              featureType: "road.arterial",
+              elementType: "geometry.fill",
+              stylers: [
+                {
+                  color: "#ffffff"
+                }
+              ]
+            },
             {
-              visibility: "off"
-            }
-          ]
-        },
-        {
-          featureType: "road.arterial",
-          elementType: "geometry.stroke",
-          stylers: [
+              featureType: "road.arterial",
+              elementType: "geometry.fill",
+              stylers: [
+                {
+                  color: "#ffffff"
+                }
+              ]
+            },
             {
-              color: "#d6d6d6"
-            }
-          ]
-        },
-        {
-          featureType: "road",
-          elementType: "labels.icon",
-          stylers: [
+              featureType: "landscape",
+              elementType: "geometry.fill",
+              stylers: [
+                {
+                  visibility: "on"
+                },
+                {
+                  color: "#efefef"
+                }
+              ]
+            },
             {
-              visibility: "off"
-            }
-          ]
-        },
-        {},
-        {
-          featureType: "poi",
-          elementType: "geometry.fill",
-          stylers: [
+              featureType: "road",
+              elementType: "labels.text.fill",
+              stylers: [
+                {
+                  color: "#696969"
+                }
+              ]
+            },
             {
-              color: "#dadada"
+              featureType: "administrative",
+              elementType: "labels.text.fill",
+              stylers: [
+                {
+                  visibility: "on"
+                },
+                {
+                  color: "#737373"
+                }
+              ]
+            },
+            {
+              featureType: "poi",
+              elementType: "labels.icon",
+              stylers: [
+                {
+                  visibility: "off"
+                }
+              ]
+            },
+            {
+              featureType: "poi",
+              elementType: "labels",
+              stylers: [
+                {
+                  visibility: "off"
+                }
+              ]
+            },
+            {
+              featureType: "road.arterial",
+              elementType: "geometry.stroke",
+              stylers: [
+                {
+                  color: "#d6d6d6"
+                }
+              ]
+            },
+            {
+              featureType: "road",
+              elementType: "labels.icon",
+              stylers: [
+                {
+                  visibility: "off"
+                }
+              ]
+            },
+            {},
+            {
+              featureType: "poi",
+              elementType: "geometry.fill",
+              stylers: [
+                {
+                  color: "#dadada"
+                }
+              ]
             }
           ]
-        }
-      ]
-    });
-  }
-
-  $(document).ready(function () {
-    $("#contactForm").submit(function () {
-      $.post("{$BaseHref}/login/proseslogin",
+        });
+      }
+      $("#loginn").on('click', function (event) {
+        event.preventDefault();
+        $.post("/marketplace/login/proseslogin",
         {
-          Email: $("#email").val(),
-          Password: $("#password").val()
+            Email: $("#emaillogin").val(),
+            Password:  $("#passwordlogin").val()
         })
         .done(function (data) {
           var response = JSON.parse(data);
           if (response.success) {
-            console.log(response);
-            window.location.href = "{$BaseHref}";
+            alert("sukses");
+            window.location.href = "";
+          } else {
+            alert("gagal login")
           }
-        }).fail(function () {
-          alert("Error");
-        });
-      return false;
-    });
-  });
-
-
-
- 
-});
-
-$(document).ready(function () {
-  $("#regisform").submit(function (event) {
-    event.preventDefault(); // Prevents the form from doing a default refresh
-
-    $.post("{$BaseHref}/regis/prosesregister", {
-        FirstName: $("#firstname").val(),
-        Email: $("#email").val(),
-        Username: $("#Surname").val(),
-        Password: $("#password").val(),
-        ConfirmPassword: $("#password2").val()
-      })
-      .done(function (data) {
-        var response = JSON.parse(data);
-        if (response.success) {
-          Swal.fire({
-            title: "SUCCESS",
-            text: "Click to go log in page",
-            icon: "success",
-            confirmButtonColor: "#3085d6",
-            confirmButtonText: "GO"
-          }).then((result) => {
-            if (result.isConfirmed) {
-              window.location.href = "{$BaseHref}/login"; // Replace with your actual redirect URL
-            }
-          });
-        } else {
-          Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text: response.message,
-            showConfirmButton: false,
-            timer: 1500
-          });
-        }
-
-      }).fail(function () {
-        Swal.fire({
-          icon: "error",
-          title: "Error",
-          text: "There was an issue with your registration. Please try again later.",
-          confirmButtonColor: "#d33",
+        })
+        .fail(function () {
+          alert("gaiso1")
         });
       });
+      $("#register").on('click', function (event) {
+        event.preventDefault();
+    
+        $.post("/marketplace/login/prosesregistrasi", {
+            FirstName: $("#username").val(),
+            SurName: $("#surname").val(),
+            Email: $("#emailregister").val(),
+            Password: $("#passwordregister").val(),
+            ConfirmPassword: $("#confirmpassword").val()
+          })
+          .done(function (data) {
+            var response = JSON.parse(data);
+            if (response.success) {
+              window.location.href = "/marketplace/login";
+            } else {
+              alert("error");
+            }
+            
+          }).fail(function () {
+            alert("errorfail");
+          });
+      });
+      $("#addCart").on('click', function(e){
+        e.preventDefault();
+        var formData = new FormData();
+        var ProductItem = [];
+        var activeSubvariant = $('.variantItem.active');
+        $.post("/marketplace/cart/addcart", {
+          ProductID: $("#productId").text(),
+          ProductTitle: $("#productTitle").text(),
+          ProductImage: $("#productImage").attr("src"),
+          ProductCategoryID: $("#productCategoriID").text(),
+          ProductVariant: activeSubvariant.find('#variantName').text(),
+          ProductVariantID: activeSubvariant.data('id'),
+          ProductPrice: $(".ppprice").text(),
+          ProductQuantity: $("#sst").val(),
+        })
+        .done(function (data) {
+          var response = JSON.parse(data);
+          console.log(response)
+          if (response.success) {
+            alert("sukses");
+          }else{
+            alert("gagal");
+          }
+        })
+        .fail(function() {
+          alert("gaiso");
+        });
+      });
+      $("#proceedCheckout").on('click', function(e){
+        e.preventDefault();
+          var selectedProducts = [];
+          $(".productCheckbox:checked").each(function() {
+              var productData = {
+                  CartID: $(this).data("id"),
+                  ProductID: $(this).closest('.cartProduct').find('#productCheckoutID').text(),
+                  ProductTitle: $(this).closest('.cartProduct').find('#productCheckoutTitle').text(),
+                  ProductImage: $(this).closest('.cartProduct').find('#productCheckoutImage').attr("src"),
+                  VariantName: $(this).closest('.cartProduct').find('#productCheckoutVariant').text(),
+                  VariantID: $(this).closest('.cartProduct').find('#productCheckoutVariant').data('id'),
+                  Price: $(this).closest('.cartProduct').find('#itemPrice').text(),
+                  TotalPrice: $(this).closest('.cartProduct').find('#totalPriceCheckout').text(),
+                  TotalPriceNF: $(this).closest('.cartProduct').find('#totalPriceNFCheckout').text(),
+                  Quantity: $(this).closest('.cartProduct').find('#quantityInput').val()
+              };
+              selectedProducts.push(productData);
+              console.log(selectedProducts)
+          });
+      });
+      $("#Comment").on('click', function(e){
+        e.preventDefault();
+        var formData = new FormData();
+        var comment = $("#commentMessage").val();
+        formData.append('Comments', comment);
+        $.ajax({
+          url: "productdetails/comment",
+          type: "POST",
+          data: formData,
+          contentType: false,
+          processData: false,
+          success: function (results) {
+              alert("success");
+            },
+          error: function () {
+            alert("fail");
+          }
+        });
+      });
+      $('.variantItem').on('click', function(e){
+        e.preventDefault();
+        $('.variantItem').removeClass('active');
+        $(this).addClass('active')
+        var variantPrice = $(this).data('price');
+        var variantDiscountedPrice = $(this).data('discount');
+        var variantStock = $(this).data('stock');
+        if(variantStock<1){
+          alert("stock kosong");
+          $('.variantItem').removeClass('active');
+          return;
+        }
+        $('.ppprice').text(variantDiscountedPrice);
+        $('.nnprice').text(variantPrice);
+      });
+      $('.navbar-nav .nav-item').click(function(){
+        $('.navbar-nav .nav-item.active').removeClass('active');
+        $(this).addClass('active');
+      });
+      $('.payment_box .list li').click(function(){
+        $('.payment_box .list li').removeClass('active');
+        $(this).addClass('active');
+      });
+      $('.nav-linked').on('click', function (e) {
+        e.preventDefault();
 
-    return false; // Ensure no form submission (and thus no refresh)
-  });
+        $('.nav-linked').removeClass('active');
+        $('.tab-pane').removeClass('show active');
 
-  
+        $(this).addClass('active');
 
+        var targetId = $(this).attr('href');
+        $('.tab-pane').each(function() {
+            if ($(this).attr('id') === targetId) {
+                $(this).addClass('show active');
+            }
+        });
+      });
+      $("#masterCheckbox, #bottomMasterCheckbox").on('change', function() {
+        var isChecked = $(this).is(':checked');
+        $(".productCheckbox").prop('checked', isChecked);
+      });
+      document.querySelectorAll('.cartProduct').forEach(itemCart => {
+        const priceElement = itemCart.querySelector('#totalPriceNFCheckout');
+      
+        if (priceElement) {
+          let priceText = priceElement.textContent;
+          console.log(priceText);
+        }
+      });
+      function FinalPrice() {
+        let priceElements = [];
+    
+      
 
+        // let totalPrice = 0;
+        // priceElements.forEach(element => {
+        //     const price = parseInt(element);
 
+        //     if (!isNaN(price)) {
+        //         totalPrice += price;
+        //     }
+        // });
+
+        // return totalPrice;
+      }
+      FinalPrice();
+
+      function formatNumber(number) {
+        let parts = number.toString().split('.');
+        let integerPart = parts[0];
+        let decimalPart = parts.length > 1 ? '.' + parts[1] : '';
+        
+        let formattedIntegerPart = '';
+        while (integerPart.length > 0) {
+            formattedIntegerPart = '.' + integerPart.slice(-3) + formattedIntegerPart;
+            integerPart = integerPart.slice(0, -3);
+        }
+        
+        return formattedIntegerPart.slice(1) + decimalPart;
+      }
+      function updateTotalPrice(quantityInput, priceElement, totalPriceElement, totalPriceElementNF) {
+        let priceText = priceElement.textContent.replace('Rp. ', '').replace('.', '').replace('.', '');
+        let priceNumber = parseInt(priceText);
+        const quantity = parseInt(quantityInput.value, 10);
+
+        if (isNaN(priceNumber)) priceNumber = 0;
+        if (isNaN(quantity) || quantity < 1) quantity = 1;
+
+        const totalPrice = (priceNumber * quantity).toFixed(0);
+        totalPriceElement.textContent = `Rp. ${formatNumber(totalPrice)}`;
+        totalPriceElementNF.textContent = totalPrice;
+        // console.log(totalPriceElement.textContent)
+      }
+      document.querySelectorAll('.cartProduct').forEach(item => {
+        const decrementButton = item.querySelector('#decrementButton');
+        const incrementButton = item.querySelector('#incrementButton');
+        const quantityInput = item.querySelector('#quantityInput');
+        const priceElement = item.querySelector('#itemPrice');
+        const totalPriceElement = item.querySelector('#totalPriceCheckout');
+        const totalPriceElementNF = item.querySelector('#totalPriceNFCheckout');
+        decrementButton.addEventListener('click', function() {
+          if (quantityInput.value > 1) {
+            quantityInput.value = parseInt(quantityInput.value, 10) - 1;
+            updateTotalPrice(quantityInput, priceElement, totalPriceElement, totalPriceElementNF);
+          }
+      });
+
+      incrementButton.addEventListener('click', function() {
+          quantityInput.value = parseInt(quantityInput.value, 10) + 1;
+          updateTotalPrice(quantityInput, priceElement, totalPriceElement, totalPriceElementNF);
+      });
+
+      quantityInput.addEventListener('input', function() {
+        quantityInput.value = quantityInput.value.replace(/[^0-9]/g, '');
+        if (!quantityInput.value || quantityInput.value<1) {
+          quantityInput.value = 1;
+          // console.log(quantityInput.value)
+        }
+        updateTotalPrice(quantityInput, priceElement, totalPriceElement, totalPriceElementNF);
+      });
+        updateTotalPrice(quantityInput, priceElement, totalPriceElement, totalPriceElementNF);
+    });
 });
-
-
-
-
-
 

@@ -49,7 +49,7 @@ use SilverStripe\Assets\Image;
                 $discountedPrice = $originalPrice * (1 - $promoPrice / 100);
                 return 'Rp. ' . number_format($discountedPrice, 0, '', '.');
             }
-            return;
+            return 'Rp. ' . number_format($this->Price, 0, '', '.');
         }
         public function getCMSFields() {
             return new FieldList(

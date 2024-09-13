@@ -1,5 +1,4 @@
 <!-- start footer Area -->
-<% require themedCSS('main') %>
 	<footer class="footer-area section_gap">
 		<div class="container">
 			<div class="row">
