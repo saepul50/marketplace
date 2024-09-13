@@ -3,8 +3,12 @@
 use SilverStripe\Control\Director;
 use SilverStripe\Control\HTTPRequest;
 use SilverStripe\Dev\Debug;
+use SilverStripe\ORM\ArrayList;
+use SilverStripe\ORM\DB;
+use SilverStripe\ORM\PaginatedList;
 use SilverStripe\Security\Member;
 use SilverStripe\Security\Security;
+use SilverStripe\View\ArrayData;
 
 
 class BlogPageController extends PageController
@@ -13,39 +17,90 @@ class BlogPageController extends PageController
         'BlogDetail',
         'handelComment',
         'handelreply',
+        'CategoryList'
     ];
-    public function index()
+
+    public function CategoryList()
+    {
+        return BlogCategory::getCategoriesWithCounts();
+    }
+
+    public function index(HTTPRequest $request)
     {
         $categori = BlogCategory::get();
         $contents = BlogAdd::get();
+        $latestpost = BlogAdd::get()->sort('Created', 'DESC');
+        $activeFilters = ArrayList::create();
 
+
+
+        // Debug::show($comments);
         foreach ($contents as $content) {
             $categories = $content->BlogCategories();
-            // Debug::show($categories);
 
         }
-        // $product = BlogAdd::get()->byID($productID);
+        foreach ($contents as $content) {
+
+            $comments = BlogComment::get()->filter('BlogAddID', $content->ID);
+            $countcomment = $comments->count();
+            $countreply = CommentReply::get()->filter('BlogAddID', $content->ID)->count();
+            $counttotal = [];
+            $content->CountComment = $countreply + $countcomment;
+            // Debug::show($content);
+            $content->write();
+        }
+
+
+        if ($search = $request->postVar('search')) {
+            $activeFilters->push(ArrayData::create([
+                'Label' => "'$search'"
+            ]));
+            $contents = $contents->filter([
+                'Title:PartialMatch' => $search
+            ]);
+        }
+        if (!$contents->exists()) {
+            $contents = BlogAdd::get();
+        }
+
+        // Debug::show($contents);
+        $paginated = PaginatedList::create(
+            $contents,
+            $this->getRequest()
+        )->setPageLength(4)->setPaginationGetVar('s');
+
+
+
         return [
+            BlogCategory::getCategoriesWithCounts(),
+            'Result' => $paginated,
+            'Latestpost' => $latestpost,
             'Categori' => $categori,
-            'Content' => $contents
+            'Content' => $contents,
+            'Count' => $counttotal,
         ];
     }
 
     public function BlogDetail(HTTPRequest $request)
     {
         $member = Security::getCurrentUser();
+        // Debug::show($member);
         if (!$member) {
             return $this->redirect(Director::absoluteBaseURL() . '/login');
         } else {
             $k = $request->param('ID');
             $categori = BlogCategory::get();
             $contents = BlogAdd::get()->byID($k);
-            $comment = BlogComment::get()->filter('BlogAddID', $k);
-            $countcomment = $comment->count();
-            $member = Member::get()->filter('ID', $comment->ID);
-
-
-
+            $comments = BlogComment::get()->filter('BlogAddID', $k);
+            $countcomment = $comments->count();
+            $countreply = CommentReply::get()->filter('BlogAddID', $k)->count();
+            $counttotal = [];
+            $counttotal = $countreply + $countcomment;
+            $member = Member::get()->filter('ID', $comments->ID);
+            $latestpost = BlogAdd::get()->sort('Created', 'DESC');
+            foreach ($comments as $comment) {
+                $comment->CommentReply = CommentReply::get()->filter('BlogCommentID', $comment->ID);
+            }
             $previousblog = BlogAdd::get()->filter('ID:LessThan', $k)->sort('ID DESC')->first();
             $nextblog = BlogAdd::get()->filter('ID:GreaterThan', $k)->sort('ID ASC')->first();
 
@@ -53,15 +108,17 @@ class BlogPageController extends PageController
                 $categories = $contents->BlogCategories();
             }
 
-            Debug::show($comment->ID);
+            // Debug::show($counttotal);
             return $this->customise([
+                BlogCategory::getCategoriesWithCounts(),
+                'Latestpost' => $latestpost,
                 'Member' => $member,
-                'Comment' => $comment,
-                'CommentID' => $comment->ID,
+                'Comment' => $comments,
+                'CommentID' => $comments->ID,
                 'Categori' => $categori,
                 'Blog' => $contents,
                 'ID' => $k,
-                'Count' => $countcomment,
+                'Count' => $counttotal,
                 'NextBlog' => $nextblog ? $nextblog->Link() : null,
                 'PrevBlog' => $previousblog ? $previousblog->Link() : null,
                 'NextTitle' => $nextblog ? $nextblog->Title : '',
@@ -92,17 +149,22 @@ class BlogPageController extends PageController
             ]);
         }
     }
-    
-    public function handelreply(HTTPRequest $request) {
+
+    public function handelreply(HTTPRequest $request)
+    {
         $member = Security::getCurrentUser();
         if (!$member) {
             return $this->redirect(Director::absoluteBaseURL() . '/login');
         } else {
             $data = $request->postVars();
-            Debug::show($data);
-            $comment = BlogComment::create();
+            $title = $request->postVar('Send');
+            // $member = Member::get()->filter('Surname', $title);
+            // Debug::show($data);
+            $comment = CommentReply::create();
             $comment->MemberID = $member->ID;
             $comment->BlogAddID = $data['ID'];
+            $comment->SendTo = $title;
+            $comment->BlogCommentID = $data['CommentID'];
             $comment->Name = $data['Name'];
             $comment->Comment = $data['Message'];
             $comment->write();

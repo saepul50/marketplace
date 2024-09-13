@@ -40,7 +40,7 @@
                                 <li><a href="#">Mark wiens<i class="lnr lnr-user"></i></a></li>
                                 <li><a href="#">12 Dec, 2018<i class="lnr lnr-calendar-full"></i></a></li>
                                 <li><a href="#">1.2M Views<i class="lnr lnr-eye"></i></a></li>
-                                <li><a href="#">$Count Comments<i class="lnr lnr-bubble"></i></a></li>
+                                <li><a href="#">$Up.Count Comments<i class="lnr lnr-bubble"></i></a></li>
                             </ul>
                             <ul class="social-links">
                                 <li><a href="#"><i class="fa fa-facebook"></i></a></li>
@@ -117,7 +117,7 @@
                                     <a href="{$BaseHref}/blog/$NextBlog"><span class="lnr text-white lnr-arrow-right"></span></a>
                                 </div>
                                 <div class="thumb">
-                                    <a href="{$BaseHref}/blog/$NextBlog"><img class="img-fluid" src="$resourceURL('themes/simple/images/blog/next.jpg')" alt=""></a>
+                                    <a href="{$BaseHref}/blog/$NextBlog"><img class="" src="$resourceURL('themes/simple/images/blog/next.jpg')" alt=""></a>
                                 </div>
                             </div>
                         <% else %>
@@ -137,12 +137,12 @@
                                             <% if $ProfileImage.exists %>
                                                 <img class="image" id="image" src="$ProfileImage.getURL()" alt="$Name's profile image">
                                             <% else %>
-                                                <img class="image" id="image" src="$resourceURL('themes/simple/images/blog/next.jpg')" alt="Default image">
+                                                <img class="image" id="image" src="$SiteConfig.Unknown.getURL()" alt="Default image">
                                             <% end_if %>
                                         <% end_with %>
                                     </div>
                                     <div class="desc">
-                                        <h5><a href="#">$Name</a></h5>
+                                        <h5><a href="#">$Member.FirstName</a></h5>
                                         <p class="date">$Created</p>
                                         <p class="comment">
                                             $Comment
@@ -150,11 +150,42 @@
                                     </div>
                                 </div>
                                 <div class="reply-btn">
-                                <button  class="btn-reply text-uppercase" data-toggle="modal" data-target="#exampleModal" data-commentid="$ID" data-name="$Name">Reply</button>
+                                <button  class="btn-reply text-uppercase" data-toggle="modal" data-target="#exampleModal" data-commentid="$ID" data-name="$Member.FirstName">Reply</button>
                                 </div>
                             </div>
                         </div>
+                        <% if $CommentReply.exists %>
+                            <% loop $CommentReply %>
+                                <div class="comment-list left-padding">
+                                    <div class="single-comment justify-content-between d-flex">
+                                        <div class="user justify-content-between d-flex">
+                                            <div class="thumb">
+                                                <% with $Member %>
+                                                    <% if $ProfileImage.exists %>
+                                                        <img class="image" id="image" src="$ProfileImage.getURL()" alt="$Name's profile image">
+                                                    <% else %>
+                                                        <img class="image" id="image" src="$resourceURL('themes/simple/images/blog/unknown.png')" alt="Default image">
+                                                    <% end_if %>
+                                                <% end_with %>
+                                            </div>
+                                            <div class="desc">
+                                                <h5><a href="#" id="takename">$Member.FirstName</a></h5>
+                                                <p class="date">$Created </p>
+                                                <p class="comment">
+                                                <b id="sendto">$SendTo</b> $Comment
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="reply-btn">
+                                            <a href="" class="btn-reply text-uppercase" data-toggle="modal" data-target="#exampleModal" data-commentid="$Up.ID" data-takename='#takename' data-name="$Member.FirstName">reply</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            <% end_loop %>
+                        <% end_if %>
+                    
                     <% end_loop %>
+                    
                 </div>
                 <div class="comment-form">
                     <h4>Leave a Comment</h4>
@@ -192,13 +223,14 @@
       <div class="modal-body">
           <div class="form-group">
             <label for="recipient-name" class="col-form-label">Name:</label>
-            <input type="text" class="form-control" id="name-reply">
-            <input type="hidden" id="BlogAddID-reply" name="BlogAddID-reply" value="$ID">
-            <input type="hidden" id="commentID-reply" name="commentID-reply" value="">
+            <input type="text" class="form-control" id="name-reply"  required>
+            <input type="hidden" id="commentID-reply" name="commentID-reply" value="" >
+            <input type="hidden" id="nama-reply" name="nama-reply" value="" >
+            <input type="hidden" id="BlogAddID" name="BlogAddID" value="$ID">
           </div>
           <div class="form-group">
             <label for="message-text" class="col-form-label">Message:</label>
-            <textarea class="form-control" id="message-reply"></textarea>
+            <textarea class="form-control" id="message-reply" required></textarea>
           </div>
         </div>
         <div class="modal-footer">
@@ -262,8 +294,10 @@
 
     $.post("{$BaseHref}/blog/handelreply", {
         Name: $("#name-reply").val(),
+        Send: $("#nama-reply").val(),
         Message: $("#message-reply").val(),
-        ID: $("#BlogAddID-reply").val(),
+        CommentID: $("#commentID-reply").val(),
+        ID: $("#BlogAddID").val(),
       })
       .done(function (data) {
         var response = JSON.parse(data);
@@ -300,12 +334,20 @@
     return false; // Ensure no form submission (and thus no refresh)
   });
  
- $( '.btn-reply').on('click', function (){
+  $( '.btn-reply').on('click', function (){
     var CommentID = $(this).data('commentid');
+    var ReplyID = $(this).data('replyid');
     var CommentName = $(this).data('name');
-    console.log(CommentID)
-    console.log(CommentName)
- })
+    $('#commentID-reply').val(CommentID);
+})
+
+    $('#exampleModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget)
+        var recipient = button.data('name')
+        $('#nama-reply').val(recipient);
+        var modal = $(this)
+        modal.find('.modal-title').text('New message to ' + recipient)
+    })
 })
 </script>
 

@@ -6,6 +6,7 @@
 				 <% with $SiteConfig %>
 				 <a class="navbar-brand logo_h" href="{$BaseHref}"><img src="$Image.getURL()" alt=""></a>
 				 <% end_with %>
+				<a href="$LogoutURL">ppp</a>
 				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
 				 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 					<span class="icon-bar"></span>

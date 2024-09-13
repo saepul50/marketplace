@@ -1,4 +1,4 @@
-   <!-- Start Banner Area -->
+<!-- Start Banner Area -->
    <section class="banner-area organic-breadcrumb" style ="background: url($SiteConfig.Background.getURL()) center no-repeat;background-size: cover; position: relative ">
     <div class="container">
         <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
@@ -18,10 +18,10 @@
 <section class="blog_categorie_area">
     <div class="container">
         <div class="row">
-            <div class="col-lg-4">
+            <div class="col-lg-4 mt-2">
                 <div class="categories_post">
                     <img src="$resourceURL('themes/simple/images/blog/cat-post/cat-post-3.jpg')" alt="post">
-                    <div class="categories_details">
+                    <div class="categories_details kecil">
                         <div class="categories_text">
                             <a href="blog-details.html">
                                 <h5>Social Life</h5>
@@ -32,7 +32,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-4">
+            <div class="col-lg-4 mt-2">
                 <div class="categories_post">
                     <img src="$resourceURL('themes/simple/images/blog/cat-post/cat-post-2.jpg')" alt="post">
                     <div class="categories_details">
@@ -46,7 +46,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-4">
+            <div class="col-lg-4 mt-2">
                 <div class="categories_post">
                     <img src="$resourceURL('themes/simple/images/blog/cat-post/cat-post-1.jpg')" alt="post">
                     <div class="categories_details">
@@ -66,25 +66,25 @@
 <!--================Blog Categorie Area =================-->
 
 <!--================Blog Area =================-->
-<section class="blog_area">
+<section class="blog_area" style="padding-bottom: 5rem;">
     <div class="container">
         <div class="row">
-            <div class="col-lg-8">
-                <div class="blog_left_sidebar">
-                    <% loop $Content %>
-                        <article class="row blog_item">
+            <div class="col-lg-8 " style="padding-bottom: 5rem;">
+                <div class="blog_left_sidebar" style="height:100%; position:relative;">
+                    <% loop $Result %>
+                        <article class="row blog_item " style="position:relative;">
                             <div class="col-md-3">
-                                <div class="blog_info text-right">
+                                <div class="blog_info text-right left-sm fw-bold">
                                     <div class="post_tag">
                                         <% loop $BlogCategories %>
                                         <a href="#">$Title </a>
                                         <% end_loop %>
                                     </div>
-                                    <ul class="blog_meta list">
+                                    <ul class="blog_meta list ">
                                         <li><a href="#">Mark wiens<i class="lnr lnr-user"></i></a></li>
                                         <li><a href="#">$LastEdited<i class="lnr lnr-calendar-full"></i></a></li>
                                         <li><a href="#">1.2M Views<i class="lnr lnr-eye"></i></a></li>
-                                        <li><a href="#">$Count Comments<i class="lnr lnr-bubble"></i></a></li>
+                                        <li><a href="#">$CountComment Comments<i class="lnr lnr-bubble"></i></a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -102,29 +102,7 @@
                             </div>
                         </article>
                     <% end_loop %>
-                    <nav class="blog-pagination justify-content-center d-flex">
-                        <ul class="pagination">
-                            <li class="page-item">
-                                <a href="#" class="page-link" aria-label="Previous">
-                                    <span aria-hidden="true">
-                                        <span class="lnr lnr-chevron-left"></span>
-                                    </span>
-                                </a>
-                            </li>
-                            <li class="page-item"><a href="#" class="page-link">01</a></li>
-                            <li class="page-item active"><a href="#" class="page-link">02</a></li>
-                            <li class="page-item"><a href="#" class="page-link">03</a></li>
-                            <li class="page-item"><a href="#" class="page-link">04</a></li>
-                            <li class="page-item"><a href="#" class="page-link">09</a></li>
-                            <li class="page-item">
-                                <a href="#" class="page-link" aria-label="Next">
-                                    <span aria-hidden="true">
-                                        <span class="lnr lnr-chevron-right"></span>
-                                    </span>
-                                </a>
-                            </li>
-                        </ul>
-                    </nav>
+                    <% include Pagination %>
                 </div>
             </div>
            <% include BlogSideBar %>
