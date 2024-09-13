@@ -29,15 +29,19 @@
 						<% end_loop %>
 					</div>
 				</div>
+				<% with $Product.ProductImages.First %>
+					<img id="productImage" src="$URL" class="img-fluid" style="display: none;">
+				<% end_with %>
 				<div class="col-lg-5 offset-lg-1">
-					<div class="s_product_text">
-						<h3>$Product.Title</h3>
+					<div class="s_product_text mt-0">
+						<h3 id="productTitle">$Product.Title</h3>
 						<p class="d-none" id="productId">$Product.ID</p>
+						<p class="d-none" id="productCategoriID">$Product.ProductCategory.ID</p>
 						<% if $Product.Promotion %>
-							<h2 class="mb-1">$Product.rangePriceDiscounted</h2>
-							<h6 class="l-through my-1">$Product.rangePrice</h6>
+							<h2 class="mb-1 ppprice">$Product.rangePriceDiscounted</h2>
+							<h6 class="l-through my-1 nnprice">$Product.rangePrice</h6>
 						<% else %>
-							<h2>$Product.rangePrice</h2>					
+							<h2 class="ppprice" id="productPrice">$Product.rangePrice</h2>					
 						<% end_if %>
 						<ul class="list">
 							<% if $Product.ProductCategory && $Product.totalStock > 0 %>
@@ -48,8 +52,8 @@
 								<li><a href="#"><span>Availibility</span> : Out Of Stock</a></li>
 							<% end_if %>
 						</ul>
-						<p>$Product.Features</p>
-						<div class="product_count">
+						<p class="m-0 p-0 py-3">$Product.Features</p>
+						<div class="product_count mb-3">
 							<label for="qty">Quantity:</label>
 							<input type="text" name="qty" id="sst" maxlength="12" value="1" title="Quantity:" class="input-text qty" 
 								onkeypress="return event.charCode >= 48 && event.charCode <= 57" 
@@ -65,8 +69,17 @@
 								<i class="lnr lnr-chevron-down"></i>
 							</button>
 						</div>
+						<% if $Product.ProductCategory.ID = 1 %>
+							<div class="cardVariant pb-2 d-flex align-items-center">
+							<% loop $Product.ProductVariants.sort(VariantName) %>
+								<div class="variantItem m-0 p-0 mr-2 d-flex align-items-center" style="border: 2px solid #ccc;" data-id="$ID" data-stock="$Stock" data-price="$NormalPrice" data-discount="$DiscountedPrice">
+									<h6 class="d-flex align-items-center p-1 m-0" id="variantName" style="color:#000">$VariantName</h6>
+								</div>
+							<% end_loop %>
+							</div>
+						<% end_if %>
 						<div class="card_area d-flex align-items-center">
-							<button class="primary-btn" id="addCart">Add to Cart</button>
+							<button class="primary-btn" id="addCart" style="border:none;">Add to Cart</button>
 							<a class="icon_btn" href="#"><i class="lnr lnr lnr-diamond"></i></a>
 							<a class="icon_btn" href="#"><i class="lnr lnr lnr-heart"></i></a>
 						</div>

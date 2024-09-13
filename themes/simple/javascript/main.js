@@ -607,29 +607,50 @@ $(document).ready(function () {
       $("#addCart").on('click', function(e){
         e.preventDefault();
         var formData = new FormData();
-        for (const item of $(".s_product_inner")){
-          var dataProduct = [
-            ProductID = $(this).find("#productId").text(),
-            ProductTitle = $(this).find("#productTitle").text(),
-            ProductImage = $(this).find("#productImage").attr("src"),
-            ProductPrice = $(this).find("#productPrice").text(),
-            ProductQuantity = $(this).find("#sst").val(),
-          ];
-        }
-        formData.append('Comments', comment);
-        $.ajax({
-          url: "productdetails/comment",
-          type: "POST",
-          data: formData,
-          contentType: false,
-          processData: false,
-          success: function (results) {
-              alert("success");
-            },
-          error: function () {
-            alert("fail");
+        var ProductItem = [];
+        var activeSubvariant = $('.variantItem.active');
+        $.post("/marketplace/cart/addcart", {
+          ProductID: $("#productId").text(),
+          ProductTitle: $("#productTitle").text(),
+          ProductImage: $("#productImage").attr("src"),
+          ProductCategoryID: $("#productCategoriID").text(),
+          ProductVariant: activeSubvariant.find('#variantName').text(),
+          ProductVariantID: activeSubvariant.data('id'),
+          ProductPrice: $(".ppprice").text(),
+          ProductQuantity: $("#sst").val(),
+        })
+        .done(function (data) {
+          var response = JSON.parse(data);
+          console.log(response)
+          if (response.success) {
+            alert("sukses");
+          }else{
+            alert("gagal");
           }
+        })
+        .fail(function() {
+          alert("gaiso");
         });
+      });
+      $("#proceedCheckout").on('click', function(e){
+        e.preventDefault();
+          var selectedProducts = [];
+          $(".productCheckbox:checked").each(function() {
+              var productData = {
+                  CartID: $(this).data("id"),
+                  ProductID: $(this).closest('.cartProduct').find('#productCheckoutID').text(),
+                  ProductTitle: $(this).closest('.cartProduct').find('#productCheckoutTitle').text(),
+                  ProductImage: $(this).closest('.cartProduct').find('#productCheckoutImage').attr("src"),
+                  VariantName: $(this).closest('.cartProduct').find('#productCheckoutVariant').text(),
+                  VariantID: $(this).closest('.cartProduct').find('#productCheckoutVariant').data('id'),
+                  Price: $(this).closest('.cartProduct').find('#itemPrice').text(),
+                  TotalPrice: $(this).closest('.cartProduct').find('#totalPriceCheckout').text(),
+                  TotalPriceNF: $(this).closest('.cartProduct').find('#totalPriceNFCheckout').text(),
+                  Quantity: $(this).closest('.cartProduct').find('#quantityInput').val()
+              };
+              selectedProducts.push(productData);
+              console.log(selectedProducts)
+          });
       });
       $("#Comment").on('click', function(e){
         e.preventDefault();
@@ -650,24 +671,128 @@ $(document).ready(function () {
           }
         });
       });
-    $('.navbar-nav .nav-item').click(function(){
-      $('.navbar-nav .nav-item.active').removeClass('active');
-      $(this).addClass('active');
-    });
-    $('.nav-linked').on('click', function (e) {
-      e.preventDefault();
+      $('.variantItem').on('click', function(e){
+        e.preventDefault();
+        $('.variantItem').removeClass('active');
+        $(this).addClass('active')
+        var variantPrice = $(this).data('price');
+        var variantDiscountedPrice = $(this).data('discount');
+        var variantStock = $(this).data('stock');
+        if(variantStock<1){
+          alert("stock kosong");
+          $('.variantItem').removeClass('active');
+          return;
+        }
+        $('.ppprice').text(variantDiscountedPrice);
+        $('.nnprice').text(variantPrice);
+      });
+      $('.navbar-nav .nav-item').click(function(){
+        $('.navbar-nav .nav-item.active').removeClass('active');
+        $(this).addClass('active');
+      });
+      $('.payment_box .list li').click(function(){
+        $('.payment_box .list li').removeClass('active');
+        $(this).addClass('active');
+      });
+      $('.nav-linked').on('click', function (e) {
+        e.preventDefault();
 
-      $('.nav-linked').removeClass('active');
-      $('.tab-pane').removeClass('show active');
+        $('.nav-linked').removeClass('active');
+        $('.tab-pane').removeClass('show active');
 
-      $(this).addClass('active');
+        $(this).addClass('active');
 
-      var targetId = $(this).attr('href');
-      $('.tab-pane').each(function() {
-          if ($(this).attr('id') === targetId) {
-              $(this).addClass('show active');
+        var targetId = $(this).attr('href');
+        $('.tab-pane').each(function() {
+            if ($(this).attr('id') === targetId) {
+                $(this).addClass('show active');
+            }
+        });
+      });
+      $("#masterCheckbox, #bottomMasterCheckbox").on('change', function() {
+        var isChecked = $(this).is(':checked');
+        $(".productCheckbox").prop('checked', isChecked);
+      });
+      document.querySelectorAll('.cartProduct').forEach(itemCart => {
+        const priceElement = itemCart.querySelector('#totalPriceNFCheckout');
+      
+        if (priceElement) {
+          let priceText = priceElement.textContent;
+          console.log(priceText);
+        }
+      });
+      function FinalPrice() {
+        let priceElements = [];
+    
+      
+
+        // let totalPrice = 0;
+        // priceElements.forEach(element => {
+        //     const price = parseInt(element);
+
+        //     if (!isNaN(price)) {
+        //         totalPrice += price;
+        //     }
+        // });
+
+        // return totalPrice;
+      }
+      FinalPrice();
+
+      function formatNumber(number) {
+        let parts = number.toString().split('.');
+        let integerPart = parts[0];
+        let decimalPart = parts.length > 1 ? '.' + parts[1] : '';
+        
+        let formattedIntegerPart = '';
+        while (integerPart.length > 0) {
+            formattedIntegerPart = '.' + integerPart.slice(-3) + formattedIntegerPart;
+            integerPart = integerPart.slice(0, -3);
+        }
+        
+        return formattedIntegerPart.slice(1) + decimalPart;
+      }
+      function updateTotalPrice(quantityInput, priceElement, totalPriceElement, totalPriceElementNF) {
+        let priceText = priceElement.textContent.replace('Rp. ', '').replace('.', '').replace('.', '');
+        let priceNumber = parseInt(priceText);
+        const quantity = parseInt(quantityInput.value, 10);
+
+        if (isNaN(priceNumber)) priceNumber = 0;
+        if (isNaN(quantity) || quantity < 1) quantity = 1;
+
+        const totalPrice = (priceNumber * quantity).toFixed(0);
+        totalPriceElement.textContent = `Rp. ${formatNumber(totalPrice)}`;
+        totalPriceElementNF.textContent = totalPrice;
+        // console.log(totalPriceElement.textContent)
+      }
+      document.querySelectorAll('.cartProduct').forEach(item => {
+        const decrementButton = item.querySelector('#decrementButton');
+        const incrementButton = item.querySelector('#incrementButton');
+        const quantityInput = item.querySelector('#quantityInput');
+        const priceElement = item.querySelector('#itemPrice');
+        const totalPriceElement = item.querySelector('#totalPriceCheckout');
+        const totalPriceElementNF = item.querySelector('#totalPriceNFCheckout');
+        decrementButton.addEventListener('click', function() {
+          if (quantityInput.value > 1) {
+            quantityInput.value = parseInt(quantityInput.value, 10) - 1;
+            updateTotalPrice(quantityInput, priceElement, totalPriceElement, totalPriceElementNF);
           }
       });
+
+      incrementButton.addEventListener('click', function() {
+          quantityInput.value = parseInt(quantityInput.value, 10) + 1;
+          updateTotalPrice(quantityInput, priceElement, totalPriceElement, totalPriceElementNF);
+      });
+
+      quantityInput.addEventListener('input', function() {
+        quantityInput.value = quantityInput.value.replace(/[^0-9]/g, '');
+        if (!quantityInput.value || quantityInput.value<1) {
+          quantityInput.value = 1;
+          // console.log(quantityInput.value)
+        }
+        updateTotalPrice(quantityInput, priceElement, totalPriceElement, totalPriceElementNF);
+      });
+        updateTotalPrice(quantityInput, priceElement, totalPriceElement, totalPriceElementNF);
     });
 });
 
