@@ -46,6 +46,8 @@ class BlogPageController extends PageController
             $countreply = CommentReply::get()->filter('BlogAddID', $content->ID)->count();
             $counttotal = [];
             $content->CountComment = $countreply + $countcomment;
+            $Createdby = Member::get()->filter('ID', $contents->ID);
+            
             // Debug::show($content);
             $content->write();
         }
@@ -97,10 +99,14 @@ class BlogPageController extends PageController
             $counttotal = [];
             $counttotal = $countreply + $countcomment;
             $member = Member::get()->filter('ID', $comments->ID);
+            $Createdby = Member::get()->filter('ID', $contents->ID);
+
+            Debug::show($Createdby);
             $latestpost = BlogAdd::get()->sort('Created', 'DESC');
             foreach ($comments as $comment) {
                 $comment->CommentReply = CommentReply::get()->filter('BlogCommentID', $comment->ID);
             }
+            // Debug::show($comment);
             $previousblog = BlogAdd::get()->filter('ID:LessThan', $k)->sort('ID DESC')->first();
             $nextblog = BlogAdd::get()->filter('ID:GreaterThan', $k)->sort('ID ASC')->first();
 
@@ -112,6 +118,7 @@ class BlogPageController extends PageController
             return $this->customise([
                 BlogCategory::getCategoriesWithCounts(),
                 'Latestpost' => $latestpost,
+                'CreatedBy' => $Createdby,
                 'Member' => $member,
                 'Comment' => $comments,
                 'CommentID' => $comments->ID,

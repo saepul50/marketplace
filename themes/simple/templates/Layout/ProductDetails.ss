@@ -23,7 +23,7 @@
 				<div class="col-lg-6">
 					<div class="s_Product_carousel">
 						<% loop $Product.ProductImages %>
-							<div class="single-prd-item">
+							<div class="single-prd-item ">
 								<img src="$URL" alt="$Product.ProductImages.First.Title" class="img-fluid" style="object-fit: cover;">
 							</div>
 						<% end_loop %>
@@ -102,11 +102,11 @@
 					 aria-selected="false">This Product</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link nav-linked" id="contact-tab" data-toggle="tab" href="contact" role="tab" aria-controls="contact"
+					<a class="nav-link nav-linked active" id="contact-tab" data-toggle="tab" href="contact" role="tab" aria-controls="contact"
 					 aria-selected="false">Comments</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link nav-linked active" id="review-tab" data-toggle="tab" href="review" role="tab" aria-controls="review"
+					<a class="nav-link nav-linked " id="review-tab" data-toggle="tab" href="review" role="tab" aria-controls="review"
 					 aria-selected="false">Reviews</a>
 				</li>
 			</ul>
@@ -125,75 +125,76 @@
 						</div>
 					</div>
 				</div>
-				<div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+				<div class="tab-pane fade show active" id="contact" role="tabpanel" aria-labelledby="contact-tab">
 					<div class="row">
 						<div class="col-lg-6">
 							<div class="comment_list">
-								<div class="review_item">
-									<div class="media">
-										<div class="d-flex">
-											<img src="img/product/review-1.png" alt="">
+								<% loop $Comment %>
+									<div class="review_item">
+										<div class="media">
+											<div class="d-flex">
+												<% with $Member %>
+													<% if $ProfileImage.exists %>
+														<img class="image" id="image" src="$ProfileImage.getURL()" alt="$Name's profile image">
+													<% else %>
+														<img class="image" id="image" src="$SiteConfig.Unknown.getURL()" alt="Default image">
+													<% end_if %>
+												<% end_with %>
+											</div>
+											<div class="media-body">
+												<h4>$Member.Surname</h4>
+												<h5>$Created</h5>
+												<a class="reply_btn" href="#" data-toggle="modal" data-target="#exampleModal" data-productcomentid="$ID" data-name="$Member.FirstName">Reply</a>
+											</div>
 										</div>
-										<div class="media-body">
-											<h4>Blake Ruiz</h4>
-											<h5>12th Feb, 2018 at 05:56 pm</h5>
-											<a class="reply_btn" href="#">Reply</a>
-										</div>
+										<p>$Comment</p>
 									</div>
-									<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-										dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-										commodo</p>
-								</div>
+								
+								<% if $CommentReply.exists %>
+									<% loop $CommentReply %>
 								<div class="review_item reply">
 									<div class="media">
 										<div class="d-flex">
-											<img src="img/product/review-2.png" alt="">
+											<% with $Member %>
+												<% if $ProfileImage.exists %>
+													<img class="image" id="image" src="$ProfileImage.getURL()" alt="$Name's profile image">
+												<% else %>
+													<img class="image" id="image" src="$resourceURL('themes/simple/images/blog/unknown.png')" alt="Default image">
+												<% end_if %>
+											<% end_with %>
 										</div>
 										<div class="media-body">
-											<h4>Blake Ruiz</h4>
-											<h5>12th Feb, 2018 at 05:56 pm</h5>
-											<a class="reply_btn" href="#">Reply</a>
+											<h4 id="takename">$Member.FirstName</h4>
+											<h5>$Created </h5>
+											<a href="" class="reply_btn " data-toggle="modal" data-target="#exampleModal" data-productcomentid="$Up.ID" data-takename='#takename' data-name="$Member.FirstName">reply</a>
 										</div>
 									</div>
-									<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-										dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-										commodo</p>
+									<p><b id="sendto">$SendTo</b> $Comment</p>
 								</div>
-								<div class="review_item">
-									<div class="media">
-										<div class="d-flex">
-											<img src="img/product/review-3.png" alt="">
-										</div>
-										<div class="media-body">
-											<h4>Blake Ruiz</h4>
-											<h5>12th Feb, 2018 at 05:56 pm</h5>
-											<a class="reply_btn" href="#">Reply</a>
-										</div>
-									</div>
-									<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-										dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-										commodo</p>
-								</div>
+									<% end_loop %>
+                        		<% end_if %>
+							<% end_loop %>
 							</div>
 						</div>
 						<div class="col-lg-6">
 							<div class="review_box">
 								<h4>Post a comment</h4>
-								<form class="row contact_form" id="commentForm">
+								<form class="row contact_form" method="post" id="kkls">
 									<div class="col-md-12">
 										<div class="form-group">
-											<textarea class="form-control" id="commentMessage" rows="1" placeholder="Message"></textarea>
+											<textarea class="form-control" id="slsd" rows="1" placeholder="Message"></textarea>
+											<input type="hidden" id="asdasda" name="ProductIDs" value="$ID">
 										</div>
 									</div>
 									<div class="col-md-12 text-right">
-										<button id="Comment" class="btn primary-btn">Submit Now</button>
+										<button type="submit"  class="btn primary-btn">Submit Now</button>
 									</div>
 								</form>
 							</div>
 						</div>
 					</div>
 				</div>
-				<div class="tab-pane fade show active" id="review" role="tabpanel" aria-labelledby="review-tab">
+				<div class="tab-pane fade " id="review" role="tabpanel" aria-labelledby="review-tab">
 					<div class="row">
 						<div class="col-lg-6">
 							<div class="row total_rate">
@@ -226,7 +227,7 @@
 								<div class="review_item">
 									<div class="media">
 										<div class="d-flex">
-											<img src="img/product/review-1.png" alt="">
+											<img src="" alt="">
 										</div>
 										<div class="media-body">
 											<h4>Blake Ruiz</h4>
@@ -244,7 +245,7 @@
 								<div class="review_item">
 									<div class="media">
 										<div class="d-flex">
-											<img src="img/product/review-2.png" alt="">
+											<img src="" alt="">
 										</div>
 										<div class="media-body">
 											<h4>Blake Ruiz</h4>
@@ -262,7 +263,7 @@
 								<div class="review_item">
 									<div class="media">
 										<div class="d-flex">
-											<img src="img/product/review-3.png" alt="">
+											<img src="" alt="">
 										</div>
 										<div class="media-body">
 											<h4>Blake Ruiz</h4>
@@ -342,7 +343,7 @@
 					<div class="row">
 						<div class="col-lg-4 col-md-4 col-sm-6 mb-20">
 							<div class="single-related-product d-flex">
-								<a href="#"><img src="img/r1.jpg" alt=""></a>
+								<a href="#"><img src="" alt=""></a>
 								<div class="desc">
 									<a href="#" class="title">Black lace Heels</a>
 									<div class="price">
@@ -354,7 +355,7 @@
 						</div>
 						<div class="col-lg-4 col-md-4 col-sm-6 mb-20">
 							<div class="single-related-product d-flex">
-								<a href="#"><img src="img/r2.jpg" alt=""></a>
+								<a href="#"><img src="" alt=""></a>
 								<div class="desc">
 									<a href="#" class="title">Black lace Heels</a>
 									<div class="price">
@@ -366,7 +367,7 @@
 						</div>
 						<div class="col-lg-4 col-md-4 col-sm-6 mb-20">
 							<div class="single-related-product d-flex">
-								<a href="#"><img src="img/r3.jpg" alt=""></a>
+								<a href="#"><img src="" alt=""></a>
 								<div class="desc">
 									<a href="#" class="title">Black lace Heels</a>
 									<div class="price">
@@ -378,7 +379,7 @@
 						</div>
 						<div class="col-lg-4 col-md-4 col-sm-6 mb-20">
 							<div class="single-related-product d-flex">
-								<a href="#"><img src="img/r5.jpg" alt=""></a>
+								<a href="#"><img src="" alt=""></a>
 								<div class="desc">
 									<a href="#" class="title">Black lace Heels</a>
 									<div class="price">
@@ -390,7 +391,7 @@
 						</div>
 						<div class="col-lg-4 col-md-4 col-sm-6 mb-20">
 							<div class="single-related-product d-flex">
-								<a href="#"><img src="img/r6.jpg" alt=""></a>
+								<a href="#"><img src="" alt=""></a>
 								<div class="desc">
 									<a href="#" class="title">Black lace Heels</a>
 									<div class="price">
@@ -402,7 +403,7 @@
 						</div>
 						<div class="col-lg-4 col-md-4 col-sm-6 mb-20">
 							<div class="single-related-product d-flex">
-								<a href="#"><img src="img/r7.jpg" alt=""></a>
+								<a href="#"><img src="" alt=""></a>
 								<div class="desc">
 									<a href="#" class="title">Black lace Heels</a>
 									<div class="price">
@@ -414,7 +415,7 @@
 						</div>
 						<div class="col-lg-4 col-md-4 col-sm-6">
 							<div class="single-related-product d-flex">
-								<a href="#"><img src="img/r9.jpg" alt=""></a>
+								<a href="#"><img src="" alt=""></a>
 								<div class="desc">
 									<a href="#" class="title">Black lace Heels</a>
 									<div class="price">
@@ -426,7 +427,7 @@
 						</div>
 						<div class="col-lg-4 col-md-4 col-sm-6">
 							<div class="single-related-product d-flex">
-								<a href="#"><img src="img/r10.jpg" alt=""></a>
+								<a href="#"><img src="" alt=""></a>
 								<div class="desc">
 									<a href="#" class="title">Black lace Heels</a>
 									<div class="price">
@@ -438,7 +439,7 @@
 						</div>
 						<div class="col-lg-4 col-md-4 col-sm-6">
 							<div class="single-related-product d-flex">
-								<a href="#"><img src="img/r11.jpg" alt=""></a>
+								<a href="#"><img src="" alt=""></a>
 								<div class="desc">
 									<a href="#" class="title">Black lace Heels</a>
 									<div class="price">
@@ -461,6 +462,36 @@
 		</div>
 	</section>
 	<!-- End related-product Area -->
+
+	<%-- Modal --%>
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+	  <div class="modal-content">
+		<div class="modal-header">
+		  <h5 class="modal-title" id="exampleModalLabel">New message to </h5>
+		  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+		  </button>
+		</div>
+		<form method="post" id="productcommentreply">
+		<div class="modal-body">
+			<div class="form-group">
+			<input type="hidden" id="productcommentid-reply" name="productcommentid-reply" value="" >
+			  <input type="hidden" id="nama-reply" name="nama-reply" value="" >
+			  <input type="hidden" id="ProductObjectID" name="ProductObjectID" value="$ID">
+			  <label for="message-text" class="col-form-label">Message:</label>
+			  <textarea class="form-control" id="message-reply" required></textarea>
+			</div>
+		  </div>
+		  <div class="modal-footer">
+			  <button type="button" class="btn btn-secondary " style="position: relative;overflow: hidden;color: #fff;padding: 0 30px;line-height: 50px;border-radius: 50px;display: inline-block;text-transform: uppercase;font-weight: 500;cursor: pointer;" data-dismiss="modal">Close</button>
+			  <button type="submit" class="primary-btn">Send message</button>
+		  </div>
+		  </form>
+	  </div>
+	</div>
+  </div>
 <% else %>
 	<p class="d-flex justify-content-center">Product Invalid</p>
 <% end_if %>
+

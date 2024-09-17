@@ -81,7 +81,7 @@
                                         <% end_loop %>
                                     </div>
                                     <ul class="blog_meta list ">
-                                        <li><a href="#">Mark wiens<i class="lnr lnr-user"></i></a></li>
+                                        <li><a href="#">$CreatedBy.Surname<i class="lnr lnr-user"></i></a></li>
                                         <li><a href="#">$LastEdited<i class="lnr lnr-calendar-full"></i></a></li>
                                         <li><a href="#">1.2M Views<i class="lnr lnr-eye"></i></a></li>
                                         <li><a href="#">$CountComment Comments<i class="lnr lnr-bubble"></i></a></li>

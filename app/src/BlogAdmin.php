@@ -23,24 +23,41 @@ class BlogAdmin extends ModelAdmin{
 
     public function canCreate($member = null)
     {
-        return Permission::check('CMS_ACCESS_ModelAdmin');
+        return Permission::check('CMS_ACCESS_BLogAdmin');
     }
     
     public function getEditForm($id = null, $fields = null) {
         $form = parent::getEditForm($id, $fields);
         // Customize the form if needed
+
+        $form->setFormMethod('POST');
         return $form;
     }
-    public function getList(){
+    public function getList() {
         $list = parent::getList();
         $member = Security::getCurrentUser();
+
+        // Check which model we're working with
+        $modelClass = $this->modelClass;
+
+        // Apply filtering based on the current user
         if ($member->ID !== 1) {
-            $list = BlogAdd::get()->filter('CreatedBy', $member->ID);
-            // Debug::show($filter);
-            
-        } else if($member->ID == 1){
-            $list = BlogAdd::get();
+            if ($modelClass === BlogAdd::class) {
+                // Filter BlogAdd DataObjects by the creator
+                $list = BlogAdd::get()->filter('CreatedBy', $member->ID);
+            } elseif ($modelClass === BlogCategory::class) {
+                // Allow all BlogCategory for non-admin users (modify as needed)
+                $list = BlogCategory::get();
+            }
+        } else if ($member->ID == 1) {
+            // Admin user (ID 1), show all entries
+            if ($modelClass === BlogAdd::class) {
+                $list = BlogAdd::get();
+            } elseif ($modelClass === BlogCategory::class) {
+                $list = BlogCategory::get();
+            }
         }
+
         return $list;
     }
 }
