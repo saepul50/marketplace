@@ -2,7 +2,23 @@
 $(document).ready(function () {
   "use strict";
 
+  const events = document.querySelectorAll('.event');
+    events.forEach(event => {
+      const icon = '<i class="lnr lnr-calendar-full"></i>'
+      const date = dayjs(event.dataset.date).format('D MMM YYYY');
+      const dateElement = event.querySelector('.date');
+      dateElement.innerHTML = `${date} ${icon}`;
 
+    });
+    const sidebar = document.querySelectorAll('.time-sidebar');
+    sidebar.forEach(event => {
+      const date = dayjs(event.dataset.date).format('D MMM YYYY');
+      const dateElement = event.querySelector('.date-sidebar');
+      dateElement.innerHTML = `${date}`;
+
+    });
+
+  
   $("#blogcomment").submit(function (event) {
     event.preventDefault(); // Prevents the form from doing a default refresh
 
@@ -52,7 +68,6 @@ $(document).ready(function () {
     event.preventDefault(); // Prevents the form from doing a default refresh
 
     $.post("/marketplace/blog/handelreply", {
-      Name: $("#name-reply").val(),
       Send: $("#nama-reply").val(),
       Message: $("#message-reply").val(),
       CommentID: $("#commentID-reply").val(),
@@ -779,7 +794,7 @@ $(document).ready(function () {
       .done(function (data) {
         var response = JSON.parse(data);
         if (response.success) {
-          alert("ak");
+          alert("Sukses");
           window.location.href = "";
         } else {
           alert("gagal login")
@@ -995,5 +1010,8 @@ $(document).ready(function () {
     updateTotalPrice(quantityInput, priceElement, totalPriceElement, totalPriceElementNF);
   });
   updateSubtotal();
+
+
+
 });
 

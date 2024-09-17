@@ -6,7 +6,7 @@ use SilverStripe\ORM\DB;
 class BlogCategory extends DataObject {
     private static $db = [
         'Title' => 'Text',
-        'Sample' => 'Varchar'  // This will store the occurrence count
+        'Sample' => 'Varchar'
     ];
 
     private static $belongs_many_many = [
@@ -25,7 +25,7 @@ class BlogCategory extends DataObject {
             $counts[$result['BlogCategoryID']] = $result['OccurrenceCount'];
         }
         $categories = BlogCategory::get()->filterAny([
-            'ID' => array_keys($counts)  // Filter categories with matching IDs
+            'ID' => array_keys($counts)
         ]);
         foreach ($categories as $category) {
             $category->Sample = $counts[$category->ID];

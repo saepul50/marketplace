@@ -24,7 +24,8 @@ class BlogAdd extends DataObject
         'Content' => 'HTMLText',
         'Quotes' => 'Varchar(400)',
         'CountComment' => 'Int',
-        'CreatedBy' => 'Varchar'
+        'CreatedBy' => 'Varchar',
+        'ViewCount' => 'Int',
     ];
 
 
@@ -60,7 +61,8 @@ class BlogAdd extends DataObject
             UploadField::create('HeaderImage', 'Header Image Min Width(700)'),
             HTMLEditorField::create('Content'),
             TextareaField::create('Quotes'),
-            ReadonlyField::create('CountComment'),
+            // ReadonlyField::create('CountComment'),
+            // ReadonlyField::create('ViewCount'),
             CheckboxSetField::create('BlogCategories', 'Categories', BlogCategory::get()),
         );
     }
@@ -89,7 +91,7 @@ class BlogAdd extends DataObject
         $member = Security::getCurrentUser();
         if (!$this->ID) {
             if ($member = Security::getCurrentUser()) {
-                $this->CreatedBy = $member->ID;
+                $this->CreatedBy = $member->Surname;
 
             }
         }

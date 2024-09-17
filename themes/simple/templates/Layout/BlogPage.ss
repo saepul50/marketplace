@@ -1,3 +1,68 @@
+<style>
+    @media (max-width: 990px){
+    .categories_post .categories_details {
+    position: absolute;
+    top: 20px;
+    left: 180px !important;
+    right: 180px !important;
+    bottom: 20px;
+    background: rgba(34, 34, 34, 0.8);
+    color: #fff;
+    transition: all 0.3s linear;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    }
+    }
+    @media (max-width: 767px){
+    .categories_post .categories_details {
+    position: absolute;
+    top: 20px;
+    left: 90px !important;
+    right: 90px !important;
+    bottom: 20px;
+    background: rgba(34, 34, 34, 0.8);
+    color: #fff;
+    transition: all 0.3s linear;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+        }
+    
+    }
+    @media (max-width: 490px){
+    .categories_post .categories_details {
+    position: absolute;
+    top: 20px;
+    left: 50px !important;
+    right: 50px !important;
+    bottom: 20px;
+    background: rgba(34, 34, 34, 0.8);
+    color: #fff;
+    transition: all 0.3s linear;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+        }
+    }
+    @media (max-width: 380px){
+    .categories_post .categories_details {
+    position: absolute;
+    top: 20px;
+    left: 20px !important;
+    right: 20px !important;
+    bottom: 20px;
+    background: rgba(34, 34, 34, 0.8);
+    color: #fff;
+    transition: all 0.3s linear;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+        }
+    }
+</style>
+
+
 <!-- Start Banner Area -->
    <section class="banner-area organic-breadcrumb" style ="background: url($SiteConfig.Background.getURL()) center no-repeat;background-size: cover; position: relative ">
     <div class="container">
@@ -80,10 +145,10 @@
                                         <a href="#">$Title </a>
                                         <% end_loop %>
                                     </div>
-                                    <ul class="blog_meta list ">
-                                        <li><a href="#">$CreatedBy.Surname<i class="lnr lnr-user"></i></a></li>
-                                        <li><a href="#">$LastEdited<i class="lnr lnr-calendar-full"></i></a></li>
-                                        <li><a href="#">1.2M Views<i class="lnr lnr-eye"></i></a></li>
+                                    <ul class="blog_meta list event" data-date="$Created">
+                                        <li><a href="#">$CreatedBy<i class="lnr lnr-user"></i></a></li>
+                                        <li><a href="#" class="date"><i class="lnr lnr-calendar-full"></i></a></li>
+                                        <li><a href="#">$ViewCount Views<i class="lnr lnr-eye"></i></a></li>
                                         <li><a href="#">$CountComment Comments<i class="lnr lnr-bubble"></i></a></li>
                                     </ul>
                                 </div>

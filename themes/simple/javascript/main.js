@@ -996,8 +996,12 @@ $(document).ready(function () {
         updateTotalPrice(quantityInput, priceElement, totalPriceElement, totalPriceElementNF);
       });
       updateSubtotal();
+
+
+      const events = document.querySelector('.event');
+      console.log(dayjs())
       
-});
+    });
 
 
 

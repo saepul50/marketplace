@@ -1,13 +1,13 @@
-<% require themedJavascript('kevin') %>
 <!-- Start Banner Area -->
 <section class="banner-area organic-breadcrumb" style ="background: url($SiteConfig.Background.getURL()) center no-repeat;background-size: cover; position: relative ">
     <div class="container">
         <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
             <div class="col-first">
                 <h1>Blog Page</h1>
-                <nav class="d-flex align-items-center">
+                <nav class="d-flex align-items-center ">
                     <a href="{$BaseHref}">Home<span class="lnr lnr-arrow-right"></span></a>
-                    <a href="{$BaseHref}/blog">Blog</a>
+                    <a href="{$BaseHref}/blog">Blog<span class="lnr lnr-arrow-right"></a>
+                    <a href="#">Blog Detail</a>
                 </nav>
             </div>
         </div>
@@ -37,10 +37,10 @@
                                 <a href="#">$Title,</a>
                                 <% end_loop %>
                             </div>
-                            <ul class="blog_meta list">
-                                <li><a href="#">Mark wiens<i class="lnr lnr-user"></i></a></li>
-                                <li><a href="#">12 Dec, 2018<i class="lnr lnr-calendar-full"></i></a></li>
-                                <li><a href="#">1.2M Views<i class="lnr lnr-eye"></i></a></li>
+                            <ul class="blog_meta list event" data-date="$Created">
+                                <li><a href="#">$CreatedBy<i class="lnr lnr-user"></i></a></li>
+                                <li><a href="#" class="date"><i class="lnr lnr-calendar-full"></i></a></li>
+                                <li><a href="#">$ViewCount Views<i class="lnr lnr-eye"></i></a></li>
                                 <li><a href="#">$Up.Count Comments<i class="lnr lnr-bubble"></i></a></li>
                             </ul>
                             <ul class="social-links">
@@ -89,7 +89,7 @@
                         <% if $PrevBlog %>
                             <div class="col-lg-6 col-md-6 col-12 nav-left flex-row d-flex justify-content-start align-items-center">
                                 <div class="thumb">
-                                    <a href="{$BaseHref}/blog/$PrevBlog"><img class="img-fluid" src="$resourceURL('themes/simple/images/blog/prev.jpg')" alt=""></a>
+                                    <a href="{$BaseHref}/blog/$PrevBlog"><img class="" src="$ImagePrevBlog.getURL()" width="60" height="60" alt=""></a>
                                 </div>
                                 <div class="arrow">
                                     <a href="{$BaseHref}/blog/$PrevBlog"><span class="lnr text-white lnr-arrow-left"></span></a>
@@ -118,7 +118,7 @@
                                     <a href="{$BaseHref}/blog/$NextBlog"><span class="lnr text-white lnr-arrow-right"></span></a>
                                 </div>
                                 <div class="thumb">
-                                    <a href="{$BaseHref}/blog/$NextBlog"><img class="" src="$resourceURL('themes/simple/images/blog/next.jpg')" alt=""></a>
+                                    <a href="{$BaseHref}/blog/$NextBlog"><img class="" src="$ImageNextBlog.getURL()" width="60" height="60"></a>
                                 </div>
                             </div>
                         <% else %>
@@ -163,7 +163,7 @@
                                             <div class="thumb">
                                                 <% with $Member %>
                                                     <% if $ProfileImage.exists %>
-                                                        <img class="image" id="image" src="$ProfileImage.getURL()" alt="$Name's profile image">
+                                                        <img class="image" id="image" src="$ProfileImage.getURL()" alt="$Name's profile image" width="60" height="60">
                                                     <% else %>
                                                         <img class="image" id="image" src="$resourceURL('themes/simple/images/blog/unknown.png')" alt="Default image">
                                                     <% end_if %>
@@ -193,8 +193,6 @@
                     <form method="post" id="blogcomment">
                         <div class="form-group form-inline">
                             <div class="form-group col-lg-12 col-md-12 name">
-                                <input type="text" class="form-control" id="name" name="name" placeholder="Enter Name" onfocus="this.placeholder = ''"
-                                    onblur="this.placeholder = 'Enter Name'">
                                 <input type="hidden" id="BlogAddID" name="BlogAddID" value="$ID">
                             </div>
                         </div>
@@ -223,8 +221,6 @@
       <form method="post" id="replycomment">
       <div class="modal-body">
           <div class="form-group">
-            <label for="recipient-name" class="col-form-label">Name:</label>
-            <input type="text" class="form-control" id="name-reply"  required>
             <input type="hidden" id="commentID-reply" name="commentID-reply" value="" >
             <input type="hidden" id="nama-reply" name="nama-reply" value="" >
             <input type="hidden" id="BlogAddID" name="BlogAddID" value="$ID">

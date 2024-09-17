@@ -4,7 +4,6 @@ use SilverStripe\Security\Member;
 
 class CommentReply extends DataObject{
     private static $db = [
-        'Name' => 'Text',
         'Comment' => 'Varchar',
         'SendTo' => 'Varchar'
     ];

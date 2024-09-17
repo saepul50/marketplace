@@ -37,20 +37,15 @@ class BlogAdmin extends ModelAdmin{
         $list = parent::getList();
         $member = Security::getCurrentUser();
 
-        // Check which model we're working with
         $modelClass = $this->modelClass;
 
-        // Apply filtering based on the current user
         if ($member->ID !== 1) {
             if ($modelClass === BlogAdd::class) {
-                // Filter BlogAdd DataObjects by the creator
-                $list = BlogAdd::get()->filter('CreatedBy', $member->ID);
+                $list = BlogAdd::get()->filter('CreatedBy', $member->FirstName);
             } elseif ($modelClass === BlogCategory::class) {
-                // Allow all BlogCategory for non-admin users (modify as needed)
                 $list = BlogCategory::get();
             }
         } else if ($member->ID == 1) {
-            // Admin user (ID 1), show all entries
             if ($modelClass === BlogAdd::class) {
                 $list = BlogAdd::get();
             } elseif ($modelClass === BlogCategory::class) {
