@@ -25,6 +25,13 @@ class CartPageController extends PageController{
         }
         return null;
     }
+    public function getMember() {
+        $member = Security::getCurrentUser();
+        if ($member) {
+            return $member;
+        }
+        return null;
+    }
     public function addcart(HTTPRequest $request){
         if($request){
             $ProductID = $request->postVar('ProductID');
@@ -33,6 +40,7 @@ class CartPageController extends PageController{
             $ProductCategoryId = $request->postVar('ProductCategoryID');
             $ProductVariant = $request->postVar('ProductVariant');
             $ProductVariantID= $request->postVar('ProductVariantID');
+            $ProductVariantWeight= $request->postVar('ProductVariantWeight');
             $ProductPrice = $request->postVar('ProductPrice');
             $ProductQuantity = $request->postVar('ProductQuantity');
             $data = [
@@ -52,17 +60,18 @@ class CartPageController extends PageController{
                     ->filter('ProductVariantID', $ProductVariantID)
                     ->filter('MemberID', Security::getCurrentUser()->ID)
                     ->first();
-                $existingCartId2 = CartObject::get()
-                    ->filter('ProductCategoryId', $ProductCategoryId)
+                $existingCartItem2 = CartObject::get()
+                    ->filter('ProductCategoryId', 2)
+                    ->filter('ProductID', $ProductID)
                     ->filter('MemberID', Security::getCurrentUser()->ID)
                     ->first();
                 
                 if ($existingCartItem) {
                     $existingCartItem->ProductQuantity += $ProductQuantity;
                     $existingCartItem->write();
-                } else if ($existingCartId2->$ProductCategoryId = 2) {
-                    $existingCartId2->ProductQuantity += $ProductQuantity;
-                    $existingCartId2->write();
+                } else if ($existingCartItem2) {
+                    $existingCartItem2->ProductQuantity += $ProductQuantity;
+                    $existingCartItem2->write();
                 } else {
                     $cartItem = CartObject::create();
                     $cartItem->ProductID = $ProductID;
@@ -71,6 +80,7 @@ class CartPageController extends PageController{
                     $cartItem->ProductCategoryId = $ProductCategoryId;
                     $cartItem->ProductVariant = $ProductVariant;
                     $cartItem->ProductVariantID = $ProductVariantID;
+                    $cartItem->ProductVariantWeight = $ProductVariantWeight;
                     $cartItem->ProductPrice = $ProductPrice;
                     $cartItem->ProductQuantity = $ProductQuantity;
                     $member = Security::getCurrentUser();

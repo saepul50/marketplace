@@ -69,15 +69,13 @@
 								<i class="lnr lnr-chevron-down"></i>
 							</button>
 						</div>
-						<% if $Product.ProductCategory.ID = 1 %>
-							<div class="cardVariant pb-2 d-flex align-items-center">
-							<% loop $Product.ProductVariants.sort(VariantName) %>
-								<div class="variantItem m-0 p-0 mr-2 d-flex align-items-center" style="border: 2px solid #ccc;" data-id="$ID" data-stock="$Stock" data-price="$NormalPrice" data-discount="$DiscountedPrice">
-									<h6 class="d-flex align-items-center p-1 m-0" id="variantName" style="color:#000">$VariantName</h6>
-								</div>
-							<% end_loop %>
+						<div class="cardVariant pb-2 d-flex align-items-center">
+						<% loop $Product.ProductVariants.sort(VariantName) %>
+							<div class="variantItem m-0 p-0 mr-2 d-flex align-items-center" style="border: 2px solid #ccc;" data-id="$ID" data-stock="$Stock" data-price="$NormalPrice" data-discount="$DiscountedPrice" data-weight="$Weight">
+								<h6 class="d-flex align-items-center p-1 m-0" id="variantName" style="color:#000">$VariantName</h6>
 							</div>
-						<% end_if %>
+						<% end_loop %>
+						</div>
 						<div class="card_area d-flex align-items-center">
 							<button class="primary-btn" id="addCart" style="border:none;">Add to Cart</button>
 							<a class="icon_btn" href="#"><i class="lnr lnr lnr-diamond"></i></a>
@@ -132,7 +130,7 @@
 								<div class="review_item">
 									<div class="media">
 										<div class="d-flex">
-											<img src="img/product/review-1.png" alt="">
+											<%-- <img src="img/product/review-1.png" alt=""> --%>
 										</div>
 										<div class="media-body">
 											<h4>Blake Ruiz</h4>
@@ -147,7 +145,7 @@
 								<div class="review_item reply">
 									<div class="media">
 										<div class="d-flex">
-											<img src="img/product/review-2.png" alt="">
+											<%-- <img src="img/product/review-2.png" alt=""> --%>
 										</div>
 										<div class="media-body">
 											<h4>Blake Ruiz</h4>
@@ -162,7 +160,7 @@
 								<div class="review_item">
 									<div class="media">
 										<div class="d-flex">
-											<img src="img/product/review-3.png" alt="">
+											<%-- <img src="img/product/review-3.png" alt=""> --%>
 										</div>
 										<div class="media-body">
 											<h4>Blake Ruiz</h4>
@@ -226,7 +224,7 @@
 								<div class="review_item">
 									<div class="media">
 										<div class="d-flex">
-											<img src="img/product/review-1.png" alt="">
+											<%-- <img src="img/product/review-1.png" alt=""> --%>
 										</div>
 										<div class="media-body">
 											<h4>Blake Ruiz</h4>
@@ -244,7 +242,7 @@
 								<div class="review_item">
 									<div class="media">
 										<div class="d-flex">
-											<img src="img/product/review-2.png" alt="">
+											<%-- <img src="img/product/review-2.png" alt=""> --%>
 										</div>
 										<div class="media-body">
 											<h4>Blake Ruiz</h4>
@@ -262,7 +260,7 @@
 								<div class="review_item">
 									<div class="media">
 										<div class="d-flex">
-											<img src="img/product/review-3.png" alt="">
+											<%-- <img src="img/product/review-3.png" alt=""> --%>
 										</div>
 										<div class="media-body">
 											<h4>Blake Ruiz</h4>
@@ -342,7 +340,7 @@
 					<div class="row">
 						<div class="col-lg-4 col-md-4 col-sm-6 mb-20">
 							<div class="single-related-product d-flex">
-								<a href="#"><img src="img/r1.jpg" alt=""></a>
+								<%-- <a href="#"><img src="img/r1.jpg" alt=""></a> --%>
 								<div class="desc">
 									<a href="#" class="title">Black lace Heels</a>
 									<div class="price">
@@ -354,7 +352,7 @@
 						</div>
 						<div class="col-lg-4 col-md-4 col-sm-6 mb-20">
 							<div class="single-related-product d-flex">
-								<a href="#"><img src="img/r2.jpg" alt=""></a>
+								<%-- <a href="#"><img src="img/r2.jpg" alt=""></a> --%>
 								<div class="desc">
 									<a href="#" class="title">Black lace Heels</a>
 									<div class="price">
@@ -366,7 +364,7 @@
 						</div>
 						<div class="col-lg-4 col-md-4 col-sm-6 mb-20">
 							<div class="single-related-product d-flex">
-								<a href="#"><img src="img/r3.jpg" alt=""></a>
+								<%-- <a href="#"><img src="img/r3.jpg" alt=""></a> --%>
 								<div class="desc">
 									<a href="#" class="title">Black lace Heels</a>
 									<div class="price">
@@ -378,7 +376,7 @@
 						</div>
 						<div class="col-lg-4 col-md-4 col-sm-6 mb-20">
 							<div class="single-related-product d-flex">
-								<a href="#"><img src="img/r5.jpg" alt=""></a>
+								<%-- <a href="#"><img src="img/r5.jpg" alt=""></a> --%>
 								<div class="desc">
 									<a href="#" class="title">Black lace Heels</a>
 									<div class="price">
@@ -390,7 +388,7 @@
 						</div>
 						<div class="col-lg-4 col-md-4 col-sm-6 mb-20">
 							<div class="single-related-product d-flex">
-								<a href="#"><img src="img/r6.jpg" alt=""></a>
+								<%-- <a href="#"><img src="img/r6.jpg" alt=""></a> --%>
 								<div class="desc">
 									<a href="#" class="title">Black lace Heels</a>
 									<div class="price">
@@ -402,7 +400,7 @@
 						</div>
 						<div class="col-lg-4 col-md-4 col-sm-6 mb-20">
 							<div class="single-related-product d-flex">
-								<a href="#"><img src="img/r7.jpg" alt=""></a>
+								<%-- <a href="#"><img src="img/r7.jpg" alt=""></a> --%>
 								<div class="desc">
 									<a href="#" class="title">Black lace Heels</a>
 									<div class="price">
@@ -414,7 +412,7 @@
 						</div>
 						<div class="col-lg-4 col-md-4 col-sm-6">
 							<div class="single-related-product d-flex">
-								<a href="#"><img src="img/r9.jpg" alt=""></a>
+								<%-- <a href="#"><img src="img/r9.jpg" alt=""></a> --%>
 								<div class="desc">
 									<a href="#" class="title">Black lace Heels</a>
 									<div class="price">
@@ -426,7 +424,7 @@
 						</div>
 						<div class="col-lg-4 col-md-4 col-sm-6">
 							<div class="single-related-product d-flex">
-								<a href="#"><img src="img/r10.jpg" alt=""></a>
+								<%-- <a href="#"><img src="img/r10.jpg" alt=""></a> --%>
 								<div class="desc">
 									<a href="#" class="title">Black lace Heels</a>
 									<div class="price">
@@ -438,7 +436,7 @@
 						</div>
 						<div class="col-lg-4 col-md-4 col-sm-6">
 							<div class="single-related-product d-flex">
-								<a href="#"><img src="img/r11.jpg" alt=""></a>
+								<%-- <a href="#"><img src="img/r11.jpg" alt=""></a> --%>
 								<div class="desc">
 									<a href="#" class="title">Black lace Heels</a>
 									<div class="price">
@@ -453,7 +451,7 @@
 				<div class="col-lg-3">
 					<div class="ctg-right">
 						<a href="#" target="_blank">
-							<img class="img-fluid d-block mx-auto" src="$SiteConfig.SuperSaleImage.getURL()" alt="">
+							<%-- <img class="img-fluid d-block mx-auto" src="$SiteConfig.SuperSaleImage.getURL()" alt=""> --%>
 						</a>
 					</div>
 				</div>

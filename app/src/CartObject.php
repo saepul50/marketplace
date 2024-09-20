@@ -10,6 +10,7 @@ use SilverStripe\Security\Member;
             'ProductCategoryId' => 'Int',
             'ProductVariant' => 'Text',
             'ProductVariantID' => 'Int',
+            'ProductVariantWeight' => 'Float',
             'ProductPrice' => 'Text',
             'ProductQuantity' => 'Int'
         ];
