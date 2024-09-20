@@ -2,7 +2,45 @@
 $(document).ready(function () {
   "use strict";
 
+  $("#filtera").change(function (event) {
+    event.preventDefault(); // Prevents the form from doing a default refresh
 
+    $.post("/marketplace/shopcategory/filter", {
+      select: $("#filtera").val(),
+    })
+      .done(function (data) {
+        var response = JSON.parse(data);
+        if (response.success) {
+          Swal.fire({
+            title: "SUCCESS",
+            text: "Success",
+            icon: "success",
+            timer: 1000
+          })
+          setInterval(href, 1000);
+
+          function href() {
+            location.reload();
+          }
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: response.message,
+            showConfirmButton: false,
+            timer: 1500
+          });
+        }
+
+      }).fail(function () {
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: "There was an issue  Please try again later.",
+          confirmButtonColor: "#d33",
+        });
+      });
+    })
 
   const events = document.querySelectorAll('.event');
     events.forEach(event => {
@@ -21,6 +59,12 @@ $(document).ready(function () {
     });
 
   
+    const myForm = $("#myForm");
+    $(".submit").click(function(){
+
+      myForm.submit();
+
+    });
 
 
 
@@ -1202,4 +1246,15 @@ function saveSelectionAndSubmit() {
 
   ratingFilter.form.submit();
 }
+// function submitForm(){
+//   const filter = document.getElementById('filtera');
+//   localStorage.setItem('ShowFilter', filter.value);
+//   document.getElementById('myForm').submit();
+// }
+function submitForm2(){
+  const filter = document.getElementById('filteras');
+  localStorage.setItem('ShowFilter', filter.value);
+  document.getElementById('myForm1').submit();
+}
+
 
