@@ -2,6 +2,8 @@
 $(document).ready(function () {
   "use strict";
 
+
+
   const events = document.querySelectorAll('.event');
     events.forEach(event => {
       const icon = '<i class="lnr lnr-calendar-full"></i>'
@@ -19,6 +21,9 @@ $(document).ready(function () {
     });
 
   
+
+
+
   $("#blogcomment").submit(function (event) {
     event.preventDefault(); // Prevents the form from doing a default refresh
 
@@ -125,7 +130,67 @@ $(document).ready(function () {
   })
 
 
+  $("#reviewform").submit(function (event) {
+    event.preventDefault();
+    const rating = document.getElementById("ratingValue");
+    let angka = rating.getAttribute('value');
+    console.log(angka);
+    if(parseInt(angka) === 0 ){
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Input Rating First",
+        showConfirmButton: false,
+      });
+    } else {
+          $.post("/marketplace/productdetails/review", {
+              Review: $("#reviewmsg").val(),  
+              Rating: $("#ratingValue").val(),
+              ID: $("#ID").val(),
+          })
+          .done(function (data) {
+              var response = JSON.parse(data);
+              if (response.success) {
+                  Swal.fire({
+                      title: "SUCCESS",
+                      text: "Review submitted successfully!",
+                      icon: "success",
+                      timer: 1000,
+                    });
+                    document.getElementById('reviewmsg').value=null;
+                    stars.forEach((s) => s.classList.remove("one", 
+                      "two", 
+                      "three", 
+                      "four", 
+                      "five", 
+                      "selected"));
+                      setInterval(href, 1500);
 
+                    function href() {
+                      location.reload();
+                    }
+              } else {
+                  Swal.fire({
+                      icon: "error",
+                      title: "Oops...",
+                      text: response.message,
+                      showConfirmButton: false,
+                      timer: 1500
+                  });
+              }
+          })
+          .fail(function () {
+              Swal.fire({
+                  icon: "error",
+                  title: "Error",
+                  text: "There was an issue submitting the review. Please try again later.",
+                  confirmButtonColor: "#d33"
+              });
+          });
+  
+          // return false; // Ensure no form refresh
+        }
+      });
   // PRODUCT
   $("#kkls").submit(function (event) {
     event.preventDefault(); // Prevents the form from doing a default refresh
@@ -250,6 +315,55 @@ $(document).ready(function () {
       enabled: true
     }
   });
+
+
+    // refresh not delete tabs 
+
+ 
+
+    const SelectedTabs = localStorage.getItem('SelectedTabs');
+    if (SelectedTabs) {
+      const tabs = document.querySelectorAll('.nav-link.nav-linked');
+      if (tabs.length > 0) {
+       tabs.forEach(tab =>{
+        if(tab.getAttribute('value') === SelectedTabs){
+          tab.classList.add('active');
+        } else{
+          tab.classList.remove("active");
+        }
+       })
+      }
+    }
+    const SelectedContent = localStorage.getItem('SelectedContent');
+    if (SelectedContent) {
+      const tabs = document.querySelectorAll('div.tab-pane');
+      if (tabs.length > 0) {
+       tabs.forEach(tab =>{
+        if(tab.getAttribute('id') === SelectedContent){
+          tab.classList.add("show","active");
+        } else{
+          tab.classList.remove("show","active");
+        }
+       })
+      }
+    }
+    $("#myTab").click(function () {
+      const activeTab = document.querySelector('.nav-link.nav-linked.active');
+      if (activeTab) {
+        let value = activeTab.getAttribute('value');
+        localStorage.setItem('SelectedTabs', value);
+      } else {
+        console.log("No active tab found.");
+      }
+
+      const contenttab = document.querySelector('div.tab-pane.active');
+      if (contenttab) {
+        var sam = contenttab.getAttribute('id');
+        localStorage.setItem('SelectedContent', sam);
+      } else {
+        console.log("No active tab found.");
+      }
+    });
 
   // Search Toggle
   $("#search_input_box").hide();
@@ -1014,4 +1128,78 @@ $(document).ready(function () {
 
 
 });
+
+const stars = document.querySelectorAll(".star");
+const rating = document.getElementById("rating");
+const ratingDisplay = document.getElementById('rating');
+const ratingValueInput = document.getElementById('ratingValue');
+
+stars.forEach((star) => {
+    star.addEventListener("click", () => {
+        const value = parseInt(star.getAttribute("data-value"));
+        rating.innerText = value;
+
+        // Remove all existing classes from stars
+        stars.forEach((s) => s.classList.remove("one", 
+                                                "two", 
+                                                "three", 
+                                                "four", 
+                                                "five"));
+
+        // Add the appropriate class to 
+        // each star based on the selected star's value
+        stars.forEach((s, index) => {
+            if (index < value) {
+                s.classList.add(getStarColorClass(value));
+            }
+        });
+
+        // Remove "selected" class from all stars
+        stars.forEach((s) => s.classList.remove("selected"));
+        // Add "selected" class to the clicked star
+        star.classList.add("selected");
+    });
+});
+
+
+function getStarColorClass(value) {
+    switch (value) {
+        case 1:
+            return "one";
+        case 2:
+            return "two";
+        case 3:
+            return "three";
+        case 4:
+            return "four";
+        case 5:
+            return "five";
+        default:
+            return "";
+    }
+}
+
+
+stars.forEach(star => {
+  star.addEventListener('click', function() {
+    const rating = this.getAttribute('data-value');
+    ratingDisplay.textContent = rating; // Update the displayed rating
+    ratingValueInput.value = rating;    // Set the hidden input value for form submission
+
+    // Highlight the selected stars
+    stars.forEach(s => {
+      s.classList.remove('selected');
+    });
+    for (let i = 0; i < rating; i++) {
+      stars[i].classList.add('selected');
+    }
+  });
+});
+
+function saveSelectionAndSubmit() {
+  const ratingFilter = document.getElementById('rating-filter');
+  localStorage.setItem('selectedSort', ratingFilter.value);
+
+  ratingFilter.form.submit();
+}
 

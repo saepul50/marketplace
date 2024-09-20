@@ -121,11 +121,6 @@ class BlogPageController extends PageController
             $counttotal = $countreply + $countcomment;
             $member = Member::get()->filter('ID', $comments->ID);
             $Createdby = BlogAdd::get()->column('CreatedBy');
-
-
-            
-            
-            
             $latestpost = BlogAdd::get()->sort('Created', 'DESC');
             $popularpost = BlogAdd::get()->sort('ViewCount', 'DESC');
             foreach ($comments as $comment) {
@@ -133,7 +128,7 @@ class BlogPageController extends PageController
             }
             $previousblog = BlogAdd::get()->filter('ID:LessThan', $k)->sort('ID DESC')->first();
             $nextblog = BlogAdd::get()->filter('ID:GreaterThan', $k)->sort('ID ASC')->first();
-            // Debug::show($nextblog);
+            // Debug::show($member);
 
             if ($contents) {
                 $categories = $contents->BlogCategories();
