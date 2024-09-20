@@ -86,12 +86,12 @@ use SilverStripe\View\Requirements;
     public function rangePriceDiscounted() {
         $variants = $this->ProductVariants();
         $promotion = $this->Promotion()->first()->PromoPrice;
-        if ($variants->exists()) {
+        if ($variants->exists() && $promotion) {
             $prices = $variants->column('Price');
             $minPrice = min($prices);
             $maxPrice = max($prices);
             if($minPrice == $maxPrice) {
-                return 'Rp. ' . number_format($maxPrice, 0, '', '.');
+                return 'Rp. ' . number_format($maxPrice * (1 - $promotion / 100), 0, '', '.');
             }
             return 'Rp. ' . number_format($minPrice * (1 - $promotion / 100), 0, '', '.') . ' - Rp. ' . number_format($maxPrice * (1 - $promotion / 100), 0, '', '.');
         }

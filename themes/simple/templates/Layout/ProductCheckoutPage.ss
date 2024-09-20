@@ -123,8 +123,6 @@
                                     <a>$ProductTitle <% if $ProductVariant %>($ProductVariant)<% end_if %> 
                                         <span class="last" id="variantP" data-weight="$ProductVariantWeight">x $ProductQuantity &nbsp;&nbsp; $ProductPrice</span>
                                     </a>
-                                    <label id="time" class="d-none"></label>
-                                    <label id="orderID" class=""></label>
                                     <p class="d-none" id="productID">$ProductID</p>
                                     <p class="d-none" id="productTitle">$ProductTitle</p>
                                     <p class="d-none" id="productCartID">$ProductCartID</p>
@@ -140,6 +138,8 @@
                             <% end_loop %>
                         </ul>
                         <ul class="list list_2">
+                            <label id="time" class="d-none"></label>
+                            <label id="orderID" class="d-none"></label>
                             <li><a>Subtotal <span id="subTotalPriceProduct"><% loop $CheckoutProductData %><% if $Pos == 1 %>$ProductSubTotalPrice<% end_if %><% end_loop %></span></a></li>
                             <%-- <li><a>Subtotal <span><% loop $CheckoutProductData %><% if $Pos == 1 %>$ProductSubTotalNFPrice<% end_if %><% end_loop %></span></a></li> --%>
                             <li><a>Shipping <span id="shippingProduct"></span></a></li>

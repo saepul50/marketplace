@@ -25,7 +25,7 @@
 								<li class="nav-item"><a class="nav-link" href="{$BaseHref}/productdetails">Product Details</a></li>
 								<li class="nav-item"><a class="nav-link" href="{$BaseHref}/productcheckout">Product Checkout</a></li>
 								<li class="nav-item"><a class="nav-link" href="{$BaseHref}/cart">Shopping Cart</a></li>
-								<li class="nav-item"><a class="nav-link" href="{$BaseHref}/confirm">Confirmation</a></li>
+								<li class="nav-item"><a class="nav-link" href="{$BaseHref}/confirm">Shopping History</a></li>
 							</ul>
 						</li>
 						<li class="nav-item submenu dropdown">

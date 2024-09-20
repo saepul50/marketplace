@@ -27,4 +27,43 @@ use SilverStripe\Security\Member;
         private static $summary_fields = [
             'ProductTitle' => 'Product Name'
         ];
+        private static $default_sort = 'Created DESC';
+        public function getCMSFields() {
+            $fields = parent::getCMSFields();
+            
+            foreach ($fields->dataFields() as $field) {
+                $field->setReadonly(true);
+            }
+    
+            return $fields;
+        }
+        public function getOrderStatus(){
+            if ($this->HeaderCheckout()->exists()) {
+                return $this->HeaderCheckout()->Status;
+            }
+            return null;
+        }
+        public function updateStock() {
+            $variant = ProductVariantObject::get()->byID($this->VariantID);
+            if ($variant) {
+                // Debug::show($variant->Stock);
+                // die();
+                if ($variant->Stock >= $this->Quantity) {
+                    $variant->Stock -= $this->Quantity;
+                } else {
+                }
+            
+                $variant->write();
+            }
+        }
+        public function updateSold() {
+            $product = ProductObject::get()->byID($this->ProductID);
+            if ($product) {
+                // Debug::show($variant->Stock);
+                // die();
+                $product->QuantitySold += $this->Quantity;
+            
+                $product->write();
+            }
+        }
     }

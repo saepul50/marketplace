@@ -574,7 +574,7 @@ class ProductCheckoutPageController extends PageController{
                                 $checkoutHeader->CustomerHandphone = $CustomerHandphone;
                                 $checkoutHeader->CustomerAddress = $CustomerAddress;
                                 $checkoutHeader->CustomerNotes = $CustomerNotes;
-                                $checkoutHeader->FinalPrice = $finalPrice;
+                                $checkoutHeader->FinalPrice = $ProductFinalPrice;
                                 $checkoutHeader->Bank = $PaymentSelected;
                                 $checkoutHeader->TimeCheckout = $TimeCheckout;
                                 $checkoutHeader->PaymentMethod = $PaymentMethode;
@@ -626,6 +626,8 @@ class ProductCheckoutPageController extends PageController{
             $CustomerAddress = $postData[0]['CustomerAddress'];
             $CustomerNotes = $postData[0]['CustomerNotes'];
             $merchantOrderId = $postData[0]['OrderID'];
+            // Debug::show($postData[0]);
+            // die();
             if ($postData) {
                 $products = $postData;
                 if (!empty($products)) {
@@ -708,7 +710,7 @@ class ProductCheckoutPageController extends PageController{
                                 $checkoutHeader->CustomerHandphone = $CustomerHandphone;
                                 $checkoutHeader->CustomerAddress = $CustomerAddress;
                                 $checkoutHeader->CustomerNotes = $CustomerNotes;
-                                $checkoutHeader->FinalPrice = $finalPrice;
+                                $checkoutHeader->FinalPrice = $ProductFinalPrice;
                                 $checkoutHeader->Bank = $PaymentSelected;
                                 $checkoutHeader->TimeCheckout = $TimeCheckout;
                                 $checkoutHeader->PaymentMethod = $PaymentMethode;
@@ -853,7 +855,7 @@ class ProductCheckoutPageController extends PageController{
                                 $checkoutHeader->CustomerHandphone = $CustomerHandphone;
                                 $checkoutHeader->CustomerAddress = $CustomerAddress;
                                 $checkoutHeader->CustomerNotes = $CustomerNotes;
-                                $checkoutHeader->FinalPrice = $finalPrice;
+                                $checkoutHeader->FinalPrice = $ProductFinalPrice;
                                 $checkoutHeader->Bank = $PaymentSelected;
                                 $checkoutHeader->TimeCheckout = $TimeCheckout;
                                 $checkoutHeader->PaymentMethod = $PaymentMethode;

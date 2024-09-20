@@ -812,9 +812,12 @@ $(document).ready(function () {
           var formData = new FormData();
           var fileInput = $('#transfer-image')[0].files[0];
           // console.log(formData)
-          var paymentGate = '';
-          var timeCheckout = $(".listDataProduct").find('#time').text();
-          var orderID = $(".listDataProduct").find('#orderID').text();
+          var paymentGate = $("input[name='selectorpaymentgate']:checked").val();
+          var timeCheckout = $(".list_2").find('#time').text();
+          var orderID = $(".list_2").find('#orderID').text();
+          // console.log(timeCheckout)
+          // console.log(orderID)
+          // return false;
           for (const item of $(".listDataProduct")) {
             var productData = {
               ProductID: $(item).find('#productID').text(),
@@ -859,7 +862,7 @@ $(document).ready(function () {
                   iziToast.success({
                       icon: 'fa fa-shipping-fast',
                       timeout: 3500,
-                      title: 'Pesanan Telah Dibuat Pesananmu Akan dikirim Secepatnya',
+                      title: 'Pesanan Telah Dibuat dan Akan dikirim Secepatnya',
                       position: 'bottomRight',
                       onClosed: function () {
                           return false;
@@ -940,7 +943,7 @@ $(document).ready(function () {
           });
         } else{
           var formData = new FormData();
-          var paymentGate = $("input[name='selectorpaymentgate']:checked").val();
+          var paymentGate = '';
           var timeCheckout = $(".listDataProduct").find('#time').text();
           var orderID = $(".listDataProduct").find('#orderID').text();
           for (const item of $(".listDataProduct")) {
@@ -1176,6 +1179,10 @@ $(document).ready(function () {
   $("input[name='selectorpaymentgate']").on('change', function() {
     SelectorPaymentGate();
   });
+  $(document).on('change', "input[name='selectorCost']", function() {
+    // alert("ds");
+    fetchcost();
+  });
   function SelectorPaymentGate() {
     var selectedPayment = $("input[name='selectorpaymentgate']:checked").val();
     if(selectedPayment === "bca"){
@@ -1310,7 +1317,7 @@ $(document).ready(function () {
   function callOrderID(){
     const orderID = generateOrderID();
 
-    $('.listDataProduct').each(function () {
+    $('.list_2').each(function () {
         $(this).find('#orderID').text(orderID);
     });
   }
@@ -1348,7 +1355,7 @@ $(document).ready(function () {
     
     var formattedTime = `${day}/${month}/${year}   ${hours}:${minutes}:${seconds}`;
     
-    $('.listDataProduct').each(function () {
+    $('.list_2').each(function () {
         $(this).find('#time').text(formattedTime);
     });
   }
@@ -1417,6 +1424,48 @@ $(document).ready(function () {
   $('.productCheckbox').on('change', function() {
     updateSubtotal();
   });
+  function showSection(sectionId, navItem) {
+    $('.Semua, .Pending, .Proses, .Selesai, .Canceled').hide();
+    $(sectionId).show();
+    $('.navi-item').removeClass('active');
+    $(navItem).addClass('active');
+  }
+  $('#navSemua').click(function() {
+      showSection('#semua', '#navSemua');
+      toggleOrderDetail(false);
+  });
+  $('#navPending').click(function() {
+      showSection('#pending', '#navPending');
+      toggleOrderDetail(false);
+  });
+  $('#navProses').click(function() {
+      showSection('#proses', '#navProses');
+      toggleOrderDetail(false);
+  });
+  $('#navSelesai').click(function() {
+      showSection('#selesai', '#navSelesai');
+      toggleOrderDetail(false);
+  });
+  $('#navCanceled').click(function() {
+      showSection('#canceled', '#navCanceled');
+      toggleOrderDetail(false);
+  });
+
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.has('detailOrder')) {
+      toggleOrderDetail(true);
+  } else {
+      $('#navSemua').click();
+  }
+  function toggleOrderDetail(showDetail) {
+    if (showDetail) {
+        $('#myOrder').hide();
+        $('#detailOrder').show();
+    } else {
+        $('#myOrder').show();
+        $('#detailOrder').hide();
+    }
+  }
   function formatNumber(number) {
     let parts = number.toString().split('.');
     let integerPart = parts[0];

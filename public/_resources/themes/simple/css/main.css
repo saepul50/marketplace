@@ -4774,7 +4774,7 @@ label {
     border-radius: 2px; }
     .order_box .primary-btn:hover:before {
       left: 310px; }
-
+      
 .order_details .title_confirmation {
   text-align: center;
   color: #28d500;
@@ -4804,7 +4804,38 @@ label {
         width: 145px;
         display: inline-block;
         color: #777777; }
-
+.myorder{
+  display: none;
+  .navihistory{
+    position: relative;
+    .navi-item {
+        font-size: 110%;
+        position: relative;
+        cursor: pointer;
+        padding: 0.5rem 1rem;
+    }
+    .navi-item.active {
+        color: darkorange;
+        transition: color .3s ease-in-out;
+    }
+    .navi-item::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background-color: darkorange;
+        transition: width .3s ease-in-out;
+    }
+    .navi-item.active::after {
+        width: 100%;
+    }
+    .navi-item:not(.active) {
+        color: #000;
+    }
+  }
+}
 .order_details_table {
   background: #e5ecee;
   padding: 30px;
