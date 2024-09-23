@@ -22,6 +22,7 @@ class CustomSiteConfig extends Extension
         'LoginImage' => Image::class,
         'Favicon' => Image::class,
         'HotDealImage' => Image::class,
+        'Unknown' => Image::class,
         
     ];
     private static $owns = [
@@ -33,6 +34,7 @@ class CustomSiteConfig extends Extension
         'Favicon',
         'InstagramImage',
         'HotDealImage',
+        'Unknown',
 
     ];
     private static $many_many = [
@@ -46,6 +48,7 @@ class CustomSiteConfig extends Extension
         $fields->addFieldToTab('Root.Main', TextField::create('Alamat', 'Alamat'));
         $fields->addFieldToTab('Root.Main', TextField::create('Nomer', 'Nomer'));
         $fields->addFieldToTab('Root.Main', UploadField::create('Image', 'Image Navbar'));
+        $fields->addFieldToTab('Root.Main', UploadField::create('Unknown', 'Static Profil User'));
         $fields->addFieldToTab('Root.Main', UploadField::create('HomeImage', 'Home Image'));
         $fields->addFieldToTab('Root.Main', UploadField::create('Background', 'Background Banner'));
         $fields->addFieldToTab('Root.Main', UploadField::create('SuperSaleImage', 'Deals Of the Week Image'));

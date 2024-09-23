@@ -1,6 +1,38 @@
 <% require themedJavascript('main') %>
+	<style>
+		.stars {
+			font-size: 30px;
+
+		}
+
+		.star {
+			cursor: pointer;
+			margin: 0 5px;
+		}
+
+		.one {
+			color: #ffff06;
+		}
+
+		.two {
+			color: #ffff06;
+		}
+
+		.three {
+			color: #ffff06;
+		}
+
+		.four {
+			color: #ffff06;
+		}
+
+		.five {
+			color: #ffff06;
+		}
+	</style>
 	<!-- Start Banner Area -->
-	<section class="banner-area organic-breadcrumb" style ="background: url($SiteConfig.Background.getURL()) center no-repeat;background-size: cover; position: relative ">
+	<section class="banner-area organic-breadcrumb"
+		style="background: url($SiteConfig.Background.getURL()) center no-repeat;background-size: cover; position: relative ">
 		<div class="container">
 			<div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
 				<div class="col-first">
@@ -15,54 +47,60 @@
 		</div>
 	</section>
 	<!-- End Banner Area -->
-<% if $Product %>
-	<!--================Single Product Area =================-->
-	<div class="product_image_area">
-		<div class="container">
-			<div class="row s_product_inner">
-				<div class="col-lg-6">
-					<div class="s_Product_carousel">
-						<% loop $Product.ProductImages %>
-							<div class="single-prd-item">
-								<img src="$URL" alt="$Product.ProductImages.First.Title" class="img-fluid" style="object-fit: cover;">
-							</div>
-						<% end_loop %>
+	<% if $Product %>
+		<!--================Single Product Area =================-->
+		<div class="product_image_area">
+			<div class="container">
+				<div class="row s_product_inner">
+					<div class="col-lg-6">
+						<div class="s_Product_carousel">
+							<% loop $Product.ProductImages %>
+								<div class="single-prd-item ">
+									<img src="$URL" alt="$Product.ProductImages.First.Title" class="img-fluid"
+										style="object-fit: cover;">
+								</div>
+								<% end_loop %>
+						</div>
 					</div>
-				</div>
-				<% with $Product.ProductImages.First %>
-					<img id="productImage" src="$URL" class="img-fluid" style="display: none;">
-				<% end_with %>
-				<div class="col-lg-5 offset-lg-1">
-					<div class="s_product_text mt-0">
-						<h3 id="productTitle">$Product.Title</h3>
-						<p class="d-none" id="productId">$Product.ID</p>
-						<p class="d-none" id="productCategoriID">$Product.ProductCategory.ID</p>
-						<% if $Product.Promotion %>
-							<h2 class="mb-1 ppprice">$Product.rangePriceDiscounted</h2>
-							<h6 class="l-through my-1 nnprice">$Product.rangePrice</h6>
-						<% else %>
-							<h2 class="ppprice" id="productPrice">$Product.rangePrice</h2>					
-						<% end_if %>
-						<ul class="list">
-							<% if $Product.ProductCategory && $Product.totalStock > 0 %>
-								<li><a class="active" href="#"><span>Category</span> : $Product.ProductCategory.Title</a></li>
-								<li><a href="#"><span>Availibility</span> : In Stock</a></li>
-							<% else_if $Product.totalStock < 1 %>
-								<li><a class="active" href="#"><span>Category</span> : $Product.ProductCategory.Title</a></li>
-								<li><a href="#"><span>Availibility</span> : Out Of Stock</a></li>
-							<% end_if %>
-						</ul>
-						<p class="m-0 p-0 py-3">$Product.Features</p>
-						<div class="product_count mb-3">
-							<label for="qty">Quantity:</label>
-							<input type="text" name="qty" id="sst" maxlength="12" value="1" title="Quantity:" class="input-text qty" 
-								onkeypress="return event.charCode >= 48 && event.charCode <= 57" 
-								oninput="var sst = parseInt(this.value); if (isNaN(sst) || sst < 1) this.value = 1;">
+					<% with $Product.ProductImages.First %>
+						<img id="productImage" src="$URL" class="img-fluid" style="display: none;">
+						<% end_with %>
+							<div class="col-lg-5 offset-lg-1">
+								<div class="s_product_text mt-0">
+									<h3 id="productTitle">$Product.Title</h3>
+									<p class="d-none" id="productId">$Product.ID</p>
+									<p class="d-none" id="productCategoriID">$Product.ProductCategory.ID</p>
+									<% if $Product.Promotion %>
+										<h2 class="mb-1 ppprice">$Product.rangePriceDiscounted</h2>
+										<h6 class="l-through my-1 nnprice">$Product.rangePrice</h6>
+										<% else %>
+											<h2 class="ppprice" id="productPrice">$Product.rangePrice</h2>
+											<% end_if %>
+												<ul class="list">
+													<% if $Product.ProductCategory && $Product.totalStock> 0 %>
+														<li><a class="active" href="#"><span>Category</span> :
+																$Product.ProductCategory.Title</a></li>
+														<li><a href="#"><span>Availibility</span> : In Stock</a></li>
+														<% else_if $Product.totalStock < 1 %>
+															<li><a class="active" href="#"><span>Category</span> :
+																	$Product.ProductCategory.Title</a></li>
+															<li><a href="#"><span>Availibility</span> : Out Of Stock</a>
+															</li>
+															<% end_if %>
+												</ul>
+												<p class="m-0 p-0 py-3">$Product.Features</p>
+												<div class="product_count mb-3">
+													<label for="qty">Quantity:</label>
+													<input type="text" name="qty" id="sst" maxlength="12" value="1"
+														title="Quantity:" class="input-text qty"
+														onkeypress="return event.charCode >= 48 && event.charCode <= 57"
+														oninput="var sst = parseInt(this.value); if (isNaN(sst) || sst < 1) this.value = 1;">
 
-							<button onclick="var result = document.getElementById('sst'); var sst = parseInt(result.value); if (!isNaN(sst)) result.value = sst + 1; return false;" 
-									class="increase items-count" type="button">
-								<i class="lnr lnr-chevron-up"></i>
-							</button>
+													<button
+														onclick="var result = document.getElementById('sst'); var sst = parseInt(result.value); if (!isNaN(sst)) result.value = sst + 1; return false;"
+														class="increase items-count" type="button">
+														<i class="lnr lnr-chevron-up"></i>
+													</button>
 
 							<button onclick="var result = document.getElementById('sst'); var sst = parseInt(result.value); if (!isNaN(sst) && sst > 1) result.value = sst - 1; return false;" 
 									class="reduced items-count" type="button" style="bottom: 0;">
@@ -88,38 +126,44 @@
 	</div>
 	<!--================End Single Product Area =================-->
 
-	<!--================Product Description Area =================-->
-	<section class="product_description_area">
-		<div class="container">
-			<ul class="nav nav-tabs" id="myTab" role="tablist">
-				<li class="nav-item">
-					<a class="nav-link nav-linked" id="home-tab" data-toggle="tab" href="home" role="tab" aria-controls="home" aria-selected="true">Description</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link nav-linked" id="profile-tab" data-toggle="tab" href="profile" role="tab" aria-controls="profile"
-					 aria-selected="false">This Product</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link nav-linked" id="contact-tab" data-toggle="tab" href="contact" role="tab" aria-controls="contact"
-					 aria-selected="false">Comments</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link nav-linked active" id="review-tab" data-toggle="tab" href="review" role="tab" aria-controls="review"
-					 aria-selected="false">Reviews</a>
-				</li>
-			</ul>
-			<div class="tab-content" id="myTabContent">
-				<div class="tab-pane fade" id="home" role="tabpanel" aria-labelledby="home-tab">
-					<p>$Product.Description</p>
-				</div>
-				<div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-					<div class=" d-flex px-3">
-						<div class="col-6 col-md-1">
-							<p class="m-0 pb-1">Eksplor:&nbsp;</p>
-						</div>
-						<div class="col-6 col-md-11">
-							<a href="" style="color: #ffba00; font-weight: 500;"><p class="m-0 pb-1">$Product.ProductBrands.Title</p></a>
-							<a href="" style="color: #ffba00; font-weight: 500;"><p class="m-0 pb-1">$Product.ProductCategory.Title</p></a>
+		<!--================Product Description Area =================-->
+		<section class="product_description_area">
+			<div class="container">
+				<ul class="nav nav-tabs" id="myTab" role="tablist">
+					<li class="nav-item">
+						<a class="nav-link nav-linked" name="tabs" id="home-tab" data-toggle="tab" href="home" role="tab"
+							aria-controls="home" aria-selected="true"value="Description">Description</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link nav-linked" name="tabs" id="profile-tab" data-toggle="tab" href="profile" role="tab"
+							aria-controls="profile" aria-selected="false" value="This Product">This Product</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link nav-linked"  name="tabs" id="contact-tab" data-toggle="tab" href="contact" role="tab"
+							aria-controls="contact" aria-selected="false" value="Comments">Comments</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link nav-linked"  name="tabs" id="review-tab" data-toggle="tab" href="review" role="tab"
+							aria-controls="review" aria-selected="false" value="Reviews">Reviews</a>
+					</li>
+				</ul>
+				<div class="tab-content" id="myTabContent">
+					<div class="tab-pane fade" id="home" role="tabpanel" aria-labelledby="home-tab">
+						<p>$Product.Description</p>
+					</div>
+					<div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+						<div class=" d-flex px-3">
+							<div class="col-6 col-md-1">
+								<p class="m-0 pb-1">Eksplor:&nbsp;</p>
+							</div>
+							<div class="col-6 col-md-11">
+								<a href="" style="color: #ffba00; font-weight: 500;">
+									<p class="m-0 pb-1">$Product.ProductBrands.Title</p>
+								</a>
+								<a href="" style="color: #ffba00; font-weight: 500;">
+									<p class="m-0 pb-1">$Product.ProductCategory.Title</p>
+								</a>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -253,9 +297,6 @@
 											<i class="fa fa-star"></i>
 										</div>
 									</div>
-									<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-										dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-										commodo</p>
 								</div>
 								<div class="review_item">
 									<div class="media">
@@ -294,34 +335,36 @@
 										<div class="form-group">
 											<input type="text" class="form-control" id="name" name="name" placeholder="Your Full name" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Your Full name'">
 										</div>
-									</div>
-									<div class="col-md-12">
-										<div class="form-group">
-											<input type="email" class="form-control" id="email" name="email" placeholder="Email Address" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Email Address'">
+										<div class="stars " id="stars">
+											<span class="star" data-value="1">★</span>
+											<span class="star" data-value="2">★</span>
+											<span class="star" data-value="3">★</span>
+											<span class="star" data-value="4">★</span>
+											<span class="star" data-value="5">★</span>
 										</div>
 									</div>
-									<div class="col-md-12">
-										<div class="form-group">
-											<input type="text" class="form-control" id="number" name="number" placeholder="Phone Number" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Phone Number'">
+									<form class="row contact_form" method="post" id="reviewform">
+										<div class="col-md-12">
+											<div class="form-group">
+												<textarea class="form-control" name="reviewmsg" id="reviewmsg" rows="1"
+													placeholder="Review" onfocus="this.placeholder = ''"
+													onblur="this.placeholder = 'Review'" required></textarea>
+												<input type="hidden" id="ratingValue" name="ratingValue" value="0">
+												<input type="hidden" id="ID" name="ID" value="$ID">
+											</div>
 										</div>
-									</div>
-									<div class="col-md-12">
-										<div class="form-group">
-											<textarea class="form-control" name="message" id="message" rows="1" placeholder="Review" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Review'"></textarea></textarea>
+										<div class="col-md-12 text-right">
+											<button type="submit" value="submit" class="primary-btn">Submit Now</button>
 										</div>
-									</div>
-									<div class="col-md-12 text-right">
-										<button type="submit" value="submit" class="primary-btn">Submit Now</button>
-									</div>
-								</form>
+									</form>
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-		</div>
-	</section>
-	<!--================End Product Description Area =================-->
+		</section>
+		<!--================End Product Description Area =================-->
 
 	<!-- Start related-product Area -->
 	<section class="related-product-area section_gap_bottom">

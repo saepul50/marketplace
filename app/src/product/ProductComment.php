@@ -2,17 +2,18 @@
 use SilverStripe\ORM\DataObject;
 use SilverStripe\Security\Member;
 
-class CommentReply extends DataObject{
+class ProductComment extends DataObject{
     private static $db = [
         'Comment' => 'Varchar',
-        'SendTo' => 'Varchar'
     ];
 
     private static $has_one = [
+        "ProductObject" => ProductObject::class,
         "Member" => Member::class,
-        "BlogComment" => BlogComment::class,
-        "BlogAdd" => BlogAdd::class,
     ];
 
+    private static $has_many = [
+        "CommentReply" => ProductReply::class,
+    ];
 
 }

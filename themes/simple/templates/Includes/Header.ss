@@ -33,7 +33,7 @@
 							 aria-expanded="false">Blog</a>
 							<ul class="dropdown-menu">
 								<li class="nav-item"><a class="nav-link" href="{$BaseHref}/blog">Blog</a></li>
-								<li class="nav-item"><a class="nav-link" href="{$BaseHref}/blog-detail">Blog Details</a></li>
+								<%-- <li class="nav-item"><a class="nav-link" href="{$BaseHref}/blog-detail">Blog Details</a></li> --%>
 							</ul>
 						</li>
 						<li class="nav-item submenu dropdown">

@@ -4,9 +4,10 @@
         <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
             <div class="col-first">
                 <h1>Blog Page</h1>
-                <nav class="d-flex align-items-center">
+                <nav class="d-flex align-items-center ">
                     <a href="{$BaseHref}">Home<span class="lnr lnr-arrow-right"></span></a>
-                    <a href="{$BaseHref}/blog">Blog</a>
+                    <a href="{$BaseHref}/blog">Blog<span class="lnr lnr-arrow-right"></a>
+                    <a href="#">Blog Detail</a>
                 </nav>
             </div>
         </div>
@@ -36,11 +37,11 @@
                                 <a href="#">$Title,</a>
                                 <% end_loop %>
                             </div>
-                            <ul class="blog_meta list">
-                                <li><a href="#">Mark wiens<i class="lnr lnr-user"></i></a></li>
-                                <li><a href="#">12 Dec, 2018<i class="lnr lnr-calendar-full"></i></a></li>
-                                <li><a href="#">1.2M Views<i class="lnr lnr-eye"></i></a></li>
-                                <li><a href="#">$Count Comments<i class="lnr lnr-bubble"></i></a></li>
+                            <ul class="blog_meta list event" data-date="$Created">
+                                <li><a href="#">$CreatedBy<i class="lnr lnr-user"></i></a></li>
+                                <li><a href="#" class="date"><i class="lnr lnr-calendar-full"></i></a></li>
+                                <li><a href="#">$ViewCount Views<i class="lnr lnr-eye"></i></a></li>
+                                <li><a href="#">$Up.Count Comments<i class="lnr lnr-bubble"></i></a></li>
                             </ul>
                             <ul class="social-links">
                                 <li><a href="#"><i class="fa fa-facebook"></i></a></li>
@@ -88,7 +89,7 @@
                         <% if $PrevBlog %>
                             <div class="col-lg-6 col-md-6 col-12 nav-left flex-row d-flex justify-content-start align-items-center">
                                 <div class="thumb">
-                                    <a href="{$BaseHref}/blog/$PrevBlog"><img class="img-fluid" src="$resourceURL('themes/simple/images/blog/prev.jpg')" alt=""></a>
+                                    <a href="{$BaseHref}/blog/$PrevBlog"><img class="" src="$ImagePrevBlog.getURL()" width="60" height="60" alt=""></a>
                                 </div>
                                 <div class="arrow">
                                     <a href="{$BaseHref}/blog/$PrevBlog"><span class="lnr text-white lnr-arrow-left"></span></a>
@@ -117,7 +118,7 @@
                                     <a href="{$BaseHref}/blog/$NextBlog"><span class="lnr text-white lnr-arrow-right"></span></a>
                                 </div>
                                 <div class="thumb">
-                                    <a href="{$BaseHref}/blog/$NextBlog"><img class="img-fluid" src="$resourceURL('themes/simple/images/blog/next.jpg')" alt=""></a>
+                                    <a href="{$BaseHref}/blog/$NextBlog"><img class="" src="$ImageNextBlog.getURL()" width="60" height="60"></a>
                                 </div>
                             </div>
                         <% else %>
@@ -137,12 +138,12 @@
                                             <% if $ProfileImage.exists %>
                                                 <img class="image" id="image" src="$ProfileImage.getURL()" alt="$Name's profile image">
                                             <% else %>
-                                                <img class="image" id="image" src="$resourceURL('themes/simple/images/blog/next.jpg')" alt="Default image">
+                                                <img class="image" id="image" src="$SiteConfig.Unknown.getURL()" alt="Default image">
                                             <% end_if %>
                                         <% end_with %>
                                     </div>
                                     <div class="desc">
-                                        <h5><a href="#">$Name</a></h5>
+                                        <h5><a href="#">$Member.FirstName</a></h5>
                                         <p class="date">$Created</p>
                                         <p class="comment">
                                             $Comment
@@ -150,19 +151,48 @@
                                     </div>
                                 </div>
                                 <div class="reply-btn">
-                                <button  class="btn-reply text-uppercase" data-toggle="modal" data-target="#exampleModal" data-commentid="$ID" data-name="$Name">Reply</button>
+                                <button  class="btn-reply text-uppercase" data-toggle="modal" data-target="#exampleModal" data-commentid="$ID" data-name="$Member.FirstName">Reply</button>
                                 </div>
                             </div>
                         </div>
+                        <% if $CommentReply.exists %>
+                            <% loop $CommentReply %>
+                                <div class="comment-list left-padding">
+                                    <div class="single-comment justify-content-between d-flex">
+                                        <div class="user justify-content-between d-flex">
+                                            <div class="thumb">
+                                                <% with $Member %>
+                                                    <% if $ProfileImage.exists %>
+                                                        <img class="image" id="image" src="$ProfileImage.getURL()" alt="$Name's profile image" width="60" height="60">
+                                                    <% else %>
+                                                        <img class="image" id="image" src="$resourceURL('themes/simple/images/blog/unknown.png')" alt="Default image">
+                                                    <% end_if %>
+                                                <% end_with %>
+                                            </div>
+                                            <div class="desc">
+                                                <h5><a href="#" id="takename">$Member.FirstName</a></h5>
+                                                <p class="date">$Created </p>
+                                                <p class="comment">
+                                                <b id="sendto">$SendTo</b> $Comment
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="reply-btn">
+                                            <a href="" class="btn-reply text-uppercase" data-toggle="modal" data-target="#exampleModal" data-commentid="$Up.ID" data-takename='#takename' data-name="$Member.FirstName">reply</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            <% end_loop %>
+                        <% end_if %>
+                    
                     <% end_loop %>
+                    
                 </div>
                 <div class="comment-form">
                     <h4>Leave a Comment</h4>
                     <form method="post" id="blogcomment">
                         <div class="form-group form-inline">
                             <div class="form-group col-lg-12 col-md-12 name">
-                                <input type="text" class="form-control" id="name" name="name" placeholder="Enter Name" onfocus="this.placeholder = ''"
-                                    onblur="this.placeholder = 'Enter Name'">
                                 <input type="hidden" id="BlogAddID" name="BlogAddID" value="$ID">
                             </div>
                         </div>
@@ -191,14 +221,13 @@
       <form method="post" id="replycomment">
       <div class="modal-body">
           <div class="form-group">
-            <label for="recipient-name" class="col-form-label">Name:</label>
-            <input type="text" class="form-control" id="name-reply">
-            <input type="hidden" id="BlogAddID-reply" name="BlogAddID-reply" value="$ID">
-            <input type="hidden" id="commentID-reply" name="commentID-reply" value="">
+            <input type="hidden" id="commentID-reply" name="commentID-reply" value="" >
+            <input type="hidden" id="nama-reply" name="nama-reply" value="" >
+            <input type="hidden" id="BlogAddID" name="BlogAddID" value="$ID">
           </div>
           <div class="form-group">
             <label for="message-text" class="col-form-label">Message:</label>
-            <textarea class="form-control" id="message-reply"></textarea>
+            <textarea class="form-control" id="message-reply" required></textarea>
           </div>
         </div>
         <div class="modal-footer">
@@ -211,101 +240,5 @@
 </div>
 
 
-<script>
-    $(document).ready(function(){
-  $("#blogcomment").submit(function (event) {
-    event.preventDefault(); // Prevents the form from doing a default refresh
 
-    $.post("{$BaseHref}/blog/handelComment", {
-        Name: $("#name").val(),
-        Message: $("#message").val(),
-        ID: $("#BlogAddID").val(),
-      })
-      .done(function (data) {
-        var response = JSON.parse(data);
-        if (response.success) {
-          Swal.fire({
-            title: "SUCCESS",
-            text: "Success",
-            icon: "success",
-          })
-          setInterval(href, 5000);
-
-          function href(){
-            location.reload(); 
-          }
-        } else {
-          Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text: response.message,
-            showConfirmButton: false,
-            timer: 1500
-          });
-        }
-
-      }).fail(function () {
-        Swal.fire({
-          icon: "error",
-          title: "Error",
-          text: "There was an issue  Please try again later.",
-          confirmButtonColor: "#d33",
-        });
-      });
-
-    return false; // Ensure no form submission (and thus no refresh)
-  });
-
-
-  $("#replycomment").submit(function (event) {
-    event.preventDefault(); // Prevents the form from doing a default refresh
-
-    $.post("{$BaseHref}/blog/handelreply", {
-        Name: $("#name-reply").val(),
-        Message: $("#message-reply").val(),
-        ID: $("#BlogAddID-reply").val(),
-      })
-      .done(function (data) {
-        var response = JSON.parse(data);
-        if (response.success) {
-          Swal.fire({
-            title: "SUCCESS",
-            text: "Success",
-            icon: "success",
-          })
-          setInterval(href, 5000);
-
-          function href(){
-            location.reload(); 
-          }
-        } else {
-          Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text: response.message,
-            showConfirmButton: false,
-            timer: 1500
-          });
-        }
-
-      }).fail(function () {
-        Swal.fire({
-          icon: "error",
-          title: "Error",
-          text: "There was an issue  Please try again later.",
-          confirmButtonColor: "#d33",
-        });
-      });
-
-    return false; // Ensure no form submission (and thus no refresh)
-  });
- 
- $( '.btn-reply').on('click', function (){
-    var CommentID = $(this).data('commentid');
-    var CommentName = $(this).data('name');
-    console.log(CommentID)
-    console.log(CommentName)
- })
-})
-</script>
 

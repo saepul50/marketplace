@@ -49,6 +49,8 @@ use SilverStripe\View\Requirements;
     private static $has_many = [
         'ProductVariants' => ProductVariantObject::class,
         'Promotion' => PromotionObject::class,
+        'BlogComment' => ProductComment::class,
+        'CommentReply' =>ProductReply::class,
     ];
     private static $default_sort = 'Created DESC';
     public function getFirstProductImage() {

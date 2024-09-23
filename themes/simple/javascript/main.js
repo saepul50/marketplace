@@ -2,6 +2,337 @@
 $(document).ready(function () {
   "use strict";
 
+  $("#filtera").change(function (event) {
+    event.preventDefault(); // Prevents the form from doing a default refresh
+
+    $.post("/marketplace/shopcategory/filter", {
+      select: $("#filtera").val(),
+    })
+      .done(function (data) {
+        var response = JSON.parse(data);
+        if (response.success) {
+          Swal.fire({
+            title: "SUCCESS",
+            text: "Success",
+            icon: "success",
+            timer: 1000
+          })
+          setInterval(href, 1000);
+
+          function href() {
+            location.reload();
+          }
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: response.message,
+            showConfirmButton: false,
+            timer: 1500
+          });
+        }
+
+      }).fail(function () {
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: "There was an issue  Please try again later.",
+          confirmButtonColor: "#d33",
+        });
+      });
+    })
+
+  const events = document.querySelectorAll('.event');
+    events.forEach(event => {
+      const icon = '<i class="lnr lnr-calendar-full"></i>'
+      const date = dayjs(event.dataset.date).format('D MMM YYYY');
+      const dateElement = event.querySelector('.date');
+      dateElement.innerHTML = `${date} ${icon}`;
+
+    });
+    const sidebar = document.querySelectorAll('.time-sidebar');
+    sidebar.forEach(event => {
+      const date = dayjs(event.dataset.date).format('D MMM YYYY');
+      const dateElement = event.querySelector('.date-sidebar');
+      dateElement.innerHTML = `${date}`;
+
+    });
+
+  
+    const myForm = $("#myForm");
+    $(".submit").click(function(){
+
+      myForm.submit();
+
+    });
+
+
+
+  $("#blogcomment").submit(function (event) {
+    event.preventDefault(); // Prevents the form from doing a default refresh
+
+    $.post("/blog/handelComment", {
+      Name: $("#name").val(),
+      Message: $("#message").val(),
+      ID: $("#BlogAddID").val(),
+    })
+      .done(function (data) {
+        var response = JSON.parse(data);
+        if (response.success) {
+          Swal.fire({
+            title: "SUCCESS",
+            text: "Success",
+            icon: "success",
+            timer: 1000
+          })
+          setInterval(href, 1500);
+
+          function href() {
+            location.reload();
+          }
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: response.message,
+            showConfirmButton: false,
+            timer: 1500
+          });
+        }
+
+      }).fail(function () {
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: "There was an issue  Please try again later.",
+          confirmButtonColor: "#d33",
+        });
+      });
+
+    return false; // Ensure no form submission (and thus no refresh)
+  });
+
+
+  $("#replycomment").submit(function (event) {
+    event.preventDefault(); // Prevents the form from doing a default refresh
+
+    $.post("/marketplace/blog/handelreply", {
+      Send: $("#nama-reply").val(),
+      Message: $("#message-reply").val(),
+      CommentID: $("#commentID-reply").val(),
+      ID: $("#BlogAddID").val(),
+    })
+      .done(function (data) {
+        var response = JSON.parse(data);
+        if (response.success) {
+          Swal.fire({
+            title: "SUCCESS",
+            text: "Success",
+            icon: "success",
+            timer: 1000
+          })
+          setInterval(href, 1500);
+
+          function href() {
+            location.reload();
+          }
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: response.message,
+            showConfirmButton: false,
+            timer: 1500
+          });
+        }
+
+      }).fail(function () {
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: "There was an issue  Please try again later.",
+          confirmButtonColor: "#d33",
+        });
+      });
+
+    return false; // Ensure no form submission (and thus no refresh)
+  });
+
+  $('.btn-reply').on('click', function () {
+    var CommentID = $(this).data('commentid');
+    var ReplyID = $(this).data('replyid');
+    var CommentName = $(this).data('name');
+    $('#commentID-reply').val(CommentID);
+  })
+
+  $('#exampleModal').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget)
+    var recipient = button.data('name')
+    $('#nama-reply').val(recipient);
+    var modal = $(this)
+    modal.find('.modal-title').text('New message to ' + recipient)
+  })
+
+
+  $("#reviewform").submit(function (event) {
+    event.preventDefault();
+    const rating = document.getElementById("ratingValue");
+    let angka = rating.getAttribute('value');
+    console.log(angka);
+    if(parseInt(angka) === 0 ){
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Input Rating First",
+        showConfirmButton: false,
+      });
+    } else {
+          $.post("/marketplace/productdetails/review", {
+              Review: $("#reviewmsg").val(),  
+              Rating: $("#ratingValue").val(),
+              ID: $("#ID").val(),
+          })
+          .done(function (data) {
+              var response = JSON.parse(data);
+              if (response.success) {
+                  Swal.fire({
+                      title: "SUCCESS",
+                      text: "Review submitted successfully!",
+                      icon: "success",
+                      timer: 1000,
+                    });
+                    document.getElementById('reviewmsg').value=null;
+                    stars.forEach((s) => s.classList.remove("one", 
+                      "two", 
+                      "three", 
+                      "four", 
+                      "five", 
+                      "selected"));
+                      setInterval(href, 1500);
+
+                    function href() {
+                      location.reload();
+                    }
+              } else {
+                  Swal.fire({
+                      icon: "error",
+                      title: "Oops...",
+                      text: response.message,
+                      showConfirmButton: false,
+                      timer: 1500
+                  });
+              }
+          })
+          .fail(function () {
+              Swal.fire({
+                  icon: "error",
+                  title: "Error",
+                  text: "There was an issue submitting the review. Please try again later.",
+                  confirmButtonColor: "#d33"
+              });
+          });
+  
+          // return false; // Ensure no form refresh
+        }
+      });
+  // PRODUCT
+  $("#kkls").submit(function (event) {
+    event.preventDefault(); // Prevents the form from doing a default refresh
+
+    $.post("/marketplace/productdetails/productcomment", {
+      Message: $("#slsd").val(),
+      ID: $("#asdasda").val(),
+    })
+      .done(function (data) {
+        var response = JSON.parse(data);
+        if (response.success) {
+          Swal.fire({
+            title: "SUCCESS",
+            text: "Success",
+            icon: "success",
+            timer: 1000
+          })
+          setInterval(href, 1500);
+
+          function href() {
+            location.reload();
+          }
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: response.message,
+            showConfirmButton: false,
+            timer: 1500
+          });
+        }
+
+      }).fail(function () {
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: "There was an issue  Please try again later.",
+          confirmButtonColor: "#d33",
+        });
+      });
+
+    return false; // Ensure no form submission (and thus no refresh)
+  });
+
+
+  $("#productcommentreply").submit(function (event) {
+    event.preventDefault(); // Prevents the form from doing a default refresh
+
+    $.post("/marketplace/productdetails/productreply", {
+      Send: $("#nama-reply").val(),
+      Message: $("#message-reply").val(),
+      CommentID: $("#productcommentid-reply").val(),
+      ID: $("#ProductObjectID").val(),
+    })
+      .done(function (data) {
+        var response = JSON.parse(data);
+        if (response.success) {
+          Swal.fire({
+            title: "SUCCESS",
+            text: "Success",
+            icon: "success",
+            timer: 1000
+          })
+          setInterval(href, 1000);
+
+          function href() {
+            location.reload();
+          }
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: response.message,
+            showConfirmButton: false,
+            timer: 1500
+          });
+        }
+
+      }).fail(function () {
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: "There was an issue  Please try again later.",
+          confirmButtonColor: "#d33",
+        });
+      });
+
+    return false; // Ensure no form submission (and thus no refresh)
+  });
+  $('#exampleModal').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget)
+    var recipient = button.data('name')
+    var CommentID = button.data('productcomentid')
+    $('#productcommentid-reply').val(CommentID);
+    $('#nama-reply').val(recipient);
+    var modal = $(this)
+    modal.find('.modal-title').text('New message to ' + recipient)
+  })
   var window_width = $(window).width(),
     window_height = window.innerHeight,
     header_height = $(".default-header").height(),
@@ -29,6 +360,55 @@ $(document).ready(function () {
     }
   });
 
+
+    // refresh not delete tabs 
+
+ 
+
+    const SelectedTabs = localStorage.getItem('SelectedTabs');
+    if (SelectedTabs) {
+      const tabs = document.querySelectorAll('.nav-link.nav-linked');
+      if (tabs.length > 0) {
+       tabs.forEach(tab =>{
+        if(tab.getAttribute('value') === SelectedTabs){
+          tab.classList.add('active');
+        } else{
+          tab.classList.remove("active");
+        }
+       })
+      }
+    }
+    const SelectedContent = localStorage.getItem('SelectedContent');
+    if (SelectedContent) {
+      const tabs = document.querySelectorAll('div.tab-pane');
+      if (tabs.length > 0) {
+       tabs.forEach(tab =>{
+        if(tab.getAttribute('id') === SelectedContent){
+          tab.classList.add("show","active");
+        } else{
+          tab.classList.remove("show","active");
+        }
+       })
+      }
+    }
+    $("#myTab").click(function () {
+      const activeTab = document.querySelector('.nav-link.nav-linked.active');
+      if (activeTab) {
+        let value = activeTab.getAttribute('value');
+        localStorage.setItem('SelectedTabs', value);
+      } else {
+        console.log("No active tab found.");
+      }
+
+      const contenttab = document.querySelector('div.tab-pane.active');
+      if (contenttab) {
+        var sam = contenttab.getAttribute('id');
+        localStorage.setItem('SelectedContent', sam);
+      } else {
+        console.log("No active tab found.");
+      }
+    });
+
   // Search Toggle
   $("#search_input_box").hide();
   $("#search").on("click", function () {
@@ -44,61 +424,61 @@ $(document).ready(function () {
   ============================*/
   $(".sticky-header").sticky();
 
-    /*=================================
-    Javascript for banner area carousel
-    ==================================*/
-    $(".active-banner-slider").owlCarousel({
-        items:1,
-        autoplay:true,
-        autoplayTimeout: 3000,
-        loop:true,
-        nav:true,
-        navText:[
-          "<img src='_resources/themes/simple/images/banner/prev.png'>",
-          "<img src='_resources/themes/simple/images/banner/next.png'>"
-        ],
-        dots:false
-    });
+  /*=================================
+  Javascript for banner area carousel
+  ==================================*/
+  $(".active-banner-slider").owlCarousel({
+    items: 1,
+    autoplay: true,
+    autoplayTimeout: 3000,
+    loop: true,
+    nav: true,
+    navText: [
+      "<img src='_resources/themes/simple/images/banner/prev.png'>",
+      "<img src='_resources/themes/simple/images/banner/next.png'>"
+    ],
+    dots: false
+  });
 
-    /*=================================
-    Javascript for product area carousel
-    ==================================*/
-    $(".active-product-area").owlCarousel({
-        items:1,
-        autoplay:false,
-        autoplayTimeout: 5000,
-        loop:true,
-        nav:true,
-        navText:[
-          "<img src='_resources/themes/simple/images/banner/prev.png'>",
-          "<img src='_resources/themes/simple/images/banner/next.png'>"
-        ],
-        dots:false
-    });
+  /*=================================
+  Javascript for product area carousel
+  ==================================*/
+  $(".active-product-area").owlCarousel({
+    items: 1,
+    autoplay: false,
+    autoplayTimeout: 5000,
+    loop: true,
+    nav: true,
+    navText: [
+      "<img src='_resources/themes/simple/images/banner/prev.png'>",
+      "<img src='_resources/themes/simple/images/banner/next.png'>"
+    ],
+    dots: false
+  });
 
-    /*=================================
-    Javascript for single product area carousel
-    ==================================*/
-    $(".s_Product_carousel").owlCarousel({
-      items:1,
-      autoplay:false,
-      autoplayTimeout: 5000,
-      loop:true,
-      nav:false,
-      dots:true
-    });
-    
-    /*=================================
-    Javascript for exclusive area carousel
-    ==================================*/
-    $(".active-exclusive-product-slider").owlCarousel({
-        items:1,
-        autoplay:false,
-        autoplayTimeout: 5000,
-        loop:true,
-        nav:true,
-        dots:false
-    });
+  /*=================================
+  Javascript for single product area carousel
+  ==================================*/
+  $(".s_Product_carousel").owlCarousel({
+    items: 1,
+    autoplay: false,
+    autoplayTimeout: 5000,
+    loop: true,
+    nav: false,
+    dots: true
+  });
+
+  /*=================================
+  Javascript for exclusive area carousel
+  ==================================*/
+  $(".active-exclusive-product-slider").owlCarousel({
+    items: 1,
+    autoplay: false,
+    autoplayTimeout: 5000,
+    loop: true,
+    nav: true,
+    dots: false
+  });
 
   //--------- Accordion Icon Change ---------//
 
@@ -594,6 +974,214 @@ $(document).ready(function () {
       iziToast.error({title: 'Error', message: 'Terjadi Kesalahan', position: 'bottomRight'});
     });
   });
+
+      $("#blogcomment").submit(function (event) {
+        event.preventDefault(); // Prevents the form from doing a default refresh
+    
+        $.post("/blog/handelComment", {
+            Name: $("#name").val(),
+            Message: $("#message").val(),
+            ID: $("#BlogAddID").val(),
+          })
+          .done(function (data) {
+            var response = JSON.parse(data);
+            if (response.success) {
+              Swal.fire({
+                title: "SUCCESS",
+                text: "Success",
+                icon: "success",
+                timer: 1000
+              })
+              setInterval(href, 1500);
+    
+              function href(){
+                location.reload(); 
+              }
+            } else {
+              Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: response.message,
+                showConfirmButton: false,
+                timer: 1500
+              });
+            }
+    
+          }).fail(function () {
+            Swal.fire({
+              icon: "error",
+              title: "Error",
+              text: "There was an issue  Please try again later.",
+              confirmButtonColor: "#d33",
+            });
+          });
+    
+        return false; // Ensure no form submission (and thus no refresh)
+      });
+    
+    
+      $("#replycomment").submit(function (event) {
+        event.preventDefault(); // Prevents the form from doing a default refresh
+    
+        $.post("/marketplace/blog/handelreply", {
+            Name: $("#name-reply").val(),
+            Send: $("#nama-reply").val(),
+            Message: $("#message-reply").val(),
+            CommentID: $("#commentID-reply").val(),
+            ID: $("#BlogAddID").val(),
+          })
+          .done(function (data) {
+            var response = JSON.parse(data);
+            if (response.success) {
+              Swal.fire({
+                title: "SUCCESS",
+                text: "Success",
+                icon: "success",
+                timer: 1000
+              })
+              setInterval(href, 1500);
+    
+              function href(){
+                location.reload(); 
+              }
+            } else {
+              Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: response.message,
+                showConfirmButton: false,
+                timer: 1500
+              });
+            }
+    
+          }).fail(function () {
+            Swal.fire({
+              icon: "error",
+              title: "Error",
+              text: "There was an issue  Please try again later.",
+              confirmButtonColor: "#d33",
+            });
+          });
+    
+        return false; // Ensure no form submission (and thus no refresh)
+      });
+     
+      $( '.btn-reply').on('click', function (){
+        var CommentID = $(this).data('commentid');
+        var ReplyID = $(this).data('replyid');
+        var CommentName = $(this).data('name');
+        $('#commentID-reply').val(CommentID);
+    })
+    
+        $('#exampleModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget)
+            var recipient = button.data('name')
+            $('#nama-reply').val(recipient);
+            var modal = $(this)
+            modal.find('.modal-title').text('New message to ' + recipient)
+        })
+    
+    
+    
+        // PRODUCT
+        $("#kkls").submit(function (event) {
+          event.preventDefault(); // Prevents the form from doing a default refresh
+        
+          $.post("/marketplace/productdetails/productcomment", {
+            Message: $("#slsd").val(),
+            ID: $("#asdasda").val(),
+          })
+          .done(function (data) {
+            var response = JSON.parse(data);
+            if (response.success) {
+              Swal.fire({
+                title: "SUCCESS",
+                text: "Success",
+                icon: "success",
+                timer: 1000
+              })
+              setInterval(href, 1500);
+    
+              function href(){
+                location.reload(); 
+              }
+            } else {
+              Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: response.message,
+                showConfirmButton: false,
+                timer: 1500
+              });
+            }
+        
+          }).fail(function () {
+            Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "There was an issue  Please try again later.",
+            confirmButtonColor: "#d33",
+            });
+          });
+        
+          return false; // Ensure no form submission (and thus no refresh)
+        });
+    
+    
+        $("#productcommentreply").submit(function (event) {
+          event.preventDefault(); // Prevents the form from doing a default refresh
+      
+          $.post("/marketplace/productdetails/productreply", {
+              Send: $("#nama-reply").val(),
+              Message: $("#message-reply").val(),
+              CommentID: $("#productcommentid-reply").val(),
+              ID: $("#ProductObjectID").val(),
+            })
+            .done(function (data) {
+              var response = JSON.parse(data);
+              if (response.success) {
+                Swal.fire({
+                  title: "SUCCESS",
+                  text: "Success",
+                  icon: "success",
+                  timer: 1000
+                })
+                setInterval(href, 1000);
+      
+                function href(){
+                  location.reload(); 
+                }
+              } else {
+                Swal.fire({
+                  icon: "error",
+                  title: "Oops...",
+                  text: response.message,
+                  showConfirmButton: false,
+                  timer: 1500
+                });
+              }
+      
+            }).fail(function () {
+              Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: "There was an issue  Please try again later.",
+                confirmButtonColor: "#d33",
+              });
+            });
+      
+          return false; // Ensure no form submission (and thus no refresh)
+        });
+        $('#exampleModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget)
+            var recipient = button.data('name')
+            var CommentID = button.data('productcomentid')
+            $('#productcommentid-reply').val(CommentID);
+            $('#nama-reply').val(recipient);
+            var modal = $(this)
+            modal.find('.modal-title').text('New message to ' + recipient)
+        })
+      
   $("#register").on('click', function (event) {
     event.preventDefault();
 

@@ -5,7 +5,7 @@ use SilverStripe\Security\Member;
 class BlogComment extends DataObject{
     private static $db = [
         'Name' => 'Text',
-        'Comment' => 'Varchar'
+        'Comment' => 'Varchar',
     ];
 
     private static $has_one = [

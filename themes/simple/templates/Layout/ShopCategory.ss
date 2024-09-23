@@ -15,116 +15,32 @@
     </div>
 </section>
 <!-- End Banner Area -->
-<div class="container">
+<div class="container" style="padding-bottom: 5rem;">
     <div class="row">
         <div class="col-xl-3 col-lg-4 col-md-5">
             <div class="sidebar-categories">
                 <div class="head">Browse Categories</div>
                 <ul class="main-categories">
-                    <li class="main-nav-list"><a data-toggle="collapse" href="#fruitsVegetable" aria-expanded="false" aria-controls="fruitsVegetable"><span
-                             class="lnr lnr-arrow-right"></span>Fruits and Vegetables<span class="number">(53)</span></a>
-                        <ul class="collapse" id="fruitsVegetable" data-toggle="collapse" aria-expanded="false" aria-controls="fruitsVegetable">
-                            <li class="main-nav-list child"><a href="#">Frozen Fish<span class="number">(13)</span></a></li>
-                            <li class="main-nav-list child"><a href="#">Dried Fish<span class="number">(09)</span></a></li>
-                            <li class="main-nav-list child"><a href="#">Fresh Fish<span class="number">(17)</span></a></li>
-                            <li class="main-nav-list child"><a href="#">Meat Alternatives<span class="number">(01)</span></a></li>
-                            <li class="main-nav-list child"><a href="#">Meat<span class="number">(11)</span></a></li>
-                        </ul>
-                    </li>
-
-                    <li class="main-nav-list"><a data-toggle="collapse" href="#meatFish" aria-expanded="false" aria-controls="meatFish"><span
-                             class="lnr lnr-arrow-right"></span>Meat and Fish<span class="number">(53)</span></a>
-                        <ul class="collapse" id="meatFish" data-toggle="collapse" aria-expanded="false" aria-controls="meatFish">
-                            <li class="main-nav-list child"><a href="#">Frozen Fish<span class="number">(13)</span></a></li>
-                            <li class="main-nav-list child"><a href="#">Dried Fish<span class="number">(09)</span></a></li>
-                            <li class="main-nav-list child"><a href="#">Fresh Fish<span class="number">(17)</span></a></li>
-                            <li class="main-nav-list child"><a href="#">Meat Alternatives<span class="number">(01)</span></a></li>
-                            <li class="main-nav-list child"><a href="#">Meat<span class="number">(11)</span></a></li>
-                        </ul>
-                    </li>
-                    <li class="main-nav-list"><a data-toggle="collapse" href="#cooking" aria-expanded="false" aria-controls="cooking"><span
-                             class="lnr lnr-arrow-right"></span>Cooking<span class="number">(53)</span></a>
-                        <ul class="collapse" id="cooking" data-toggle="collapse" aria-expanded="false" aria-controls="cooking">
-                            <li class="main-nav-list child"><a href="#">Frozen Fish<span class="number">(13)</span></a></li>
-                            <li class="main-nav-list child"><a href="#">Dried Fish<span class="number">(09)</span></a></li>
-                            <li class="main-nav-list child"><a href="#">Fresh Fish<span class="number">(17)</span></a></li>
-                            <li class="main-nav-list child"><a href="#">Meat Alternatives<span class="number">(01)</span></a></li>
-                            <li class="main-nav-list child"><a href="#">Meat<span class="number">(11)</span></a></li>
-                        </ul>
-                    </li>
-                    <li class="main-nav-list"><a data-toggle="collapse" href="#beverages" aria-expanded="false" aria-controls="beverages"><span
-                             class="lnr lnr-arrow-right"></span>Beverages<span class="number">(24)</span></a>
-                        <ul class="collapse" id="beverages" data-toggle="collapse" aria-expanded="false" aria-controls="beverages">
-                            <li class="main-nav-list child"><a href="#">Frozen Fish<span class="number">(13)</span></a></li>
-                            <li class="main-nav-list child"><a href="#">Dried Fish<span class="number">(09)</span></a></li>
-                            <li class="main-nav-list child"><a href="#">Fresh Fish<span class="number">(17)</span></a></li>
-                            <li class="main-nav-list child"><a href="#">Meat Alternatives<span class="number">(01)</span></a></li>
-                            <li class="main-nav-list child"><a href="#">Meat<span class="number">(11)</span></a></li>
-                        </ul>
-                    </li>
-                    <li class="main-nav-list"><a data-toggle="collapse" href="#homeClean" aria-expanded="false" aria-controls="homeClean"><span
-                             class="lnr lnr-arrow-right"></span>Home and Cleaning<span class="number">(53)</span></a>
-                        <ul class="collapse" id="homeClean" data-toggle="collapse" aria-expanded="false" aria-controls="homeClean">
-                            <li class="main-nav-list child"><a href="#">Frozen Fish<span class="number">(13)</span></a></li>
-                            <li class="main-nav-list child"><a href="#">Dried Fish<span class="number">(09)</span></a></li>
-                            <li class="main-nav-list child"><a href="#">Fresh Fish<span class="number">(17)</span></a></li>
-                            <li class="main-nav-list child"><a href="#">Meat Alternatives<span class="number">(01)</span></a></li>
-                            <li class="main-nav-list child"><a href="#">Meat<span class="number">(11)</span></a></li>
-                        </ul>
-                    </li>
-                    <li class="main-nav-list"><a href="#">Pest Control<span class="number">(24)</span></a></li>
-                    <li class="main-nav-list"><a data-toggle="collapse" href="#officeProduct" aria-expanded="false" aria-controls="officeProduct"><span
-                             class="lnr lnr-arrow-right"></span>Office Products<span class="number">(77)</span></a>
-                        <ul class="collapse" id="officeProduct" data-toggle="collapse" aria-expanded="false" aria-controls="officeProduct">
-                            <li class="main-nav-list child"><a href="#">Frozen Fish<span class="number">(13)</span></a></li>
-                            <li class="main-nav-list child"><a href="#">Dried Fish<span class="number">(09)</span></a></li>
-                            <li class="main-nav-list child"><a href="#">Fresh Fish<span class="number">(17)</span></a></li>
-                            <li class="main-nav-list child"><a href="#">Meat Alternatives<span class="number">(01)</span></a></li>
-                            <li class="main-nav-list child"><a href="#">Meat<span class="number">(11)</span></a></li>
-                        </ul>
-                    </li>
-                    <li class="main-nav-list"><a data-toggle="collapse" href="#beauttyProduct" aria-expanded="false" aria-controls="beauttyProduct"><span
-                             class="lnr lnr-arrow-right"></span>Beauty Products<span class="number">(65)</span></a>
-                        <ul class="collapse" id="beauttyProduct" data-toggle="collapse" aria-expanded="false" aria-controls="beauttyProduct">
-                            <li class="main-nav-list child"><a href="#">Frozen Fish<span class="number">(13)</span></a></li>
-                            <li class="main-nav-list child"><a href="#">Dried Fish<span class="number">(09)</span></a></li>
-                            <li class="main-nav-list child"><a href="#">Fresh Fish<span class="number">(17)</span></a></li>
-                            <li class="main-nav-list child"><a href="#">Meat Alternatives<span class="number">(01)</span></a></li>
-                            <li class="main-nav-list child"><a href="#">Meat<span class="number">(11)</span></a></li>
-                        </ul>
-                    </li>
-                    <li class="main-nav-list"><a data-toggle="collapse" href="#healthProduct" aria-expanded="false" aria-controls="healthProduct"><span
-                             class="lnr lnr-arrow-right"></span>Health Products<span class="number">(29)</span></a>
-                        <ul class="collapse" id="healthProduct" data-toggle="collapse" aria-expanded="false" aria-controls="healthProduct">
-                            <li class="main-nav-list child"><a href="#">Frozen Fish<span class="number">(13)</span></a></li>
-                            <li class="main-nav-list child"><a href="#">Dried Fish<span class="number">(09)</span></a></li>
-                            <li class="main-nav-list child"><a href="#">Fresh Fish<span class="number">(17)</span></a></li>
-                            <li class="main-nav-list child"><a href="#">Meat Alternatives<span class="number">(01)</span></a></li>
-                            <li class="main-nav-list child"><a href="#">Meat<span class="number">(11)</span></a></li>
-                        </ul>
-                    </li>
-                    <li class="main-nav-list"><a href="#">Pet Care<span class="number">(29)</span></a></li>
-                    <li class="main-nav-list"><a data-toggle="collapse" href="#homeAppliance" aria-expanded="false" aria-controls="homeAppliance"><span
-                             class="lnr lnr-arrow-right"></span>Home Appliances<span class="number">(15)</span></a>
-                        <ul class="collapse" id="homeAppliance" data-toggle="collapse" aria-expanded="false" aria-controls="homeAppliance">
-                            <li class="main-nav-list child"><a href="#">Frozen Fish<span class="number">(13)</span></a></li>
-                            <li class="main-nav-list child"><a href="#">Dried Fish<span class="number">(09)</span></a></li>
-                            <li class="main-nav-list child"><a href="#">Fresh Fish<span class="number">(17)</span></a></li>
-                            <li class="main-nav-list child"><a href="#">Meat Alternatives<span class="number">(01)</span></a></li>
-                            <li class="main-nav-list child"><a href="#">Meat<span class="number">(11)</span></a></li>
-                        </ul>
-                    </li>
-                    <li class="main-nav-list"><a class="border-bottom-0" data-toggle="collapse" href="#babyCare" aria-expanded="false"
-                         aria-controls="babyCare"><span class="lnr lnr-arrow-right"></span>Baby Care<span class="number">(48)</span></a>
-                        <ul class="collapse" id="babyCare" data-toggle="collapse" aria-expanded="false" aria-controls="babyCare">
-                            <li class="main-nav-list child"><a href="#">Frozen Fish<span class="number">(13)</span></a></li>
-                            <li class="main-nav-list child"><a href="#">Dried Fish<span class="number">(09)</span></a></li>
-                            <li class="main-nav-list child"><a href="#">Fresh Fish<span class="number">(17)</span></a></li>
-                            <li class="main-nav-list child"><a href="#">Meat Alternatives<span class="number">(01)</span></a></li>
-                            <li class="main-nav-list child"><a href="#" class="border-bottom-0">Meat<span class="number">(11)</span></a></li>
-                        </ul>
-                    </li>
+                    <% loop $Category %>
+                        <li class="main-nav-list">
+                            <a data-toggle="collapse" data-target="#collapseExample-$ID" aria-expanded="false" aria-controls="collapseExample">
+                                <span class="lnr lnr-arrow-right"></span>$Title<span class="number">(53)</span>
+                            </a>
+                            <ul class="collapse" id="collapseExample-$ID" data-toggle="collapse" aria-expanded="false" aria-controls="category-$ID">
+                                <% if $ProductSubCategory.exists %>
+                                    <% loop $ProductSubCategory %>
+                                        <li class="main-nav-list child">
+                                            <a href="#">$Title<span class="number">(13)</span></a>
+                                        </li>
+                                    <% end_loop %>
+                                <% else %>
+                                    <li class="main-nav-list child">No subcategories available</li>
+                                <% end_if %>
+                            </ul>
+                        </li>
+                    <% end_loop %>
                 </ul>
+                
             </div>
             <div class="sidebar-filter mt-50">
                 <div class="top-filter-head">Product Filters</div>
@@ -175,251 +91,120 @@
             <div class="filter-bar d-flex flex-wrap align-items-center">
                 <div class="sorting">
                     <select>
-                        <option value="1">Default sorting</option>
-                        <option value="1">Default sorting</option>
-                        <option value="1">Default sorting</option>
+                        <option value="1">Default</option>
+                        <option value="2">Harga:Terendah - Tertinggi</option>
+                        <option value="3">Harga:Tertinggi - Terendah</option>
                     </select>
                 </div>
                 <div class="sorting mr-auto">
-                    <select>
-                        <option value="1">Show 12</option>
-                        <option value="1">Show 12</option>
-                        <option value="1">Show 12</option>
-                    </select>
+                    <form method="post" id="myForm" action="{$BaseHref}/shopcategory">
+                        <select id="filtera" class="selectpicker filter-class" name="filter">
+                            <option value="12">Show 12</option>
+                            <option value="9">Show 9</option>
+                            <option value="6">Show 6</option>
+                        </select>
+                    </form>
                 </div>
-                <div class="pagination">
-                    <a href="#" class="prev-arrow"><i class="fa fa-long-arrow-left" aria-hidden="true"></i></a>
-                    <a href="#" class="active">1</a>
-                    <a href="#">2</a>
-                    <a href="#">3</a>
-                    <a href="#" class="dot-dot"><i class="fa fa-ellipsis-h" aria-hidden="true"></i></a>
-                    <a href="#">6</a>
-                    <a href="#" class="next-arrow"><i class="fa fa-long-arrow-right" aria-hidden="true"></i></a>
-                </div>
+                <% with  $PaginatedProduct %>
+                    <nav class="blog-pagination justify-content-center d-flex " style="left: 50%;padding: 0 !important;">
+                        <% if $MoreThanOnePage %>
+                            <div class="pagination">
+                            <% if $NotFirstPage %>
+                                <a href="$PrevLink" class="prev-arrow"><i class="fa fa-long-arrow-left" aria-hidden="true"></i></a>
+                            <% end_if %>
+                            <% loop $PaginationSummary(10) %>
+                                <% if $Link %>
+                                    <a href="$Link" class="page-link">$PageNum</a>
+                                <% else %>
+                                <span class="bg-secondary ">...</span>
+                            <% end_if %>
+                            <% end_loop %>
+                            <% if $NotLastPage %>
+                                <a href="$NextLink" class="next-arrow"><i class="fa fa-long-arrow-right" aria-hidden="true"></i></a>
+                            <% end_if %>
+                        </div>
+                        <% end_if %>
+                    </nav>
+                <% end_with %>
             </div>
             <!-- End Filter Bar -->
             <!-- Start Best Seller -->
             <section class="lattest-product-area pb-40 category-list">
                 <div class="row">
                     <!-- single product -->
-                    <div class="col-lg-4 col-md-6">
-                        <div class="single-product">
-                            <img class="img-fluid" src="img/product/p1.jpg" alt="">
-                            <div class="product-details">
-                                <h6>addidas New Hammer sole
-                                    for Sports person</h6>
-                                <div class="price">
-                                    <h6>$150.00</h6>
-                                    <h6 class="l-through">$210.00</h6>
-                                </div>
-                                <div class="prd-bottom">
-
-                                    <a href="" class="social-info">
-                                        <span class="ti-bag"></span>
-                                        <p class="hover-text">add to bag</p>
-                                    </a>
-                                    <a href="" class="social-info">
-                                        <span class="lnr lnr-heart"></span>
-                                        <p class="hover-text">Wishlist</p>
-                                    </a>
-                                    <a href="" class="social-info">
-                                        <span class="lnr lnr-sync"></span>
-                                        <p class="hover-text">compare</p>
-                                    </a>
-                                    <a href="" class="social-info">
-                                        <span class="lnr lnr-move"></span>
-                                        <p class="hover-text">view more</p>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- single product -->
-                    <div class="col-lg-4 col-md-6">
-                        <div class="single-product">
-                            <img class="img-fluid" src="img/product/p2.jpg" alt="">
-                            <div class="product-details">
-                                <h6>addidas New Hammer sole
-                                    for Sports person</h6>
-                                <div class="price">
-                                    <h6>$150.00</h6>
-                                    <h6 class="l-through">$210.00</h6>
-                                </div>
-                                <div class="prd-bottom">
-
-                                    <a href="" class="social-info">
-                                        <span class="ti-bag"></span>
-                                        <p class="hover-text">add to bag</p>
-                                    </a>
-                                    <a href="" class="social-info">
-                                        <span class="lnr lnr-heart"></span>
-                                        <p class="hover-text">Wishlist</p>
-                                    </a>
-                                    <a href="" class="social-info">
-                                        <span class="lnr lnr-sync"></span>
-                                        <p class="hover-text">compare</p>
-                                    </a>
-                                    <a href="" class="social-info">
-                                        <span class="lnr lnr-move"></span>
-                                        <p class="hover-text">view more</p>
-                                    </a>
+                     <% loop $PaginatedProduct  %>
+                        <div class="col-lg-4 col-md-6">
+                            <div class="single-product">
+                                <% with $ProductImages.First %>
+                                    <img src="$URL" class="img-fluid" style="object-fit: cover;">
+                                <% end_with %>
+                                <div class="product-details">
+                                    <h6>$Title</h6>
+									<div class="price">
+                                        <% if $Promotion %>
+                                            <h6>$minPriceDiscounted</h6>
+                                            <h6 class="l-through">$minPrice</h6>
+                                        <% else %>
+                                            <h6>$minPrice</h6>
+                                        <% end_if %>
+									</div>
+                                    <div class="prd-bottom">
+    
+                                        <a href="{$BaseHref}/productdetails/view/$ID" class="social-info">
+                                            <span class="ti-bag"></span>
+                                            <p class="hover-text">add to bag</p>
+                                        </a>
+                                        <a href="{$BaseHref}/productdetails/view/$ID" class="social-info">
+                                            <span class="lnr lnr-heart"></span>
+                                            <p class="hover-text">Wishlist</p>
+                                        </a>
+                                        <a href="{$BaseHref}/productdetails/view/$ID" class="social-info">
+                                            <span class="lnr lnr-sync"></span>
+                                            <p class="hover-text">compare</p>
+                                        </a>
+                                        <a href="{$BaseHref}/productdetails/view/$ID" class="social-info">
+                                            <span class="lnr lnr-move"></span>
+                                            <p class="hover-text">view more</p>
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <!-- single product -->
-                    <div class="col-lg-4 col-md-6">
-                        <div class="single-product">
-                            <img class="img-fluid" src="img/product/p3.jpg" alt="">
-                            <div class="product-details">
-                                <h6>addidas New Hammer sole
-                                    for Sports person</h6>
-                                <div class="price">
-                                    <h6>$150.00</h6>
-                                    <h6 class="l-through">$210.00</h6>
-                                </div>
-                                <div class="prd-bottom">
-
-                                    <a href="" class="social-info">
-                                        <span class="ti-bag"></span>
-                                        <p class="hover-text">add to bag</p>
-                                    </a>
-                                    <a href="" class="social-info">
-                                        <span class="lnr lnr-heart"></span>
-                                        <p class="hover-text">Wishlist</p>
-                                    </a>
-                                    <a href="" class="social-info">
-                                        <span class="lnr lnr-sync"></span>
-                                        <p class="hover-text">compare</p>
-                                    </a>
-                                    <a href="" class="social-info">
-                                        <span class="lnr lnr-move"></span>
-                                        <p class="hover-text">view more</p>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- single product -->
-                    <div class="col-lg-4 col-md-6">
-                        <div class="single-product">
-                            <img class="img-fluid" src="img/product/p4.jpg" alt="">
-                            <div class="product-details">
-                                <h6>addidas New Hammer sole
-                                    for Sports person</h6>
-                                <div class="price">
-                                    <h6>$150.00</h6>
-                                    <h6 class="l-through">$210.00</h6>
-                                </div>
-                                <div class="prd-bottom">
-
-                                    <a href="" class="social-info">
-                                        <span class="ti-bag"></span>
-                                        <p class="hover-text">add to bag</p>
-                                    </a>
-                                    <a href="" class="social-info">
-                                        <span class="lnr lnr-heart"></span>
-                                        <p class="hover-text">Wishlist</p>
-                                    </a>
-                                    <a href="" class="social-info">
-                                        <span class="lnr lnr-sync"></span>
-                                        <p class="hover-text">compare</p>
-                                    </a>
-                                    <a href="" class="social-info">
-                                        <span class="lnr lnr-move"></span>
-                                        <p class="hover-text">view more</p>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- single product -->
-                    <div class="col-lg-4 col-md-6">
-                        <div class="single-product">
-                            <img class="img-fluid" src="img/product/p5.jpg" alt="">
-                            <div class="product-details">
-                                <h6>addidas New Hammer sole
-                                    for Sports person</h6>
-                                <div class="price">
-                                    <h6>$150.00</h6>
-                                    <h6 class="l-through">$210.00</h6>
-                                </div>
-                                <div class="prd-bottom">
-
-                                    <a href="" class="social-info">
-                                        <span class="ti-bag"></span>
-                                        <p class="hover-text">add to bag</p>
-                                    </a>
-                                    <a href="" class="social-info">
-                                        <span class="lnr lnr-heart"></span>
-                                        <p class="hover-text">Wishlist</p>
-                                    </a>
-                                    <a href="" class="social-info">
-                                        <span class="lnr lnr-sync"></span>
-                                        <p class="hover-text">compare</p>
-                                    </a>
-                                    <a href="" class="social-info">
-                                        <span class="lnr lnr-move"></span>
-                                        <p class="hover-text">view more</p>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- single product -->
-                    <div class="col-lg-4 col-md-6">
-                        <div class="single-product">
-                            <img class="img-fluid" src="img/product/p6.jpg" alt="">
-                            <div class="product-details">
-                                <h6>addidas New Hammer sole
-                                    for Sports person</h6>
-                                <div class="price">
-                                    <h6>$150.00</h6>
-                                    <h6 class="l-through">$210.00</h6>
-                                </div>
-                                <div class="prd-bottom">
-
-                                    <a href="" class="social-info">
-                                        <span class="ti-bag"></span>
-                                        <p class="hover-text">add to bag</p>
-                                    </a>
-                                    <a href="" class="social-info">
-                                        <span class="lnr lnr-heart"></span>
-                                        <p class="hover-text">Wishlist</p>
-                                    </a>
-                                    <a href="" class="social-info">
-                                        <span class="lnr lnr-sync"></span>
-                                        <p class="hover-text">compare</p>
-                                    </a>
-                                    <a href="" class="social-info">
-                                        <span class="lnr lnr-move"></span>
-                                        <p class="hover-text">view more</p>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                     <% end_loop %>
             </section>
             <!-- End Best Seller -->
             <!-- Start Filter Bar -->
             <div class="filter-bar d-flex flex-wrap align-items-center">
                 <div class="sorting mr-auto">
-                    <select>
-                        <option value="1">Show 12</option>
-                        <option value="1">Show 12</option>
-                        <option value="1">Show 12</option>
-                    </select>
+                    <form method="post" id="myForm1" action="{$BaseHref}/shopcategory/filter">
+                        <select id="filteras" class="selectpicker filter-class" name="filter" onchange="submitForm2()">
+                            <option value="12">Show 12</option>
+                            <option value="9">Show 9</option>
+                            <option value="6">Show 6</option>
+                        </select>
+                    </form>
                 </div>
-                <div class="pagination">
-                    <a href="#" class="prev-arrow"><i class="fa fa-long-arrow-left" aria-hidden="true"></i></a>
-                    <a href="#" class="active">1</a>
-                    <a href="#">2</a>
-                    <a href="#">3</a>
-                    <a href="#" class="dot-dot"><i class="fa fa-ellipsis-h" aria-hidden="true"></i></a>
-                    <a href="#">6</a>
-                    <a href="#" class="next-arrow"><i class="fa fa-long-arrow-right" aria-hidden="true"></i></a>
-                </div>
+                <% with  $PaginatedProduct %>
+                    <nav class="blog-pagination justify-content-center d-flex " style="left: 50%;padding: 0 !important;">
+                        <% if $MoreThanOnePage %>
+                            <div class="pagination">
+                            <% if $NotFirstPage %>
+                                <a href="$PrevLink" class="prev-arrow"><i class="fa fa-long-arrow-left" aria-hidden="true"></i></a>
+                            <% end_if %>
+                            <% loop $PaginationSummary(10) %>
+                                <% if $Link %>
+                                    <a href="$Link" class="page-link">$PageNum</a>
+                                <% else %>
+                                <span class="bg-secondary ">...</span>
+                            <% end_if %>
+                            <% end_loop %>
+                            <% if $NotLastPage %>
+                                <a href="$NextLink" class="next-arrow"><i class="fa fa-long-arrow-right" aria-hidden="true"></i></a>
+                            <% end_if %>
+                        </div>
+                        <% end_if %>
+                    </nav>
+                <% end_with %>
             </div>
             <!-- End Filter Bar -->
         </div>
@@ -428,3 +213,18 @@
 
 <% include DealsOfTheWeek %>
 </body>
+
+<script>
+    const savedSort = localStorage.getItem('ShowFilter');
+        if (savedSort) {
+            const filters = document.querySelectorAll('.filter-class');
+            filters.forEach(filter => {
+                filter.value = savedSort;
+                const selectedOption = filter.querySelector(`option[value="${savedSort}"]`);
+                if (selectedOption) {
+                    selectedOption.classList.add('selected');
+                }
+            });
+        }	
+
+</script>
