@@ -109,12 +109,12 @@ $(document).ready(function () {
         });
       });
 
-    return false; // Ensure no form submission (and thus no refresh)
+    return false;
   });
 
 
   $("#replycomment").submit(function (event) {
-    event.preventDefault(); // Prevents the form from doing a default refresh
+    event.preventDefault();
 
     $.post("/marketplace/blog/handelreply", {
       Send: $("#nama-reply").val(),
@@ -155,7 +155,7 @@ $(document).ready(function () {
         });
       });
 
-    return false; // Ensure no form submission (and thus no refresh)
+    return false;
   });
 
   $('.btn-reply').on('click', function () {
@@ -231,13 +231,11 @@ $(document).ready(function () {
                   confirmButtonColor: "#d33"
               });
           });
-  
-          // return false; // Ensure no form refresh
         }
       });
   // PRODUCT
   $("#kkls").submit(function (event) {
-    event.preventDefault(); // Prevents the form from doing a default refresh
+    event.preventDefault();
 
     $.post("/marketplace/productdetails/productcomment", {
       Message: $("#slsd").val(),
@@ -974,6 +972,214 @@ $(document).ready(function () {
       iziToast.error({title: 'Error', message: 'Terjadi Kesalahan', position: 'bottomRight'});
     });
   });
+
+      $("#blogcomment").submit(function (event) {
+        event.preventDefault(); // Prevents the form from doing a default refresh
+    
+        $.post("/blog/handelComment", {
+            Name: $("#name").val(),
+            Message: $("#message").val(),
+            ID: $("#BlogAddID").val(),
+          })
+          .done(function (data) {
+            var response = JSON.parse(data);
+            if (response.success) {
+              Swal.fire({
+                title: "SUCCESS",
+                text: "Success",
+                icon: "success",
+                timer: 1000
+              })
+              setInterval(href, 1500);
+    
+              function href(){
+                location.reload(); 
+              }
+            } else {
+              Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: response.message,
+                showConfirmButton: false,
+                timer: 1500
+              });
+            }
+    
+          }).fail(function () {
+            Swal.fire({
+              icon: "error",
+              title: "Error",
+              text: "There was an issue  Please try again later.",
+              confirmButtonColor: "#d33",
+            });
+          });
+    
+        return false; // Ensure no form submission (and thus no refresh)
+      });
+    
+    
+      $("#replycomment").submit(function (event) {
+        event.preventDefault(); // Prevents the form from doing a default refresh
+    
+        $.post("/marketplace/blog/handelreply", {
+            Name: $("#name-reply").val(),
+            Send: $("#nama-reply").val(),
+            Message: $("#message-reply").val(),
+            CommentID: $("#commentID-reply").val(),
+            ID: $("#BlogAddID").val(),
+          })
+          .done(function (data) {
+            var response = JSON.parse(data);
+            if (response.success) {
+              Swal.fire({
+                title: "SUCCESS",
+                text: "Success",
+                icon: "success",
+                timer: 1000
+              })
+              setInterval(href, 1500);
+    
+              function href(){
+                location.reload(); 
+              }
+            } else {
+              Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: response.message,
+                showConfirmButton: false,
+                timer: 1500
+              });
+            }
+    
+          }).fail(function () {
+            Swal.fire({
+              icon: "error",
+              title: "Error",
+              text: "There was an issue  Please try again later.",
+              confirmButtonColor: "#d33",
+            });
+          });
+    
+        return false; // Ensure no form submission (and thus no refresh)
+      });
+     
+      $( '.btn-reply').on('click', function (){
+        var CommentID = $(this).data('commentid');
+        var ReplyID = $(this).data('replyid');
+        var CommentName = $(this).data('name');
+        $('#commentID-reply').val(CommentID);
+    })
+    
+        $('#exampleModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget)
+            var recipient = button.data('name')
+            $('#nama-reply').val(recipient);
+            var modal = $(this)
+            modal.find('.modal-title').text('New message to ' + recipient)
+        })
+    
+    
+    
+        // PRODUCT
+        $("#kkls").submit(function (event) {
+          event.preventDefault(); // Prevents the form from doing a default refresh
+        
+          $.post("/marketplace/productdetails/productcomment", {
+            Message: $("#slsd").val(),
+            ID: $("#asdasda").val(),
+          })
+          .done(function (data) {
+            var response = JSON.parse(data);
+            if (response.success) {
+              Swal.fire({
+                title: "SUCCESS",
+                text: "Success",
+                icon: "success",
+                timer: 1000
+              })
+              setInterval(href, 1500);
+    
+              function href(){
+                location.reload(); 
+              }
+            } else {
+              Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: response.message,
+                showConfirmButton: false,
+                timer: 1500
+              });
+            }
+        
+          }).fail(function () {
+            Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "There was an issue  Please try again later.",
+            confirmButtonColor: "#d33",
+            });
+          });
+        
+          return false; // Ensure no form submission (and thus no refresh)
+        });
+    
+    
+        $("#productcommentreply").submit(function (event) {
+          event.preventDefault(); // Prevents the form from doing a default refresh
+      
+          $.post("/marketplace/productdetails/productreply", {
+              Send: $("#nama-reply").val(),
+              Message: $("#message-reply").val(),
+              CommentID: $("#productcommentid-reply").val(),
+              ID: $("#ProductObjectID").val(),
+            })
+            .done(function (data) {
+              var response = JSON.parse(data);
+              if (response.success) {
+                Swal.fire({
+                  title: "SUCCESS",
+                  text: "Success",
+                  icon: "success",
+                  timer: 1000
+                })
+                setInterval(href, 1000);
+      
+                function href(){
+                  location.reload(); 
+                }
+              } else {
+                Swal.fire({
+                  icon: "error",
+                  title: "Oops...",
+                  text: response.message,
+                  showConfirmButton: false,
+                  timer: 1500
+                });
+              }
+      
+            }).fail(function () {
+              Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: "There was an issue  Please try again later.",
+                confirmButtonColor: "#d33",
+              });
+            });
+      
+          return false; // Ensure no form submission (and thus no refresh)
+        });
+        $('#exampleModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget)
+            var recipient = button.data('name')
+            var CommentID = button.data('productcomentid')
+            $('#productcommentid-reply').val(CommentID);
+            $('#nama-reply').val(recipient);
+            var modal = $(this)
+            modal.find('.modal-title').text('New message to ' + recipient)
+        })
+      
   $("#register").on('click', function (event) {
     event.preventDefault();
 
@@ -1786,10 +1992,7 @@ $(document).ready(function () {
 
     $('.nav-linked').removeClass('active');
     $('.tab-pane').removeClass('show active');
-    $('.nav-linked').removeClass('active');
-    $('.tab-pane').removeClass('show active');
 
-    $(this).addClass('active');
     $(this).addClass('active');
 
     var targetId = $(this).attr('href');
@@ -1867,8 +2070,6 @@ $(document).ready(function () {
     let priceNumber = parseInt(priceText);
     const quantity = parseInt(quantityInput.value, 10);
 
-    if (isNaN(priceNumber)) priceNumber = 0;
-    if (isNaN(quantity) || quantity < 1) quantity = 1;
     if (isNaN(priceNumber)) priceNumber = 0;
     if (isNaN(quantity) || quantity < 1) quantity = 1;
 

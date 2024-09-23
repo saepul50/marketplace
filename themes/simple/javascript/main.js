@@ -109,12 +109,12 @@ $(document).ready(function () {
         });
       });
 
-    return false; // Ensure no form submission (and thus no refresh)
+    return false;
   });
 
 
   $("#replycomment").submit(function (event) {
-    event.preventDefault(); // Prevents the form from doing a default refresh
+    event.preventDefault();
 
     $.post("/marketplace/blog/handelreply", {
       Send: $("#nama-reply").val(),
@@ -155,7 +155,7 @@ $(document).ready(function () {
         });
       });
 
-    return false; // Ensure no form submission (and thus no refresh)
+    return false;
   });
 
   $('.btn-reply').on('click', function () {
@@ -231,13 +231,11 @@ $(document).ready(function () {
                   confirmButtonColor: "#d33"
               });
           });
-  
-          // return false; // Ensure no form refresh
         }
       });
   // PRODUCT
   $("#kkls").submit(function (event) {
-    event.preventDefault(); // Prevents the form from doing a default refresh
+    event.preventDefault();
 
     $.post("/marketplace/productdetails/productcomment", {
       Message: $("#slsd").val(),
