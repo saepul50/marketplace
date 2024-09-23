@@ -41,7 +41,7 @@ class ProductDetailsController extends PageController
     }
     public function view(HTTPRequest $request)
     {
-
+        $members = Security::getCurrentUser();
         $id = $request->param('ID');
     
     
@@ -80,10 +80,13 @@ class ProductDetailsController extends PageController
 
             $comment->CommentReply = ProductReply::get()->filter('ProductCommentID', $comment->ID);
         }
-        
-
-        $members = Member::get()->filter('ID', $rating->column('MemberID'));
-        
+        $membersID =  $rating->column('MemberID');
+        if(!empty($membersID)){
+        $members = Member::get()->filter('ID', $membersID);
+        } else {
+            $members = null;
+        }
+        Debug::show($members);
 
         return $this->customise([
             'Product' => $product,
@@ -101,7 +104,7 @@ class ProductDetailsController extends PageController
         ])->renderWith(['ProductDetails', 'Page']);
     }
     
-
+    // $previousblog ? $previousblog->Link() : null
 
     public function productcomment(HTTPRequest $request)
     {
