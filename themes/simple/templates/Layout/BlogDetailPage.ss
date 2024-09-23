@@ -194,6 +194,7 @@
                         <div class="form-group form-inline">
                             <div class="form-group col-lg-12 col-md-12 name">
                                 <input type="hidden" id="BlogAddID" name="BlogAddID" value="$ID">
+                                <input type="hidden" id="name" name="name" value="$IDMember">
                             </div>
                         </div>
                         <div class="form-group">

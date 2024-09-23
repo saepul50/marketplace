@@ -144,6 +144,7 @@ class BlogPageController extends PageController
                 'Popularpost' => $popularpost,
                 'CreatedBy' => $Createdby,
                 'Member' => $member,
+                'IDMember' => $member->ID,
                 'Comment' => $comments,
                 'CommentID' => $comments->ID,
                 'Categori' => $categori,

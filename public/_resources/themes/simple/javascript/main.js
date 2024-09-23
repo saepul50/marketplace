@@ -68,10 +68,10 @@ $(document).ready(function () {
 
 
 
-  $("#blogcomment").submit(function (event) {
+  $("#blogcomment").off(function (event) {
     event.preventDefault(); // Prevents the form from doing a default refresh
 
-    $.post("/blog/handelComment", {
+    $.post("https://localhost/marketplace/blog/handelComment", {
       Name: $("#name").val(),
       Message: $("#message").val(),
       ID: $("#BlogAddID").val(),
@@ -113,7 +113,7 @@ $(document).ready(function () {
   });
 
 
-  $("#replycomment").submit(function (event) {
+  $("#replycomment").off(function (event) {
     event.preventDefault();
 
     $.post("/marketplace/blog/handelreply", {
@@ -278,7 +278,7 @@ $(document).ready(function () {
   });
 
 
-  $("#productcommentreply").submit(function (event) {
+  $("#productcommentreply").off(function (event) {
     event.preventDefault(); // Prevents the form from doing a default refresh
 
     $.post("/marketplace/productdetails/productreply", {
@@ -296,7 +296,7 @@ $(document).ready(function () {
             icon: "success",
             timer: 1000
           })
-          setInterval(href, 1000);
+          setInterval(href, 1500);
 
           function href() {
             location.reload();
@@ -322,6 +322,9 @@ $(document).ready(function () {
 
     return false; // Ensure no form submission (and thus no refresh)
   });
+
+
+  
   $('#exampleModal').on('show.bs.modal', function (event) {
     var button = $(event.relatedTarget)
     var recipient = button.data('name')
@@ -976,7 +979,7 @@ $(document).ready(function () {
       $("#blogcomment").submit(function (event) {
         event.preventDefault(); // Prevents the form from doing a default refresh
     
-        $.post("/blog/handelComment", {
+        $.post("/marketplace/blog/handelComment", {
             Name: $("#name").val(),
             Message: $("#message").val(),
             ID: $("#BlogAddID").val(),
