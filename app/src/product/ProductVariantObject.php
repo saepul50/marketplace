@@ -11,6 +11,7 @@ use SilverStripe\Assets\Image;
             'VariantName' => 'Text',
             'Price'=> 'Decimal(19, 2)',
             'Stock' => 'Int',
+            'Weight' => 'Decimal',
         ];
     
         private static $has_one = [
@@ -18,9 +19,10 @@ use SilverStripe\Assets\Image;
         ];
     
         private static $summary_fields = [
-            'VariantName' => 'Size',
+            'VariantName' => 'Variant',
             'Price' => 'Price',
-            'Stock' => 'Stock'
+            'Stock' => 'Stock',
+            'Weight' => 'Weight',
         ];
         
         public function onBeforeWrite() {
@@ -53,10 +55,12 @@ use SilverStripe\Assets\Image;
         }
         public function getCMSFields() {
             return new FieldList(
-                TextField::create('VariantName', 'Size'),
+                TextField::create('VariantName', 'Variant'),
                 TextField::create('Price')
                 ->setDescription('Input Only Number'),
-                TextField::create('Stock', 'Stock')
+                TextField::create('Stock', 'Stock'),
+                TextField::create('Weight')
+                ->setDescription('/grams'),
             );
         }
     }

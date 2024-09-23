@@ -20,6 +20,11 @@
         <div class="cart_inner">
             <div class="table-responsive">
                 <table class="table">
+                <% if $Member %>
+                    <p class="d-none" id="MemberFirstname">$member.FirstName</p>
+                    <p class="d-none" id="MemberLastname">$member.LastName</p>
+                    <p class="d-none" id="MemberEmail">$member.Email</p>
+                <% end_if %>
                     <% if $Cart %>
                     <thead>
                         <tr>
@@ -42,9 +47,9 @@
                                         <p id="productCheckoutID" class="d-none">$ProductID</p>
                                         <p id="productCheckoutTitle">$ProductTitle</p>
                                         <% if $ProductCategoryId = 1 %>
-                                            <p id="productCheckoutVariant" data-id="$ProductVariantID">size: $ProductVariant</p>
+                                            <p id="productCheckoutVariant" data-id="$ProductVariantID" data-weight="$ProductVariantWeight">size: $ProductVariant</p>
                                         <% else %>
-                                            <p id="productCheckoutVariant" data-id="$ProductVariantID">$ProductVariant</p>
+                                            <p id="productCheckoutVariant" data-id="$ProductVariantID" data-weight="$ProductVariantWeight">$ProductVariant</p>
                                         <% end_if %>
                                     </div>
                                 </div>

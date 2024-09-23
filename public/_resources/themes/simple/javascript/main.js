@@ -109,12 +109,12 @@ $(document).ready(function () {
         });
       });
 
-    return false; // Ensure no form submission (and thus no refresh)
+    return false;
   });
 
 
   $("#replycomment").submit(function (event) {
-    event.preventDefault(); // Prevents the form from doing a default refresh
+    event.preventDefault();
 
     $.post("/marketplace/blog/handelreply", {
       Send: $("#nama-reply").val(),
@@ -155,7 +155,7 @@ $(document).ready(function () {
         });
       });
 
-    return false; // Ensure no form submission (and thus no refresh)
+    return false;
   });
 
   $('.btn-reply').on('click', function () {
@@ -231,13 +231,11 @@ $(document).ready(function () {
                   confirmButtonColor: "#d33"
               });
           });
-  
-          // return false; // Ensure no form refresh
         }
       });
   // PRODUCT
-  $("#kkls").submit(function (event) {
-    event.preventDefault(); // Prevents the form from doing a default refresh
+  $("#kkls").off('submit').on('submit', function (event) {
+    event.preventDefault();
 
     $.post("/marketplace/productdetails/productcomment", {
       Message: $("#slsd").val(),
@@ -276,7 +274,7 @@ $(document).ready(function () {
         });
       });
 
-    return false; // Ensure no form submission (and thus no refresh)
+    return false;
   });
 
 
@@ -942,97 +940,970 @@ $(document).ready(function () {
       ]
     });
   }
+  iziToast.settings({
+    timeout: 3000,
+    resetOnHover: true,
+    transitionIn: 'fadeInUp',
+    transitionOut: 'fadeOutDown',
+    position: 'topRight',
+  });
   $("#loginn").on('click', function (event) {
     event.preventDefault();
     $.post("/marketplace/login/proseslogin",
-      {
+    {
         Email: $("#emaillogin").val(),
-        Password: $("#passwordlogin").val()
-      })
-      .done(function (data) {
-        var response = JSON.parse(data);
-        if (response.success) {
-          alert("Sukses");
-          window.location.href = "";
-        } else {
-          alert("gagal login")
-        }
-      })
-      .fail(function () {
-        alert("gaiso1")
+        Password:  $("#passwordlogin").val()
+    })
+    .done(function (data) {
+      var response = JSON.parse(data);
+      if (response.success) {
+        iziToast.success({
+          icon: 'fa fa-user',
+          title: 'Sukses Login',
+          position: 'bottomRight',
+          onClosed: function () {
+              window.location.href = "";
+          }
       });
+    } else {
+      iziToast.error({title: 'Gagal Login', message: 'Cek Kembali Username & Password', position: 'bottomRight'});
+    }
+    }).fail(function () {
+      iziToast.error({title: 'Error', message: 'Terjadi Kesalahan', position: 'bottomRight'});
+    });
   });
+
+      $("#blogcomment").submit(function (event) {
+        event.preventDefault(); // Prevents the form from doing a default refresh
+    
+        $.post("/blog/handelComment", {
+            Name: $("#name").val(),
+            Message: $("#message").val(),
+            ID: $("#BlogAddID").val(),
+          })
+          .done(function (data) {
+            var response = JSON.parse(data);
+            if (response.success) {
+              Swal.fire({
+                title: "SUCCESS",
+                text: "Success",
+                icon: "success",
+                timer: 1000
+              })
+              setInterval(href, 1500);
+    
+              function href(){
+                location.reload(); 
+              }
+            } else {
+              Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: response.message,
+                showConfirmButton: false,
+                timer: 1500
+              });
+            }
+    
+          }).fail(function () {
+            Swal.fire({
+              icon: "error",
+              title: "Error",
+              text: "There was an issue  Please try again later.",
+              confirmButtonColor: "#d33",
+            });
+          });
+    
+        return false; // Ensure no form submission (and thus no refresh)
+      });
+    
+    
+      $("#replycomment").submit(function (event) {
+        event.preventDefault(); // Prevents the form from doing a default refresh
+    
+        $.post("/marketplace/blog/handelreply", {
+            Name: $("#name-reply").val(),
+            Send: $("#nama-reply").val(),
+            Message: $("#message-reply").val(),
+            CommentID: $("#commentID-reply").val(),
+            ID: $("#BlogAddID").val(),
+          })
+          .done(function (data) {
+            var response = JSON.parse(data);
+            if (response.success) {
+              Swal.fire({
+                title: "SUCCESS",
+                text: "Success",
+                icon: "success",
+                timer: 1000
+              })
+              setInterval(href, 1500);
+    
+              function href(){
+                location.reload(); 
+              }
+            } else {
+              Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: response.message,
+                showConfirmButton: false,
+                timer: 1500
+              });
+            }
+    
+          }).fail(function () {
+            Swal.fire({
+              icon: "error",
+              title: "Error",
+              text: "There was an issue  Please try again later.",
+              confirmButtonColor: "#d33",
+            });
+          });
+    
+        return false; // Ensure no form submission (and thus no refresh)
+      });
+     
+      $( '.btn-reply').on('click', function (){
+        var CommentID = $(this).data('commentid');
+        var ReplyID = $(this).data('replyid');
+        var CommentName = $(this).data('name');
+        $('#commentID-reply').val(CommentID);
+    })
+    
+        $('#exampleModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget)
+            var recipient = button.data('name')
+            $('#nama-reply').val(recipient);
+            var modal = $(this)
+            modal.find('.modal-title').text('New message to ' + recipient)
+        })
+    
+    
+    
+       
+    
+    
+        $("#productcommentreply").submit(function (event) {
+          event.preventDefault(); // Prevents the form from doing a default refresh
+      
+          $.post("/marketplace/productdetails/productreply", {
+              Send: $("#nama-reply").val(),
+              Message: $("#message-reply").val(),
+              CommentID: $("#productcommentid-reply").val(),
+              ID: $("#ProductObjectID").val(),
+            })
+            .done(function (data) {
+              var response = JSON.parse(data);
+              if (response.success) {
+                Swal.fire({
+                  title: "SUCCESS",
+                  text: "Success",
+                  icon: "success",
+                  timer: 1000
+                })
+                setInterval(href, 1000);
+      
+                function href(){
+                  location.reload(); 
+                }
+              } else {
+                Swal.fire({
+                  icon: "error",
+                  title: "Oops...",
+                  text: response.message,
+                  showConfirmButton: false,
+                  timer: 1500
+                });
+              }
+      
+            }).fail(function () {
+              Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: "There was an issue  Please try again later.",
+                confirmButtonColor: "#d33",
+              });
+            });
+      
+          return false; // Ensure no form submission (and thus no refresh)
+        });
+        $('#exampleModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget)
+            var recipient = button.data('name')
+            var CommentID = button.data('productcomentid')
+            $('#productcommentid-reply').val(CommentID);
+            $('#nama-reply').val(recipient);
+            var modal = $(this)
+            modal.find('.modal-title').text('New message to ' + recipient)
+        })
+      
   $("#register").on('click', function (event) {
     event.preventDefault();
 
     $.post("/marketplace/login/prosesregistrasi", {
-      FirstName: $("#username").val(),
-      SurName: $("#surname").val(),
-      Email: $("#emailregister").val(),
-      Password: $("#passwordregister").val(),
-      ConfirmPassword: $("#confirmpassword").val()
-    })
+        FirstName: $("#username").val(),
+        SurName: $("#surname").val(),
+        Email: $("#emailregister").val(),
+        Password: $("#passwordregister").val(),
+        ConfirmPassword: $("#confirmpassword").val()
+      })
       .done(function (data) {
         var response = JSON.parse(data);
         if (response.success) {
-          window.location.href = "/marketplace/login";
-        } else {
-          alert("error");
-        }
-
+          iziToast.success({
+              icon: 'fa fa-user',
+              title: 'Sukses Registrasi Akun',
+              position: 'bottomRight',
+              onClosed: function () {
+                  window.location.href = "/marketplace/login";
+              }
+          });
+      } else {
+          iziToast.error({title: 'Gagal Registrasi Akun', message: 'Cek Kembali Username & Password', position: 'bottomRight'});
+      }
+        
       }).fail(function () {
-        alert("errorfail");
+        iziToast.error({title: 'Error', position: 'bottomRight'});
       });
   });
-  $("#addCart").on('click', function (e) {
+  $("#addCart").on('click', function(e){
     e.preventDefault();
     var formData = new FormData();
     var ProductItem = [];
     var activeSubvariant = $('.variantItem.active');
-    $.post("/marketplace/cart/addcart", {
-      ProductID: $("#productId").text(),
-      ProductTitle: $("#productTitle").text(),
-      ProductImage: $("#productImage").attr("src"),
-      ProductCategoryID: $("#productCategoriID").text(),
-      ProductVariant: activeSubvariant.find('#variantName').text(),
-      ProductVariantID: activeSubvariant.data('id'),
-      ProductPrice: $(".ppprice").text(),
-      ProductQuantity: $("#sst").val(),
-    })
+    // console.log(activeSubvariant)
+    var categoryId = document.querySelector('#productCategoriID').textContent;
+    // console.log(categoryId)
+    // return false;
+    if(categoryId == 2){
+      // alert("2");
+      // return false
+      $.post("/marketplace/cart/addcart", {
+        ProductID: $("#productId").text(),
+        ProductTitle: $("#productTitle").text(),
+        ProductImage: $("#productImage").attr("src"),
+        ProductCategoryID: $("#productCategoriID").text(),
+        ProductVariant: activeSubvariant.find('#variantName').text(),
+        ProductVariantID: activeSubvariant.data('id'),
+        ProductVariantWeight: activeSubvariant.data('weight'),
+        ProductPrice: $(".ppprice").text(),
+        ProductQuantity: $("#sst").val(),
+      })
+      .done(function (data) {
+        var response = JSON.parse(data);
+        // console.log(response)
+        if (response.success) {
+          iziToast.success({
+              timeout: 2000,
+              title: 'Product berhasil dimasukkan ke keranjang',
+              position: 'bottomRight'
+          });
+        } else {
+            iziToast.warning({position: "bottomRight", title: 'Caution', message: 'Pilih Product Sebelum Checkout'});
+        }
+      })
+      .fail(function() {
+        iziToast.error({title: 'Error', position: 'bottomRight'});
+      });
+    }else if(activeSubvariant.length>0){
+      // alert("1");
+      // return false
+      $.post("/marketplace/cart/addcart", {
+        ProductID: $("#productId").text(),
+        ProductTitle: $("#productTitle").text(),
+        ProductImage: $("#productImage").attr("src"),
+        ProductCategoryID: $("#productCategoriID").text(),
+        ProductVariant: activeSubvariant.find('#variantName').text(),
+        ProductVariantID: activeSubvariant.data('id'),
+        ProductVariantWeight: activeSubvariant.data('weight'),
+        ProductPrice: $(".ppprice").text(),
+        ProductQuantity: $("#sst").val(),
+      })
       .done(function (data) {
         var response = JSON.parse(data);
         console.log(response)
         if (response.success) {
-          alert("sukses");
+          iziToast.success({
+              timeout: 2000,
+              title: 'Product berhasil dimasukkan ke keranjang',
+              position: 'bottomRight',
+          });
         } else {
-          alert("gagal");
+            iziToast.warning({position: "bottomRight", title: 'Caution', message: 'Pilih Product Sebelum Checkout'});
         }
       })
-      .fail(function () {
-        alert("gaiso");
+      .fail(function() {
+        iziToast.error({title: 'Error', position: 'bottomRight'});
       });
+    }else{
+      iziToast.warning({title: 'Choose Variant!', position: 'bottomRight'});
+      return;
+    }
   });
-  $("#proceedCheckout").on('click', function (e) {
+  $("#proceedCheckout").on('click', function(e){
+    // console.log("Tombol proceedCheckout diklik");
     e.preventDefault();
     var selectedProducts = [];
-    $(".productCheckbox:checked").each(function () {
+    var formData = new FormData();
+    $(".productCheckbox:checked").each(function() {
       var productData = {
-        CartID: $(this).data("id"),
-        ProductID: $(this).closest('.cartProduct').find('#productCheckoutID').text(),
-        ProductTitle: $(this).closest('.cartProduct').find('#productCheckoutTitle').text(),
-        ProductImage: $(this).closest('.cartProduct').find('#productCheckoutImage').attr("src"),
-        VariantName: $(this).closest('.cartProduct').find('#productCheckoutVariant').text(),
-        VariantID: $(this).closest('.cartProduct').find('#productCheckoutVariant').data('id'),
-        Price: $(this).closest('.cartProduct').find('#itemPrice').text(),
-        TotalPrice: $(this).closest('.cartProduct').find('#totalPriceCheckout').text(),
-        TotalPriceNF: $(this).closest('.cartProduct').find('#totalPriceNFCheckout').text(),
-        Quantity: $(this).closest('.cartProduct').find('#quantityInput').val()
+          ProductCartID: $(this).data("id"),
+          ProductID: $(this).closest('.cartProduct').find('#productCheckoutID').text(),
+          ProductTitle: $(this).closest('.cartProduct').find('#productCheckoutTitle').text(),
+          ProductImage: $(this).closest('.cartProduct').find('#productCheckoutImage').attr("src"),
+          ProductVariant: $(this).closest('.cartProduct').find('#productCheckoutVariant').text(),
+          ProductVariantID: $(this).closest('.cartProduct').find('#productCheckoutVariant').data('id'),
+          ProductVariantWeight: $(this).closest('.cartProduct').find('#productCheckoutVariant').data('weight'),
+          ProductPrice: $(this).closest('.cartProduct').find('#itemPrice').text(),
+          ProductTotalPrice: $(this).closest('.cartProduct').find('#totalPriceCheckout').text(),
+          ProductQuantity: $(this).closest('.cartProduct').find('#quantityInput').val(),
+          ProductSubTotalPrice: $('#subTotalPriceCheckout').text(),
+          ProductSubTotalPriceNF: $('#subTotalPriceNFCheckout').text(),
+          MemberFirstName: $('#MemberFirstname').text(),
+          MemberLastName: $('#MemberLastname').text(),
+          MemberEmail: $('#MemberEmail').text(),
       };
       selectedProducts.push(productData);
-      console.log(selectedProducts)
+    });
+    // console.log(selectedProducts)
+    formData.append('ProductCheckoutDatas', JSON.stringify(selectedProducts));
+    // return false;
+    $.ajax({
+      url: "/marketplace/productcheckout/static",
+      type: "POST",
+      data: formData,
+      contentType: false,
+      processData: false,
+      success: function (data) {
+        var response = JSON.parse(data);
+        if (response.success) {
+          iziToast.success({
+              timeout: 1000,
+              title: 'Tunggu Sebentar',
+              position: 'bottomRight',
+              onClosed: function () {
+                  window.location.href = '/marketplace/productcheckout'
+              }
+          });
+        } else {
+            iziToast.warning({position: "bottomRight", title: 'Caution', message: 'Pilih Product Sebelum Checkout'});
+        }
+      },
+      error: function () {
+        alert("error");
+      }
     });
   });
-  $("#Comment").on('click', function (e) {
+  $("#numberinput").on('input', function() {
+    this.value = this.value.replace(/\D/g, '');
+    if (this.value.length > 14) {
+        this.value = this.value.slice(0, 14);
+    }
+  });
+  $("#checkoutbtn").on('click', function(e) {
+    e.preventDefault();
+      TimeCheckout();
+      callOrderID();
+      var form = $("#checkout-form")[0];
+      var selectedProductss = [];
+      var numberInput = $("#numberinput").val();
+      var regency = $('#fulldata .regency').text().trim();
+      var customerName = $('#fulldata .customerName').text();
+      var customerFullName = $('#fulldata .customerFullName').text();
+      var customerEmail = $('#fulldata .customerEmail').text();
+      var customerHandphone = $('#fulldata .customerHandphone').text();
+      var customerAddress = $('#fulldata .customerAddress').text();
+      var customerNotes = $('.form-group #message').val();
+      var shippingCost = $('.list_2 #shippingProduct').text();
+      var shippingCostNF = $('.list_2 #shippingNFProduct').text();
+      var finalPrice = $('.list_2 #finalPriceProduct').text();
+      var finalPriceNF = $('.list_2 #finalPriceNFProduct').text();
+      var finalprice = $("#finalPriceProduct").text().trim();
+      var selectordata = $("input[name='selectordata']:checked").length > 0;
+      var selectorcost = $("input[name='selectorCost']:checked").length > 0;
+      var terms = $("input[name='terms']:checked").length > 0;
+      if (numberInput.length < 12 || numberInput.length > 14) {
+          alert('Nomor harus antara 12 hingga 14 digit.');
+          return;
+      } 
+      if (!form.checkValidity()) {
+        form.reportValidity();
+      }
+      if (regency === '') {
+        alert('Inputkan alamat dengan benar!');
+        return;
+      }
+      // if (!selectordata) {
+      //   iziToast.warning({position: "bottomRight", title: 'Caution', message: 'Check data pengiriman jika data sudah benar!'});
+      //   return;
+      // }
+      // if (!selectorcost) {
+      //   iziToast.warning({position: "bottomRight", title: 'Caution', message: 'Pilih ongkir!'});
+      //   return;
+      // }
+      // if (finalprice === '') {
+      //   iziToast.warning({position: "bottomRight", title: 'Caution', message: 'Lengkapi data pengiriman!'});
+      //   return;
+      // }
+      // if (!terms) {
+      //   iziToast.warning({position: "bottomRight", title: 'Caution', message: 'Check terms & conditions!'});
+      //   return;
+      // }
+      else {
+        var paymentMethod = $("input[name='selectorpayment']:checked").val();
+        if(paymentMethod === "manualtf"){
+          var formData = new FormData();
+          var fileInput = $('#transfer-image')[0].files[0];
+          // console.log(formData)
+          var paymentGate = $("input[name='selectorpaymentgate']:checked").val();
+          var timeCheckout = $(".list_2").find('#time').text();
+          var orderID = $(".list_2").find('#orderID').text();
+          // console.log(timeCheckout)
+          // console.log(orderID)
+          // return false;
+          for (const item of $(".listDataProduct")) {
+            var productData = {
+              ProductID: $(item).find('#productID').text(),
+              ProductTitle: $(item).find('#productTitle').text(),
+              ProductCartID: $(item).find('#productCartID').text(),
+              ProductImage: $(item).find('#productImage').text(),
+              ProductVariant: $(item).find('#productVariant').text(),
+              ProductVariantID: $(item).find('#productVariantID').text(),
+              ProductVariantWeight: $(item).find('#variantP').data('weight'),
+              ProductPrice: $(item).find('#productPrice').text(),
+              ProductQuantity: $(item).find('#productQuantity').text(),
+              ProductTotalPrice: $(item).find('#productTotalPrice').text(),
+              ProductSubTotalPrice: $(item).find('#productSubTotalPrice').text(),
+              ProductSubTotalPriceNF: $(item).find('#productSubTotalPriceNF').text(),
+              ProductCostShipping: shippingCost,
+              ProductFinalPrice: finalPrice,
+              ProductFinalPriceNF: finalPriceNF,
+              CustomerName: customerName.replace('Nama: ', ''),
+              CustomerFullName: customerFullName.replace('Nama lengkap: ', ''),
+              CustomerEmail: customerEmail.replace('Email: ', ''),
+              CustomerHandphone: customerHandphone.replace('Handphone: ', ''),
+              CustomerAddress: customerAddress.replace('Alamat: ', ''),
+              CustomerNotes: customerNotes,
+              Bank: paymentGate,
+              PaymentMethod: paymentMethod,
+              TimeCheckout: timeCheckout,
+              OrderID: orderID
+            };
+            selectedProductss.push(productData);
+            // console.log(selectedProductss)
+            formData.append('paymentDatas', JSON.stringify(selectedProductss));
+          }
+          if (fileInput) {
+            formData.append('ProofImage', fileInput);
+            $.ajax({
+              url: '/marketplace/productcheckout/manualTF',
+              type: 'POST',
+              data: formData,
+              processData: false,
+              contentType: false,
+              success: function(results) {
+                  iziToast.success({
+                      icon: 'fa fa-shipping-fast',
+                      timeout: 3500,
+                      title: 'Pesanan Telah Dibuat dan Akan dikirim Secepatnya',
+                      position: 'bottomRight',
+                      onClosed: function () {
+                          return false;
+                          window.location.href = "/marketplace/";
+                      }
+                  });
+              },
+              error: function(xhr, status, error) {
+                  iziToast.error({title: 'Error', message: error, position: 'bottomRight'});
+              }
+            });
+          } else{
+            iziToast.warning({position: "bottomRight", title: 'Caution', message: 'Inputkan Bukti Pembayaran!'});
+          }
+        } else if(paymentMethod === "duitku"){
+          var formData = new FormData();
+          var paymentGate = $("input[name='selectorpaymentgate']:checked").val();
+          var timeCheckout = $(".listDataProduct").find('#time').text();
+          for (const item of $(".listDataProduct")) {
+            var productData = {
+              ProductID: $(item).find('#productID').text(),
+              ProductTitle: $(item).find('#productTitle').text(),
+              ProductCartID: $(item).find('#productCartID').text(),
+              ProductImage: $(item).find('#productImage').text(),
+              ProductVariant: $(item).find('#productVariant').text(),
+              ProductVariantID: $(item).find('#productVariantID').text(),
+              ProductVariantWeight: $(item).find('#variantP').data('weight'),
+              ProductPrice: $(item).find('#productPrice').text(),
+              ProductQuantity: $(item).find('#productQuantity').text(),
+              ProductTotalPrice: $(item).find('#productTotalPrice').text(),
+              ProductSubTotalPrice: $(item).find('#productSubTotalPrice').text(),
+              ProductSubTotalPriceNF: $(item).find('#productSubTotalPriceNF').text(),
+              ProductCostShipping: shippingCost,
+              ProductFinalPrice: finalPrice,
+              ProductFinalPriceNF: finalPriceNF,
+              CustomerName: customerName.replace('Nama: ', ''),
+              CustomerFullName: customerFullName.replace('Nama lengkap: ', ''),
+              CustomerEmail: customerEmail.replace('Email: ', ''),
+              CustomerHandphone: customerHandphone.replace('Handphone: ', ''),
+              CustomerAddress: customerAddress.replace('Alamat: ', ''),
+              CustomerNotes: customerNotes,
+              Bank: paymentGate,
+              PaymentMethod: paymentMethod,
+              TimeCheckout: timeCheckout
+            };
+            selectedProductss.push(productData);
+            formData.append('paymentDatas', JSON.stringify(selectedProductss));
+          }
+          $.ajax({
+            url: "/marketplace/productcheckout/transaction",
+            type: "POST",
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (results) {
+              try {
+                  var response = JSON.parse(results);
+                  if (response && response.paymentUrl) {
+                      iziToast.success({
+                          timeout: 2000,
+                          title: 'Tunggu Sebentar',
+                          message: 'Memproses Pembayaran',
+                          position: 'bottomRight',
+                          onClosed: function () {
+                              window.location.href = response.paymentUrl;
+                          }
+                      });
+                  } else {
+                      iziToast.error({title: 'Error', message: 'URL pembayaran tidak ditemukan dalam respons.', position: 'bottomRight'});
+                  }
+              } catch (e) {
+                  iziToast.error({title: 'Error' + e.message, position: 'bottomRight'});
+              }
+            },
+            error: function () {
+                iziToast.error({title: 'Error', position: 'bottomRight'});
+            }
+          });
+        } else{
+          var formData = new FormData();
+          var paymentGate = '';
+          var timeCheckout = $(".listDataProduct").find('#time').text();
+          var orderID = $(".listDataProduct").find('#orderID').text();
+          for (const item of $(".listDataProduct")) {
+            var productData = {
+              ProductID: $(item).find('#productID').text(),
+              ProductTitle: $(item).find('#productTitle').text(),
+              ProductCartID: $(item).find('#productCartID').text(),
+              ProductImage: $(item).find('#productImage').text(),
+              ProductVariant: $(item).find('#productVariant').text(),
+              ProductVariantID: $(item).find('#productVariantID').text(),
+              ProductVariantWeight: $(item).find('#variantP').data('weight'),
+              ProductPrice: $(item).find('#productPrice').text(),
+              ProductQuantity: $(item).find('#productQuantity').text(),
+              ProductTotalPrice: $(item).find('#productTotalPrice').text(),
+              ProductSubTotalPrice: $(item).find('#productSubTotalPrice').text(),
+              ProductSubTotalPriceNF: $(item).find('#productSubTotalPriceNF').text(),
+              ProductCostShipping: shippingCost,
+              ProductFinalPrice: finalPrice,
+              ProductFinalPriceNF: finalPriceNF,
+              CustomerName: customerName.replace('Nama: ', ''),
+              CustomerFullName: customerFullName.replace('Nama lengkap: ', ''),
+              CustomerEmail: customerEmail.replace('Email: ', ''),
+              CustomerHandphone: customerHandphone.replace('Handphone: ', ''),
+              CustomerAddress: customerAddress.replace('Alamat: ', ''),
+              CustomerNotes: customerNotes,
+              Bank: paymentGate,
+              PaymentMethod: paymentMethod,
+              TimeCheckout: timeCheckout,
+              OrderID: orderID
+            };
+            selectedProductss.push(productData);
+            formData.append('paymentDatas', JSON.stringify(selectedProductss));
+          }
+          $.ajax({
+            url: '/marketplace/productcheckout/cash',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(results) {
+                iziToast.success({
+                    icon: 'fa fa-shipping-fast',
+                    timeout: 3500,
+                    title: 'Pesanan Telah Dibuat',
+                    message: 'Pesananmu Akan dikirim Secepatnya Setelah Penjual Menyetujui',
+                    position: 'bottomRight',
+                    onClosed: function () {
+                        return false;
+                        window.location.href = "/marketplace/";
+                    }
+                });
+            },
+            error: function(xhr, status, error) {
+                iziToast.error({title: 'Error', message: error, position: 'bottomRight'});
+            }
+          });
+        }
+      }
+  });
+  $('.province_select').on('click', function() {
+    $.ajax({
+      url: '/marketplace/productcheckout/rajoProvince',
+      method: 'GET',
+      dataType: 'json',
+      success: function(data) {
+        $('#province_select').empty();
+          var dataProvince = data.rajaongkir.results;
+          // console.log()
+          var options = '';
+          dataProvince.forEach(element => {
+              options += `<li data-value="${element.province_id}" class="option selected focus">${element.province}</li>`;
+          });
+          $('.province_select .list').append(options);
+          // console.log($('.province_select .').html());
+          // console.log('jQuery version:', $.fn.jquery);
+
+      },
+      error: function(jqXHR, textStatus, errorThrown) {
+          console.error('Error fetching provinces:', textStatus, errorThrown);
+      }
+    });
+  });
+  $('.country_select .list').on('click', 'li', function() {
+    // alert("fs");
+    var idProvinsi = $(this).data('value');
+    var Provinsi = $(this).text();
+    // console.log(idProvinsi)
+    // console.log(Provinsi)
+    // return false; 
+    if(idProvinsi > 0){
+      $.ajax({
+        url: '/marketplace/productcheckout/rajoRegency',
+        type: 'POST',
+        data: { ProvinceID: idProvinsi },
+        dataType: 'json',
+        success: function(data) {
+          var options = '';
+          var dataRegency = data.rajaongkir.results;
+          // console.log(regency)
+          dataRegency.forEach(element => {
+            // console.log(element)
+            // return false;
+            options += `<li data-value="${element.city_id}" data-province="${element.province}" data-type="${element.type}" data-postal="${element.postal_code}" class="option selected focus">${element.city_name}</li>`;
+          });
+          $('.regency_select .list').append(options);
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            console.error('Error fetching provinces:', textStatus, errorThrown);
+        }
+      });
+    } else{
+      alert("pilih provinsi");
+      return;
+    }
+  });
+  $('.regency_select .list').on('click', 'li', function() {
+    // alert("fs");
+    var idCity = $(this).data('value');
+    var City = $(this).text();
+    var Provinsi = $(this).data('province');
+    var Type = $(this).data('type');
+    var Postal = $(this).data('postal');
+    // console.log(Postal)
+    $('.postalcode').val(Postal);
+  });
+  // $.ajax({
+  //   url: '/marketplace/productcheckout/rajoProvince',
+  //   method: 'GET',
+  //   dataType: 'json',
+  //   success: function(data) {
+  //     $('#province_select').empty();
+  //     var dataProvince = data.rajaongkir.results;
+  //     var options = '';
+  //     // console.log(data)
+  //     // return false;
+  //     dataProvince.forEach(element => {
+  //         options += `<li data-value="${element.province_id}" class="option selected focus">${element.province}</li>`;
+  //     });
+  //     $('.province_select .list').append(options);
+  //     // console.log($('.province_select .').html());
+  //     // console.log('jQuery version:', $.fn.jquery);
+  //   },
+  //   error: function(jqXHR, textStatus, errorThrown) {
+  //       console.error('Error fetching provinces:', textStatus, errorThrown);
+  //     }
+  //   });
+    $('#saveData').on('click', function(e) {
+      e.preventDefault();
+      var address = $('.province_select .list .selected').html() + ', ' + $('.regency_select .list .selected').html();
+      var province = parseInt($('.province_select .list .selected').data('value'));
+      var regency = parseInt($('.regency_select .list .selected').data('value'));
+      // console.log(address)
+      // console.log(regency)
+      var data = {
+          Number: $('#numberinput').val(),
+          FName: $('#first').val(),
+          LName: $('#last').val(),
+          Address: address,
+          AddressDetail: $('#add1').val(),
+          Regency: regency,
+          Postal: $('#zip').val()
+      };
+      $.post("/marketplace/productcheckout/address", {
+        Number: $('#numberinput').val(),
+        FName: $('#first').val(),
+        LName: $('#last').val(),
+        Address: address,
+        AddressDetail: $('#add1').val(),
+        Province: province,
+        Regency: regency,
+        Postal: $('#zip').val()
+      })
+      .done(function (data) {
+        var response = JSON.parse(data);
+        window.location.reload();
+      })
+        .fail(function () {
+          iziToast.warning({position: "bottomRight", title: 'Caution', message: 'Gagal menyimpan data pengiriman'});
+      });
+  });
+  function fetchcourir() {
+    var courir = $('input[name="selectorcourir"]:checked').next('label').data('opt');
+    // console.log(idCourir)
+    let totalWeight = 0;
+    document.querySelectorAll('#variantP').forEach(item => {
+      const weight = parseFloat(item.getAttribute('data-weight'));
+
+      if (!isNaN(weight)) {
+          totalWeight += weight;
+      }
+    });
+    var idRegency = $('#fulldata .regency').text();
+    var weight = $('#fulldata .weight').text();
+    // console.log(idRegency)
+    $.ajax({
+      url: '/marketplace/productcheckout/rajoCot',
+      type: 'POST',
+      data: { 
+        Courir: courir,
+        RegencyID: idRegency,
+        Weight: totalWeight
+      },
+      dataType: 'json',
+      success: function(data) {
+        // console.log(data)
+        // return false;
+        // console.log(data.rajaongkir.results[0].costs)
+        var options = '';
+        var dataCost = data.rajaongkir.results[0].costs;
+        dataCost.forEach((element, index) => {
+          let formattedCost = formatNumber(element.cost[0].value);
+          options += `<div class="payment_item active">
+                          <div class="radion_btn">
+                              <input type="radio" id="${element.service}" name="selectorCost" ${index === 0 ? 'checked' : ''}>
+                              <label class="rajoCostOptionLabel" data-opt="${element.cost[0].value}" for="${element.service}">${element.description} (${formattedCost})</label>
+                              <div class="check"></div>
+                          </div>
+                      </div>`;
+        });
+        $('.rajoCostOption').html(options);
+        fetchcost();
+      },
+      error: function(jqXHR, textStatus, errorThrown) {
+        // console.error('Error fetching provinces:', textStatus, errorThrown);
+      }
+    });
+  }
+  SelectorPayment();
+  SelectorPaymentGate();
+  $("input[name='selectorpayment']").on('change', function() {
+    SelectorPayment();
+  });
+  $("input[name='selectorpaymentgate']").on('change', function() {
+    SelectorPaymentGate();
+  });
+  $(document).on('change', "input[name='selectorCost']", function() {
+    // alert("ds");
+    fetchcost();
+  });
+  function SelectorPaymentGate() {
+    var selectedPayment = $("input[name='selectorpaymentgate']:checked").val();
+    if(selectedPayment === "bca"){
+      $('#norek').html('No. rekening:  12345678')
+    } else if(selectedPayment === "bri"){
+      $('#norek').html('No. rekening:  123456789')
+    } else if(selectedPayment === "mandiri"){
+      $('#norek').html('No. rekening:  12345678910')
+    }
+  }
+  function SelectorPayment() {
+    var selectedPayment = $("input[name='selectorpayment']:checked").val();
+    var options = '';
+    $(".optiondisplay").hide();
+    $(".nooption").show();
+
+    if (selectedPayment === "manualtf") {
+        options += `<div class="payment_item active">
+                        <div class="radion_btn">
+                            <input type="radio" id="f-option12" value="bca" name="selectorpaymentgate">
+                            <label for="f-option12">BCA </label>
+                            <img src="https://imgur.com/5pLj8C1.jpg" alt="" class="col-2">
+                            <div class="check"></div>
+                        </div>
+                    </div>
+                    <div class="payment_item">
+                        <div class="radion_btn">
+                            <input type="radio" id="f-option13" value="bri" name="selectorpaymentgate">
+                            <label for="f-option13">BRI </label>
+                            <img src="https://imgur.com/5ssXSBr.jpg" alt="" class="col-2">
+                            <div class="check"></div>
+                        </div>
+                    </div>
+                    <div class="payment_item">
+                        <div class="radion_btn">
+                            <input type="radio" id="f-option14" value="mandiri" name="selectorpaymentgate">
+                            <label for="f-option14">mandiri </label>
+                            <img src="https://imgur.com/r8FVNV6.jpg" alt="" class="col-2">
+                            <div class="check"></div>
+                        </div>
+                    </div>
+                    <div class="form-group d-grid">
+                      <div class="">
+                          <label class="" for="transfer-image">Unggah Bukti Transfer:</label>
+                      </div>
+                      <div class="">
+                          <input type="file" id="transfer-image" name="transferImage" accept="image/*" required style="border:none;">
+                      </div>
+                    </div>
+                    <a data-toggle="modal" data-target="#imageModal">
+                        <img id="image-preview" style="display:none; width: 100px; cursor:pointer;"/>
+                    </a>
+                    <div class="modal fade" id="imageModal" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                            <div class="modal-content" style="background: none; border: none;">
+                                <div class="modal-header" style="border-bottom: none;">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body" style="background: none;">
+                                    <img id="modal-image" src="" class="img-fluid" style="width: 100%; height: auto;"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`;
+        $(".nooptionmanualtf").hide();
+        $(".optiondisplaymanualtf").show();
+        $('.paymentOptionDisplayManual').html(options);
+        $('.paymentOptionDisplayManual input[type="radio"]').first().prop('checked', true);
+    } else if (selectedPayment === "duitku") {
+      $.ajax({
+        url: "/marketplace/productcheckout/paymentmethod",
+        type: "POST",
+        success: function(results) {
+            var data = JSON.parse(results).Data;
+            var collapseDuitku = $('.paymentOptionDisplayDuitku');
+            collapseDuitku.empty();
+
+            data.forEach(function(payment) {
+                var paymentOption = `
+                    <div class="payment_item">
+                        <div class="radion_btn">
+                            <input type="radio" id="${payment.paymentMethod}" value="${payment.paymentMethod}" data-method="${payment.paymentName}" name="selectorpaymentgate">
+                            <label for="${payment.paymentMethod}">${payment.paymentName}</label>
+                            <img src="${payment.paymentImage}" alt="${payment.paymentName}" class="col-2" style="left: 170px;">
+                            <div class="check"></div>
+                        </div>
+                    </div>
+                `;
+                collapseDuitku.append(paymentOption);
+            });
+            $('.paymentOptionDisplayDuitku input[type="radio"]').first().prop('checked', true);
+        },
+        error: function() {
+            $(".spinnerout").hide();
+            iziToast.error({title: 'Error', message: 'Saat Memuat Data', position: 'bottomRight'});
+        }
+      });
+        var formData = new FormData();
+        $(".nooptionduitku").hide();
+        $(".optiondisplayduitku").show();
+    }
+  }
+  $(document).on('change', 'input[name="transferImage"]', function(event){
+    previewImage(event);
+  });
+  var selectedImage;
+  function previewImage(event) {
+    var reader = new FileReader();
+    var img = document.getElementById('image-preview');
+    // console.log(img)
+    reader.onload = function() {
+        img.src = reader.result;
+        img.style.display = 'block';
+        var modalImg = document.getElementById('modal-image');
+        modalImg.src = reader.result;
+    }
+
+    if (event.target.files[0]) {
+      selectedImage = event.target.files[0];
+      // console.log(selectedImage)
+      reader.readAsDataURL(event.target.files[0]);
+    }
+  }
+  function generateOrderID() {
+    const timestamp = Date.now().toString(36);
+    const randomStr = Math.random().toString(36).substring(2, 10);
+    return `SHOESTORE${timestamp}${randomStr}`;
+  }
+
+  function callOrderID(){
+    const orderID = generateOrderID();
+
+    $('.list_2').each(function () {
+        $(this).find('#orderID').text(orderID);
+    });
+  }
+  $('input[name="selectorcourir"]').on('change', function(){
+    fetchcourir();
+  });
+  fetchcourir();
+  function fetchcost() {
+    var cost = $('input[name="selectorCost"]:checked').next('label').data('opt');
+    function formatNumber(number) {
+      let parts = number.toString().split('.');
+      let integerPart = parts[0];
+      let decimalPart = parts.length > 1 ? '.' + parts[1] : '';
+      
+      let formattedIntegerPart = '';
+      while (integerPart.length > 0) {
+          formattedIntegerPart = '.' + integerPart.slice(-3) + formattedIntegerPart;
+          integerPart = integerPart.slice(0, -3);
+      }
+      
+      return formattedIntegerPart.slice(1) + decimalPart;
+    }
+    $('#shippingProduct').html(`Rp. ${formatNumber(cost)}`);
+    $('#shippingNFProduct').html(cost);
+    updateFinalPrice();
+  };
+  function TimeCheckout() {
+    var now = new Date();
+    var day = now.getDate().toString().padStart(2, '0');
+    var month = (now.getMonth() + 1).toString().padStart(2, '0');
+    var year = now.getFullYear();
+    var hours = now.getHours().toString().padStart(2, '0');
+    var minutes = now.getMinutes().toString().padStart(2, '0');
+    var seconds = now.getSeconds().toString().padStart(2, '0');
+    
+    var formattedTime = `${day}/${month}/${year}   ${hours}:${minutes}:${seconds}`;
+    
+    $('.list_2').each(function () {
+        $(this).find('#time').text(formattedTime);
+    });
+  }
+  $("#Comment").on('click', function(e){
     e.preventDefault();
     var formData = new FormData();
     var comment = $("#commentMessage").val();
@@ -1044,21 +1915,21 @@ $(document).ready(function () {
       contentType: false,
       processData: false,
       success: function (results) {
-        alert("success");
-      },
+          alert("success");
+        },
       error: function () {
         alert("fail");
       }
     });
   });
-  $('.variantItem').on('click', function (e) {
+  $('.variantItem').on('click', function(e){
     e.preventDefault();
     $('.variantItem').removeClass('active');
     $(this).addClass('active')
     var variantPrice = $(this).data('price');
     var variantDiscountedPrice = $(this).data('discount');
     var variantStock = $(this).data('stock');
-    if (variantStock < 1) {
+    if(variantStock<1){
       alert("stock kosong");
       $('.variantItem').removeClass('active');
       return;
@@ -1066,11 +1937,11 @@ $(document).ready(function () {
     $('.ppprice').text(variantDiscountedPrice);
     $('.nnprice').text(variantPrice);
   });
-  $('.navbar-nav .nav-item').click(function () {
+  $('.navbar-nav .nav-item').click(function(){
     $('.navbar-nav .nav-item.active').removeClass('active');
     $(this).addClass('active');
   });
-  $('.payment_box .list li').click(function () {
+  $('.payment_box .list li').click(function(){
     $('.payment_box .list li').removeClass('active');
     $(this).addClass('active');
   });
@@ -1083,27 +1954,73 @@ $(document).ready(function () {
     $(this).addClass('active');
 
     var targetId = $(this).attr('href');
-    $('.tab-pane').each(function () {
-      if ($(this).attr('id') === targetId) {
-        $(this).addClass('show active');
-      }
+    $('.tab-pane').each(function() {
+        if ($(this).attr('id') === targetId) {
+            $(this).addClass('show active');
+        }
     });
   });
-  $("#masterCheckbox, #bottomMasterCheckbox").on('change', function () {
+  $("#masterCheckbox, #bottomMasterCheckbox").on('change', function() {
     var isChecked = $(this).is(':checked');
     $(".productCheckbox").prop('checked', isChecked);
+    updateSubtotal();
   });
+  $('.productCheckbox').on('change', function() {
+    updateSubtotal();
+  });
+  function showSection(sectionId, navItem) {
+    $('.Semua, .Pending, .Proses, .Selesai, .Canceled').hide();
+    $(sectionId).show();
+    $('.navi-item').removeClass('active');
+    $(navItem).addClass('active');
+  }
+  $('#navSemua').click(function() {
+      showSection('#semua', '#navSemua');
+      toggleOrderDetail(false);
+  });
+  $('#navPending').click(function() {
+      showSection('#pending', '#navPending');
+      toggleOrderDetail(false);
+  });
+  $('#navProses').click(function() {
+      showSection('#proses', '#navProses');
+      toggleOrderDetail(false);
+  });
+  $('#navSelesai').click(function() {
+      showSection('#selesai', '#navSelesai');
+      toggleOrderDetail(false);
+  });
+  $('#navCanceled').click(function() {
+      showSection('#canceled', '#navCanceled');
+      toggleOrderDetail(false);
+  });
+
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.has('detailOrder')) {
+      toggleOrderDetail(true);
+  } else {
+      $('#navSemua').click();
+  }
+  function toggleOrderDetail(showDetail) {
+    if (showDetail) {
+        $('#myOrder').hide();
+        $('#detailOrder').show();
+    } else {
+        $('#myOrder').show();
+        $('#detailOrder').hide();
+    }
+  }
   function formatNumber(number) {
     let parts = number.toString().split('.');
     let integerPart = parts[0];
     let decimalPart = parts.length > 1 ? '.' + parts[1] : '';
-
+    
     let formattedIntegerPart = '';
     while (integerPart.length > 0) {
-      formattedIntegerPart = '.' + integerPart.slice(-3) + formattedIntegerPart;
-      integerPart = integerPart.slice(0, -3);
+        formattedIntegerPart = '.' + integerPart.slice(-3) + formattedIntegerPart;
+        integerPart = integerPart.slice(0, -3);
     }
-
+    
     return formattedIntegerPart.slice(1) + decimalPart;
   }
   function updateTotalPrice(quantityInput, priceElement, totalPriceElement, totalPriceElementNF) {
@@ -1118,18 +2035,20 @@ $(document).ready(function () {
     totalPriceElement.textContent = `Rp. ${formatNumber(totalPrice)}`;
     totalPriceElementNF.textContent = totalPrice;
   }
-
+  
   function updateSubtotal() {
     let subtotal = 0;
     document.querySelectorAll('.cartProduct').forEach(item => {
-      const totalPriceElementNF = item.querySelector('#totalPriceNFCheckout');
-      const totalPrice = parseInt(totalPriceElementNF.textContent);
-      // console.log(totalPrice)
-      if (!isNaN(totalPrice)) {
-        subtotal += totalPrice;
+      if(item.querySelector('.productCheckbox:checked')){
+        const totalPriceElementNF = item.querySelector('#totalPriceNFCheckout');
+        const totalPrice = parseInt(totalPriceElementNF.textContent);
+        // console.log(totalPrice)
+        if (!isNaN(totalPrice)) {
+          subtotal += totalPrice;
+        }
       }
     });
-
+  
     const subtotalElement = document.querySelector('#subTotalPriceCheckout');
     const subtotalElementNF = document.querySelector('#subTotalPriceNFCheckout');
     subtotalElement.textContent = `Rp. ${formatNumber(subtotal.toString())}`;
@@ -1141,8 +2060,9 @@ $(document).ready(function () {
     const quantityInput = item.querySelector('#quantityInput');
     const priceElement = item.querySelector('#itemPrice');
     const totalPriceElement = item.querySelector('#totalPriceCheckout');
-    const totalPriceElementNF = item.querySelector('#totalPriceNFCheckout');
-    decrementButton.addEventListener('click', function () {
+    const totalPriceElementNF = item.querySelector('#totalPriceNFCheckout'); 
+    const checkboxhCheck = item.querySelector('.productCheckbox');  
+    decrementButton.addEventListener('click', function() {
       if (quantityInput.value > 1) {
         quantityInput.value = parseInt(quantityInput.value, 10) - 1;
         updateTotalPrice(quantityInput, priceElement, totalPriceElement, totalPriceElementNF);
@@ -1150,15 +2070,15 @@ $(document).ready(function () {
       }
     });
 
-    incrementButton.addEventListener('click', function () {
-      quantityInput.value = parseInt(quantityInput.value, 10) + 1;
-      updateTotalPrice(quantityInput, priceElement, totalPriceElement, totalPriceElementNF);
-      updateSubtotal();
+    incrementButton.addEventListener('click', function() {
+        quantityInput.value = parseInt(quantityInput.value, 10) + 1;
+        updateTotalPrice(quantityInput, priceElement, totalPriceElement, totalPriceElementNF);
+        updateSubtotal();
     });
-
-    quantityInput.addEventListener('input', function () {
+    
+    quantityInput.addEventListener('input', function() {
       quantityInput.value = quantityInput.value.replace(/[^0-9]/g, '');
-      if (!quantityInput.value || quantityInput.value < 1) {
+      if (!quantityInput.value || quantityInput.value<1) {
         quantityInput.value = 1;
         // console.log(quantityInput.value)
       }
@@ -1167,10 +2087,22 @@ $(document).ready(function () {
     });
     updateTotalPrice(quantityInput, priceElement, totalPriceElement, totalPriceElementNF);
   });
+  function updateFinalPrice(){
+    const subTotal = document.querySelector('#subTotalPriceProduct').textContent;
+    const subShipping = document.querySelector('#shippingProduct').textContent;
+    const subTotalInt = parseFloat(subTotal.replace('Rp. ', '').replace(/\./g, ''));
+    const subShippingInt = parseFloat(subShipping.replace('Rp. ', '').replace(/\./g, ''));
+    // console.log(subTotalInt)
+    // console.log(subShipping)
+    const FinalPrice = subTotalInt + subShippingInt;
+    const FinalElement = document.querySelector('#finalPriceProduct');
+    const FinalNFElement = document.querySelector('#finalPriceNFProduct');
+    FinalElement.textContent = `Rp. ${formatNumber(FinalPrice)}`;
+    FinalNFElement.textContent = FinalPrice;
+    // console.log(FinalPrice)
+  }
   updateSubtotal();
-
-
-
+  updateFinalPrice();
 });
 
 const stars = document.querySelectorAll(".star");
@@ -1256,5 +2188,3 @@ function submitForm2(){
   localStorage.setItem('ShowFilter', filter.value);
   document.getElementById('myForm1').submit();
 }
-
-
