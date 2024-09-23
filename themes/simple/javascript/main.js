@@ -1,4 +1,34 @@
+const stars = document.querySelectorAll(".star");
+const rating = document.getElementById("rating");
+const ratingDisplay = document.getElementById('rating');
+const ratingValueInput = document.getElementById('ratingValue');
 
+stars.forEach((star) => {
+    star.addEventListener("click", () => {
+        const value = parseInt(star.getAttribute("data-value"));
+        rating.innerText = value;
+
+        // Remove all existing classes from stars
+        stars.forEach((s) => s.classList.remove("one", 
+                                                "two", 
+                                                "three", 
+                                                "four", 
+                                                "five"));
+
+        // Add the appropriate class to 
+        // each star based on the selected star's value
+        stars.forEach((s, index) => {
+            if (index < value) {
+                s.classList.add(getStarColorClass(value));
+            }
+        });
+
+        // Remove "selected" class from all stars
+        stars.forEach((s) => s.classList.remove("selected"));
+        // Add "selected" class to the clicked star
+        star.classList.add("selected");
+    });
+});
 $(document).ready(function () {
   "use strict";
 
@@ -278,7 +308,7 @@ $(document).ready(function () {
   });
 
 
-  $("#productcommentreply").submit(function (event) {
+  $("#productcommentreply").off(function (event) {
     event.preventDefault(); // Prevents the form from doing a default refresh
 
     $.post("/marketplace/productdetails/productreply", {
@@ -2147,3 +2177,34 @@ $(document).ready(function () {
   updateFinalPrice();
 });
 
+stars.forEach(star => {
+  star.addEventListener('click', function() {
+    const rating = this.getAttribute('data-value');
+    ratingDisplay.textContent = rating; // Update the displayed rating
+    ratingValueInput.value = rating;    // Set the hidden input value for form submission
+
+    // Highlight the selected stars
+    stars.forEach(s => {
+      s.classList.remove('selected');
+    });
+    for (let i = 0; i < rating; i++) {
+      stars[i].classList.add('selected');
+    }
+  });
+});
+function getStarColorClass(value) {
+  switch (value) {
+      case 1:
+          return "one";
+      case 2:
+          return "two";
+      case 3:
+          return "three";
+      case 4:
+          return "four";
+      case 5:
+          return "five";
+      default:
+          return "";
+  }
+}

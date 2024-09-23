@@ -13,18 +13,19 @@ use SilverStripe\ORM\PaginatedList;
             $data = $request->postVar('filter');
             $pagelength = $request->getSession()->get('PageLength');
 
-            Debug::show($pagelength);
-            $categorys = ShopCategoryObject::get();
-            $subcategorylist = ShopSubCategoryObject::get();
-            $subcategory = $subcategorylist;
+            // Debug::show($pagelength);
+            $categories = ShopCategoryObject::get();
+            $subCategoryList = ShopSubCategoryObject::get();
+            $brandList = ProductBrandObject::get();
             // Debug::show($subcategory);
             $paginatedProduct = PaginatedList::create(ProductObject::get(), $this->getRequest())
             ->setPageLength($pagelength)
             ->setPaginationGetVar('s');
 
             return  [
-                'SubCategory' => $subcategory,
-                'Category' => $categorys,
+                'SubCategory' => $subCategoryList,
+                'Brand' => $brandList,
+                'Category' => $categories,
                 'PaginatedProduct' =>  $paginatedProduct,
                 'CurrentFilter' => $data,
             ];

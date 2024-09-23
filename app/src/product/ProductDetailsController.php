@@ -82,8 +82,13 @@ class ProductDetailsController extends PageController
         }
         
 
-        $members = Member::get()->filter('ID', $rating->column('MemberID'));
-        
+        $membersID =  $rating->column('MemberID');
+        if(!empty($membersID)){
+        $members = Member::get()->filter('ID', $membersID);
+        } else {
+            $members = null;
+        }
+
 
         return $this->customise([
             'Product' => $product,
@@ -100,9 +105,6 @@ class ProductDetailsController extends PageController
             'ID' => $id,
         ])->renderWith(['ProductDetails', 'Page']);
     }
-    
-
-
     public function productcomment(HTTPRequest $request)
     {
         $member = Security::getCurrentUser();

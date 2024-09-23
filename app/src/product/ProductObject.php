@@ -144,12 +144,13 @@ use SilverStripe\View\Requirements;
             ->setEmptyString('Select a Category');
     
         $subCategoryField = CheckboxSetField::create('ProductSubCategory', 'Sub Category', []);
-    
         if ($this->ProductCategoryID) {
             $validSubCategories = ShopSubCategoryObject::get()->filter('ProductCategoryID', $this->ProductCategoryID)->map('ID', 'Title')->toArray();
             $subCategoryField->setSource($validSubCategories);
         }
-    
+        
+        // Debug::show($subCategoryField);
+        // die();
         Requirements::customScript(<<<JS
             (function($) {
                 $('#Form_ItemEditForm_ProductCategoryID').change(function() {

@@ -1,5 +1,6 @@
 <?php
 
+use SilverStripe\Dev\Debug;
 use SilverStripe\Forms\DropdownField;
 use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\GridField\GridField;
@@ -21,6 +22,11 @@ use SilverStripe\ORM\DataObject;
         private static $summary_fields =[
             'Title' => 'Title'
         ];
+        public function getProducts() {
+            Debug::show($this->ProductObject());
+            die();
+            return $this->ProductObject();
+        }
         public function getCMSFields() {
             $categories = ShopCategoryObject::get()->map('ID', 'Title')->toArray();
             $fields = new FieldList(

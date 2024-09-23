@@ -23,18 +23,28 @@
                 <ul class="main-categories">
                     <% loop $Category %>
                         <li class="main-nav-list">
-                            <a data-toggle="collapse" data-target="#collapseExample-$ID" aria-expanded="false" aria-controls="collapseExample">
-                                <span class="lnr lnr-arrow-right"></span>$Title<span class="number">(53)</span>
+                            <a data-toggle="collapse" data-target="#collapseExample-$ID" aria-expanded="false" aria-controls="collapseExample" href="#">
+                                <span class="lnr lnr-arrow-right"></span>$Title <span class="number">($ProductSubCategory.Count)</span>
                             </a>
                             <ul class="collapse" id="collapseExample-$ID" data-toggle="collapse" aria-expanded="false" aria-controls="category-$ID">
                                 <% if $ProductSubCategory.exists %>
                                     <% loop $ProductSubCategory %>
                                         <li class="main-nav-list child">
-                                            <a href="#">$Title<span class="number">(13)</span></a>
+                                            <a href="#">$Title <span class="number">($ProductObject.ID)</span></a>
+                                            <% if $Products.exists %>
+                                                <% loop $Products %>
+                                                    <div class="product-item">
+                                                        <h5>$Title</h5>
+                                                        <p>$Price</p>
+                                                    </div>
+                                                <% end_loop %>
+                                            <% else %>
+                                                <p>Tidak ada produk di subkategori ini.</p>
+                                            <% end_if %>
                                         </li>
                                     <% end_loop %>
                                 <% else %>
-                                    <li class="main-nav-list child">No subcategories available</li>
+                                    <li class="main-nav-list child py-2">This Category is Comming Soon</li>
                                 <% end_if %>
                             </ul>
                         </li>
@@ -48,15 +58,14 @@
                     <div class="head">Brands</div>
                     <form action="#">
                         <ul>
-                            <li class="filter-list"><input class="pixel-radio" type="radio" id="apple" name="brand"><label for="apple">Apple<span>(29)</span></label></li>
-                            <li class="filter-list"><input class="pixel-radio" type="radio" id="asus" name="brand"><label for="asus">Asus<span>(29)</span></label></li>
-                            <li class="filter-list"><input class="pixel-radio" type="radio" id="gionee" name="brand"><label for="gionee">Gionee<span>(19)</span></label></li>
-                            <li class="filter-list"><input class="pixel-radio" type="radio" id="micromax" name="brand"><label for="micromax">Micromax<span>(19)</span></label></li>
-                            <li class="filter-list"><input class="pixel-radio" type="radio" id="samsung" name="brand"><label for="samsung">Samsung<span>(19)</span></label></li>
+                            <li class="filter-list"><input class="pixel-radio" type="radio" id="allbrand" name="brand"><label for="allbrand">All <span>($Brand.Count)</span></label></li>
+                            <% loop $Brand %>
+                                <li class="filter-list"><input class="pixel-radio" type="radio" id="$Title.LowerCase" name="brand"><label for="$Title.LowerCase">$Title <span>($Product.Count)</span></label></li>
+                            <% end_loop %>
                         </ul>
                     </form>
                 </div>
-                <div class="common-filter">
+                <%-- <div class="common-filter">
                     <div class="head">Color</div>
                     <form action="#">
                         <ul>
@@ -69,7 +78,7 @@
                             <li class="filter-list"><input class="pixel-radio" type="radio" id="spacegrey" name="color"><label for="spacegrey">Spacegrey<span>(19)</span></label></li>
                         </ul>
                     </form>
-                </div>
+                </div> --%>
                 <div class="common-filter">
                     <div class="head">Price</div>
                     <div class="price-range-area">
