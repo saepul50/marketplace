@@ -3311,7 +3311,8 @@ label {
   padding-left: 10px;
   cursor: pointer;
   border-bottom: 1px solid #eee; }
-  .sidebar-categories .main-nav-list a:hover {
+  .sidebar-categories .main-nav-list a:hover,
+  .sidebar-categories .main-nav-list a.active {
     color: #ffba00; }
   .sidebar-categories .main-nav-list a .number {
     color: #cccccc;

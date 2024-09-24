@@ -16,17 +16,16 @@ use SilverStripe\ORM\DataObject;
         private static $has_one = [
             'ProductCategory' => ShopCategoryObject::class
         ];
-        private static $many_many = [
+        private static $belongs_many_many = [
             'ProductObject' => ProductObject::class
         ];
         private static $summary_fields =[
             'Title' => 'Title'
         ];
         public function getProducts() {
-            Debug::show($this->ProductObject());
-            die();
-            return $this->ProductObject();
+            return ProductObject::get()->byId(1);
         }
+        
         public function getCMSFields() {
             $categories = ShopCategoryObject::get()->map('ID', 'Title')->toArray();
             $fields = new FieldList(

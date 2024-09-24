@@ -73,6 +73,8 @@ use SilverStripe\View\Requirements;
         return null;
     }
     public function rangePrice() {
+        // Debug::show($this->ProductSubCategory());
+        // die();
         $variants = $this->ProductVariants();
         if ($variants->exists()) {
             $prices = $variants->column('Price');
@@ -117,6 +119,21 @@ use SilverStripe\View\Requirements;
             return 'Rp. ' . number_format($minPrice * (1 - $promotion / 100), 0, '', '.');
         }
         return 'No price available';
+    }
+    public function minPriceDiscountedSort() {
+        $variants = $this->ProductVariants();
+        $promotion = $this->Promotion()->first();
+        
+        if ($variants->exists()) {
+            $prices = $variants->column('Price');
+            $minPrice = min($prices);
+            
+            if ($promotion) {
+                return $minPrice * (1 - $promotion->PromoPrice / 100);
+            }
+            return $minPrice;
+        }
+        return 0;
     }
     public function totalStock() {
         $variants = $this->ProductVariants();

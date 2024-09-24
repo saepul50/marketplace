@@ -2,6 +2,7 @@
 
 use SilverStripe\Control\HTTPRequest;
 use SilverStripe\Dev\Debug;
+use SilverStripe\ORM\ArrayList;
 use SilverStripe\ORM\PaginatedList;
 
 
@@ -9,28 +10,50 @@ use SilverStripe\ORM\PaginatedList;
         private static $allowed_actions = [
             'filter'
         ];
-        public function index(HTTPRequest $request){
-            $data = $request->postVar('filter');
+        public function index(HTTPRequest $request) {
+            $sortOption = $request->getVar('sort');
+            $brandFilter = $request->getVar('filter');
+            $subCategoryFilter = $request->getVar('subcategory');
             $pagelength = $request->getSession()->get('PageLength');
-
-            // Debug::show($pagelength);
+            
             $categories = ShopCategoryObject::get();
             $subCategoryList = ShopSubCategoryObject::get();
             $brandList = ProductBrandObject::get();
-            // Debug::show($subcategory);
-            $paginatedProduct = PaginatedList::create(ProductObject::get(), $this->getRequest())
-            ->setPageLength($pagelength)
-            ->setPaginationGetVar('s');
-
-            return  [
+            
+            $productQuery = ProductObject::get();
+            
+            if ($brandFilter && $brandFilter !== 'all') {
+                $productQuery = $productQuery->filter('ProductBrandsID', $brandFilter);
+            }
+            if ($subCategoryFilter && $subCategoryFilter !== 'all') {
+                $productQuery = $productQuery->filter('ProductSubCategory.ID', $subCategoryFilter);
+            }
+            $products = $productQuery->toArray();
+            if ($sortOption == 2) {
+                usort($products, function($a, $b) {
+                    return $a->minPriceDiscountedSort() <=> $b->minPriceDiscountedSort();
+                });
+            } elseif ($sortOption == 3) {
+                usort($products, function($a, $b) {
+                    return $b->minPriceDiscountedSort() <=> $a->minPriceDiscountedSort();
+                });
+            }
+        
+            $paginatedProduct = PaginatedList::create(new ArrayList($products), $this->getRequest())
+                ->setPageLength($pagelength)
+                ->setPaginationGetVar('s');
+        
+            return [
                 'SubCategory' => $subCategoryList,
                 'Brand' => $brandList,
                 'Category' => $categories,
-                'PaginatedProduct' =>  $paginatedProduct,
-                'CurrentFilter' => $data,
+                'PaginatedProduct' => $paginatedProduct,
+                'CurrentFilter' => $brandFilter,
+                'CurrentLength' => $pagelength,
+                'CurrentSort' => $sortOption,
+                'CurrentSubCategory' => $subCategoryFilter
             ];
         }
-
 
         public function ProductObjects() {
             return ProductObject::get();

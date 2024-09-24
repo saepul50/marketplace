@@ -16,7 +16,7 @@
 				<!-- Collect the nav links, forms, and other content for toggling -->
 				<div class="collapse navbar-collapse offset" id="navbarSupportedContent">
 					<ul class="nav navbar-nav menu_nav ml-auto">
-						<li class="nav-item 	"><a class="nav-link" href="">Home</a></li>
+						<li class="nav-item"><a class="nav-link" href="">Home</a></li>
 						<li class="nav-item submenu dropdown ">
 							<a href="" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
 							 aria-expanded="false">Shop</a>
@@ -45,6 +45,7 @@
 							</ul>
 						</li>
 						<li class="nav-item"><a class="nav-link" href="{$BaseHref}/contact">Contact</a></li>
+						<li class="nav-item"><a class="nav-link" href="{$BaseHref}/profile">Profile</a></li>
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
 						<li class="nav-item"><a href="{$BaseHref}/cart" class="cart"><span class="ti-bag"></span></a></li>

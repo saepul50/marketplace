@@ -30,37 +30,32 @@
                                 <% if $ProductSubCategory.exists %>
                                     <% loop $ProductSubCategory %>
                                         <li class="main-nav-list child">
-                                            <a href="#">$Title <span class="number">($ProductObject.ID)</span></a>
-                                            <% if $Products.exists %>
-                                                <% loop $Products %>
-                                                    <div class="product-item">
-                                                        <h5>$Title</h5>
-                                                        <p>$Price</p>
-                                                    </div>
-                                                <% end_loop %>
-                                            <% else %>
-                                                <p>Tidak ada produk di subkategori ini.</p>
-                                            <% end_if %>
+                                            <a href="#" data-id="$ID" class="subcategory-link">$Title <span class="number">($ProductObject.Count)</span></a>
                                         </li>
                                     <% end_loop %>
                                 <% else %>
-                                    <li class="main-nav-list child py-2">This Category is Comming Soon</li>
+                                    <li class="main-nav-list child py-2">This Category is Coming Soon</li>
                                 <% end_if %>
                             </ul>
                         </li>
                     <% end_loop %>
                 </ul>
-                
             </div>
             <div class="sidebar-filter mt-50">
                 <div class="top-filter-head">Product Filters</div>
                 <div class="common-filter">
                     <div class="head">Brands</div>
-                    <form action="#">
+                    <form id="filterForm" action="#">
                         <ul>
-                            <li class="filter-list"><input class="pixel-radio" type="radio" id="allbrand" name="brand"><label for="allbrand">All <span>($Brand.Count)</span></label></li>
+                            <li class="filter-list">
+                                <input class="pixel-radio" type="radio" id="allbrand" name="brand" value="all" <% if $CurrentFilter == 'all' %>checked<% end_if %>>
+                                <label for="allbrand">All <span>($PaginatedProduct.Count)</span></label>
+                            </li>
                             <% loop $Brand %>
-                                <li class="filter-list"><input class="pixel-radio" type="radio" id="$Title.LowerCase" name="brand"><label for="$Title.LowerCase">$Title <span>($Product.Count)</span></label></li>
+                                <li class="filter-list">
+                                    <input class="pixel-radio" type="radio" id="$Title.LowerCase" data-id="$ID" name="brand" value="$ID" <% if $CurrentFilter == $ID %>checked<% end_if %>>
+                                    <label for="$Title.LowerCase">$Title <span>($Product.Count)</span></label>
+                                </li>
                             <% end_loop %>
                         </ul>
                     </form>
@@ -79,7 +74,7 @@
                         </ul>
                     </form>
                 </div> --%>
-                <div class="common-filter">
+                <%-- <div class="common-filter">
                     <div class="head">Price</div>
                     <div class="price-range-area">
                         <div id="price-range"></div>
@@ -92,22 +87,23 @@
                             <div id="upper-value"></div>
                         </div>
                     </div>
-                </div>
+                </div> --%>
             </div>
         </div>
         <div class="col-xl-9 col-lg-8 col-md-7">
             <!-- Start Filter Bar -->
             <div class="filter-bar d-flex flex-wrap align-items-center">
                 <div class="sorting">
-                    <select>
-                        <option value="1">Default</option>
-                        <option value="2">Harga:Terendah - Tertinggi</option>
-                        <option value="3">Harga:Tertinggi - Terendah</option>
+                    <select name="sort" id="sortSelect">
+                        <option value="1" <% if $CurrentSort == 1 %>selected<% end_if %>>Default</option>
+                        <option value="2" <% if $CurrentSort == 2 %>selected<% end_if %>>Harga: Terendah - Tertinggi</option>
+                        <option value="3" <% if $CurrentSort == 3 %>selected<% end_if %>>Harga: Tertinggi - Terendah</option>
                     </select>
                 </div>
                 <div class="sorting mr-auto">
                     <form method="post" id="myForm" action="{$BaseHref}/shopcategory">
                         <select id="filtera" class="selectpicker filter-class" name="filter">
+                            <option value="">Show $CurrentLength</option>
                             <option value="12">Show 12</option>
                             <option value="9">Show 9</option>
                             <option value="6">Show 6</option>
@@ -141,11 +137,11 @@
             <section class="lattest-product-area pb-40 category-list">
                 <div class="row">
                     <!-- single product -->
-                     <% loop $PaginatedProduct  %>
+                     <% loop $PaginatedProduct %>
                         <div class="col-lg-4 col-md-6">
                             <div class="single-product">
                                 <% with $ProductImages.First %>
-                                    <img src="$URL" class="img-fluid" style="object-fit: cover;">
+                                    <img src="$URL" class="img-fluid" style="object-fit: cover; aspect-ratio: 4/3">
                                 <% end_with %>
                                 <div class="product-details">
                                     <h6>$Title</h6>
@@ -185,13 +181,13 @@
             <!-- Start Filter Bar -->
             <div class="filter-bar d-flex flex-wrap align-items-center">
                 <div class="sorting mr-auto">
-                    <form method="post" id="myForm1" action="{$BaseHref}/shopcategory/filter">
+                    <%-- <form method="post" id="myForm1" action="{$BaseHref}/shopcategory/filter">
                         <select id="filteras" class="selectpicker filter-class" name="filter" onchange="submitForm2()">
                             <option value="12">Show 12</option>
                             <option value="9">Show 9</option>
                             <option value="6">Show 6</option>
                         </select>
-                    </form>
+                    </form> --%>
                 </div>
                 <% with  $PaginatedProduct %>
                     <nav class="blog-pagination justify-content-center d-flex " style="left: 50%;padding: 0 !important;">

@@ -197,6 +197,7 @@
                             <td>
                                 <div class="checkout_btn_inner d-flex justify-content-end align-items-center gap-2">
                                     <%-- <a class="gray_btn fw-bold " style="font-size: x-small" href="#"><strong>Continue Shopping</strong></a> --%>
+                                    <a class="pr-5" style="color: red; cursor: pointer;" id="remove">Remove Product</a>
                                     <a class="primary-btn" id="proceedCheckout">Proceed to checkout</a>
                                 </div>
                             </td>

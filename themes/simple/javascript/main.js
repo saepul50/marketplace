@@ -34,7 +34,10 @@ $(document).ready(function () {
 
   $("#filtera").change(function (event) {
     event.preventDefault(); // Prevents the form from doing a default refresh
-
+    var selected = $("#filtera").val();
+    if(selected == ''){
+      return;
+    }
     $.post("/marketplace/shopcategory/filter", {
       select: $("#filtera").val(),
     })
@@ -71,7 +74,68 @@ $(document).ready(function () {
         });
       });
     })
+    var currentParams = new URLSearchParams(window.location.search);
+    var selectedBrand = currentParams.get('filter');
+    var selectedSubCategory = currentParams.get('subcategory');
+    // console.log(selectedSubCategory)
+    if (selectedBrand) {
+      $('#filterForm input[name="brand"]').each(function() {
+          if ($(this).val() === selectedBrand) {
+              $(this).prop('checked', true);
+          }
+      });
+    }
 
+    if (selectedSubCategory) {
+      $('.subcategory-link').each(function() {
+          // console.log($(this).data('id') == selectedSubCategory)
+          if ($(this).data('id') == selectedSubCategory) {
+              $(this).addClass('active').css('color', '#ffba00');
+              const collapseElement = $(this).closest('ul.collapse');
+              if (collapseElement.length) {
+                  collapseElement.collapse('show');
+              }
+          }
+      });
+    }
+
+    $('.subcategory-link').on('click', function(e) {
+        e.preventDefault();
+        $('.subcategory-link').removeClass('active');
+        $(this).addClass('active');
+
+        const collapseElement = $(this).closest('ul.collapse');
+        if (collapseElement.length) {
+            collapseElement.collapse('show');
+        }
+    });
+    $('#sortSelect').on('change', function(e) {
+      e.preventDefault();
+      var sortValue = $(this).val();
+      var currentParams = new URLSearchParams(window.location.search);
+      currentParams.set('sort', sortValue);
+      window.location.href = window.location.pathname + '?' + currentParams.toString();
+    });
+    $('#filterForm input[name="brand"]').on('change', function(e) {
+      e.preventDefault();
+      var selectedBrand = $(this).val();
+      var currentParams = new URLSearchParams(window.location.search);
+      currentParams.set('filter', selectedBrand);
+      window.location.href = window.location.pathname + '?' + currentParams.toString();
+    });
+    $('.main-nav-list.child a').on('click', function(e) {
+      e.preventDefault();
+      var subCategoryID = $(this).data('id');
+
+      if ($(this).hasClass('active')) {
+          currentParams.delete('subcategory');
+          window.location.href = window.location.pathname + '?' + currentParams.toString();
+      } else {
+          currentParams.set('subcategory', subCategoryID);
+          window.location.href = window.location.pathname + '?' + currentParams.toString();
+      }
+    });
+  
   const events = document.querySelectorAll('.event');
     events.forEach(event => {
       const icon = '<i class="lnr lnr-calendar-full"></i>'
@@ -1365,6 +1429,45 @@ $(document).ready(function () {
       error: function () {
         alert("error");
       }
+    });
+  });
+  $("#remove").on('click', function (event) {
+    event.preventDefault();
+    var selectedProductIds = [];
+    $(".productCheckbox:checked").each(function() {
+        var productId = $(this).data('id');
+        selectedProductIds.push(productId);
+        // console.log("Selected Product IDs:", selectedProductIds);
+    });
+
+    $.post("/marketplace/cart/remove", {
+        IDs: selectedProductIds
+    })
+    .done(function (data) {
+        var response = JSON.parse(data);
+        console.log(data)
+        if (response.success) {
+            $(".productCheckbox:checked").each(function() {
+                $(this).closest('.items').remove();
+                iziToast.success({
+                    icon: 'fa fa-trash',
+                    timeout: 1500,
+                    title: 'Product Telah Dihapus',
+                    position: 'bottomRight',
+                    onClosed: function () {
+                        $(".spinnerout").hide();
+                        window.location.reload();
+                    }
+                });
+            });
+        } else {
+            $(".spinnerout").hide();
+            iziToast.error({title: 'Gagal Menghapus Product Yang dipilih:', message: response.message, position: 'bottomRight'});
+        }
+    })
+    .fail(function () {
+        $(".spinnerout").hide();
+        iziToast.error({title: 'Error', message: 'Terjadi Kesalahan', position: 'bottomRight'});
     });
   });
   $("#numberinput").on('input', function() {
