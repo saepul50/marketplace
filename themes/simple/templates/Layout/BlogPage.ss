@@ -136,37 +136,43 @@
         <div class="row">
             <div class="col-lg-8 " style="padding-bottom: 5rem;">
                 <div class="blog_left_sidebar" style="height:100%; position:relative;">
-                    <% loop $Result %>
-                        <article class="row blog_item " style="position:relative;">
-                            <div class="col-md-3">
-                                <div class="blog_info text-right left-sm fw-bold">
-                                    <div class="post_tag">
-                                        <% loop $BlogCategories %>
-                                        <a href="#">$Title </a>
-                                        <% end_loop %>
+                    <% if $Result.ID != null%>
+                        <% loop $Result %>
+                            <article class="row blog_item " style="position:relative;">
+                                <div class="col-md-3">
+                                    <div class="blog_info text-right left-sm fw-bold">
+                                        <div class="post_tag">
+                                            <% loop $BlogCategories %>
+                                            <a href="#">$Title </a>
+                                            <% end_loop %>
+                                        </div>
+                                        <ul class="blog_meta list event" data-date="$Created">
+                                            <li><a href="#">$CreatedBy<i class="lnr lnr-user"></i></a></li>
+                                            <li><a href="#" class="date"><i class="lnr lnr-calendar-full"></i></a></li>
+                                            <li><a href="#">$ViewCount Views<i class="lnr lnr-eye"></i></a></li>
+                                            <li><a href="#">$CountComment Comments<i class="lnr lnr-bubble"></i></a></li>
+                                        </ul>
                                     </div>
-                                    <ul class="blog_meta list event" data-date="$Created">
-                                        <li><a href="#">$CreatedBy<i class="lnr lnr-user"></i></a></li>
-                                        <li><a href="#" class="date"><i class="lnr lnr-calendar-full"></i></a></li>
-                                        <li><a href="#">$ViewCount Views<i class="lnr lnr-eye"></i></a></li>
-                                        <li><a href="#">$CountComment Comments<i class="lnr lnr-bubble"></i></a></li>
-                                    </ul>
                                 </div>
-                            </div>
-                            <div class="col-md-9">
-                                <div class="blog_post">
-                                        <img src="$ImageThumbnail.getURL()" alt="Image Thumbnail">  
-                                        <div class="blog_details">
-                                            <a href="{$BaseHref}/blog/blogdetail/$ID">
-                                                <h2>$Title</h2>
-                                            </a>
-                                            <p>$Summary</p>
-                                            <a href="{$BaseHref}/blog/blogdetail/$ID" class="white_bg_btn">View More</a>
-                                        </div>                       
+                                <div class="col-md-9">
+                                    <div class="blog_post">
+                                            <img src="$ImageThumbnail.getURL()" alt="Image Thumbnail">  
+                                            <div class="blog_details">
+                                                <a href="{$BaseHref}/blog/blogdetail/$ID">
+                                                    <h2>$Title</h2>
+                                                </a>
+                                                <p>$Summary</p>
+                                                <a href="{$BaseHref}/blog/blogdetail/$ID" class="white_bg_btn">View More</a>
+                                            </div>                       
+                                    </div>
                                 </div>
-                            </div>
-                        </article>
-                    <% end_loop %>
+                            </article>
+                        <% end_loop %>
+                        <% else %>
+                            <article class="row blog_item " style="position:relative;">
+                               
+                            </article>
+                    <% end_if %> 
                     <% include Pagination %>
                 </div>
             </div>
