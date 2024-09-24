@@ -73,6 +73,8 @@ use SilverStripe\View\Requirements;
         return null;
     }
     public function rangePrice() {
+        // Debug::show($this->ProductSubCategory());
+        // die();
         $variants = $this->ProductVariants();
         if ($variants->exists()) {
             $prices = $variants->column('Price');
@@ -118,6 +120,21 @@ use SilverStripe\View\Requirements;
         }
         return 'No price available';
     }
+    public function minPriceDiscountedSort() {
+        $variants = $this->ProductVariants();
+        $promotion = $this->Promotion()->first();
+        
+        if ($variants->exists()) {
+            $prices = $variants->column('Price');
+            $minPrice = min($prices);
+            
+            if ($promotion) {
+                return $minPrice * (1 - $promotion->PromoPrice / 100);
+            }
+            return $minPrice;
+        }
+        return 0;
+    }
     public function totalStock() {
         $variants = $this->ProductVariants();
         if ($variants->exists()) {
@@ -144,12 +161,13 @@ use SilverStripe\View\Requirements;
             ->setEmptyString('Select a Category');
     
         $subCategoryField = CheckboxSetField::create('ProductSubCategory', 'Sub Category', []);
-    
         if ($this->ProductCategoryID) {
             $validSubCategories = ShopSubCategoryObject::get()->filter('ProductCategoryID', $this->ProductCategoryID)->map('ID', 'Title')->toArray();
             $subCategoryField->setSource($validSubCategories);
         }
-    
+        
+        // Debug::show($subCategoryField);
+        // die();
         Requirements::customScript(<<<JS
             (function($) {
                 $('#Form_ItemEditForm_ProductCategoryID').change(function() {

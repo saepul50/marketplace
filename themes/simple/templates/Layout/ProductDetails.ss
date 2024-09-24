@@ -1,5 +1,35 @@
 <% require themedJavascript('main') %>
-	
+	<style>
+		.stars {
+			font-size: 30px;
+
+		}
+
+		.star {
+			cursor: pointer;
+			margin: 0 5px;
+		}
+
+		.one {
+			color: #FBD600;
+		}
+
+		.two {
+			color: #FBD600;
+		}
+
+		.three {
+			color: #FBD600;
+		}
+
+		.four {
+			color: #FBD600;
+		}
+
+		.five {
+			color: #FBD600;
+		}
+	</style>
 	<!-- Start Banner Area -->
 	<section class="banner-area organic-breadcrumb"
 		style="background: url($SiteConfig.Background.getURL()) center no-repeat;background-size: cover; position: relative ">
@@ -89,11 +119,9 @@
 																	id="variantName" style="color:#000">$VariantName
 																</h6>
 															</div>
-															<% end_loop %>
+														<% end_loop %>
 													</div>
-												<% else %>
-												<p>kosong</p>
-												<% end_if %>
+													<% end_if %>
 														<div class="card_area d-flex align-items-center">
 															<button class="primary-btn" id="addCart"
 																style="border:none;">Add to Cart</button>
@@ -416,11 +444,11 @@
 											<span id="rating">0</span>/5
 										</div>
 										<div class="stars " id="stars">
-											<span class="star" data-value="1">★</span>
-											<span class="star" data-value="2">★</span>
-											<span class="star" data-value="3">★</span>
-											<span class="star" data-value="4">★</span>
-											<span class="star" data-value="5">★</span>
+											<span class="star" data-value="1"><i class="fa fa-star"></i></span>
+											<span class="star" data-value="2"><i class="fa fa-star"></i></span>
+											<span class="star" data-value="3"><i class="fa fa-star"></i></span>
+											<span class="star" data-value="4"><i class="fa fa-star"></i></span>
+											<span class="star" data-value="5"><i class="fa fa-star"></i></span>
 										</div>
 									</div>
 									<form class="row contact_form" method="post" id="reviewform">
@@ -617,14 +645,14 @@
 				</div>
 			</div>
 			<% else %>
-				<p class="d-flex justify-content-center">Product Invalid</p>
-				<% end_if %>
+			<p class="d-flex justify-content-center">Product Invalid</p>
+			<% end_if %>
 
-					<script>
-						const savedSort = localStorage.getItem('selectedSort');
-						if (savedSort) {
-						  document.getElementById('rating-filter').value = savedSort;
-						  $("option").addClass("selected");
-						}		
-					
-					</script>
+		<script>
+			const savedSort = localStorage.getItem('selectedSort');
+			if (savedSort) {
+				document.getElementById('rating-filter').value = savedSort;
+				$("option").addClass("selected");
+				}		
+				$('.nav-item#shop').addClass('active');
+		</script>

@@ -16,7 +16,8 @@ class CartPageController extends PageController{
         }
     }
     private static $allowed_actions = [
-        'addcart' => true
+        'addcart' => true,
+        'remove'
     ];
     public function getCart(){
         $member = Security::getCurrentUser();
@@ -101,4 +102,30 @@ class CartPageController extends PageController{
         }
         return $this->httpError(405, 'Method Not Allowed');
     }
+    public function remove(HTTPRequest $request) {
+        if ($request) {
+            $IDs = $request->postVar('ID') ? [$request->postVar('ID')] : $request->postVar('IDs');
+    
+            if (is_array($IDs)) {
+                $success = true;
+                foreach ($IDs as $ID) {
+                    $cartItem = CartObject::get()->byID($ID);
+                    if ($cartItem && $cartItem->MemberID == Security::getCurrentUser()->ID) {
+                        $cartItem->delete();
+                    } else {
+                        $success = false;
+                    }
+                }
+                return json_encode(['success' => $success]);
+            } else {
+                $cartItem = CartObject::get()->byID($IDs);
+                if ($cartItem && $cartItem->MemberID == Security::getCurrentUser()->ID) {
+                    $cartItem->delete();
+                    return json_encode(['success' => true]);
+                }
+                return json_encode(['success' => false, 'message' => 'Item not found or permission denied']);
+            }
+        }
+        return $this->httpError(405, 'Method Not Allowed');
+    }  
 }
