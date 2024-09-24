@@ -239,4 +239,7 @@
         </div>
     </div>
 </section>
+<script>
+    $('.nav-item#shop').addClass('active');
+</script>
 <!--================End Checkout Area =================-->

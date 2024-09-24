@@ -653,6 +653,6 @@
 			if (savedSort) {
 				document.getElementById('rating-filter').value = savedSort;
 				$("option").addClass("selected");
-			}		
-		
+				}		
+				$('.nav-item#shop').addClass('active');
 		</script>

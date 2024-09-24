@@ -68,7 +68,6 @@ crossorigin="anonymous" referrerpolicy="no-referrer" /> --%>
 </head>
 <body class="$ClassName.ShortName<% if not $Menu(2) %> no-sidebar<% end_if %>" <% if $i18nScriptDirection %>dir="$i18nScriptDirection"<% end_if %>>
 <% include Header %>
-<% include SideBar %>
 <div class="main" role="main">
 	<div class="inner typography line">
 		$Layout

@@ -91,4 +91,5 @@
             return false;
         });
     });
+    $('.nav-item#contact').addClass('active');
 </script>

@@ -31,7 +31,6 @@ stars.forEach((star) => {
 });
 $(document).ready(function () {
   "use strict";
-
   $("#filtera").change(function (event) {
     event.preventDefault(); // Prevents the form from doing a default refresh
     var selected = $("#filtera").val();
@@ -75,6 +74,8 @@ $(document).ready(function () {
       });
     })
     var currentParams = new URLSearchParams(window.location.search);
+    var pathname = window.location.pathname;
+    var parts = pathname.split('/');
     var selectedBrand = currentParams.get('filter');
     var selectedSubCategory = currentParams.get('subcategory');
     // console.log(selectedSubCategory)

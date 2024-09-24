@@ -231,5 +231,5 @@
                 }
             });
         }	
-
+		$('.nav-item#shop').addClass('active');
 </script>

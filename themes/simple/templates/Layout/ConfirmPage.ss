@@ -584,7 +584,7 @@
         });
     </script>
 <% else %>
-    <script>
+    <script> 
         $(document).ready(function() {
             $('#myOrder').show();
             $('#detailOrder').hide();
@@ -596,3 +596,6 @@
 <% else %>
 <h5 class="d-flex justify-content-center p-4">Nothing History Purchace</h5>
 <% end_if %>
+<script>
+    $('.nav-item#shop').addClass('active');
+</script>

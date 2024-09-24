@@ -212,3 +212,6 @@
     </div>
 </section>
 <!--================End Cart Area =================-->
+<script>
+    $('.nav-item#shop').addClass('active');
+</script>
