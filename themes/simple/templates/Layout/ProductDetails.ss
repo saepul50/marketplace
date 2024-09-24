@@ -1,35 +1,5 @@
 <% require themedJavascript('main') %>
-	<style>
-		.stars {
-			font-size: 30px;
-
-		}
-
-		.star {
-			cursor: pointer;
-			margin: 0 5px;
-		}
-
-		.one {
-			color: #ffff06;
-		}
-
-		.two {
-			color: #ffff06;
-		}
-
-		.three {
-			color: #ffff06;
-		}
-
-		.four {
-			color: #ffff06;
-		}
-
-		.five {
-			color: #ffff06;
-		}
-	</style>
+	
 	<!-- Start Banner Area -->
 	<section class="banner-area organic-breadcrumb"
 		style="background: url($SiteConfig.Background.getURL()) center no-repeat;background-size: cover; position: relative ">
@@ -114,14 +84,16 @@
 															<div class="variantItem m-0 p-0 mr-2 d-flex align-items-center"
 																style="border: 2px solid #ccc;" data-id="$ID"
 																data-stock="$Stock" data-price="$NormalPrice"
-																data-discount="$DiscountedPrice">
+																data-discount="$DiscountedPrice" data-weight="$Weight">
 																<h6 class="d-flex align-items-center p-1 m-0"
 																	id="variantName" style="color:#000">$VariantName
 																</h6>
 															</div>
 															<% end_loop %>
 													</div>
-													<% end_if %>
+												<% else %>
+												<p>kosong</p>
+												<% end_if %>
 														<div class="card_area d-flex align-items-center">
 															<button class="primary-btn" id="addCart"
 																style="border:none;">Add to Cart</button>

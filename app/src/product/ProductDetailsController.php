@@ -46,6 +46,7 @@ class ProductDetailsController extends PageController
     
     
         $product = ProductObject::get()->byID($id);
+        $variant = ProductVariantObject::get()->filter('ProductID', $product->ID);
         $comments = ProductComment::get()->filter('ProductObjectID', $id);
         $rating = ProductRating::get()->filter('ProductObjectID', $id);
         $count = $rating->count();
@@ -65,7 +66,7 @@ class ProductDetailsController extends PageController
         } else {
             $ratings = $ratings->sort('Created', 'DESC');
         }
-        // Debug::show($ratings);
+        // Debug::show($variant);
         // die();
         
 
@@ -77,7 +78,6 @@ class ProductDetailsController extends PageController
         ->setPageLength(10)
         ->setPaginationGetVar('s');
         foreach ($comments as $comment) {
-
             $comment->CommentReply = ProductReply::get()->filter('ProductCommentID', $comment->ID);
         }
         $membersID =  $rating->column('MemberID');

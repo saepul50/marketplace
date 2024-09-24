@@ -34,6 +34,7 @@ class CartPageController extends PageController{
     }
     public function addcart(HTTPRequest $request){
         if($request){
+            // Debug::show($request);
             $ProductID = $request->postVar('ProductID');
             $ProductTitle = $request->postVar('ProductTitle');
             $ProductImage = $request->postVar('ProductImage');
@@ -49,6 +50,7 @@ class CartPageController extends PageController{
                 'ProductCategryID' => $ProductCategoryId,
                 'ProductImage' => $ProductImage,
                 'ProductVariant' => $ProductVariant,
+                'ProductVariantWeight' => $ProductVariantWeight,
                 'ProductVariantID' => $ProductVariantID,
                 'Price' => $ProductPrice,
                 'Quantity' => $ProductQuantity
@@ -68,9 +70,11 @@ class CartPageController extends PageController{
                 
                 if ($existingCartItem) {
                     $existingCartItem->ProductQuantity += $ProductQuantity;
+                    $existingCartItem->ProductVariantWeight += $ProductVariantWeight;
                     $existingCartItem->write();
                 } else if ($existingCartItem2) {
                     $existingCartItem2->ProductQuantity += $ProductQuantity;
+                    $existingCartItem->ProductVariantWeight += $ProductVariantWeight;
                     $existingCartItem2->write();
                 } else {
                     $cartItem = CartObject::create();

@@ -13,7 +13,7 @@ use SilverStripe\ORM\PaginatedList;
             $data = $request->postVar('filter');
             $pagelength = $request->getSession()->get('PageLength');
 
-            Debug::show($pagelength);
+            // Debug::show($pagelength);
             $categorys = ShopCategoryObject::get();
             $subcategorylist = ShopSubCategoryObject::get();
             $subcategory = $subcategorylist;
