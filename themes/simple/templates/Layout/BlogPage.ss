@@ -136,7 +136,6 @@
         <div class="row">
             <div class="col-lg-8 " style="padding-bottom: 5rem;">
                 <div class="blog_left_sidebar" style="height:100%; position:relative;">
-                    <% if $Result.ID != null%>
                         <% loop $Result %>
                             <article class="row blog_item " style="position:relative;">
                                 <div class="col-md-3">
@@ -168,11 +167,6 @@
                                 </div>
                             </article>
                         <% end_loop %>
-                        <% else %>
-                            <article class="row blog_item " style="position:relative;">
-                               
-                            </article>
-                    <% end_if %> 
                     <% include Pagination %>
                 </div>
             </div>

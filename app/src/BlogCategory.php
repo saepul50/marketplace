@@ -51,7 +51,7 @@ class BlogCategory extends DataObject {
     }
     public function canEdit($member = null) {
         // Mencegah pengeditan untuk semua pengguna
-        return false;
+        return true ;
     }
 }
 
