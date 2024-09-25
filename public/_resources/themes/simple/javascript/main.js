@@ -29,16 +29,8 @@ stars.forEach((star) => {
         star.classList.add("selected");
     });
 });
-
-
 $(document).ready(function () {
   "use strict";
-
-
- 
-
-
-  
   $("#filtera").change(function (event) {
     event.preventDefault(); // Prevents the form from doing a default refresh
     var selected = $("#filtera").val();
@@ -215,71 +207,12 @@ $(document).ready(function () {
     return false;
   });
 
-
-
-  $("#profileform").submit(function (event) {
+ $("#profileform").submit(function (event) {
     event.preventDefault(); // Prevents the form from doing a default refresh
-    var province = parseInt($('.province_select .list .selected').data('value'));
-    var regency = parseInt($('.regency_select .list .selected').data('value'));
+
     $.post("/marketplace/vendorregistration/handelprofile", {
       NamaToko: $("#namatoko").val(),
-      Email: $("#Email").val(),
-      NomerHandPhone: $("#NomerHandPhone").val(),
       Message: $("#deskripsitoko").val(),
-      Image : $("#img").attr('src'),
-      Provinsi : province,
-      Regency : regency,
-    })
-      .done(function (data) {
-        var response = JSON.parse(data);
-        if (response.success) {
-          Swal.fire({
-            title: "SUCCESS",
-            text: "Success",
-            icon: "success",
-            timer: 1000
-          })
-          setInterval(href, 1500);
-
-          function href() {
-            location.reload();
-          }
-        } else {
-          Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text: response.message,
-            showConfirmButton: false,
-            timer: 1500
-          });
-        }
-
-      }).fail(function () {
-        Swal.fire({
-          icon: "error",
-          title: "Error",
-          text: "There was an issue  Please try again later.",
-          confirmButtonColor: "#d33",
-        });
-      });
-
-    return false;
-  });  
-  $("#editprofileform").submit(function (event) {
-    event.preventDefault(); // Prevents the form from doing a default refresh
-    var province = parseInt($('.province_select .list .selected').data('value'));
-    var regency = parseInt($('.regency_select .list .selected').data('value')); 
-    $.post("/marketplace/vendorregistration/handeleditprofile", {
-      NamaToko: $("#namatoko").val(),
-      Email: $("#Email").val(),
-      NomerHandPhone: $("#NomerHandPhone").val(),
-      Message: $("#deskripsitoko").val(),
-      Image : $("#img").attr('src'),
-      Provinsi : province,
-      Regency : regency,
-      ProvinsiTitle : province2,
-      RegencyTitle : regency2,
-
     })
       .done(function (data) {
         var response = JSON.parse(data);
@@ -316,6 +249,7 @@ $(document).ready(function () {
 
     return false;
   });
+
 
   $("#replycomment").off(function (event) {
     event.preventDefault();
@@ -1543,12 +1477,6 @@ $(document).ready(function () {
         this.value = this.value.slice(0, 14);
     }
   });
-  $("#NomerHandPhone").on('input', function() {
-    this.value = this.value.replace(/\D/g, '');
-    if (this.value.length > 14) {
-        this.value = this.value.slice(0, 14);
-    }
-  });
   $("#checkoutbtn").on('click', function(e) {
     e.preventDefault();
       TimeCheckout();
@@ -1806,7 +1734,7 @@ $(document).ready(function () {
           // console.log()
           var options = '';
           dataProvince.forEach(element => {
-              options += `<li data-value="${element.province_id}" class="option selected focus css">${element.province}</li>`;
+              options += `<li data-value="${element.province_id}" class="option selected focus">${element.province}</li>`;
           });
           $('.province_select .list').append(options);
           // console.log($('.province_select .').html());
@@ -2103,7 +2031,7 @@ $(document).ready(function () {
 
     if (event.target.files[0]) {
       selectedImage = event.target.files[0];
-      console.log(selectedImage)
+      // console.log(selectedImage)
       reader.readAsDataURL(event.target.files[0]);
     }
   }
@@ -2358,7 +2286,6 @@ $(document).ready(function () {
   }
   updateSubtotal();
   updateFinalPrice();
-
 });
 const events = document.querySelector('.event');
     console.log(dayjs());
