@@ -115,9 +115,7 @@
 																style="border: 2px solid #ccc;" data-id="$ID"
 																data-stock="$Stock" data-price="$NormalPrice"
 																data-discount="$DiscountedPrice" data-weight="$Weight">
-																<h6 class="d-flex align-items-center p-1 m-0"
-																	id="variantName" style="color:#000">$VariantName
-																</h6>
+																<h6 class="d-flex align-items-center p-1 m-0" id="variantName" style="color:#000">$VariantName</h6>
 															</div>
 														<% end_loop %>
 													</div>

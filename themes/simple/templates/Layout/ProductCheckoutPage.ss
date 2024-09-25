@@ -120,7 +120,7 @@
                             <li><a>Product <span>Total</span></a></li>
                             <% loop $CheckoutProductData %>
                                 <li class="listDataProduct">
-                                    <a>$ProductTitle <% if $ProductVariant %>($ProductVariant)<% end_if %> 
+                                    <a>$ProductTitle <% if $ProductVariant %>($ProductVariant)<% end_if %>
                                         <span class="last" id="variantP" data-weight="$ProductVariantWeight">x $ProductQuantity &nbsp;&nbsp; $ProductPrice</span>
                                     </a>
                                     <p class="d-none" id="productID">$ProductID</p>
