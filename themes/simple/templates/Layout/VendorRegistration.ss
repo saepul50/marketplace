@@ -88,66 +88,33 @@ input::-webkit-inner-spin-button {
                                         <label for="namatoko">Nama Toko</label>
                                         <input type="text" class="form-control" name="namatoko" id="namatoko" aria-describedby="namatoko" placeholder="Nama Toko"  required>
                                         </div>
-                                        <div class="form-group">
-                                        <label for="namatoko">Email</label>
-                                        <input type="email" class="form-control" name="Email" id="Email" aria-describedby="Email" placeholder="Email"  required>
-                                        </div>
-                                        <div class="form-group">
-                                        <label for="namatoko">Nomer HandPhone</label>
-                                        <input type="text" class="form-control" name="NomerHandPhone" id="NomerHandPhone" minlength="10" maxlength="13" aria-describedby="nomorhandphone"  value="$NomerHandPhone" placeholder="Nomer HandPhone" required>
-                                        </div>
+                                        
                                         <div class="form-group">
                                             <label for="deksripsitoko">Deskripsi Toko</label>
                                             <textarea class="form-control" id="deskripsitoko" name="deskripsitoko" placeholder="Deskripsi Toko" rows="3"  required></textarea>
                                         </div>
-                                        <div class="form-group">
-                                            <select id="provinsi" class=" country_select css province_select" >
-                                            <option class="css" value="0">Choose Province</option>
-                                            <ul class="list css">
-                                                
-                                            </ul>
-                                            </select>
-                                        </div>
-                                        <div class="form-group mt-2" style="width:100%;">
-                                            <select id="regency" class="country_select css regency_select" >
-                                            <option class="css" value="0">Choose regency</option>
-                                            <ul class="list">
-                                                
-                                            </ul>
-                                            </select>
-                                        </div>
+                                        
+                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                                            Launch demo modal
+                                          </button>
                                 </div>
-                        </div>
-                            <button type="submit" value="submit" class="primary-btn float-right mt-2 mr-2" style="border-radius: 5px; border: none">Create</button>
-                    </form>
-                    <% else %>
-                        <form method="post" id="editprofileform">
-                            <div class="row">
-                                <% loop $Toko %>
-                                    <div class="col-5 mt-4 text-center">
-                                        <h3 class="text-center">Profile Toko</h3>
-                                        <canvas id= "canv1" src="$ImageBase64"  width="1300" height="1300"></canvas>
-            
-                                        <label for="finput" class="custom-upload-button text-center primary-btn" style="border-radius: 5px; border: none">Change Image</label>
-                                        <input type="file" multiple="false" name="image" accept="image/*" id="finput" onchange="upload()" >
-                                        <img id="img" class="d-none" src="$ImageBase64">
-                                    </div>
-                                    <div class="col-7 mt-5">
-                                            <div class="form-group">
-                                            <label for="namatoko">Nama Toko</label>
-                                            <input type="text" class="form-control" name="namatoko" id="namatoko" aria-describedby="namatoko" placeholder="Nama Toko" value="$NamaToko" required>
-                                            </div>
+                                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                      <div class="modal-content">
+                                        <div class="modal-header">
+                                          <h5 class="modal-title" id="exampleModalLabel">Regis</h5>
+                                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                          </button>
+                                        </div>
+                                        <div class="modal-body">
                                             <div class="form-group">
                                             <label for="namatoko">Email</label>
-                                            <input type="email" class="form-control" name="Email" id="Email" aria-describedby="Email" placeholder="Email" value="$Email" required>
+                                            <input type="email" class="form-control" name="Email" id="Email" aria-describedby="Email" placeholder="Email"  required>
                                             </div>
                                             <div class="form-group">
                                             <label for="namatoko">Nomer HandPhone</label>
                                             <input type="text" class="form-control" name="NomerHandPhone" id="NomerHandPhone" minlength="10" maxlength="13" aria-describedby="nomorhandphone"  value="$NomerHandPhone" placeholder="Nomer HandPhone" required>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="deksripsitoko">Deskripsi Toko</label>
-                                                <textarea class="form-control" id="deskripsitoko" name="deskripsitoko" placeholder="Deskripsi Toko" rows="3"  required>$DeskripsiToko</textarea>
                                             </div>
                                             <div class="form-group">
                                                 <select id="provinsi" class=" country_select css province_select" >
@@ -165,6 +132,87 @@ input::-webkit-inner-spin-button {
                                                 </ul>
                                                 </select>
                                             </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                          <button type="button" class="btn btn-primary">Save changes</button>
+                                        </div>
+                                      </div>
+                                    </div>
+                                </div>
+                        </div>
+                            <button type="submit" value="submit" class="primary-btn float-right mt-2 mr-2" style="border-radius: 5px; border: none">Create</button>
+                    </form>
+                <% else %>
+                        <form method="post" id="editprofileform">
+                            <div class="row">
+                                <% loop $Toko %>
+                                    <div class="col-5 mt-4 text-center">
+                                        <h3 class="text-center">Upload Profile Toko</h3>
+                                        <canvas id= "canv1" src="$ImageBase64"  width="1300" height="1300"></canvas>
+            
+                                        <label for="finput" class="custom-upload-button text-center primary-btn" style="border-radius: 5px; border: none">Upload Image</label>
+                                        <input type="file" multiple="false" name="image" accept="image/*" id="finput" onchange="upload()" required>
+                                        <img id="img" class="d-none" src="">
+                                    </div>
+                                    <div class="col-7 mt-5">
+                                            <div class="form-group">
+                                            <label for="namatoko">Nama Toko</label>
+                                            <input type="text" class="form-control" name="namatoko" id="namatoko" aria-describedby="namatoko" placeholder="Nama Toko"  value="$NamaToko"required>
+                                            </div>
+                                            
+                                            <div class="form-group">
+                                                <label for="deksripsitoko">Deskripsi Toko</label>
+                                                <textarea class="form-control" id="deskripsitoko" name="deskripsitoko" placeholder="Deskripsi Toko" rows="3"  value="$DeskripsiToko"required></textarea>
+                                            </div>
+                                            
+                                            <button type="button" class="btn primary-btn" data-toggle="modal" data-target="#exampleModal">
+                                                Launch demo modal
+                                              </button>
+                                    </div>
+                                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                          <div class="modal-content">
+                                            <div class="modal-header">
+                                              <h5 class="modal-title" id="exampleModalLabel">Regis</h5>
+                                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                              </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form method="post" id="">
+                                                    <div class="form-group">
+                                                        <label for="namatoko">Email</label>
+                                                        <input type="email" class="form-control" name="Email" id="Email" aria-describedby="Email" placeholder="Email"  value="$Email" required>
+                                                        </div>
+                                                        <div class="form-group">
+                                                        <label for="namatoko">Nomer HandPhone</label>
+                                                        <input type="text" class="form-control" name="NomerHandPhone" id="NomerHandPhone" minlength="10" maxlength="13" aria-describedby="nomorhandphone"  value="$NomerHandPhone" placeholder="Nomer HandPhone" required>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <select id="provinsi" class=" country_select css province_select" >
+                                                        <option class="css" value="0">Choose Province</option>
+                                                        <ul class="list css">
+                                                            
+                                                        </ul>
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group mt-2" style="width:100%;">
+                                                        <select id="regency" class="country_select css regency_select" >
+                                                        <option class="css" value="0">Choose regency</option>
+                                                        <ul class="list">
+                                                            
+                                                        </ul>
+                                                        </select>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                            <div class="modal-footer">
+                                              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                              <button type="button" class="btn btn-primary">Save changes</button>
+                                            </div>
+                                          </div>
+                                        </div>
                                     </div>
                                 <% end_loop %>
                             </div>
