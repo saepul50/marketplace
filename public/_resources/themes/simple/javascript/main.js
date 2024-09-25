@@ -163,10 +163,10 @@ $(document).ready(function () {
 
 
 
-  $("#blogcomment").submit(function (event) {
+  $("#blogcomment").off(function (event) {
     event.preventDefault(); // Prevents the form from doing a default refresh
 
-    $.post("/blog/handelComment", {
+    $.post("https://localhost/marketplace/blog/handelComment", {
       Name: $("#name").val(),
       Message: $("#message").val(),
       ID: $("#BlogAddID").val(),
@@ -208,7 +208,7 @@ $(document).ready(function () {
   });
 
 
-  $("#replycomment").submit(function (event) {
+  $("#replycomment").off(function (event) {
     event.preventDefault();
 
     $.post("/marketplace/blog/handelreply", {
@@ -267,11 +267,37 @@ $(document).ready(function () {
     var modal = $(this)
     modal.find('.modal-title').text('New message to ' + recipient)
   })
+  $('.showModalButton').each(function () {
+    var button = $(this); 
+    var ProductID = button.data('id');  
+    var OrderID = button.data('get');  
+    if (localStorage.getItem('reviewsubmit' + OrderID + ProductID)) {
+        button.prop('disabled', true).text('Submitted');  
+    }
+});
 
+  $('.btn-outline-warning').on('click', function(event) {
+  event.preventDefault();
+  var button = $(this); 
+  var title = button.data('title');
+  var image = button.data('image');
+  var variant = button.data('variant');
+  var get = button.data('get');
+  var id = button.data('id');
+  var button = $('.showModalButton').data('id');
+  var Filter =  $("#ID").val();
+  $('#ID').val(id);
+  $('#title').html(title);
+  $('#variants').html(variant);
+  $('#image').attr('src', image);
+  $('#OrderID').val(get);
+  $('#exampleModalCenter').modal('show');
+  });
 
   $("#reviewform").submit(function (event) {
     event.preventDefault();
     const rating = document.getElementById("ratingValue");
+    // console.log(button);
     let angka = rating.getAttribute('value');
     console.log(angka);
     if(parseInt(angka) === 0 ){
@@ -286,16 +312,23 @@ $(document).ready(function () {
               Review: $("#reviewmsg").val(),  
               Rating: $("#ratingValue").val(),
               ID: $("#ID").val(),
-          })
-          .done(function (data) {
+            })
+            .done(function (data) {
               var response = JSON.parse(data);
+              var Filter =  $("#ID").val();
+              var OrderID =  $("#OrderID").val();
+              
               if (response.success) {
-                  Swal.fire({
+                $('.showModalButton[data-get="' + OrderID + '"][data-id="' + Filter+'"]').prop('disabled', true).text('Submitted'); 
+                localStorage.setItem('reviewsubmit' + OrderID + Filter, true);
+                Swal.fire({
                       title: "SUCCESS",
                       text: "Review submitted successfully!",
                       icon: "success",
                       timer: 1000,
                     });
+                    $('#exampleModalCenter').removeClass('show').attr("aria-hidden", "true");
+                    $('.modal-backdrop').removeClass('show');
                     document.getElementById('reviewmsg').value=null;
                     stars.forEach((s) => s.classList.remove("one", 
                       "two", 
@@ -329,7 +362,7 @@ $(document).ready(function () {
         }
       });
   // PRODUCT
-  $("#kkls").submit(function (event) {
+  $("#kkls").off('submit').on('submit', function (event) {
     event.preventDefault();
 
     $.post("/marketplace/productdetails/productcomment", {
@@ -369,7 +402,7 @@ $(document).ready(function () {
         });
       });
 
-    return false; // Ensure no form submission (and thus no refresh)
+    return false;
   });
 
 
@@ -391,7 +424,7 @@ $(document).ready(function () {
             icon: "success",
             timer: 1000
           })
-          setInterval(href, 1000);
+          setInterval(href, 1500);
 
           function href() {
             location.reload();
@@ -417,6 +450,9 @@ $(document).ready(function () {
 
     return false; // Ensure no form submission (and thus no refresh)
   });
+
+
+  
   $('#exampleModal').on('show.bs.modal', function (event) {
     var button = $(event.relatedTarget)
     var recipient = button.data('name')
@@ -1071,7 +1107,7 @@ $(document).ready(function () {
       $("#blogcomment").submit(function (event) {
         event.preventDefault(); // Prevents the form from doing a default refresh
     
-        $.post("/blog/handelComment", {
+        $.post("/marketplace/blog/handelComment", {
             Name: $("#name").val(),
             Message: $("#message").val(),
             ID: $("#BlogAddID").val(),
@@ -1176,49 +1212,7 @@ $(document).ready(function () {
     
     
     
-        // PRODUCT
-        $("#kkls").submit(function (event) {
-          event.preventDefault(); // Prevents the form from doing a default refresh
-        
-          $.post("/marketplace/productdetails/productcomment", {
-            Message: $("#slsd").val(),
-            ID: $("#asdasda").val(),
-          })
-          .done(function (data) {
-            var response = JSON.parse(data);
-            if (response.success) {
-              Swal.fire({
-                title: "SUCCESS",
-                text: "Success",
-                icon: "success",
-                timer: 1000
-              })
-              setInterval(href, 1500);
-    
-              function href(){
-                location.reload(); 
-              }
-            } else {
-              Swal.fire({
-                icon: "error",
-                title: "Oops...",
-                text: response.message,
-                showConfirmButton: false,
-                timer: 1500
-              });
-            }
-        
-          }).fail(function () {
-            Swal.fire({
-            icon: "error",
-            title: "Error",
-            text: "There was an issue  Please try again later.",
-            confirmButtonColor: "#d33",
-            });
-          });
-        
-          return false; // Ensure no form submission (and thus no refresh)
-        });
+       
     
     
         $("#productcommentreply").submit(function (event) {
@@ -1859,7 +1853,7 @@ $(document).ready(function () {
     var weight = $('#fulldata .weight').text();
     // console.log(idRegency)
     $.ajax({
-      url: '/marketplace/productcheckout/rajoCot',
+      url: '/marketplace/productcheckout/rajoCost',
       type: 'POST',
       data: { 
         Courir: courir,

@@ -41,11 +41,12 @@ class ProductDetailsController extends PageController
     }
     public function view(HTTPRequest $request)
     {
-
+        $members = Security::getCurrentUser();
         $id = $request->param('ID');
     
     
         $product = ProductObject::get()->byID($id);
+        $variant = ProductVariantObject::get()->filter('ProductID', $product->ID);
         $comments = ProductComment::get()->filter('ProductObjectID', $id);
         $rating = ProductRating::get()->filter('ProductObjectID', $id);
         $count = $rating->count();
@@ -65,7 +66,7 @@ class ProductDetailsController extends PageController
         } else {
             $ratings = $ratings->sort('Created', 'DESC');
         }
-        // Debug::show($ratings);
+        // Debug::show($variant);
         // die();
         
 
@@ -77,18 +78,15 @@ class ProductDetailsController extends PageController
         ->setPageLength(10)
         ->setPaginationGetVar('s');
         foreach ($comments as $comment) {
-
             $comment->CommentReply = ProductReply::get()->filter('ProductCommentID', $comment->ID);
         }
-        
-
         $membersID =  $rating->column('MemberID');
         if(!empty($membersID)){
         $members = Member::get()->filter('ID', $membersID);
         } else {
             $members = null;
         }
-
+        // Debug::show($members);
 
         return $this->customise([
             'Product' => $product,
@@ -105,6 +103,9 @@ class ProductDetailsController extends PageController
             'ID' => $id,
         ])->renderWith(['ProductDetails', 'Page']);
     }
+    
+    // $previousblog ? $previousblog->Link() : null
+
     public function productcomment(HTTPRequest $request)
     {
         $member = Security::getCurrentUser();

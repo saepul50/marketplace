@@ -13,6 +13,11 @@ class ConfirmPageController extends PageController{
         if ($member) {
             $checkoutObjects = ProductCheckoutObject::get()->filter('MemberID', $member->ID);
             $headerCheckoutIDs = $checkoutObjects->column('HeaderCheckoutID');
+            $status = ProductCheckoutHeaderObject::get()->filter(['Status'=> 'Completed']);
+            $HeaderID = $status->column('ID');
+            $filter = ProductCheckoutObject::get()->filter('HeaderCheckOutID', $HeaderID);
+            // Debug::show($filter);
+
             if (!empty($headerCheckoutIDs)) {
                 return ProductCheckoutHeaderObject::get()->filter('ID', $headerCheckoutIDs);
             }
@@ -28,10 +33,11 @@ class ConfirmPageController extends PageController{
         if ($member) {
             $checkoutObjects = ProductCheckoutObject::get()->filter('MemberID', $member->ID);
             $headerCheckoutIDs = $checkoutObjects->column('HeaderCheckoutID');
-    
+        
+            
             $checkoutHeader = ProductCheckoutHeaderObject::get()->filter(['OrderID' => $id])->filter('ID', $headerCheckoutIDs);
-            // Debug::show($checkoutHeader);
             // die();
+            // Debug::show($checkoutHeader);
             if ($checkoutHeader->exists()) {
                 $isDetail = $request->getVar('detailOrder');
                 return $this->customise([

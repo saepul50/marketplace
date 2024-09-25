@@ -162,11 +162,11 @@ $(document).ready(function () {
     });
 
 
-
+//blogg
   $("#blogcomment").submit(function (event) {
     event.preventDefault(); // Prevents the form from doing a default refresh
 
-    $.post("/blog/handelComment", {
+    $.post("/marketplace/blog/handelComment", {
       Name: $("#name").val(),
       Message: $("#message").val(),
       ID: $("#BlogAddID").val(),
@@ -208,7 +208,7 @@ $(document).ready(function () {
   });
 
 
-  $("#replycomment").submit(function (event) {
+  $("#replycomment").off(function (event) {
     event.preventDefault();
 
     $.post("/marketplace/blog/handelreply", {
@@ -268,7 +268,7 @@ $(document).ready(function () {
     modal.find('.modal-title').text('New message to ' + recipient)
   })
 
-
+//product
   $("#reviewform").submit(function (event) {
     event.preventDefault();
     const rating = document.getElementById("ratingValue");
@@ -1221,50 +1221,7 @@ $(document).ready(function () {
         });
     
     
-        $("#productcommentreply").submit(function (event) {
-          event.preventDefault(); // Prevents the form from doing a default refresh
-      
-          $.post("/marketplace/productdetails/productreply", {
-              Send: $("#nama-reply").val(),
-              Message: $("#message-reply").val(),
-              CommentID: $("#productcommentid-reply").val(),
-              ID: $("#ProductObjectID").val(),
-            })
-            .done(function (data) {
-              var response = JSON.parse(data);
-              if (response.success) {
-                Swal.fire({
-                  title: "SUCCESS",
-                  text: "Success",
-                  icon: "success",
-                  timer: 1000
-                })
-                setInterval(href, 1000);
-      
-                function href(){
-                  location.reload(); 
-                }
-              } else {
-                Swal.fire({
-                  icon: "error",
-                  title: "Oops...",
-                  text: response.message,
-                  showConfirmButton: false,
-                  timer: 1500
-                });
-              }
-      
-            }).fail(function () {
-              Swal.fire({
-                icon: "error",
-                title: "Error",
-                text: "There was an issue  Please try again later.",
-                confirmButtonColor: "#d33",
-              });
-            });
-      
-          return false; // Ensure no form submission (and thus no refresh)
-        });
+        
         $('#exampleModal').on('show.bs.modal', function (event) {
             var button = $(event.relatedTarget)
             var recipient = button.data('name')
@@ -1273,7 +1230,7 @@ $(document).ready(function () {
             $('#nama-reply').val(recipient);
             var modal = $(this)
             modal.find('.modal-title').text('New message to ' + recipient)
-        })
+        });
       
   $("#register").on('click', function (event) {
     event.preventDefault();
@@ -2280,6 +2237,8 @@ $(document).ready(function () {
   updateSubtotal();
   updateFinalPrice();
 });
+const events = document.querySelector('.event');
+    console.log(dayjs());
 
 stars.forEach(star => {
   star.addEventListener('click', function() {

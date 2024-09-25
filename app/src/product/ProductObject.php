@@ -180,7 +180,7 @@ use SilverStripe\View\Requirements;
                             var checkboxSetField = $('#Form_ItemEditForm_ProductSubCategory');
                             checkboxSetField.empty();
                             $.each(subCategories, function(id, title) {
-                                checkboxSetField.append('<label><input type="checkbox" name="ProductSubCategory[]" value="' + id + '"> ' + title + '</label><br>');
+                                checkboxSetField.append('<label><input type="checkbox" name="ProductSubCategory[]" value="' + id + '"> ' + title + '</label>');
                             });
                         }
                     });

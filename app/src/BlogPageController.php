@@ -28,39 +28,35 @@ class BlogPageController extends PageController
     public function index(HTTPRequest $request)
     {
         $member = Security::getCurrentUser();
-        // Debug::show($member);
+        
         if (!$member) {
             return $this->redirect(Director::absoluteBaseURL() . '/login');
-        } else {
+        }
+    
+        // Fetch categories
         $categori = BlogCategory::get();
+        if (!$categori || $categori->count() === 0) {
+            $categori = null; // No categories found
+        }
+    
+        // Fetch all blog posts
         $contents = BlogAdd::get();
-        $latestpost = BlogAdd::get()->sort('Created', 'DESC');
-        $popularpost = BlogAdd::get()->sort('ViewCount', 'DESC');
-        $activeFilters = ArrayList::create();
-
-
-
-        // Debug::show($popularpost);
-        foreach ($contents as $content) {
-            $categories = $content->BlogCategories();
-
+        if ($contents->exists()) {
+            // Process each blog post
+            foreach ($contents as $content) {
+                $comments = BlogComment::get()->filter('BlogAddID', $content->ID);
+                $countcomment = $comments->count();
+                $countreply = CommentReply::get()->filter('BlogAddID', $content->ID)->count();
+                $content->CountComment = $countreply + $countcomment;
+                $content->write();
+            }
+        } else {
+            $contents = null;
         }
-        foreach ($contents as $content) {
-
-            $comments = BlogComment::get()->filter('BlogAddID', $content->ID);
-            $countcomment = $comments->count();
-            $countreply = CommentReply::get()->filter('BlogAddID', $content->ID)->count();
-            $counttotal = [];
-            $content->CountComment = $countreply + $countcomment;
-            $Createdby = BlogAdd::get()->column('CreatedBy');
-            
-            $content->write();
-            
-        }
-        
-            // Debug::show($Createdby);
-
+    
+        // Check for search filter
         if ($search = $request->postVar('search')) {
+            $activeFilters = ArrayList::create();
             $activeFilters->push(ArrayData::create([
                 'Label' => "'$search'"
             ]));
@@ -68,36 +64,43 @@ class BlogPageController extends PageController
                 'Title:PartialMatch' => $search
             ]);
         }
-        if (!$contents->exists()) {
-            $contents = BlogAdd::get();
+    
+        // Handle no results for contents
+        if (!$contents || !$contents->exists()) {
+            $contents = BlogAdd::get(); // Reload all posts if none were found
         }
-       
-        // Debug::show($contents);
+    
+        // Paginate the content
         $paginated = PaginatedList::create(
             $contents,
             $this->getRequest()
         )->setPageLength(4)->setPaginationGetVar('s');
-
-        if($member){
+    
+        // Fetch user groups
+        $grup = null;
+        if ($member) {
             $grup = $member->Groups();
-            // Debug::show($grup);
         }
-
-
+    
+        // Only fetch categories with counts if they exist
+        $categoriesWithCounts = null;
+        if ($categori) {
+            $categoriesWithCounts = BlogCategory::getCategoriesWithCounts();
+        }
+    
         return [
-            BlogCategory::getCategoriesWithCounts(),
+            'BlogCategoriesWithCounts' => $categoriesWithCounts, // Ensure this only runs if categories exist
             'Result' => $paginated,
-            'Latestpost' => $latestpost,
-            'ActiveFilter' => $activeFilters,
+            'Latestpost' => BlogAdd::get()->sort('Created', 'DESC'),
+            'ActiveFilter' => $activeFilters ?? null,  // Ensure null if no filters
             'Categori' => $categori,
             'Groups' => $grup,
-            'Popularpost' => $popularpost,
-            'Content' => $contents,
-            'Count' => $counttotal,
-            'CreatedBy' => $Createdby,
+            'Popularpost' => BlogAdd::get()->sort('ViewCount', 'DESC'),
+            'Content' => $contents
         ];
     }
-    }
+    
+    
 
     public function BlogDetail(HTTPRequest $request)
     {
@@ -136,14 +139,15 @@ class BlogPageController extends PageController
             $contents->ViewCount += 1;
             $contents->write();
 
+            BlogCategory::getCategoriesWithCounts();
             
             // Debug::show($Createdby);
             return $this->customise([
-                BlogCategory::getCategoriesWithCounts(),
                 'Latestpost' => $latestpost,
                 'Popularpost' => $popularpost,
                 'CreatedBy' => $Createdby,
                 'Member' => $member,
+                'IDMember' => $member->ID,
                 'Comment' => $comments,
                 'CommentID' => $comments->ID,
                 'Categori' => $categori,
