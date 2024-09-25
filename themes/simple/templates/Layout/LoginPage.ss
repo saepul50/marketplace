@@ -36,7 +36,7 @@
                             <input type="email" class="form-control" id="emaillogin" placeholder="Email" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Email'" required value="<% if $Member %>$Member.Email<% else %><% end_if %>">
                         </div>
                         <div class="col-md-12 form-group">
-                            <input type="password" class="form-control" id="passwordlogin" name="password" placeholder="Password" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Password'" required value="<% if $Member %>$Member.Password<% else %><% end_if %>">
+                            <input type="password" class="form-control" id="passwordlogin" name="password" placeholder="Password" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Password'" required value="<% if $Member %>$Member.FirstName<% else %><% end_if %>">
                         </div>
                         <div class="col-md-12 form-group">
                             <div class="creat_account">

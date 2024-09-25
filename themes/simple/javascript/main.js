@@ -1812,11 +1812,16 @@ $(document).ready(function () {
   //   });
     $('#saveData').on('click', function(e) {
       e.preventDefault();
+      var numberInput = $("#numberinput").val();
       var address = $('.province_select .list .selected').html() + ', ' + $('.regency_select .list .selected').html();
       var province = parseInt($('.province_select .list .selected').data('value'));
       var regency = parseInt($('.regency_select .list .selected').data('value'));
       // console.log(address)
       // console.log(regency)
+      if (numberInput.length < 12 || numberInput.length > 14) {
+        iziToast.warning({position: "bottomRight", title: 'Caution', message: 'Nomor harus antara 12 hingga 14 digit.'});
+        return;
+      }
       var data = {
           Number: $('#numberinput').val(),
           FName: $('#first').val(),
@@ -1838,6 +1843,8 @@ $(document).ready(function () {
       })
       .done(function (data) {
         var response = JSON.parse(data);
+        // console.log(response)
+        // return false;
         window.location.reload();
       })
         .fail(function () {
@@ -1859,7 +1866,7 @@ $(document).ready(function () {
     var weight = $('#fulldata .weight').text();
     // console.log(idRegency)
     $.ajax({
-      url: '/marketplace/productcheckout/rajoCot',
+      url: '/marketplace/productcheckout/rajoCost',
       type: 'POST',
       data: { 
         Courir: courir,

@@ -29,16 +29,8 @@ stars.forEach((star) => {
         star.classList.add("selected");
     });
 });
-
-
 $(document).ready(function () {
   "use strict";
-
-
- 
-
-
-  
   $("#filtera").change(function (event) {
     event.preventDefault(); // Prevents the form from doing a default refresh
     var selected = $("#filtera").val();
@@ -170,11 +162,11 @@ $(document).ready(function () {
     });
 
 
-
-  $("#blogcomment").off(function (event) {
+//blogg
+  $("#blogcomment").submit(function (event) {
     event.preventDefault(); // Prevents the form from doing a default refresh
 
-    $.post("https://localhost/marketplace/blog/handelComment", {
+    $.post("/marketplace/blog/handelComment", {
       Name: $("#name").val(),
       Message: $("#message").val(),
       ID: $("#BlogAddID").val(),
@@ -316,7 +308,6 @@ $(document).ready(function () {
 
     return false;
   });
-
   $("#replycomment").off(function (event) {
     event.preventDefault();
 
@@ -403,10 +394,10 @@ $(document).ready(function () {
   $('#exampleModalCenter').modal('show');
   });
 
+//product
   $("#reviewform").submit(function (event) {
     event.preventDefault();
     const rating = document.getElementById("ratingValue");
-    // console.log(button);
     let angka = rating.getAttribute('value');
     console.log(angka);
     if(parseInt(angka) === 0 ){
@@ -417,39 +408,39 @@ $(document).ready(function () {
         showConfirmButton: false,
       });
     } else {
-          $.post("/marketplace/productdetails/review", {
-              Review: $("#reviewmsg").val(),  
-              Rating: $("#ratingValue").val(),
-              ID: $("#ID").val(),
-            })
-            .done(function (data) {
-              var response = JSON.parse(data);
-              var Filter =  $("#ID").val();
-              var OrderID =  $("#OrderID").val();
-              
-              if (response.success) {
-                $('.showModalButton[data-get="' + OrderID + '"][data-id="' + Filter+'"]').prop('disabled', true).text('Submitted'); 
-                localStorage.setItem('reviewsubmit' + OrderID + Filter, true);
-                Swal.fire({
-                      title: "SUCCESS",
-                      text: "Review submitted successfully!",
-                      icon: "success",
-                      timer: 1000,
-                    });
-                    $('#exampleModalCenter').removeClass('show').attr("aria-hidden", "true");
-                    $('.modal-backdrop').removeClass('show');
-                    document.getElementById('reviewmsg').value=null;
-                    stars.forEach((s) => s.classList.remove("one", 
-                      "two", 
-                      "three", 
-                      "four", 
-                      "five", 
-                      "selected"));
-                      setInterval(href, 1500);
+      $.post("/marketplace/productdetails/review", {
+        Review: $("#reviewmsg").val(),  
+        Rating: $("#ratingValue").val(),
+        ID: $("#ID").val(),
+      })
+      .done(function (data) {
+        var response = JSON.parse(data);
+        var Filter =  $("#ID").val();
+        var OrderID =  $("#OrderID").val();
+        
+        if (response.success) {
+          $('.showModalButton[data-get="' + OrderID + '"][data-id="' + Filter+'"]').prop('disabled', true).text('Submitted'); 
+          localStorage.setItem('reviewsubmit' + OrderID + Filter, true);
+          Swal.fire({
+                title: "SUCCESS",
+                text: "Review submitted successfully!",
+                icon: "success",
+                timer: 1000,
+              });
+              $('#exampleModalCenter').removeClass('show').attr("aria-hidden", "true");
+              $('.modal-backdrop').removeClass('show');
+              document.getElementById('reviewmsg').value=null;
+              stars.forEach((s) => s.classList.remove("one", 
+                "two", 
+                "three", 
+                "four", 
+                "five", 
+                "selected"));
+                setInterval(href, 1500);
 
-                    function href() {
-                      location.reload();
-                    }
+              function href() {
+                location.reload();
+              }
               } else {
                   Swal.fire({
                       icon: "error",
@@ -471,7 +462,7 @@ $(document).ready(function () {
         }
       });
   // PRODUCT
-  $("#kkls").off('submit').on('submit', function (event) {
+  $("#kkls").submit(function (event) {
     event.preventDefault();
 
     $.post("/marketplace/productdetails/productcomment", {
@@ -511,7 +502,7 @@ $(document).ready(function () {
         });
       });
 
-    return false;
+    return false; // Ensure no form submission (and thus no refresh)
   });
 
 
@@ -533,7 +524,7 @@ $(document).ready(function () {
             icon: "success",
             timer: 1000
           })
-          setInterval(href, 1500);
+          setInterval(href, 1000);
 
           function href() {
             location.reload();
@@ -559,9 +550,6 @@ $(document).ready(function () {
 
     return false; // Ensure no form submission (and thus no refresh)
   });
-
-
-  
   $('#exampleModal').on('show.bs.modal', function (event) {
     var button = $(event.relatedTarget)
     var recipient = button.data('name')
@@ -1180,6 +1168,12 @@ $(document).ready(function () {
       ]
     });
   }
+  $("#NomerHandPhone").on('input', function() {
+    this.value = this.value.replace(/\D/g, '');
+    if (this.value.length > 14) {
+        this.value = this.value.slice(0, 14);
+    }
+  });
   iziToast.settings({
     timeout: 3000,
     resetOnHover: true,
@@ -1216,7 +1210,7 @@ $(document).ready(function () {
       $("#blogcomment").submit(function (event) {
         event.preventDefault(); // Prevents the form from doing a default refresh
     
-        $.post("/marketplace/blog/handelComment", {
+        $.post("/blog/handelComment", {
             Name: $("#name").val(),
             Message: $("#message").val(),
             ID: $("#BlogAddID").val(),
@@ -1321,53 +1315,52 @@ $(document).ready(function () {
     
     
     
-       
-    
-    
-        $("#productcommentreply").submit(function (event) {
+        // PRODUCT
+        $("#kkls").submit(function (event) {
           event.preventDefault(); // Prevents the form from doing a default refresh
-      
-          $.post("/marketplace/productdetails/productreply", {
-              Send: $("#nama-reply").val(),
-              Message: $("#message-reply").val(),
-              CommentID: $("#productcommentid-reply").val(),
-              ID: $("#ProductObjectID").val(),
-            })
-            .done(function (data) {
-              var response = JSON.parse(data);
-              if (response.success) {
-                Swal.fire({
-                  title: "SUCCESS",
-                  text: "Success",
-                  icon: "success",
-                  timer: 1000
-                })
-                setInterval(href, 1000);
-      
-                function href(){
-                  location.reload(); 
-                }
-              } else {
-                Swal.fire({
-                  icon: "error",
-                  title: "Oops...",
-                  text: response.message,
-                  showConfirmButton: false,
-                  timer: 1500
-                });
+        
+          $.post("/marketplace/productdetails/productcomment", {
+            Message: $("#slsd").val(),
+            ID: $("#asdasda").val(),
+          })
+          .done(function (data) {
+            var response = JSON.parse(data);
+            if (response.success) {
+              Swal.fire({
+                title: "SUCCESS",
+                text: "Success",
+                icon: "success",
+                timer: 1000
+              })
+              setInterval(href, 1500);
+    
+              function href(){
+                location.reload(); 
               }
-      
-            }).fail(function () {
+            } else {
               Swal.fire({
                 icon: "error",
-                title: "Error",
-                text: "There was an issue  Please try again later.",
-                confirmButtonColor: "#d33",
+                title: "Oops...",
+                text: response.message,
+                showConfirmButton: false,
+                timer: 1500
               });
+            }
+        
+          }).fail(function () {
+            Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "There was an issue  Please try again later.",
+            confirmButtonColor: "#d33",
             });
-      
+          });
+        
           return false; // Ensure no form submission (and thus no refresh)
         });
+    
+    
+        
         $('#exampleModal').on('show.bs.modal', function (event) {
             var button = $(event.relatedTarget)
             var recipient = button.data('name')
@@ -1376,7 +1369,7 @@ $(document).ready(function () {
             $('#nama-reply').val(recipient);
             var modal = $(this)
             modal.find('.modal-title').text('New message to ' + recipient)
-        })
+        });
       
   $("#register").on('click', function (event) {
     event.preventDefault();
@@ -1575,12 +1568,6 @@ $(document).ready(function () {
     });
   });
   $("#numberinput").on('input', function() {
-    this.value = this.value.replace(/\D/g, '');
-    if (this.value.length > 14) {
-        this.value = this.value.slice(0, 14);
-    }
-  });
-  $("#NomerHandPhone").on('input', function() {
     this.value = this.value.replace(/\D/g, '');
     if (this.value.length > 14) {
         this.value = this.value.slice(0, 14);
@@ -1843,7 +1830,7 @@ $(document).ready(function () {
           // console.log()
           var options = '';
           dataProvince.forEach(element => {
-              options += `<li data-value="${element.province_id}" class="option selected focus css">${element.province}</li>`;
+              options += `<li data-value="${element.province_id}" class="option selected focus">${element.province}</li>`;
           });
           $('.province_select .list').append(options);
           // console.log($('.province_select .').html());
@@ -1921,11 +1908,16 @@ $(document).ready(function () {
   //   });
     $('#saveData').on('click', function(e) {
       e.preventDefault();
+      var numberInput = $("#numberinput").val();
       var address = $('.province_select .list .selected').html() + ', ' + $('.regency_select .list .selected').html();
       var province = parseInt($('.province_select .list .selected').data('value'));
       var regency = parseInt($('.regency_select .list .selected').data('value'));
       // console.log(address)
       // console.log(regency)
+      if (numberInput.length < 12 || numberInput.length > 14) {
+        iziToast.warning({position: "bottomRight", title: 'Caution', message: 'Nomor harus antara 12 hingga 14 digit.'});
+        return;
+      }
       var data = {
           Number: $('#numberinput').val(),
           FName: $('#first').val(),
@@ -1947,6 +1939,8 @@ $(document).ready(function () {
       })
       .done(function (data) {
         var response = JSON.parse(data);
+        // console.log(response)
+        // return false;
         window.location.reload();
       })
         .fail(function () {
@@ -2133,7 +2127,7 @@ $(document).ready(function () {
 
     if (event.target.files[0]) {
       selectedImage = event.target.files[0];
-      console.log(selectedImage)
+      // console.log(selectedImage)
       reader.readAsDataURL(event.target.files[0]);
     }
   }
@@ -2388,8 +2382,9 @@ $(document).ready(function () {
   }
   updateSubtotal();
   updateFinalPrice();
-
 });
+const events = document.querySelector('.event');
+    console.log(dayjs());
 
 stars.forEach(star => {
   star.addEventListener('click', function() {
