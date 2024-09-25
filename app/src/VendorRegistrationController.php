@@ -31,6 +31,8 @@ class VendorRegistrationController extends PageController{
         $toko->NomerHandPhone = $data['NomerHandPhone'];
         $toko->DeskripsiToko = $data['Message'];
         $toko->ImageBase64 = $data['Image'];
+        $toko->ProvinsiID = $data['Provinsi'];
+        $toko->RegencyID = $data['Regency'];
         $toko->write();
     }
 

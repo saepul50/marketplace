@@ -94,26 +94,27 @@ input::-webkit-inner-spin-button {
                                         </div>
                                         <div class="form-group">
                                         <label for="namatoko">Nomer HandPhone</label>
-                                        <input type="number" class="form-control" name="NomerHandPhone" id="NomerHandPhone" min="10" max="13" aria-describedby="nomorhandphone"  placeholder="Nomer HandPhone" required>
+                                        <input type="text" class="form-control" name="NomerHandPhone" id="NomerHandPhone" minlength="10" maxlength="13" aria-describedby="nomorhandphone"  value="$NomerHandPhone" placeholder="Nomer HandPhone" required>
                                         </div>
                                         <div class="form-group">
                                             <label for="deksripsitoko">Deskripsi Toko</label>
                                             <textarea class="form-control" id="deskripsitoko" name="deskripsitoko" placeholder="Deskripsi Toko" rows="3"  required></textarea>
                                         </div>
                                         <div class="form-group">
-                                            <select class="country_select province_select">
-                                            <option value="0">Choose Province</option>
+                                            <select id="provinsi" class=" country_select css province_select" >
+                                            <option class="css" value="0">Choose Province</option>
+                                            <ul class="list css">
+                                                
+                                            </ul>
+                                            </select>
+                                        </div>
+                                        <div class="form-group mt-2" style="width:100%;">
+                                            <select id="regency" class="country_select css regency_select" >
+                                            <option class="css" value="0">Choose regency</option>
                                             <ul class="list">
                                                 
                                             </ul>
-                                        </select>
-                                        </div>
-                                        <div class="form-group">
-                                            <select class="country_select regency_select">
-                                            <option value="0">Choose regency</option>
-                                            <ul class="list">
-                                            </ul>
-                                        </select>
+                                            </select>
                                         </div>
                                 </div>
                         </div>
