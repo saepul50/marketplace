@@ -765,38 +765,29 @@
             </div>
         <% end_if %>
     <% end_loop %>
+
+
+
     <% if $ShowDetailOrder %>
-    <script>
-       $(document).ready(function() {
-           $('#myOrder').hide();
-           $('#detailOrder').show();
-       });
-    </script>
-    <% else %>
-    <script>
-       $(document).ready(function() {
-           $('#myOrder').show();
-           $('#detailOrder').hide();
-       });
-<% else %>
-    <script> 
-        $(document).ready(function() {
-            $('#myOrder').show();
-            $('#detailOrder').hide();
-        });
-    </script>
-    <% end_if %>
- </section>
- <!--================End Order Details Area =================-->
- <% else %>
- <h5 class="d-flex justify-content-center p-4">Nothing History Purchace</h5>
- <% end_if %>
-<% end_if %>
-</section>
-<!--================End Order Details Area =================-->
-<% else %>
-<h5 class="d-flex justify-content-center p-4">Nothing History Purchace</h5>
-<% end_if %>
-<script>
-    $('.nav-item#shop').addClass('active');
-</script>
+      <script>
+          $(document).ready(function() {
+              $('#myOrder').hide();
+              $('#detailOrder').show();
+          });
+      </script>
+  <% else %>
+      <script> 
+          $(document).ready(function() {
+              $('#myOrder').show();
+              $('#detailOrder').hide();
+          });
+      </script>
+  <% end_if %>
+  </section>
+  <!--================End Order Details Area =================-->
+  <% else %>
+  <h5 class="d-flex justify-content-center p-4">Nothing History Purchace</h5>
+  <% end_if %>
+  <script>
+      $('.nav-item#shop').addClass('active');
+  </script>

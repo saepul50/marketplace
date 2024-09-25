@@ -1,4 +1,4 @@
-  <!-- Start Banner Area -->
+   <!-- Start Banner Area -->
   <section class="banner-area organic-breadcrumb" style ="background: url($SiteConfig.Background.getURL()) center no-repeat;background-size: cover; position: relative ">
     <div class="container">
         <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
