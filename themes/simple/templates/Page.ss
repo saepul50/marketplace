@@ -32,6 +32,7 @@ crossorigin="anonymous" referrerpolicy="no-referrer" /> --%>
 	<link href="
 	https://cdn.jsdelivr.net/npm/owl.carousel@2.3.4/dist/assets/owl.carousel.min.css
 	" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
 	<% base_tag %>
 	<title>$SiteConfig.Title</title>

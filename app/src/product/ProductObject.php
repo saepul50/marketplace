@@ -31,6 +31,7 @@ use SilverStripe\View\Requirements;
         'FirstProductImage' => 'Product Image'
     ];
     private static $has_one = [
+        'Vendor' => Vendor::class,
         'ProductVideo' => File::class,
         'ProductCategory' => ShopCategoryObject::class,
         'ProductBrands' => ProductBrandObject::class
