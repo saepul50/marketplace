@@ -1,3 +1,9 @@
+---
+Name: approutes
+After:
+  - '#rootroutes'
+  - '#coreroutes'
+---
 SilverStripe\Control\Director:
   rules:
-    'toko//$Action/$ID': VendorPageController
+    '$ID': VendorPageController
