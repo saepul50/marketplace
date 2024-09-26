@@ -9,7 +9,14 @@ use SilverStripe\Security\Member;
         private static $db = [
             'Name' => 'Varchar',
             'Pathname' => 'Varchar',
-            'Description' => 'Text'
+            'Description' => 'Text',
+            'EmailOwner' => 'Varchar',
+            'HandphoneOwner' => 'Int',
+            'ProvinsiID' => 'Int',
+            'RegencyID' => 'Int',
+            'Address' => 'Text',
+            'AddressDetail' => 'Text',
+            'Postal' => 'Int',
         ];
         private static $has_one = [
             'ProfilImage' => Image::class,
