@@ -2,21 +2,16 @@ const stars = document.querySelectorAll(".star");
 const rating = document.getElementById("rating");
 const ratingDisplay = document.getElementById('rating');
 const ratingValueInput = document.getElementById('ratingValue');
-
 stars.forEach((star) => {
     star.addEventListener("click", () => {
         const value = parseInt(star.getAttribute("data-value"));
         rating.innerText = value;
-
-        // Remove all existing classes from stars
         stars.forEach((s) => s.classList.remove("one", 
                                                 "two", 
                                                 "three", 
                                                 "four", 
                                                 "five"));
 
-        // Add the appropriate class to 
-        // each star based on the selected star's value
         stars.forEach((s, index) => {
             if (index < value) {
                 s.classList.add(getStarColorClass(value));
@@ -462,49 +457,8 @@ $(document).ready(function () {
         }
       });
   // PRODUCT
-  $("#kkls").submit(function (event) {
-    event.preventDefault();
-
-    $.post("/marketplace/productdetails/productcomment", {
-      Message: $("#slsd").val(),
-      ID: $("#asdasda").val(),
-    })
-      .done(function (data) {
-        var response = JSON.parse(data);
-        if (response.success) {
-          Swal.fire({
-            title: "SUCCESS",
-            text: "Success",
-            icon: "success",
-            timer: 1000
-          })
-          setInterval(href, 1500);
-
-          function href() {
-            location.reload();
-          }
-        } else {
-          Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text: response.message,
-            showConfirmButton: false,
-            timer: 1500
-          });
-        }
-
-      }).fail(function () {
-        Swal.fire({
-          icon: "error",
-          title: "Error",
-          text: "There was an issue  Please try again later.",
-          confirmButtonColor: "#d33",
-        });
-      });
-
-    return false; // Ensure no form submission (and thus no refresh)
-  });
-
+ 
+  
 
   $("#productcommentreply").off(function (event) {
     event.preventDefault(); // Prevents the form from doing a default refresh
@@ -604,36 +558,36 @@ $(document).ready(function () {
        })
       }
     }
-    const SelectedContent = localStorage.getItem('SelectedContent');
-    if (SelectedContent) {
-      const tabs = document.querySelectorAll('div.tab-pane');
-      if (tabs.length > 0) {
-       tabs.forEach(tab =>{
-        if(tab.getAttribute('id') === SelectedContent){
-          tab.classList.add("show","active");
-        } else{
-          tab.classList.remove("show","active");
-        }
-       })
-      }
-    }
-    $("#myTab").click(function () {
-      const activeTab = document.querySelector('.nav-link.nav-linked.active');
-      if (activeTab) {
-        let value = activeTab.getAttribute('value');
-        localStorage.setItem('SelectedTabs', value);
-      } else {
-        console.log("No active tab found.");
-      }
+    // const SelectedContent = localStorage.getItem('SelectedContent');
+    // if (SelectedContent) {
+    //   const tabs = document.querySelectorAll('div.tab-pane');
+    //   if (tabs.length > 0) {
+    //    tabs.forEach(tab =>{
+    //     if(tab.getAttribute('id') === SelectedContent){
+    //       tab.classList.add("show","active");
+    //     } else{
+    //       tab.classList.remove("show","active");
+    //     }
+    //    })
+    //   }
+    // }
+    // $("#myTab").click(function () {
+    //   const activeTab = document.querySelector('.nav-link.nav-linked.active');
+    //   if (activeTab) {
+    //     let value = activeTab.getAttribute('value');
+    //     localStorage.setItem('SelectedTabs', value);
+    //   } else {
+    //     console.log("No active tab found.");
+    //   }
 
-      const contenttab = document.querySelector('div.tab-pane.active');
-      if (contenttab) {
-        var sam = contenttab.getAttribute('id');
-        localStorage.setItem('SelectedContent', sam);
-      } else {
-        console.log("No active tab found.");
-      }
-    });
+    //   const contenttab = document.querySelector('div.tab-pane.active');
+    //   if (contenttab) {
+    //     var sam = contenttab.getAttribute('id');
+    //     localStorage.setItem('SelectedContent', sam);
+    //   } else {
+    //     console.log("No active tab found.");
+    //   }
+    // });
 
   // Search Toggle
   $("#search_input_box").hide();
@@ -2224,21 +2178,21 @@ $(document).ready(function () {
     $('.payment_box .list li').removeClass('active');
     $(this).addClass('active');
   });
-  $('.nav-linked').on('click', function (e) {
-    e.preventDefault();
+  // $('.nav-linked').on('click', function (e) {
+  //   e.preventDefault();
 
-    $('.nav-linked').removeClass('active');
-    $('.tab-pane').removeClass('show active');
+  //   $('.nav-linked').removeClass('active');
+  //   $('.tab-pane').removeClass('show active');
 
-    $(this).addClass('active');
+  //   $(this).addClass('active');
 
-    var targetId = $(this).attr('href');
-    $('.tab-pane').each(function() {
-        if ($(this).attr('id') === targetId) {
-            $(this).addClass('show active');
-        }
-    });
-  });
+  //   var targetId = $(this).attr('href');
+  //   $('.tab-pane').each(function() {
+  //       if ($(this).attr('id') === targetId) {
+  //           $(this).addClass('show active');
+  //       }
+  //   });
+  // });
   $("#masterCheckbox, #bottomMasterCheckbox").on('change', function() {
     var isChecked = $(this).is(':checked');
     $(".productCheckbox").prop('checked', isChecked);
@@ -2383,15 +2337,13 @@ $(document).ready(function () {
   updateSubtotal();
   updateFinalPrice();
 });
-const events = document.querySelector('.event');
-    console.log(dayjs());
 
 stars.forEach(star => {
   star.addEventListener('click', function() {
     const rating = this.getAttribute('data-value');
     ratingDisplay.textContent = rating; // Update the displayed rating
     ratingValueInput.value = rating;    // Set the hidden input value for form submission
-
+    
     // Highlight the selected stars
     stars.forEach(s => {
       s.classList.remove('selected');
@@ -2403,17 +2355,17 @@ stars.forEach(star => {
 });
 function getStarColorClass(value) {
   switch (value) {
-      case 1:
-          return "one";
+    case 1:
+      return "one";
       case 2:
-          return "two";
-      case 3:
+        return "two";
+        case 3:
           return "three";
-      case 4:
-          return "four";
-      case 5:
-          return "five";
-      default:
-          return "";
+          case 4:
+            return "four";
+            case 5:
+              return "five";
+              default:
+                return "";
+              }
   }
-}

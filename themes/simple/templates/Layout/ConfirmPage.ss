@@ -384,7 +384,7 @@
                                  <h5>x $ProductQuantity</h5>
                               </td>
                               <td class="col">
-                              <button type="button"   class="btn btn-outline-warning showModalButton" style=""  data-toggle="modal" data-target="#exampleModalCenter" data-title="$ProductTitle" data-get="$Up.OrderID" data-image="$ProductImage" data-variant="$ProductVariant" data-id="$ProductID" data-quantity="$ProductQuantity">Nilai</button>
+                              <button type="button" class="btn btn-outline-warning showModalButton" style=""  data-toggle="modal" data-target="#exampleModalCenter" data-title="$ProductTitle" data-get="$Up.OrderID" data-image="$ProductImage" data-variant="$ProductVariant" data-id="$ProductID" data-quantity="$ProductQuantity">Nilai</button>
                             </td>
                            </tr>
                            <% end_loop %>
@@ -439,6 +439,7 @@
                                     onblur="this.placeholder = 'Review'" required style="height: 200px;"></textarea>
                                  <input type="hidden" id="ratingValue" name="ratingValue" value="0">
                                  <input type="hidden" id="ID" name="ID" value="">
+                                 <input type="hidden" id="OrderID" name="ID" value="">
                               </div>
                            </div>
                            <div class="col-md-12 text-right">

@@ -1,6 +1,9 @@
 <?php
 
 use SilverStripe\Control\HTTPRequest;
+use SilverStripe\ORM\ArrayList;
+use SilverStripe\ORM\PaginatedList;
+use SilverStripe\Security\Security;
 
     class VendorPageController extends PageController{
         public function index(HTTPRequest $request) {
@@ -14,4 +17,7 @@ use SilverStripe\Control\HTTPRequest;
     
             return $this->customise(['Vendor' => $vendor])->renderWith(['VendorPage', 'Page']);
         }
+
+
+
     }
