@@ -615,8 +615,6 @@ class ProductCheckoutPageController extends PageController{
             // Debug::show($request);
             // die();
             $postData = json_decode($request->postVar('paymentDatas'), true);
-            // Debug::show($postData);
-            // die();
             $finalPrice = $postData[0]['ProductFinalPriceNF'];
             $PaymentSelected = $postData[0]['Bank'];
             $PaymentMethode = $postData[0]['PaymentMethod'];
@@ -681,6 +679,8 @@ class ProductCheckoutPageController extends PageController{
                             'Comments' => $product['CustomerNotes'],
                             'TimeCheckout' => $product['TimeCheckout']
                         ];  
+                        // Debug::show($debugData);
+                        // die();
                         
                         try {
                             $checkoutItem = ProductCheckoutObject::create();

@@ -58,6 +58,21 @@
         color: #777777;
         font-family: "Roboto", sans-serif;
     }
+    .otp-input-wrapper {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .otp-input {
+        width: 40px;
+        height: 50px;
+        text-align: center;
+        font-size: 24px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        text-transform: uppercase;
+    }
 </style>
 
 <section class="banner-area organic-breadcrumb" style ="background: url($SiteConfig.Background.getURL()) center no-repeat;background-size: cover; position: relative ">
@@ -131,6 +146,7 @@
                                 <textarea class="form-control" id="vendordesc" name="vendordesc" placeholder="Description" rows="3"  required></textarea>
                             </div>
                             <button type="button" class="genric-btn primary-border" data-toggle="modal" data-target="#alamatbaru">Atur Alamat Toko</button>
+                            <%-- <button type="button" class="genric-btn primary-border" data-toggle="modal" data-target="#otpcode">OTP</button> --%>
                         </div>
                         <div class="modal fade" id="alamatbaru" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog" role="document">
@@ -181,6 +197,32 @@
                                     <button type="button" class="genric-btn default-border" data-dismiss="modal">Close</button>
                                 </div>
                             </div>
+                            </div>
+                        </div>
+                        <div class="modal fade" id="otpcode" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title text-center">Masukkan Kode OTP</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="otp-input-wrapper">
+                                            <input type="text" maxlength="1" class="otp-input" id="otp1">
+                                            <input type="text" maxlength="1" class="otp-input" id="otp2">
+                                            <input type="text" maxlength="1" class="otp-input" id="otp3">
+                                            <input type="text" maxlength="1" class="otp-input" id="otp4">
+                                            <input type="text" maxlength="1" class="otp-input" id="otp5">
+                                            <input type="text" maxlength="1" class="otp-input" id="otp6">
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="genric-btn default-border" data-dismiss="modal">Close</button>
+                                        <button id="sentotp" class="primary-btn float-right" style="border-radius: 3px; border: none; line-height: 2.5rem">Sent</button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

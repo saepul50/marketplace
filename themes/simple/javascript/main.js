@@ -99,7 +99,56 @@ $(document).ready(function () {
       }
     });
   }
+  $("input[name='selectorcancelled']").on('change', function() {
+    if ($("#f-option17").is(':checked')) {
+        $("#additionalReason").show();
+    } else {
+        $("#additionalReason").hide();
+    }
+  });
+  $('#buybtn').on('click', function (e) {
+    alert('dfs');
+    e.preventDefault();
+  });
+  $('#cancelledbtn').on('click', function (e) {
+    e.preventDefault();
+    var orderid = $(this).data('orderid');
+    var request = 'batal';
+    var selectedOption = $("input[name='selectorcancelled']:checked").next('label').text();
+    var additionalReason = $("#additionalReason").val();
+    if (selectedOption === "Lainnya... ") {
+      if(!additionalReason){
+        iziToast.warning({ position: "bottomRight", title: 'Caution', message: 'Isi alasan pembatalan' });
+      }
+    }
+    $.post("/marketplace/confirm/service", {
+      Request: request,
+      OrderID: orderid
+    })
+    .done(function (data) {
+      var response = JSON.parse(data);
+      if (response.success) {
+        $('#cancelbtn').modal('hide');
+        iziToast.success({
+          icon: 'fa fa-check',
+          timeout: 2000,
+          title: 'Sukses',
+          message: 'Pesanan telah dibatalkan',
+          position: 'bottomRight',
+          onClosed: function () {
+            window.location.href = '/marketplace/confirm/';
+          }
+        });
+      } else {
+        iziToast.warning({ position: "bottomRight", title: 'Caution', message: 'Failed' });
+      }
 
+    }).fail(function () {
+      iziToast.error({ position: "bottomRight", title: 'Error', message: 'Error' });
+    });
+
+    return false;
+  });
   $('.subcategory-link').on('click', function (e) {
     e.preventDefault();
     $('.subcategory-link').removeClass('active');
@@ -206,6 +255,16 @@ $(document).ready(function () {
 
     return false;
   });
+  function generateOTP(length = 6) {
+    let otp = '';
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'; // Huruf kapital dan angka
+    
+    for (let i = 0; i < length; i++) {
+        const randomIndex = Math.floor(Math.random() * characters.length);
+        otp += characters[randomIndex];
+    }
+    return otp;
+  }
   $("#newVendor").on('click', function (event) {
     event.preventDefault();
 
@@ -279,52 +338,126 @@ $(document).ready(function () {
     }
 
     if (isValid) {
-        var formData = new FormData();
-        var vendorAddress = $('.province_select .list .selected').html() + ', ' + $('.regency_select .list .selected').html();
-        var dataVendor = {
-            VendorName: vendorName,
-            VendorDescription: vendorDescription,
-            VendorEmail: vendorEmail,
-            VendorPhone: vendorPhone,
-            VendorAddress: vendorAddress,
-            VendorAddressDetail: vendorAddressDet,
-            VendorProv: vendorProv,
-            VendorReg: vendorReg,
-            VendorPost: vendorPost
-        };
-        formData.append('DataVendor', JSON.stringify(dataVendor));
-        formData.append('VendorImage', fileInput);
-
-        $.ajax({
-            url: '/marketplace/vendorregistration/newVendor',
-            type: 'POST',
-            data: formData,
-            processData: false,
-            contentType: false,
-            success: function (results) {
-                iziToast.success({
-                    icon: 'fa fa-check',
-                    timeout: 3500,
-                    title: 'Sukses',
-                    message: 'Registrasi vendor berhasil!',
-                    position: 'bottomRight',
-                    onClosed: function () {
-                        return false;
-                        // window.location.href = "/marketplace/";
-                    }
-                });
-            },
-            error: function (xhr, status, error) {
-                iziToast.error({
-                    title: 'Error',
-                    message: error,
-                    position: 'bottomRight'
-                });
+      var formData = new FormData();
+      var otpCode = generateOTP();
+      var vendorEmail = $('#EmailOwner').val();
+      var dataVendor = {
+        CodeOTP: otpCode,
+        VendorEmail: vendorEmail
+      };
+      formData.append('DataVendor', JSON.stringify(dataVendor));
+      $.ajax({
+        url: '/marketplace/vendorregistration/codeotp',
+        type: 'POST',
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function (results) {
+          iziToast.success({
+            icon: 'fa fa-check',
+            timeout: 3500,
+            title: 'Sukses',
+            message: 'Wait for Second, OTP will Expired for 30 second!',
+            position: 'bottomRight',
+            onClosed: function () {
+              $('#otpcode').modal('show');
             }
-        });
+          });
+        },
+        error: function (xhr, status, error) {
+          iziToast.error({
+              title: 'Error',
+              message: error,
+              position: 'bottomRight'
+          });
+        }
+      });
+    }
+  });
+  const otpInputs = $('.otp-input');
+
+  otpInputs.on('input', function() {
+    $(this).val($(this).val().toUpperCase());
+
+    if ($(this).val().length > 0) {
+        $(this).next('.otp-input').focus();
     }
   });
 
+  otpInputs.on('keydown', function(e) {
+    if (e.key === 'Backspace' && $(this).val().length === 0) {
+        $(this).prev('.otp-input').focus();
+    }
+  });
+
+  $('#sentotp').on('click', function(e) {
+    e.preventDefault();
+    let otpCode = '';
+    otpInputs.each(function() {
+      otpCode += $(this).val();
+    });
+    var formData = new FormData();
+    var vendorName = $('#vendorname').val();
+    var vendorDescription = $('#vendordesc').val();
+    var fileInput = $('#transfer-image')[0].files[0];
+    var vendorProv = parseInt($('.province_select .list .selected').data('value'));
+    var vendorReg = parseInt($('.regency_select .list .selected').data('value'));
+    var vendorPost = $('#postal').val();
+    var vendorEmail = $('#EmailOwner').val();
+    var vendorPhone = $('#numberinput').val();
+    var vendorAddress = $('.province_select .list .selected').html() + ', ' + $('.regency_select .list .selected').html();
+    var vendorAddressDet = $('#address').val();
+    var dataVendor = {
+        VendorName: vendorName,
+        VendorDescription: vendorDescription,
+        VendorEmail: vendorEmail,
+        VendorPhone: vendorPhone,
+        VendorAddress: vendorAddress,
+        VendorAddressDetail: vendorAddressDet,
+        VendorProv: vendorProv,
+        VendorReg: vendorReg,
+        VendorPost: vendorPost,
+        CodeOTP: otpCode
+    };
+    formData.append('DataVendor', JSON.stringify(dataVendor));
+    formData.append('VendorImage', fileInput);
+    $.ajax({
+      url: '/marketplace/vendorregistration/newVendor',
+      type: 'POST',
+      data: formData,
+      processData: false,
+      contentType: false,
+      success: function (results) {
+        var response = JSON.parse(results);
+        if(response.success){
+          iziToast.success({
+            icon: 'fa fa-check',
+            timeout: 3500,
+            title: 'Sukses',
+            message: 'Registrasi vendor berhasil!',
+            position: 'bottomRight',
+            onClosed: function () {
+                return false;
+                // window.location.href = "/marketplace/";
+            }
+          });
+        }else{
+          iziToast.error({
+            title: 'Error',
+            message: response.message,
+            position: 'bottomRight'
+          });
+        }
+      },
+      error: function (xhr, status, error) {
+        iziToast.error({
+            title: 'Error',
+            message: error,
+            position: 'bottomRight'
+        });
+      }
+    });
+  });
   $("#editprofileform").submit(function (event) {
     event.preventDefault(); // Prevents the form from doing a default refresh
     var province = parseInt($('.province_select .list .selected').data('value'));
@@ -1769,7 +1902,7 @@ $("#proceedCheckout").on('click', function (e) {
       }
     },
     error: function () {
-      alert("error");
+      iziToast.error({ title: 'Error', position: 'bottomRight' });
     }
   });
 });
@@ -1841,14 +1974,14 @@ $("#checkoutbtn").on('click', function (e) {
   var selectorcost = $("input[name='selectorCost']:checked").length > 0;
   var terms = $("input[name='terms']:checked").length > 0;
   if (numberInput.length < 12 || numberInput.length > 14) {
-    alert('Nomor harus antara 12 hingga 14 digit.');
+    iziToast.warning({ position: "bottomRight", title: 'Caution', message: 'Isi nomor dengan benar!' });
     return;
   }
   if (!form.checkValidity()) {
     form.reportValidity();
   }
   if (regency === '') {
-    alert('Inputkan alamat dengan benar!');
+    iziToast.warning({ position: "bottomRight", title: 'Caution', message: 'Inputkan alamat dengan benar!' });
     return;
   }
   // if (!selectordata) {
@@ -1941,7 +2074,7 @@ $("#checkoutbtn").on('click', function (e) {
     } else if (paymentMethod === "duitku") {
       var formData = new FormData();
       var paymentGate = $("input[name='selectorpaymentgate']:checked").val();
-      var timeCheckout = $(".listDataProduct").find('#time').text();
+      var timeCheckout = $(".list_2").find('#time').text();
       for (const item of $(".listDataProduct")) {
         var productData = {
           ProductID: $(item).find('#productID').text(),
@@ -2005,8 +2138,8 @@ $("#checkoutbtn").on('click', function (e) {
     } else {
       var formData = new FormData();
       var paymentGate = '';
-      var timeCheckout = $(".listDataProduct").find('#time').text();
-      var orderID = $(".listDataProduct").find('#orderID').text();
+      var timeCheckout = $(".list_2").find('#time').text();
+      var orderID = $(".list_2").find('#orderID').text();
       for (const item of $(".listDataProduct")) {
         var productData = {
           ProductID: $(item).find('#productID').text(),
@@ -2049,7 +2182,7 @@ $("#checkoutbtn").on('click', function (e) {
             icon: 'fa fa-shipping-fast',
             timeout: 3500,
             title: 'Pesanan Telah Dibuat',
-            message: 'Pesananmu Akan dikirim Secepatnya Setelah Penjual Menyetujui',
+            message: 'Pesananmu Akan dikirim Secepatnya',
             position: 'bottomRight',
             onClosed: function () {
               return false;
@@ -2122,7 +2255,7 @@ function changeProvince(e){
       }
     });
   } else {
-    alert("pilih provinsi");
+    iziToast.warning({ position: "bottomRight", title: 'Caution', message: 'Pilih Provinsi' });
     return;
   }
 }
@@ -2160,7 +2293,7 @@ $('.regency_select .list').on('click', 'li', function () {
 $('#saveData').on('click', function (e) {
   e.preventDefault();
   var numberInput = $("#numberinput").val();
-  var address = $('.province_select .list .selected').html() + ', ' + $('.regency_select .list .selected').html();
+  var address = $('.regency_select .list .selected').html() + ', ' + $('.province_select .list .selected').html();
   var province = parseInt($('.province_select .list .selected').data('value'));
   var regency = parseInt($('.regency_select .list .selected').data('value'));
   // console.log(address)
@@ -2445,10 +2578,14 @@ $("#Comment").on('click', function (e) {
     contentType: false,
     processData: false,
     success: function (results) {
-      alert("success");
+      iziToast.success({
+        timeout: 2000,
+        title: 'Sukses',
+        position: 'bottomRight'
+      });
     },
     error: function () {
-      alert("fail");
+      iziToast.error({ title: 'Error', message: 'Fail', position: 'bottomRight' });
     }
   });
 });
@@ -2460,7 +2597,7 @@ $('.variantItem').on('click', function (e) {
   var variantDiscountedPrice = $(this).data('discount');
   var variantStock = $(this).data('stock');
   if (variantStock < 1) {
-    alert("stock kosong");
+    iziToast.warning({ position: "bottomRight", title: 'Caution', message: 'Stok kosong' });
     $('.variantItem').removeClass('active');
     return;
   }

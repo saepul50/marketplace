@@ -12,7 +12,7 @@ class VendorPageController extends PageController {
     public function index() {
         $pathname = $this->getRequest()->param('ID');
         $vendor = Vendor::get()->filter(['Pathname' => $pathname])->first();
-
+        
         if (!$vendor) {
             return $this->httpError(404, 'Toko tidak ditemukan');
         }

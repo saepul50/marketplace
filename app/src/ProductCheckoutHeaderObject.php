@@ -2,6 +2,7 @@
 
 use SilverStripe\AssetAdmin\Forms\UploadField;
 use SilverStripe\Assets\Image;
+use SilverStripe\Dev\Debug;
 use SilverStripe\Forms\DropdownField;
 use SilverStripe\Forms\LiteralField;
 use SilverStripe\ORM\DataObject;
@@ -18,7 +19,7 @@ use SilverStripe\ORM\FieldType\DBHTMLText;
             'CustomerNotes'=> 'Text',
             'FinalPrice'=> 'Text',
             'Bank' => 'Text',
-            'Status' => 'Enum("Pending,Processing,Completed,Cancelled", "Pending")',
+            'Status' => 'Enum("Dikemas,Dikirim,Selesai,Dibatalkan", "Dikemas")',
             'TimeCheckout'=> 'Text',
             'PaymentMethod' => 'Text'
         ];
@@ -45,13 +46,13 @@ use SilverStripe\ORM\FieldType\DBHTMLText;
         }
         
         protected function handleStatusChange() {
-            if ($this->Status == 'Completed') {
+            if ($this->Status == 'Selesai') {
                 foreach ($this->Items() as $item) {
                     if ($item) {
-                        // Debug::show($item);
-                        // die();
-                        $item->updateStock();
-                        $item->updateSold();
+                    // Debug::show($item);
+                    // die();
+                    $item->updateStock();
+                    $item->updateSold();
                     }
                 }
             }
@@ -81,16 +82,16 @@ use SilverStripe\ORM\FieldType\DBHTMLText;
         public function getStatusBadge() {
             $color = '';
             switch ($this->Status) {
-                case 'Pending':
+                case 'Dikemas':
                     $color = 'darkorange';
                     break;
-                case 'Processing':
+                case 'Dikirim':
                     $color = 'darkblue';
                     break;
-                case 'Cancelled':
+                case 'Dibatalkan':
                     $color = 'red';
                     break;
-                case 'Completed':
+                case 'Selesai':
                     $color = 'green';
                     break;
             }

@@ -1,5 +1,6 @@
 <?php
 
+use SilverStripe\Dev\Debug;
 use SilverStripe\ORM\DataObject;
 use SilverStripe\Security\Member;
 
@@ -44,13 +45,14 @@ use SilverStripe\Security\Member;
             return null;
         }
         public function updateStock() {
-            $variant = ProductVariantObject::get()->byID($this->VariantID);
+            $variant = ProductVariantObject::get()->byID($this->ProductVariantID);
+            // Debug::show($this);
+            // die();
             if ($variant) {
-                // Debug::show($variant->Stock);
-                // die();
-                if ($variant->Stock >= $this->Quantity) {
-                    $variant->Stock -= $this->Quantity;
+                if ($variant->Stock >= $this->ProductQuantity) {
+                    $variant->Stock -= $this->ProductQuantity;
                 } else {
+                    Debug::show('gagal');
                 }
             
                 $variant->write();
@@ -58,11 +60,10 @@ use SilverStripe\Security\Member;
         }
         public function updateSold() {
             $product = ProductObject::get()->byID($this->ProductID);
+            // Debug::show($product);
+            // die();
             if ($product) {
-                // Debug::show($variant->Stock);
-                // die();
-                $product->QuantitySold += $this->Quantity;
-            
+                $product->QuantitySold += $this->ProductQuantity;
                 $product->write();
             }
         }

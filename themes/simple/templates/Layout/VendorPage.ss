@@ -64,37 +64,35 @@
           }
     </style>
     
-    <%-- 
     <section class="banner-area organic-breadcrumb" style ="background: url($SiteConfig.Background.getURL()) center no-repeat;background-size: cover; position: relative ">
         <div class="container">
             <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
-                <div class="col-first">
+                <%-- <div class="col-first">
                     <h1>Registration</h1>
                     <nav class="d-flex align-items-center">
                         <a href="{$BaseHref}">Home<span class="lnr lnr-arrow-right"></span></a>
                         <a href="{$BaseHref}/tracking">Registration</a>
                     </nav>
-                </div>
+                </div> --%>
             </div>
         </div>
-    </section> --%>
-    
-    
-    
-    
+    </section>
     
     <div class=" " style ="background-color: white; padding-top: 10rem;">
         <div class="container">
             <div class="row">
-                <div class="col-4 d-flex  p-3" style="background-color: #f5f5f5; gap:1.2rem;     border-radius: 10px;">
-                    <img alt="Profile img" src="$SiteConfig.Toko.getURL()" class="" style="border-radius: 50%;" width="50px" height="50px">
-                    <p class="mt-2">Xiaomi Official Store</p>
+                <div class="col-4 d-flex p-3" style="background-color: #f5f5f5; gap:1.2rem; border-radius: 10px;">
+                    <div class="col-5">
+                        <% with $Vendor.ProfilImage %>
+                            <img alt="Profile img" src="$URL" class="img-fluid" style="border-radius: 50%;">
+                        <% end_with %>
+                    </div>
+                    <h5 class="mt-2">$Vendor.Name</h5>
                 </div>
                 <div class="col-8 ">
                     <div class="d-flex ml-1"  >
                         <span class="lnr lnr-store mt-1" style="font-size:17px"></span>
                         <p class="ml-2">Product : </p>
-                        <p> 10</p>
                     </div>
                     <div class="d-flex ml-1" >
                         <span class="lnr lnr-star mt-1"  style="font-size:17px"></span>
@@ -109,14 +107,14 @@
                 </div>
             </div>
         </div>
-        <section class="order_details pt-3 ">
+        <section class="order_details py-4">
             <div class= "myorder text-center mt-2" id="myOrder">
-                    <nav class=" d-flex flex-wrap navihistory container">
-                        <h5 id="navSemua" class="navi-item" style="cursor: pointer; margin-bottom:0 !important;">Halaman Utama</h5>
-                        <h5 id="navPending" class="navi-item" style="cursor: pointer;  margin-bottom:0 !important;">Produk</h5>
-                    </nav>
-                </div>
-            </section>
+                <nav class=" d-flex flex-wrap navihistory container">
+                    <h5 id="navSemua" class="navi-item" style="cursor: pointer; margin-bottom:0 !important;">Halaman Utama</h5>
+                    <h5 id="navPending" class="navi-item" style="cursor: pointer;  margin-bottom:0 !important;">Produk</h5>
+                </nav>
+            </div>
+        </section>
     </div>
         <div class="tab-content py-5    " id="nav-tabContent" style="background-color:#f5f5f5; ">
             <div class="container Semua" id="semua">

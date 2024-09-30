@@ -3,16 +3,18 @@
 use SilverStripe\Assets\Image;
 use SilverStripe\Assets\Upload;
 use SilverStripe\Control\Director;
+use SilverStripe\Control\Email\Email;
 use SilverStripe\Dev\Debug;
 use SilverStripe\Control\HTTPRequest;
 use SilverStripe\Security\Security;
-
+use SilverStripe\SiteConfig\SiteConfig;
 
 class VendorRegistrationController extends PageController{
     private static $allowed_actions=[
         'newVendor',
         'editVendor',
-        'dataInformasi'
+        'dataInformasi',
+        'codeotp',
     ];
     public function index(HTTPRequest $request){
         $member = Security::getCurrentUser();
@@ -65,32 +67,76 @@ class VendorRegistrationController extends PageController{
     }
     public function newVendor(HTTPRequest $request){
         $member = Security::getCurrentUser();
+        $data = json_decode($request->postVar('DataVendor'),true);
+        $getotps = DataSend::get()->filter('UserID', $member->ID);
+        $otpcode = $data['CodeOTP'];
+        $matchFound = false;
+
+        foreach ($getotps as $getotp) {
+            if ($otpcode == $getotp->Codeotp) {
+                if (strtotime($getotp->ExpiryTime) >= time()) {
+                    $matchFound = true;
+                    $vendor = Vendor::create();
+                    $vendor->Name = $data['VendorName'];
+                    $vendor->OwnerID = $member->ID;
+                    $vendor->EmailOwner = $data['VendorEmail'];
+                    $vendor->HandphoneOwner = $data['VendorPhone'];
+                    $vendor->Description = $data['VendorDescription'];
+                    $vendor->Address = $data['VendorAddress'];
+                    $vendor->AddressDetail = $data['VendorAddressDetail'];
+                    if(isset($_FILES['VendorImage'])){
+                        $upload = new Upload();
+                        $img = new Image();
+                        $upload->loadIntoFile($_FILES['VendorImage'], $img);
+                        
+                        if (!$upload->isError()) {
+                            $vendor->ProfilImageID = $img->ID;
+                        }
+                    }
+                    $vendor->ProvinsiID = $data['VendorProv'];
+                    $vendor->RegencyID = $data['VendorReg'];
+                    $vendor->Postal = $data['VendorPost'];
+                    $vendor->write();
+                    return json_encode(['success' => true, 'message' => 'Registrasi vendor berhasil!']);
+                } else {
+                    return json_encode(['success' => false, 'message' => 'Kode OTP telah kedaluwarsa']);
+                }
+            }
+        }
+        if (!$matchFound) {
+            return json_encode(['success' => false, 'message' => 'Kode OTP Salah']);
+        }
+    }
+    public function codeotp(HTTPRequest $request){
+        $member = Security::getCurrentUser();
         // Debug::show($member->ID);
         // die();
         $data = json_decode($request->postVar('DataVendor'),true);
-        $vendor = Vendor::create();
-        $vendor->Name = $data['VendorName'];
-        $vendor->OwnerID = $member->ID;
-        $vendor->EmailOwner = $data['VendorEmail'];
-        $vendor->HandphoneOwner = $data['VendorPhone'];
-        $vendor->Description = $data['VendorDescription'];
-        $vendor->Address = $data['VendorDescription'];
-        $vendor->AddressDetail = $data['VendorDescription'];
-        if(isset($_FILES['VendorImage'])){
-            $upload = new Upload();
-            $img = new Image();
-            $upload->loadIntoFile($_FILES['VendorImage'], $img);
-            
-            if (!$upload->isError()) {
-                $vendor->ProfilImageID = $img->ID;
-            }
+        // Debug::show($data);
+        // die();
+        $otp = $data['CodeOTP'];
+        $expiryTime = date('Y-m-d H:i:s', strtotime('+30 seconds'));
+        $siteconfig = SiteConfig::current_site_config();
+        $send = $siteconfig->Email;
+        // Debug::show($send);
+        // die();
+        $email = new Email();
+        $email->setTo($data['VendorEmail']);
+        $email->setFrom($send);
+        $email->setSubject('Your OTP Code');
+        $email->setBody("Your OTP code is: $otp");
+        try {
+            $email->send();
+            $dataSend = DataSend::create();
+            $dataSend->Codeotp = $otp;
+            $dataSend->UserID = $member->ID;
+            $dataSend->ExpiryTime = $expiryTime;
+            $dataSend->write();
+            return json_encode(['success' => true, 'message' => 'Email sent successfully']);
+        } catch (Exception $e) {
+            return json_encode(['success' => false, 'message' => 'Error sending email: ' . $e->getMessage()]);
         }
-        $vendor->ProvinsiID = $data['VendorProv'];
-        $vendor->RegencyID = $data['VendorReg'];
-        $vendor->Postal = $data['VendorPost'];
-        $vendor->write();
     }
-
     public function editVendor(HTTPRequest $request){
         $member = Security::getCurrentUser();
         $data = $request->postVars();

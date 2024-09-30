@@ -75,7 +75,7 @@ class CartPageController extends PageController{
                     $existingCartItem->write();
                 } else if ($existingCartItem2) {
                     $existingCartItem2->ProductQuantity += $ProductQuantity;
-                    $existingCartItem->ProductVariantWeight += $ProductVariantWeight;
+                    $existingCartItem2->ProductVariantWeight += $ProductVariantWeight;
                     $existingCartItem2->write();
                 } else {
                     $cartItem = CartObject::create();

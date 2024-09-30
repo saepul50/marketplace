@@ -6,7 +6,8 @@ use SilverStripe\Security\Security;
 
 class ConfirmPageController extends PageController{
     private static $allowed_actions = [
-        'order' => true
+        'order' => true,
+        'service'
     ];
     public function HistoryData() {
         $member = Security::getCurrentUser();
@@ -15,7 +16,6 @@ class ConfirmPageController extends PageController{
             $headerCheckoutIDs = $checkoutObjects->column('HeaderCheckoutID');
             $status = ProductCheckoutHeaderObject::get()->filter(['Status'=> 'Completed']);
             $HeaderID = $status->column('ID');
-            $filter = ProductCheckoutObject::get()->filter('HeaderCheckOutID', $HeaderID);
             // Debug::show($filter);
 
             if (!empty($headerCheckoutIDs)) {
@@ -46,5 +46,18 @@ class ConfirmPageController extends PageController{
                 ])->renderWith(['ConfirmPage', 'Page']);
             }
         }
+    }
+    public function service(HTTPRequest $request){
+        $OrderID = $request->postVar('OrderID');
+        $Request = $request->postVar('Request');
+        $checkoutHeader = ProductCheckoutHeaderObject::get()->filter('OrderID', $OrderID)->first();
+        // Debug::show($checkoutHeader);
+        // die();
+        if ($Request === 'batal'){
+            $checkoutHeader->Status = 'Dibatalkan';
+            $checkoutHeader->write();
+            return json_encode(['success' => true, 'message' => 'Success']);
+        }
+        return json_encode(['success' => false, 'message' => 'Failed']);
     }
 }
