@@ -6,4 +6,5 @@ After:
 ---
 SilverStripe\Control\Director:
   rules:
-    '$ID': VendorPageController
+    'admin': 'Silverstripe\Admin\CMSMain'
+    'toko/$ID': VendorPageController

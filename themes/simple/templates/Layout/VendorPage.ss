@@ -64,37 +64,21 @@
           }
     </style>
     
-    <%-- 
-    <section class="banner-area organic-breadcrumb" style ="background: url($SiteConfig.Background.getURL()) center no-repeat;background-size: cover; position: relative ">
-        <div class="container">
-            <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
-                <div class="col-first">
-                    <h1>Registration</h1>
-                    <nav class="d-flex align-items-center">
-                        <a href="{$BaseHref}">Home<span class="lnr lnr-arrow-right"></span></a>
-                        <a href="{$BaseHref}/tracking">Registration</a>
-                    </nav>
-                </div>
-            </div>
-        </div>
-    </section> --%>
     
     
-    
-    
-    
+<% with $Vendor %>
     <div class=" " style ="background-color: white; padding-top: 10rem;">
         <div class="container">
             <div class="row">
                 <div class="col-4 d-flex  p-3" style="background-color: #f5f5f5; gap:1.2rem;     border-radius: 10px;">
-                    <img alt="Profile img" src="$SiteConfig.Toko.getURL()" class="" style="border-radius: 50%;" width="50px" height="50px">
-                    <p class="mt-2">Xiaomi Official Store</p>
+                    <img alt="Profile img" src="$ProfilImage.getURL()" class="" style="border-radius: 50%;" width="50px" height="50px">
+                    <p class="mt-2">$Title</p>
                 </div>
                 <div class="col-8 ">
                     <div class="d-flex ml-1"  >
                         <span class="lnr lnr-store mt-1" style="font-size:17px"></span>
                         <p class="ml-2">Product : </p>
-                        <p> 10</p>
+                        <p> $Vendor.Products.Title</p>
                     </div>
                     <div class="d-flex ml-1" >
                         <span class="lnr lnr-star mt-1"  style="font-size:17px"></span>
@@ -264,26 +248,6 @@
                                     <% end_loop %>
                                 </ul>
                             </div>
-                            <%-- <div class="sidebar-filter mt-50">
-                                <div class="top-filter-head">Product Filters</div>
-                                <div class="common-filter">
-                                    <div class="head">Brands</div>
-                                    <form id="filterForm" action="#">
-                                        <ul>
-                                            <li class="filter-list">
-                                                <input class="pixel-radio" type="radio" id="allbrand" name="brand" value="all" <% if $CurrentFilter == 'all' %>checked<% end_if %>>
-                                                <label for="allbrand">All <span>($PaginatedProduct.Count)</span></label>
-                                            </li>
-                                            <% loop $Brand %>
-                                                <li class="filter-list">
-                                                    <input class="pixel-radio" type="radio" id="$Title.LowerCase" data-id="$ID" name="brand" value="$ID" <% if $CurrentFilter == $ID %>checked<% end_if %>>
-                                                    <label for="$Title.LowerCase">$Title <span>($Product.Count)</span></label>
-                                                </li>
-                                            <% end_loop %>
-                                        </ul>
-                                    </form>
-                                </div>
-                            </div> --%>
                         </div>
                         <div class="col-xl-9 col-lg-8 col-md-7">
                             <!-- Start Filter Bar -->
@@ -412,6 +376,8 @@
                 </div>
             </div>
         </div>
+        
+    <% end_with %>
         <% else %>
         <p>jsjadj</p>
 <% end_if %>

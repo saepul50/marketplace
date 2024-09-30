@@ -119,7 +119,7 @@
                                       <h5>x $ProductQuantity</h5>
                                    </td>
                                    <td class="col">
-                                   <button type="button"   class="btn btn-outline-warning showModalButton" style=""  data-toggle="modal" data-target="#exampleModalCenter" data-title="$ProductTitle" data-get="$Up.OrderID" data-image="$ProductImage" data-variant="$ProductVariant" data-id="$ProductID" data-quantity="$ProductQuantity">Nilai</button>
+                                   <button type="button"   class="btn btn-outline-warning showModalButton" style="z-index:1000 ;"  data-toggle="modal" data-target="#exampleModalCenter" data-title="$ProductTitle" data-get="$Up.OrderID" data-image="$ProductImage" data-variant="$ProductVariant" data-id="$ProductID" data-quantity="$ProductQuantity">Nilai</button>
                                  </td>
                                 </tr>
                                 <% end_loop %>

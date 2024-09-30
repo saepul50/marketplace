@@ -101,4 +101,21 @@ use SilverStripe\ORM\FieldType\DBHTMLText;
                 $this->Status
             ));
         }
+        public function canCreate($member = null, $context = [])
+        {
+            return false; 
+        }
+        public function canView($member = null)
+        {
+            return true;
+        }
+        public function canEdit($member = null)
+        {
+            return true;
+        }
+        public function canDelete($member = null)
+        {
+            return false;
+        }
+    
     }
