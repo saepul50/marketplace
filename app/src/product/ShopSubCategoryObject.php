@@ -26,6 +26,22 @@ use SilverStripe\ORM\DataObject;
             return ProductObject::get()->byId(1);
         }
         
+    public function canCreate($member = null, $context = [])
+    {
+        return true; 
+    }
+    public function canView($member = null)
+    {
+        return true;
+    }
+    public function canEdit($member = null)
+    {
+        return true;
+    }
+    public function canDelete($member = null)
+    {
+        return true;
+    }
         public function getCMSFields() {
             $categories = ShopCategoryObject::get()->map('ID', 'Title')->toArray();
             $fields = new FieldList(

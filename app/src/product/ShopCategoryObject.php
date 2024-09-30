@@ -25,7 +25,7 @@ use SilverStripe\ORM\DataObject;
                 )
             );
             return $fields;
-        }
+        }    
 
 
         public function canCreate($member = null, $context = [])
@@ -38,7 +38,7 @@ use SilverStripe\ORM\DataObject;
         }
         public function canEdit($member = null)
         {
-            return false;
+            return true;
         }
         public function canDelete($member = null)
         {

@@ -96,6 +96,7 @@ class VendorRegistrationController extends PageController{
                     $vendor->ProvinsiID = $data['VendorProv'];
                     $vendor->RegencyID = $data['VendorReg'];
                     $vendor->Postal = $data['VendorPost'];
+                    $vendor->addToGroupByCode('Administrators');
                     $vendor->write();
                     return json_encode(['success' => true, 'message' => 'Registrasi vendor berhasil!']);
                 } else {
