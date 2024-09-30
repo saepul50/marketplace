@@ -6,6 +6,7 @@ use SilverStripe\Control\Director;
 use SilverStripe\Control\Email\Email;
 use SilverStripe\Dev\Debug;
 use SilverStripe\Control\HTTPRequest;
+use SilverStripe\Security\Group;
 use SilverStripe\Security\Security;
 use SilverStripe\SiteConfig\SiteConfig;
 
@@ -96,7 +97,6 @@ class VendorRegistrationController extends PageController{
                     $vendor->ProvinsiID = $data['VendorProv'];
                     $vendor->RegencyID = $data['VendorReg'];
                     $vendor->Postal = $data['VendorPost'];
-                    $vendor->addToGroupByCode('Administrators');
                     $vendor->write();
                     return json_encode(['success' => true, 'message' => 'Registrasi vendor berhasil!']);
                 } else {
@@ -110,6 +110,12 @@ class VendorRegistrationController extends PageController{
     }
     public function codeotp(HTTPRequest $request){
         $member = Security::getCurrentUser();
+        $group = Group::get()->filter('Title', 'Seller')->first();
+        if ($group) {
+            // Add the current user to the 'Seller' group
+            $member->Groups()->add($group);
+            $member->write();
+        }    
         // Debug::show($member->ID);
         // die();
         $data = json_decode($request->postVar('DataVendor'),true);

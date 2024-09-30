@@ -75,10 +75,14 @@ class StatusAdmin extends LeftAndMain implements PermissionProvider {
             } else {
                 $vendor = Vendor::get()->filter('OwnerID', $member->ID)->first();
                 $list = ProductObject::get()->filter('VendorID', $vendor->ID);
-                $order = ProductCheckoutObject::get()->filter(['ProductID'=> $list->column('ID')]);
-                $headerid = $order->column('HeaderCheckoutID');
-                $data = ProductCheckoutHeaderObject::get()->filter(['ID' => $headerid]);
-    
+                if ($list->exists()) {
+                    $order = ProductCheckoutObject::get()->filter(['ProductID' => $list->column('ID')]);
+                    $headerid = $order->column('HeaderCheckoutID');
+                    $data = ProductCheckoutHeaderObject::get()->filter(['ID' => $headerid]);
+                } else {
+                    $order = ProductCheckoutObject::get()->filter(['ProductID' => 0]); 
+                    $data = ProductCheckoutHeaderObject::get()->filter(['ID' => 0]);
+                }
                 $pending = $data->filter('Status', 'Pending')->count();  
                 $Completed = $data->filter('Status', 'Completed')->count();  
                 $Proccesing = $data->filter('Status', 'Processing')->count();  

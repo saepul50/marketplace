@@ -49,11 +49,15 @@ class OrderAdmin extends ModelAdmin {
             if ($modelClass ===  ProductCheckoutHeaderObject::class) {
                 $vendor = Vendor::get()->filter('OwnerID', $member->ID)->first();
                 $list = ProductObject::get()->filter('VendorID', $vendor->ID);
+                if($list->exists()){
                 $order = ProductCheckoutObject::get()->filter(['ProductID'=> $list->column('ID')]);
                 $headerid = $order->column('HeaderCheckoutID');
                 // Debug::show($headerid);
                 $data = ProductCheckoutHeaderObject::get()->filter(['ID' => $headerid]);
-
+                } else{
+                    $order = ProductCheckoutObject::get()->filter(['ProductID' => 0]);
+                    $data = ProductCheckoutHeaderObject::get()->filter(['ID' => 0]);
+                }
 
                 // Debug::show($data);
             }
