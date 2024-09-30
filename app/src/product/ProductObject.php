@@ -14,6 +14,7 @@ use SilverStripe\Forms\DropdownField;
 use SilverStripe\Forms\GridField\GridField;
 use SilverStripe\Forms\GridField\GridFieldConfig_RecordEditor;
 use SilverStripe\Forms\GridField\GridFieldDataColumns;
+use SilverStripe\Security\Security;
 use SilverStripe\View\Requirements;
 
     class ProductObject extends DataObject{
@@ -54,6 +55,47 @@ use SilverStripe\View\Requirements;
         'CommentReply' =>ProductReply::class,
     ];
     private static $default_sort = 'Created DESC';
+
+
+    
+    public function onBeforeWrite()
+    {
+        parent::onBeforeWrite();
+        $member = Security::getCurrentUser();
+        $vendor = Vendor::get()->filter('OwnerID', $member->ID)->first();
+        // Debug::show($vendor);
+        if (!$this->ID) {
+            if ($member = Security::getCurrentUser()) {
+                $this->VendorID = $vendor->ID;
+
+            }else{
+                user_error('No vendor found for this member', E_USER_WARNING); 
+            }
+            
+        }
+    }
+
+
+    
+    public function canCreate($member = null, $context = [])
+    {
+        return true; 
+    }
+    public function canView($member = null)
+    {
+        return true;
+    }
+    public function canEdit($member = null)
+    {
+        return true;
+    }
+    public function canDelete($member = null)
+    {
+        return true;
+    }
+
+
+    
     public function getFirstProductImage() {
         if ($this->ProductImages()->exists()) {
             $image = $this->ProductImages()->first();
@@ -218,5 +260,7 @@ use SilverStripe\View\Requirements;
     
         return $fields;
     }
-    
+
+
+
 }

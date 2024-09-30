@@ -35,7 +35,6 @@ use SilverStripe\Security\Member;
             foreach ($fields->dataFields() as $field) {
                 $field->setReadonly(true);
             }
-    
             return $fields;
         }
         public function getOrderStatus(){
@@ -66,5 +65,13 @@ use SilverStripe\Security\Member;
                 $product->QuantitySold += $this->ProductQuantity;
                 $product->write();
             }
+        }
+        public function canView($member = null)
+        {
+            return true;
+        }
+        public function canEdit($member = null)
+        {
+            return true;
         }
     }

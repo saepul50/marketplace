@@ -262,26 +262,6 @@
                                     <% end_loop %>
                                 </ul>
                             </div>
-                            <%-- <div class="sidebar-filter mt-50">
-                                <div class="top-filter-head">Product Filters</div>
-                                <div class="common-filter">
-                                    <div class="head">Brands</div>
-                                    <form id="filterForm" action="#">
-                                        <ul>
-                                            <li class="filter-list">
-                                                <input class="pixel-radio" type="radio" id="allbrand" name="brand" value="all" <% if $CurrentFilter == 'all' %>checked<% end_if %>>
-                                                <label for="allbrand">All <span>($PaginatedProduct.Count)</span></label>
-                                            </li>
-                                            <% loop $Brand %>
-                                                <li class="filter-list">
-                                                    <input class="pixel-radio" type="radio" id="$Title.LowerCase" data-id="$ID" name="brand" value="$ID" <% if $CurrentFilter == $ID %>checked<% end_if %>>
-                                                    <label for="$Title.LowerCase">$Title <span>($Product.Count)</span></label>
-                                                </li>
-                                            <% end_loop %>
-                                        </ul>
-                                    </form>
-                                </div>
-                            </div> --%>
                         </div>
                         <div class="col-xl-9 col-lg-8 col-md-7">
                             <!-- Start Filter Bar -->
@@ -410,6 +390,8 @@
                 </div>
             </div>
         </div>
+        
+    <% end_with %>
         <% else %>
         <p>jsjadj</p>
 <% end_if %>

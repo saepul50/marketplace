@@ -571,7 +571,8 @@ $(document).ready(function () {
 
   //product
   $("#reviewform").submit(function (event) {
-    event.preventDefault();
+    event.stopPropagation()
+
     const rating = document.getElementById("ratingValue");
     let angka = rating.getAttribute('value');
     console.log(angka);

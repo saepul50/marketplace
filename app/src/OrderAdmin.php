@@ -10,6 +10,7 @@ use SilverStripe\Forms\GridField\GridFieldDataColumns;
 use SilverStripe\Forms\GridField\GridFieldDetailForm;
 use SilverStripe\Forms\GridField\GridFieldSortableHeader;
 use SilverStripe\ORM\ValidationException;
+use SilverStripe\Security\Security;
 use Symbiote\GridFieldExtensions\GridFieldEditableColumns;
 
 class OrderAdmin extends ModelAdmin {
@@ -19,4 +20,49 @@ class OrderAdmin extends ModelAdmin {
     private static $managed_models = [
         ProductCheckoutHeaderObject::class,
     ];
+
+
+
+
+
+
+
+
+
+
+    
+
+    public function getEditForm($id = null, $fields = null) {
+        $form = parent::getEditForm($id, $fields);
+        $form->setFormMethod('POST');
+        return $form;
+    }
+
+
+    public function getList() {
+        $list = parent::getList();
+        $member = Security::getCurrentUser();
+
+        $modelClass = $this->modelClass;
+
+        if ($member->ID !== 1) {
+            if ($modelClass ===  ProductCheckoutHeaderObject::class) {
+                $vendor = Vendor::get()->filter('OwnerID', $member->ID)->first();
+                $list = ProductObject::get()->filter('VendorID', $vendor->ID);
+                $order = ProductCheckoutObject::get()->filter(['ProductID'=> $list->column('ID')]);
+                $headerid = $order->column('HeaderCheckoutID');
+                // Debug::show($headerid);
+                $data = ProductCheckoutHeaderObject::get()->filter(['ID' => $headerid]);
+
+
+                // Debug::show($data);
+            }
+        } else if ($member->ID == 1) {
+            if ($modelClass === ProductCheckoutHeaderObject::class) {
+                $data = ProductCheckoutHeaderObject::get();
+            } 
+        }
+
+        return $data;
+    }
 }
