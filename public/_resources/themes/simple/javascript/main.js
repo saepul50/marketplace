@@ -571,7 +571,8 @@ $(document).ready(function () {
 
   //product
   $("#reviewform").submit(function (event) {
-    event.preventDefault();
+    event.stopPropagation()
+
     const rating = document.getElementById("ratingValue");
     let angka = rating.getAttribute('value');
     console.log(angka);
@@ -2771,6 +2772,8 @@ updateSubtotal();
 updateFinalPrice();
 });
 const events = document.querySelector('.event');
+console.log(dayjs());
+
 stars.forEach(star => {
   star.addEventListener('click', function () {
     const rating = this.getAttribute('data-value');
