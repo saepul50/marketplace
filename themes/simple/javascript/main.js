@@ -2,7 +2,6 @@ const stars = document.querySelectorAll(".star");
 const rating = document.getElementById("rating");
 const ratingDisplay = document.getElementById('rating');
 const ratingValueInput = document.getElementById('ratingValue');
-
 stars.forEach((star) => {
   star.addEventListener("click", () => {
     const value = parseInt(star.getAttribute("data-value"));
@@ -2779,7 +2778,7 @@ stars.forEach(star => {
     const rating = this.getAttribute('data-value');
     ratingDisplay.textContent = rating; // Update the displayed rating
     ratingValueInput.value = rating;    // Set the hidden input value for form submission
-
+    
     // Highlight the selected stars
     stars.forEach(s => {
       s.classList.remove('selected');
