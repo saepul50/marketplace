@@ -17,7 +17,7 @@ use SilverStripe\Security\Security;
 class StatusAdmin extends LeftAndMain {
     private static $menu_title = 'Status';
     private static $url_segment = 'status'; 
-    // private static $menu_icon_class = '';
+    private static $menu_icon_class = '';
     // private static $managed_models = [
     //     $this->customise([])->renderWith(['Status'])
     // ];
@@ -40,22 +40,24 @@ class StatusAdmin extends LeftAndMain {
 
         return $form;
     }
-    
 
-
-    
-
-    
-    
-
-
- 
-    private static $required_permission_codes = ['CMS_ACCESS_StatusAdmin'];
 
 
     public function dashboard()
     {
+        
         $member = Security::getCurrentUser();
+        if($member->ID == 1){
+            $vendor = Vendor::get();
+            $list = ProductObject::get();
+            $order = ProductCheckoutObject::get();
+            $data = ProductCheckoutHeaderObject::get();
+            
+            $pending = $data->filter('Status', 'Pending')->count();  
+            $Completed = $data->filter('Status', 'Completed')->count();  
+            $Proccesing = $data->filter('Status', 'Processing')->count();  
+            $Cancelled = $data->filter('Status', 'Cancelled')->count();  
+        } else {
         $vendor = Vendor::get()->filter('OwnerID', $member->ID)->first();
         $list = ProductObject::get()->filter('VendorID', $vendor->ID);
         $order = ProductCheckoutObject::get()->filter(['ProductID'=> $list->column('ID')]);
@@ -67,7 +69,7 @@ class StatusAdmin extends LeftAndMain {
         $Proccesing = $data->filter('Status', 'Processing')->count();  
         $Cancelled = $data->filter('Status', 'Cancelled')->count();  
 
-
+        }
         return $this->customise([
             'Pending' => $pending,
             'Completed' => $Completed,

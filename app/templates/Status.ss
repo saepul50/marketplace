@@ -71,7 +71,7 @@ Change it, enhance it and most importantly enjoy it!
 		<div class=" ml-5 mt-3 mr-5 Semua" id="semua">
 			<div class="d-flex justify-content-between">
 			<h2 class="fw-bold" style="margin-top: .04rem;">Status Pesanan</h2>
-				<a href="#" class="text-muted">Riwayat Penjualan ></a>
+				<a href="{$BaseHref}/admin/orders" class="text-muted">Riwayat Penjualan ></a>
 			</div>
 			<div class="mt-2 row text-center">
 				<div class="p-4 col">
@@ -98,7 +98,7 @@ Change it, enhance it and most importantly enjoy it!
 			</div>
 			<div class="mt-2 d-flex justify-content-between text-center">
 				<%-- content --%>
-			<canvas id="myChart" style="width:100%;max-width:600px"></canvas>
+			<canvas id="myChart" ></canvas>
 
 			</div>
 		</div>
