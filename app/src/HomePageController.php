@@ -2,6 +2,7 @@
 
 use SilverStripe\Dev\Debug;
 use SilverStripe\ORM\ArrayList;
+use SilverStripe\Security\Member;
 use SilverStripe\Security\Security;
 
 class HomePageController extends PageController{
@@ -27,6 +28,17 @@ class HomePageController extends PageController{
         shuffle($products);
         return new ArrayList($products);
     }
+    public function CartData() {
+        $member = Security::getCurrentUser();
+        // Debug::show($member);
+        // die();
+        if ($member) {
+            $totalCart = CartObject::get()->filter('MemberID', $member->ID)->count();
+            return $totalCart;
+        }
+        return null;
+    }
+
     public function getMember(){
         return Security::getCurrentUser();
     }

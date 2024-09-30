@@ -1,3 +1,25 @@
+	<style>
+		.ti-bag {
+		position: relative;
+		}
+
+		.ti-bag .cart-count {
+			position: absolute;
+			display: flex;
+			justify-content: center;
+			align-items: flex-start;
+			width: 18px;
+			height: 18px;
+			line-height: 1rem !important;
+			top: -8px;
+			right: -10px; 
+			background-color: red;
+			border-radius: 50%;
+			color: #fff !important; 
+			font-size: 14px;
+			font-weight: bold;
+		}
+	</style>
 <header class="header_area sticky-header">
 	<div class="main_menu">
 		<nav class="navbar navbar-expand-lg navbar-light main_box">
@@ -50,7 +72,11 @@
 						<li class="nav-item" id="Registration"><a class="nav-link" href="{$BaseHref}/vendorpage">Detail</a></li>
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
-						<li class="nav-item"><a href="{$BaseHref}/cart" class="cart"><span class="ti-bag"></span></a></li>
+						<li class="nav-item">
+							<a href="{$BaseHref}/cart" class="cart">
+								<span class="ti-bag"><% if $CartData %><span class="cart-count">$CartData</span><% end_if %></span>
+							</a>
+						</li>
 						<li class="nav-item">
 							<button class="search" style=" outline: none !important; box-shadow: none;"><span class="lnr lnr-magnifier " id="search"></span></button>
 							</li>
