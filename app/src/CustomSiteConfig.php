@@ -23,6 +23,7 @@ class CustomSiteConfig extends Extension
         'Favicon' => Image::class,
         'HotDealImage' => Image::class,
         'Unknown' => Image::class,
+
         
     ];
     private static $owns = [
@@ -35,6 +36,7 @@ class CustomSiteConfig extends Extension
         'InstagramImage',
         'HotDealImage',
         'Unknown',
+ 
 
     ];
     private static $many_many = [
@@ -48,12 +50,14 @@ class CustomSiteConfig extends Extension
         $fields->addFieldToTab('Root.Main', TextField::create('Alamat', 'Alamat'));
         $fields->addFieldToTab('Root.Main', TextField::create('Nomer', 'Nomer'));
         $fields->addFieldToTab('Root.Main', UploadField::create('Image', 'Image Navbar'));
+        $fields->addFieldToTab('Root.Main', UploadField::create('Toko', 'Toko'));
         $fields->addFieldToTab('Root.Main', UploadField::create('Unknown', 'Static Profil User'));
         $fields->addFieldToTab('Root.Main', UploadField::create('HomeImage', 'Home Image'));
         $fields->addFieldToTab('Root.Main', UploadField::create('Background', 'Background Banner'));
         $fields->addFieldToTab('Root.Main', UploadField::create('SuperSaleImage', 'Deals Of the Week Image'));
         $fields->addFieldToTab('Root.Main', UploadField::create('LoginImage', 'Login Image'));
         $fields->addFieldToTab('Root.Main', UploadField::create('Favicon', 'Favicon Image'));
+        $fields->addFieldToTab('Root.Main', UploadField::create('Banner', 'Banner Image'));
         $fields->addFieldToTab('Root.Main', UploadField::create('HotDealImage', 'Background Hot Deals Image'));
         $fields->addFieldToTab('Root.Main', UploadField::create('InstagramImage', 'Instagram Image')->setIsMultiUpload(true));
     }
