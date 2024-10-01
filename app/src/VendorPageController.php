@@ -17,9 +17,9 @@ class VendorPageController extends PageController {
     public function index(HTTPRequest $request) {
         $pathname = $this->getRequest()->param('ID');
         $vendor = Vendor::get()->filter(['Pathname' => $pathname])->first();
-        $categories = ShopCategoryObject::get()->filter('VendorID', $vendor->ID);
-        $subCategoryList = ShopSubCategoryObject::get()->filter('VendorID', $vendor->ID);
-        $brandList = ProductBrandObject::get()->filter('VendorID', $vendor->ID);
+        $categories = ShopCategoryObject::get();
+        $subCategoryList = ShopSubCategoryObject::get();
+        $brandList = ProductBrandObject::get();
         $productQuery = ProductObject::get()->filter('VendorID', $vendor->ID);
         $ProductObject = ProductObject::get()->filter('VendorID', $vendor->ID);
         $count = $productQuery->count();

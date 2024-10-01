@@ -35,7 +35,8 @@ use SilverStripe\View\Requirements;
         'Vendor' => Vendor::class,
         'ProductVideo' => File::class,
         'ProductCategory' => ShopCategoryObject::class,
-        'ProductBrands' => ProductBrandObject::class
+        'ProductBrands' => ProductBrandObject::class,
+        'Banner' => BannerPromo::class,
     ];
     
     private static $many_many = [
