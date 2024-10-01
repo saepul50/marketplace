@@ -175,9 +175,14 @@ $(document).ready(function () {
   $('.main-nav-list.child a').on('click', function (e) {
     e.preventDefault();
     var subCategoryID = $(this).data('id');
-    var currentParams = new URLSearchParams(window.location.search);
-    currentParams.set('subcategory', subCategoryID);
-    window.location.href = window.location.pathname + '?' + currentParams.toString();
+
+    if ($(this).hasClass('active')) {
+      currentParams.delete('subcategory');
+      window.location.href = window.location.pathname + '?' + currentParams.toString();
+    } else {
+      currentParams.set('subcategory', subCategoryID);
+      window.location.href = window.location.pathname + '?' + currentParams.toString();
+    }
   });
 
   const events = document.querySelectorAll('.event');
@@ -185,14 +190,14 @@ $(document).ready(function () {
     const icon = '<i class="lnr lnr-calendar-full"></i>'
     const date = dayjs(event.dataset.date).format('D MMM YYYY');
     const dateElement = event.querySelector('.date');
-    dateElement.innerHTML = ${date} ${icon};
+    dateElement.innerHTML = `${date} ${icon}`;
 
   });
   const sidebar = document.querySelectorAll('.time-sidebar');
   sidebar.forEach(event => {
     const date = dayjs(event.dataset.date).format('D MMM YYYY');
     const dateElement = event.querySelector('.date-sidebar');
-    dateElement.innerHTML = ${date};
+    dateElement.innerHTML = `${date}`;
 
   });
 
@@ -1337,9 +1342,9 @@ init();
 
 //------- End Quantity Increase & Decrease Value --------//
 
-/----------------------------------------------------/
+/*----------------------------------------------------*/
 /*  Google map js
-  /----------------------------------------------------/
+  /*----------------------------------------------------*/
 
 if ($("#mapBox").length) {
   var $lat = $("#mapBox").data("lat");
@@ -2141,3 +2146,662 @@ $("#checkoutbtn").on('click', function (e) {
           ProductTitle: $(item).find('#productTitle').text(),
           ProductCartID: $(item).find('#productCartID').text(),
           ProductImage: $(item).find('#productImage').text(),
+          ProductVariant: $(item).find('#productVariant').text(),
+          ProductVariantID: $(item).find('#productVariantID').text(),
+          ProductVariantWeight: $(item).find('#variantP').data('weight'),
+          ProductPrice: $(item).find('#productPrice').text(),
+          ProductQuantity: $(item).find('#productQuantity').text(),
+          ProductTotalPrice: $(item).find('#productTotalPrice').text(),
+          ProductSubTotalPrice: $(item).find('#productSubTotalPrice').text(),
+          ProductSubTotalPriceNF: $(item).find('#productSubTotalPriceNF').text(),
+          ProductCostShipping: shippingCost,
+          ProductFinalPrice: finalPrice,
+          ProductFinalPriceNF: finalPriceNF,
+          CustomerName: customerName.replace('Nama: ', ''),
+          CustomerFullName: customerFullName.replace('Nama lengkap: ', ''),
+          CustomerEmail: customerEmail.replace('Email: ', ''),
+          CustomerHandphone: customerHandphone.replace('Handphone: ', ''),
+          CustomerAddress: customerAddress.replace('Alamat: ', ''),
+          CustomerNotes: customerNotes,
+          Bank: paymentGate,
+          PaymentMethod: paymentMethod,
+          TimeCheckout: timeCheckout,
+          OrderID: orderID
+        };
+        selectedProductss.push(productData);
+        formData.append('paymentDatas', JSON.stringify(selectedProductss));
+      }
+      $.ajax({
+        url: '/marketplace/productcheckout/cash',
+        type: 'POST',
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function (results) {
+          iziToast.success({
+            icon: 'fa fa-shipping-fast',
+            timeout: 3500,
+            title: 'Pesanan Telah Dibuat',
+            message: 'Pesananmu Akan dikirim Secepatnya',
+            position: 'bottomRight',
+            onClosed: function () {
+              return false;
+              window.location.href = "/marketplace/";
+            }
+          });
+        },
+        error: function (xhr, status, error) {
+          iziToast.error({ title: 'Error', message: error, position: 'bottomRight' });
+        }
+      });
+    }
+  }
+});
+$('.province_select').on('click', function () {
+  $.ajax({
+    url: '/marketplace/productcheckout/rajoProvince',
+    method: 'GET',
+    dataType: 'json',
+    success: function (data) {
+      $('#province_select').empty();
+      var dataProvince = data.rajaongkir.results;
+      // console.log()
+      var options = '';
+      dataProvince.forEach(element => {
+        options += `<li data-value="${element.province_id}" class="option selected focus">${element.province}</li>`;
+      });
+      $('.province_select .list').append(options);
+      // console.log($('.province_select .').html());
+      // console.log('jQuery version:', $.fn.jquery);
+
+    },
+    error: function (jqXHR, textStatus, errorThrown) {
+      console.error('Error fetching provinces:', textStatus, errorThrown);
+    }
+  });
+});
+$('.province_select .list').on('click', 'li', function () {
+  changeProvince(this);
+});
+function changeProvince(e){
+  // alert("fs");
+  // return false;
+  var idProvinsi = $(e).data('value');
+  // var Provinsi = $(this).text();
+  // console.log(idProvinsi)
+  // console.log(Provinsi)
+  // return false; 
+  if (idProvinsi > 0) {
+    $('.regency_select .list').empty();
+    $('.regency_select .current').text("Choose regency");
+    $.ajax({
+      url: '/marketplace/productcheckout/rajoRegency',
+      type: 'POST',
+      data: { ProvinceID: idProvinsi },
+      dataType: 'json',
+      success: function (data) {
+        var options = '';
+        var dataRegency = data.rajaongkir.results;
+        // console.log(regency)
+        dataRegency.forEach(element => {
+          // console.log(element)
+          // return false;
+          options += `<li data-value="${element.city_id}" data-province="${element.province}" data-type="${element.type}" data-postal="${element.postal_code}" class="option selected focus">${element.city_name}</li>`;
+        });
+        $('.regency_select .list').append(options);
+      },
+      error: function (jqXHR, textStatus, errorThrown) {
+        console.error('Error fetching provinces:', textStatus, errorThrown);
+      }
+    });
+  } else {
+    iziToast.warning({ position: "bottomRight", title: 'Caution', message: 'Pilih Provinsi' });
+    return;
+  }
+}
+$('.regency_select .list').on('click', 'li', function () {
+  // alert("fs");
+  var idCity = $(this).data('value');
+  var City = $(this).text();
+  var Provinsi = $(this).data('province');
+  var Type = $(this).data('type');
+  var Postal = $(this).data('postal');
+  // console.log(Postal)
+  $('.postalcode').val(Postal);
+});
+// $.ajax({
+//   url: '/marketplace/productcheckout/rajoProvince',
+//   method: 'GET',
+//   dataType: 'json',
+//   success: function(data) {
+//     $('#province_select').empty();
+//     var dataProvince = data.rajaongkir.results;
+//     var options = '';
+//     // console.log(data)
+//     // return false;
+//     dataProvince.forEach(element => {
+//         options += `<li data-value="${element.province_id}" class="option selected focus">${element.province}</li>`;
+//     });
+//     $('.province_select .list').append(options);
+//     // console.log($('.province_select .').html());
+//     // console.log('jQuery version:', $.fn.jquery);
+//   },
+//   error: function(jqXHR, textStatus, errorThrown) {
+//       console.error('Error fetching provinces:', textStatus, errorThrown);
+//     }
+//   });
+$('#saveData').on('click', function (e) {
+  e.preventDefault();
+  var numberInput = $("#numberinput").val();
+  var address = $('.regency_select .list .selected').html() + ', ' + $('.province_select .list .selected').html();
+  var province = parseInt($('.province_select .list .selected').data('value'));
+  var regency = parseInt($('.regency_select .list .selected').data('value'));
+  // console.log(address)
+  // console.log(regency)
+  if (numberInput.length < 12 || numberInput.length > 14) {
+    iziToast.warning({ position: "bottomRight", title: 'Caution', message: 'Nomor harus antara 12 hingga 14 digit.' });
+    return;
+  }
+  var data = {
+    Number: $('#numberinput').val(),
+    FName: $('#first').val(),
+    LName: $('#last').val(),
+    Address: address,
+    AddressDetail: $('#add1').val(),
+    Regency: regency,
+    Postal: $('#zip').val()
+  };
+  $.post("/marketplace/productcheckout/address", {
+    Number: $('#numberinput').val(),
+    FName: $('#first').val(),
+    LName: $('#last').val(),
+    Address: address,
+    AddressDetail: $('#add1').val(),
+    Province: province,
+    Regency: regency,
+    Postal: $('#zip').val()
+  })
+    .done(function (data) {
+      var response = JSON.parse(data);
+      // console.log(response)
+      // return false;
+      window.location.reload();
+    })
+    .fail(function () {
+      iziToast.warning({ position: "bottomRight", title: 'Caution', message: 'Gagal menyimpan data pengiriman' });
+    });
+});
+function fetchcourir() {
+  var courir = $('input[name="selectorcourir"]:checked').next('label').data('opt');
+  // console.log(idCourir)
+  let totalWeight = 0;
+  document.querySelectorAll('#variantP').forEach(item => {
+    const weight = parseFloat(item.getAttribute('data-weight'));
+
+    if (!isNaN(weight)) {
+      totalWeight += weight;
+    }
+  });
+  var idRegency = $('#fulldata .regency').text();
+  var weight = $('#fulldata .weight').text();
+  // console.log(idRegency)
+  $.ajax({
+    url: '/marketplace/productcheckout/rajoCost',
+    type: 'POST',
+    data: {
+      Courir: courir,
+      RegencyID: idRegency,
+      Weight: totalWeight
+    },
+    dataType: 'json',
+    success: function (data) {
+      // console.log(data)
+      // return false;
+      // console.log(data.rajaongkir.results[0].costs)
+      var options = '';
+      var dataCost = data.rajaongkir.results[0].costs;
+      dataCost.forEach((element, index) => {
+        let formattedCost = formatNumber(element.cost[0].value);
+        options += `<div class="payment_item active">
+                          <div class="radion_btn">
+                              <input type="radio" id="${element.service}" name="selectorCost" ${index === 0 ? 'checked' : ''}>
+                              <label class="rajoCostOptionLabel" data-opt="${element.cost[0].value}" for="${element.service}">${element.description} (${formattedCost})</label>
+                              <div class="check"></div>
+                          </div>
+                      </div>`;
+      });
+      $('.rajoCostOption').html(options);
+      fetchcost();
+    },
+    error: function (jqXHR, textStatus, errorThrown) {
+      // console.error('Error fetching provinces:', textStatus, errorThrown);
+    }
+  });
+}
+SelectorPayment();
+SelectorPaymentGate();
+$("input[name='selectorpayment']").on('change', function () {
+  SelectorPayment();
+});
+$("input[name='selectorpaymentgate']").on('change', function () {
+  SelectorPaymentGate();
+});
+$(document).on('change', "input[name='selectorCost']", function () {
+  // alert("ds");
+  fetchcost();
+});
+function SelectorPaymentGate() {
+  var selectedPayment = $("input[name='selectorpaymentgate']:checked").val();
+  if (selectedPayment === "bca") {
+    $('#norek').html('No. rekening:  12345678')
+  } else if (selectedPayment === "bri") {
+    $('#norek').html('No. rekening:  123456789')
+  } else if (selectedPayment === "mandiri") {
+    $('#norek').html('No. rekening:  12345678910')
+  }
+}
+function SelectorPayment() {
+  var selectedPayment = $("input[name='selectorpayment']:checked").val();
+  var options = '';
+  $(".optiondisplay").hide();
+  $(".nooption").show();
+
+  if (selectedPayment === "manualtf") {
+    options += `<div class="payment_item active">
+                        <div class="radion_btn">
+                            <input type="radio" id="f-option12" value="bca" name="selectorpaymentgate">
+                            <label for="f-option12">BCA </label>
+                            <img src="https://imgur.com/5pLj8C1.jpg" alt="" class="col-2">
+                            <div class="check"></div>
+                        </div>
+                    </div>
+                    <div class="payment_item">
+                        <div class="radion_btn">
+                            <input type="radio" id="f-option13" value="bri" name="selectorpaymentgate">
+                            <label for="f-option13">BRI </label>
+                            <img src="https://imgur.com/5ssXSBr.jpg" alt="" class="col-2">
+                            <div class="check"></div>
+                        </div>
+                    </div>
+                    <div class="payment_item">
+                        <div class="radion_btn">
+                            <input type="radio" id="f-option14" value="mandiri" name="selectorpaymentgate">
+                            <label for="f-option14">mandiri </label>
+                            <img src="https://imgur.com/r8FVNV6.jpg" alt="" class="col-2">
+                            <div class="check"></div>
+                        </div>
+                    </div>
+                    <div class="form-group d-grid">
+                      <div class="">
+                          <label class="" for="transfer-image">Unggah Bukti Transfer:</label>
+                      </div>
+                      <div class="">
+                          <input type="file" id="transfer-image" name="transferImage" accept="image/*" required style="border:none;">
+                      </div>
+                    </div>
+                    <a data-toggle="modal" data-target="#imageModal">
+                        <img id="image-preview" style="display:none; width: 100px; cursor:pointer;"/>
+                    </a>
+                    <div class="modal fade" id="imageModal" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                            <div class="modal-content" style="background: none; border: none;">
+                                <div class="modal-header" style="border-bottom: none;">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body" style="background: none;">
+                                    <img id="modal-image" src="" class="img-fluid" style="width: 100%; height: auto;"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`;
+    $(".nooptionmanualtf").hide();
+    $(".optiondisplaymanualtf").show();
+    $('.paymentOptionDisplayManual').html(options);
+    $('.paymentOptionDisplayManual input[type="radio"]').first().prop('checked', true);
+  } else if (selectedPayment === "duitku") {
+    $.ajax({
+      url: "/marketplace/productcheckout/paymentmethod",
+      type: "POST",
+      success: function (results) {
+        var data = JSON.parse(results).Data;
+        var collapseDuitku = $('.paymentOptionDisplayDuitku');
+        collapseDuitku.empty();
+
+        data.forEach(function (payment) {
+          var paymentOption = `
+                    <div class="payment_item">
+                        <div class="radion_btn">
+                            <input type="radio" id="${payment.paymentMethod}" value="${payment.paymentMethod}" data-method="${payment.paymentName}" name="selectorpaymentgate">
+                            <label for="${payment.paymentMethod}">${payment.paymentName}</label>
+                            <img src="${payment.paymentImage}" alt="${payment.paymentName}" class="col-2" style="left: 170px;">
+                            <div class="check"></div>
+                        </div>
+                    </div>
+                `;
+          collapseDuitku.append(paymentOption);
+        });
+        $('.paymentOptionDisplayDuitku input[type="radio"]').first().prop('checked', true);
+      },
+      error: function () {
+        $(".spinnerout").hide();
+        iziToast.error({ title: 'Error', message: 'Saat Memuat Data', position: 'bottomRight' });
+      }
+    });
+    var formData = new FormData();
+    $(".nooptionduitku").hide();
+    $(".optiondisplayduitku").show();
+  }
+}
+$(document).on('change', 'input[name="transferImage"]', function (event) {
+  previewImage(event);
+});
+var selectedImage;
+function previewImage(event) {
+  var reader = new FileReader();
+  var img = document.getElementById('image-preview');
+  // console.log(img)
+  reader.onload = function () {
+    img.src = reader.result;
+    img.style.display = 'block';
+    var modalImg = document.getElementById('modal-image');
+    modalImg.src = reader.result;
+  }
+
+  if (event.target.files[0]) {
+    selectedImage = event.target.files[0];
+    // console.log(selectedImage)
+    reader.readAsDataURL(event.target.files[0]);
+  }
+}
+function generateOrderID() {
+  const timestamp = Date.now().toString(36);
+  const randomStr = Math.random().toString(36).substring(2, 10);
+  return `SHOESTORE${timestamp}${randomStr}`;
+}
+
+function callOrderID() {
+  const orderID = generateOrderID();
+
+  $('.list_2').each(function () {
+    $(this).find('#orderID').text(orderID);
+  });
+}
+$('input[name="selectorcourir"]').on('change', function () {
+  fetchcourir();
+});
+fetchcourir();
+function fetchcost() {
+  var cost = $('input[name="selectorCost"]:checked').next('label').data('opt');
+  function formatNumber(number) {
+    let parts = number.toString().split('.');
+    let integerPart = parts[0];
+    let decimalPart = parts.length > 1 ? '.' + parts[1] : '';
+
+    let formattedIntegerPart = '';
+    while (integerPart.length > 0) {
+      formattedIntegerPart = '.' + integerPart.slice(-3) + formattedIntegerPart;
+      integerPart = integerPart.slice(0, -3);
+    }
+
+    return formattedIntegerPart.slice(1) + decimalPart;
+  }
+  $('#shippingProduct').html(`Rp. ${formatNumber(cost)}`);
+  $('#shippingNFProduct').html(cost);
+  updateFinalPrice();
+};
+function TimeCheckout() {
+  var now = new Date();
+  var day = now.getDate().toString().padStart(2, '0');
+  var month = (now.getMonth() + 1).toString().padStart(2, '0');
+  var year = now.getFullYear();
+  var hours = now.getHours().toString().padStart(2, '0');
+  var minutes = now.getMinutes().toString().padStart(2, '0');
+  var seconds = now.getSeconds().toString().padStart(2, '0');
+
+  var formattedTime = `${day}/${month}/${year}   ${hours}:${minutes}:${seconds}`;
+
+  $('.list_2').each(function () {
+    $(this).find('#time').text(formattedTime);
+  });
+}
+$("#Comment").on('click', function (e) {
+  e.preventDefault();
+  var formData = new FormData();
+  var comment = $("#commentMessage").val();
+  formData.append('Comments', comment);
+  $.ajax({
+    url: "productdetails/comment",
+    type: "POST",
+    data: formData,
+    contentType: false,
+    processData: false,
+    success: function (results) {
+      iziToast.success({
+        timeout: 2000,
+        title: 'Sukses',
+        position: 'bottomRight'
+      });
+    },
+    error: function () {
+      iziToast.error({ title: 'Error', message: 'Fail', position: 'bottomRight' });
+    }
+  });
+});
+$('.variantItem').on('click', function (e) {
+  e.preventDefault();
+  $('.variantItem').removeClass('active');
+  $(this).addClass('active')
+  var variantPrice = $(this).data('price');
+  var variantDiscountedPrice = $(this).data('discount');
+  var variantStock = $(this).data('stock');
+  if (variantStock < 1) {
+    iziToast.warning({ position: "bottomRight", title: 'Caution', message: 'Stok kosong' });
+    $('.variantItem').removeClass('active');
+    return;
+  }
+  $('.ppprice').text(variantDiscountedPrice);
+  $('.nnprice').text(variantPrice);
+});
+$('.navbar-nav .nav-item').click(function () {
+  $('.navbar-nav .nav-item.active').removeClass('active');
+  $(this).addClass('active');
+});
+$('.payment_box .list li').click(function () {
+  $('.payment_box .list li').removeClass('active');
+  $(this).addClass('active');
+});
+$('.nav-linked').on('click', function (e) {
+  e.preventDefault();
+
+  $('.nav-linked').removeClass('active');
+  $('.tab-pane').removeClass('show active');
+
+  $(this).addClass('active');
+
+  var targetId = $(this).attr('href');
+  $('.tab-pane').each(function () {
+    if ($(this).attr('id') === targetId) {
+      $(this).addClass('show active');
+    }
+  });
+});
+$("#masterCheckbox, #bottomMasterCheckbox").on('change', function () {
+  var isChecked = $(this).is(':checked');
+  $(".productCheckbox").prop('checked', isChecked);
+  updateSubtotal();
+});
+$('.productCheckbox').on('change', function () {
+  updateSubtotal();
+});
+function showSection(sectionId, navItem) {
+  $('.Semua, .Pending, .Proses, .Selesai, .Canceled').hide();
+  $(sectionId).show();
+  $('.navi-item').removeClass('active');
+  $(navItem).addClass('active');
+}
+$('#navSemua').click(function () {
+  showSection('#semua', '#navSemua');
+  toggleOrderDetail(false);
+});
+$('#navPending').click(function () {
+  showSection('#pending', '#navPending');
+  toggleOrderDetail(false);
+});
+$('#navProses').click(function () {
+  showSection('#proses', '#navProses');
+  toggleOrderDetail(false);
+});
+$('#navSelesai').click(function () {
+  showSection('#selesai', '#navSelesai');
+  toggleOrderDetail(false);
+});
+$('#navCanceled').click(function () {
+  showSection('#canceled', '#navCanceled');
+  toggleOrderDetail(false);
+});
+
+const urlParams = new URLSearchParams(window.location.search);
+if (urlParams.has('detailOrder')) {
+  toggleOrderDetail(true);
+} else {
+  $('#navSemua').click();
+}
+function toggleOrderDetail(showDetail) {
+  if (showDetail) {
+    $('#myOrder').hide();
+    $('#detailOrder').show();
+  } else {
+    $('#myOrder').show();
+    $('#detailOrder').hide();
+  }
+}
+function formatNumber(number) {
+  let parts = number.toString().split('.');
+  let integerPart = parts[0];
+  let decimalPart = parts.length > 1 ? '.' + parts[1] : '';
+
+  let formattedIntegerPart = '';
+  while (integerPart.length > 0) {
+    formattedIntegerPart = '.' + integerPart.slice(-3) + formattedIntegerPart;
+    integerPart = integerPart.slice(0, -3);
+  }
+
+  return formattedIntegerPart.slice(1) + decimalPart;
+}
+function updateTotalPrice(quantityInput, priceElement, totalPriceElement, totalPriceElementNF) {
+  let priceText = priceElement.textContent.replace('Rp. ', '').replace('.', '').replace('.', '');
+  let priceNumber = parseInt(priceText);
+  const quantity = parseInt(quantityInput.value, 10);
+
+  if (isNaN(priceNumber)) priceNumber = 0;
+  if (isNaN(quantity) || quantity < 1) quantity = 1;
+
+  const totalPrice = (priceNumber * quantity).toFixed(0);
+  totalPriceElement.textContent = `Rp. ${formatNumber(totalPrice)}`;
+  totalPriceElementNF.textContent = totalPrice;
+}
+
+function updateSubtotal() {
+  let subtotal = 0;
+  document.querySelectorAll('.cartProduct').forEach(item => {
+    if (item.querySelector('.productCheckbox:checked')) {
+      const totalPriceElementNF = item.querySelector('#totalPriceNFCheckout');
+      const totalPrice = parseInt(totalPriceElementNF.textContent);
+      // console.log(totalPrice)
+      if (!isNaN(totalPrice)) {
+        subtotal += totalPrice;
+      }
+    }
+  });
+
+  const subtotalElement = document.querySelector('#subTotalPriceCheckout');
+  const subtotalElementNF = document.querySelector('#subTotalPriceNFCheckout');
+  subtotalElement.textContent = `Rp. ${formatNumber(subtotal.toString())}`;
+  subtotalElementNF.textContent = subtotal;
+}
+document.querySelectorAll('.cartProduct').forEach(item => {
+  const decrementButton = item.querySelector('#decrementButton');
+  const incrementButton = item.querySelector('#incrementButton');
+  const quantityInput = item.querySelector('#quantityInput');
+  const priceElement = item.querySelector('#itemPrice');
+  const totalPriceElement = item.querySelector('#totalPriceCheckout');
+  const totalPriceElementNF = item.querySelector('#totalPriceNFCheckout');
+  const checkboxhCheck = item.querySelector('.productCheckbox');
+  decrementButton.addEventListener('click', function () {
+    if (quantityInput.value > 1) {
+      quantityInput.value = parseInt(quantityInput.value, 10) - 1;
+      updateTotalPrice(quantityInput, priceElement, totalPriceElement, totalPriceElementNF);
+      updateSubtotal();
+    }
+  });
+
+  incrementButton.addEventListener('click', function () {
+    quantityInput.value = parseInt(quantityInput.value, 10) + 1;
+    updateTotalPrice(quantityInput, priceElement, totalPriceElement, totalPriceElementNF);
+    updateSubtotal();
+  });
+
+  quantityInput.addEventListener('input', function () {
+    quantityInput.value = quantityInput.value.replace(/[^0-9]/g, '');
+    if (!quantityInput.value || quantityInput.value < 1) {
+      quantityInput.value = 1;
+      // console.log(quantityInput.value)
+    }
+    updateTotalPrice(quantityInput, priceElement, totalPriceElement, totalPriceElementNF);
+    updateSubtotal();
+  });
+  updateTotalPrice(quantityInput, priceElement, totalPriceElement, totalPriceElementNF);
+});
+function updateFinalPrice() {
+  const subTotal = document.querySelector('#subTotalPriceProduct').textContent;
+  const subShipping = document.querySelector('#shippingProduct').textContent;
+  const subTotalInt = parseFloat(subTotal.replace('Rp. ', '').replace(/\./g, ''));
+  const subShippingInt = parseFloat(subShipping.replace('Rp. ', '').replace(/\./g, ''));
+  // console.log(subTotalInt)
+  // console.log(subShipping)
+  const FinalPrice = subTotalInt + subShippingInt;
+  const FinalElement = document.querySelector('#finalPriceProduct');
+  const FinalNFElement = document.querySelector('#finalPriceNFProduct');
+  FinalElement.textContent = `Rp. ${formatNumber(FinalPrice)}`;
+  FinalNFElement.textContent = FinalPrice;
+  // console.log(FinalPrice)
+}
+updateSubtotal();
+updateFinalPrice();
+});
+const events = document.querySelector('.event');
+console.log(dayjs());
+
+stars.forEach(star => {
+  star.addEventListener('click', function () {
+    const rating = this.getAttribute('data-value');
+    ratingDisplay.textContent = rating; // Update the displayed rating
+    ratingValueInput.value = rating;    // Set the hidden input value for form submission
+    
+    // Highlight the selected stars
+    stars.forEach(s => {
+      s.classList.remove('selected');
+    });
+    for (let i = 0; i < rating; i++) {
+      stars[i].classList.add('selected');
+    }
+  });
+});
+function getStarColorClass(value) {
+  switch (value) {
+    case 1:
+      return "one";
+    case 2:
+      return "two";
+    case 3:
+      return "three";
+    case 4:
+      return "four";
+    case 5:
+      return "five";
+    default:
+      return "";
+  }
+}
