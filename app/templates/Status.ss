@@ -51,9 +51,7 @@ Change it, enhance it and most importantly enjoy it!
 	</style>
 </head>
 <body>
-	
 	<div class="cms-content fill-height flexbox-area-grow cms-tabset center BlogAdmin ModelAdmin LeftAndMain" data-layout-type="border" data-pjax-fragment="Content" id="ModelAdmin">
-
 		<div class="cms-content-header north">
 			<div class="cms-content-header-info vertical-align-items flexbox-area-grow">
 				<div class="breadcrumbs-wrapper">
@@ -67,7 +65,7 @@ Change it, enhance it and most importantly enjoy it!
 		<div class=" ml-5 mt-3 mr-5 Semua" id="semua">
 			<div class="d-flex justify-content-between">
 			<h2 class="fw-bold" style="margin-top: .04rem;">Status Pesanan</h2>
-				<a href="/marketplace/venn/" class="text-muted">Riwayat Penjualan ></a>
+				<a href="/marketplace/venn/$Vendor.Pathname" class="text-muted">Riwayat Penjualan ></a>
 			</div>
 			<div class="mt-2 row text-center">
 				<div class="p-4 col">
@@ -99,7 +97,7 @@ Change it, enhance it and most importantly enjoy it!
 					<canvas id="myChart"></canvas>
 				</div>
 				<div class="col-4 p-0">
-					<h4 class="fw-bold">Product Category</h4>
+					<h4 class="fw-bold">Produk Kategori</h4>
 					<canvas id="CategoryChart"></canvas>
 				</div>
 			</div>
@@ -112,12 +110,15 @@ Change it, enhance it and most importantly enjoy it!
 		var transactions = {$Transactions.Raw};
 		var transactionsCancel = {$TransactionsCancel.Raw};
         var labelstransactions = {$Labels.raw}; 
-		
+        var labelcategories = {$LabelsCategory.raw}; 
+
+		var labelsCategory = Object.keys(labelcategories);
+		var dataCategory = Object.values(labelcategories);
 		var myLineChart = new Chart(transactionsctx, {
 			data: {
 				datasets: [{
 					type: 'line',
-					label: 'Grafik Penjualan',
+					label: 'Grafik Pemesanan',
 					data: transactions,
 					fill: false,
 					borderColor: 'rgb(75, 192, 192)',
@@ -139,14 +140,14 @@ Change it, enhance it and most importantly enjoy it!
 						display: true,
 						title: {
 							display: true,
-							text: 'Date'
+							text: 'Tanggal'
 						}
 					},
 					y: {
 						display: true,
 						title: {
 							display: true,
-							text: 'Transaction'
+							text: 'Transaksi'
 						}
 					}
 				}
@@ -155,18 +156,13 @@ Change it, enhance it and most importantly enjoy it!
 		var CategoryChart = new Chart(categoriesctx, {
 			type: 'doughnut',
 			data: {
-				labels: [
-					'Red',
-					'Blue',
-					'Yellow'
-				],
+				labels: labelsCategory,
 				datasets: [{
-					label: 'My First Dataset',
-					data: [300, 50, 100],
+					data: dataCategory,
 					backgroundColor: [
-					'rgb(255, 99, 132)',
 					'rgb(54, 162, 235)',
-					'rgb(255, 205, 86)'
+					'rgba(153, 102, 255)',
+					'rgba(255, 159, 64)'
 					],
 					hoverOffset: 4
 				}]

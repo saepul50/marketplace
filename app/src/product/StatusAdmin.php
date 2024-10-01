@@ -14,8 +14,6 @@ use SilverStripe\Control\PjaxResponseNegotiator;
 use SilverStripe\Forms\TabSet;
 use SilverStripe\Security\Permission;
 use SilverStripe\Security\PermissionProvider;
-use SilverStripe\Security\Permission;
-use SilverStripe\Security\PermissionProvider;
 use SilverStripe\Security\Security;
 
 class StatusAdmin extends LeftAndMain implements PermissionProvider{
@@ -52,7 +50,6 @@ class StatusAdmin extends LeftAndMain implements PermissionProvider{
 
     public function dashboard()
     {
-        
         $member = Security::getCurrentUser();
         $startOfWeek = date('Y-m-d H:i:s', strtotime('-7 days'));
         if($member->ID == 1){
@@ -83,12 +80,23 @@ class StatusAdmin extends LeftAndMain implements PermissionProvider{
         }
         $transactionsPerDate = [];
         $transactionsPerDateCan = [];
-        $labels = [];
+        $labelTransactions = [];
+        $labelCategory = [];
         for ($i = 0; $i < 7; $i++) {
             $date = date('d/m/Y', strtotime("-$i days"));
             $transactionsPerDate[$date] = 0;
             $transactionsPerDateCan[$date] = 0;
-            $labels[] = $date;
+            $labelTransactions[] = $date;
+        }
+        foreach($list as $product){
+            $category = ShopCategoryObject::get()->Filter('ID', $product->ProductCategoryID);
+            $categoryTitle = $category[0]->Title;
+            if ($categoryTitle){
+                if (!isset($labelCategory[$categoryTitle])) {
+                    $labelCategory[$categoryTitle] = 0;
+                }
+                $labelCategory[$categoryTitle]++;
+            }
         }
         foreach ($data as $checkout) {
             if($checkout->Status != 'Dibatalkan'){
@@ -99,9 +107,8 @@ class StatusAdmin extends LeftAndMain implements PermissionProvider{
                         $transactionsPerDate[$dateString]++;
                     }
                 }
-            } else if($checkout->Status = 'Dibatalkan'){
+            } else if($checkout->Status === 'Dibatalkan'){
                 $checkoutDate = DateTime::createFromFormat('d/m/Y H:i:s', $checkout->TimeCheckout);
-                // Debug::show($checkout);
                 if ($checkoutDate) {
                     $dateString = $checkoutDate->format('d/m/Y');
                     if (isset($transactionsPerDateCan[$dateString])) {
@@ -116,9 +123,11 @@ class StatusAdmin extends LeftAndMain implements PermissionProvider{
             'Dikirim' => $Proccesing,
             'Dibatalkan' => $Cancelled,
             'Data' => $count,
+            'Vendor' => $vendor,
             'Transactions' => json_encode(array_reverse($transactionsPerDate)),
             'TransactionsCancel' => json_encode(array_reverse($transactionsPerDateCan)),
-            'Labels' => json_encode(array_reverse($labels)) 
+            'Labels' => json_encode(array_reverse($labelTransactions)),
+            'LabelsCategory' => json_encode($labelCategory) 
         ])
         ->renderWith('Status');
     }
