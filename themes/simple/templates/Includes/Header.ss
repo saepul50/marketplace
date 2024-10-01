@@ -68,8 +68,6 @@
 						</li>
 						<li class="nav-item" id="contact"><a class="nav-link" href="{$BaseHref}/contact">Contact</a></li>
 						<li class="nav-item" id="profile"><a class="nav-link" href="{$BaseHref}/profile">Profile</a></li>
-						<li class="nav-item" id="Registration"><a class="nav-link" href="{$BaseHref}/vendorregistration">Registrastion</a></li>
-						<li class="nav-item" id="Registration"><a class="nav-link" href="{$BaseHref}/vendorpage">Detail</a></li>
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
 						<li class="nav-item">

@@ -41,4 +41,20 @@ use SilverStripe\ORM\DataObject;
             );
             return $fields;
         }
+        public function canCreate($member = null, $context = [])
+        {
+            return true; 
+        }
+        public function canView($member = null)
+        {
+            return true;
+        }
+        public function canEdit($member = null)
+        {
+            return true;
+        }
+        public function canDelete($member = null)
+        {
+            return true;
+        }
     }

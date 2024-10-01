@@ -13,24 +13,43 @@
         </div>
     </div>
 </section>
-
-
-<a href="{$BaaseHref}/marketplace/vendorregistration" class="d-flex justify-content-between text-black mt-2"  style="border-bottom: 2px solid black; color:black;">
-    <div class="d-flex ml-2">
-        <span class="lnr  lnr-store fs-1" style="font-size:40px;"></span>
-        <p class="mt-3">Buat Toko Sekarang</p>
+<section>
+    <div class="py-2" style="background-color: #f2f2f2;">
+        <% if $Vendor %>
+            <div class="py-3 d-flex align-items-center" style="background-color: #fff">
+                <a href="{$BaseHref}/venn/$Vendor.Pathname" class="d-flex justify-content-between align-items-center col-10"  style="color:black;">
+                    <div class="d-flex ml-2">
+                        <span class="lnr lnr-store fs-1" style="font-size: 30px; color: darkorange;"></span>
+                        <p class="ml-3 m-0 d-flex align-items-center">Toko Saya</p>
+                    </div>
+                </a>
+                <a href="{$BaseHref}/admin" class="col-2 d-flex justify-content-end">
+                    <p class="mr-3 m-0" style="color: #000;">Kelola Toko ></p>
+                </a>
+            </div>
+        <% else %>
+            <div class="py-3 d-flex align-items-center" style="background-color: #fff">
+                <a href="{$BaseHref}/vendorregistration" class="d-flex justify-content-between align-items-center col-10"  style="color:black;">
+                    <div class="d-flex ml-2">
+                        <span class="lnr lnr-store fs-1" style="font-size: 30px; color: darkorange;"></span>
+                        <p class="ml-3 m-0">Mulai Jual</p>
+                    </div>
+                </a>
+                <a href="{$BaseHref}/vendorregistration" class="col-2 d-flex justify-content-end">
+                    <p class="mr-3 m-0" style="color: #000;">Registrasi Gratis ></p>
+                </a>
+            </div>
+        <% end_if %>
+        <div class="py-3" style="background-color: #fff">
+            <a href="{$BaseHref}/history" class="d-flex justify-content-between align-items-center col-10"  style="color:black;">
+                <div class="d-flex ml-2">
+                    <span class="lnr lnr-history fs-1" style="color: darkblue; font-size: 26px;"></span>
+                    <p class="ml-3 m-0">History Order</p>
+                </div>
+            </a>
+        </div>
     </div>
-    <p class="mt-3 mr-2">Registrasi Gratis  ></p>
-</a>
-<a href="{$BaseHref}/confirm" class="d-flex justify-content-between mt-2"  style="border-bottom: 2px solid black; color:black;">
-    <div class="d-flex ml-2">
-        <span class="lnr lnr-file-empty fs-1" style="font-size:40px;"></span>
-        <p class="mt-3">History Order</p>
-    </div>
-    <p class="mt-3 mr-2">Check History Order Anda ></p>
-</a>
-
-
-
-
-
+</section>
+<script>
+    $('.nav-item#profile').addClass('active');
+</script>

@@ -3,6 +3,7 @@
 namespace {
 
     use SilverStripe\CMS\Controllers\ContentController;
+    use SilverStripe\Security\Security;
 
     /**
      * @template T of Page
@@ -32,6 +33,16 @@ namespace {
             parent::init();
             // You can include any CSS or JS required by your project here.
             // See: https://docs.silverstripe.org/en/developer_guides/templates/requirements/
+        }
+        public function CartData() {
+            $member = Security::getCurrentUser();
+            // Debug::show($member);
+            // die();
+            if ($member) {
+                $totalCart = CartObject::get()->filter('MemberID', $member->ID)->count();
+                return $totalCart;
+            }
+            return null;
         }
     }
 }

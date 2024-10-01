@@ -67,13 +67,6 @@
     <section class="banner-area organic-breadcrumb" style ="background: url($SiteConfig.Background.getURL()) center no-repeat;background-size: cover; position: relative ">
         <div class="container">
             <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
-                <%-- <div class="col-first">
-                    <h1>Registration</h1>
-                    <nav class="d-flex align-items-center">
-                        <a href="{$BaseHref}">Home<span class="lnr lnr-arrow-right"></span></a>
-                        <a href="{$BaseHref}/tracking">Registration</a>
-                    </nav>
-                </div> --%>
             </div>
         </div>
     </section>
@@ -92,7 +85,7 @@
                 <div class="col-8 ">
                     <div class="d-flex ml-1"  >
                         <span class="lnr lnr-store mt-1" style="font-size:17px"></span>
-                        <p class="ml-2">Product : </p>
+                        <p class="ml-2">Product : $Count</p>
                     </div>
                     <div class="d-flex ml-1" >
                         <span class="lnr lnr-star mt-1"  style="font-size:17px"></span>
@@ -115,8 +108,9 @@
                 </nav>
             </div>
         </section>
-    </div>
-        <div class="tab-content py-5    " id="nav-tabContent" style="background-color:#f5f5f5; ">
+        </div>
+        <div class="tab-content py-5" id="nav-tabContent" style="background-color:#f5f5f5; ">
+            <%-- Halaman Utama --%>
             <div class="container Semua" id="semua">
                 <div class="container py-4" id="kupon" style="background-color:white;" > 
                     <div class="rows">
@@ -142,7 +136,6 @@
                     </div>
                     <div class="row">
                         <% loop $ProductObjects.Limit(7) %>
-                            <% if $ProductCategoryID = 2 %>
                                 <a href="{$BaseHref}/productdetails/view/$ID">
                                     <div class="col-lg-3 col-md-6">
                                         <div class="single-product">
@@ -182,59 +175,12 @@
                                         </div>
                                     </div>
                                 </a>
-                                <% end_if %>
                             <% end_loop %>
-                    </div>
-                    <div class="banner-product">
-                         <img alt="Profile img" src="$SiteConfig.Banner.getURL()" class="img-fluid">
-                         <div class="row mt-5">
-                            <% loop $ProductObjects.Limit(7) %>
-                                <% if $ProductCategoryID = 2 %>
-                                    <a href="{$BaseHref}/productdetails/view/$ID">
-                                        <div class="col-lg-3 col-md-6">
-                                            <div class="single-product">
-                                                <% with $ProductImages.First %>
-                                                    <img src="$URL" class="img-fluid" style="object-fit: cover;">
-                                                <% end_with %>
-                                                <div class="product-details">
-                                                    <h6>$Title</h6>
-                                                    <div class="price">
-                                                        <% if $Promotion %>
-                                                            <h6>$minPriceDiscounted</h6>
-                                                            <h6 class="l-through">$minPrice</h6>
-                                                        <% else %>
-                                                            <h6>$minPrice</h6>
-                                                        <% end_if %>
-                                                    </div>
-                                                    <div class="prd-bottom">
-            
-                                                        <a href="" class="social-info">
-                                                            <span class="ti-bag"></span>
-                                                            <p class="hover-text">add to bag</p>
-                                                        </a>
-                                                        <a href="" class="social-info">
-                                                            <span class="lnr lnr-heart"></span>
-                                                            <p class="hover-text">Wishlist</p>
-                                                        </a>
-                                                        <a href="" class="social-info">
-                                                            <span class="lnr lnr-sync"></span>
-                                                            <p class="hover-text">compare</p>
-                                                        </a>
-                                                        <a href="" class="social-info">
-                                                            <span class="lnr lnr-move"></span>
-                                                            <p class="hover-text">view more</p>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <% end_if %>
-                                <% end_loop %>
-                        </div>
                     </div>
                 </div>
             </div>
+
+            <%-- Produk --%>
             <div class="container Pending" id="pending">
                 <div class="container" style="padding-bottom: 5rem;">
                     <div class="row">
@@ -243,6 +189,7 @@
                                 <div class="head">Browse Categories</div>
                                 <ul class="main-categories">
                                     <% loop $Category %>
+                                        <% if $Category.exists %>
                                         <li class="main-nav-list">
                                             <a data-toggle="collapse" data-target="#collapseExample-$ID" aria-expanded="false" aria-controls="collapseExample" href="#">
                                                 <span class="lnr lnr-arrow-right"></span>$Title <span class="number">($ProductSubCategory.Count)</span>
@@ -255,10 +202,13 @@
                                                         </li>
                                                     <% end_loop %>
                                                 <% else %>
-                                                    <li class="main-nav-list child py-2">This Category is Coming Soon</li>
+                                                    <li class="main-nav-list child py-2">This SubCategory is Coming Soon</li>
                                                 <% end_if %>
                                             </ul>
                                         </li>
+                                        <% else %>
+                                            <li class="main-nav-list child py-2">This Category is Coming Soon</li>  
+                                        <% end_if %>
                                     <% end_loop %>
                                 </ul>
                             </div>
@@ -353,15 +303,6 @@
                             <!-- End Best Seller -->
                             <!-- Start Filter Bar -->
                             <div class="filter-bar d-flex flex-wrap align-items-center">
-                                <div class="sorting mr-auto">
-                                    <%-- <form method="post" id="myForm1" action="{$BaseHref}/shopcategory/filter">
-                                        <select id="filteras" class="selectpicker filter-class" name="filter" onchange="submitForm2()">
-                                            <option value="12">Show 12</option>
-                                            <option value="9">Show 9</option>
-                                            <option value="6">Show 6</option>
-                                        </select>
-                                    </form> --%>
-                                </div>
                                 <% with  $PaginatedProduct %>
                                     <nav class="blog-pagination justify-content-center d-flex " style="left: 50%;padding: 0 !important;">
                                         <% if $MoreThanOnePage %>
@@ -390,8 +331,6 @@
                 </div>
             </div>
         </div>
-        
-    <% end_with %>
-        <% else %>
-        <p>jsjadj</p>
+<% else %>
+    <p>jsjadj</p>
 <% end_if %>

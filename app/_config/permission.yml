@@ -1,0 +1,6 @@
+SilverStripe\Security\Permission:
+  provider:
+    CMS_ACCESS_StatusAdmin:
+      name: 'Access to Status Admin'
+      category: 'CMS Access'
+      help: 'Allow access to the custom Status admin panel'
