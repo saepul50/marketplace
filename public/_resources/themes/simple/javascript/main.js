@@ -2346,7 +2346,7 @@ function fetchcourir() {
   var weight = $('#fulldata .weight').text();
   // console.log(idRegency)
   $.ajax({
-    url: '/marketplace/productcheckout/rajoCot',
+    url: '/marketplace/productcheckout/rajoCost',
     type: 'POST',
     data: {
       Courir: courir,
@@ -2772,7 +2772,7 @@ updateSubtotal();
 updateFinalPrice();
 });
 const events = document.querySelector('.event');
-console.log(dayjs());
+
 
 stars.forEach(star => {
   star.addEventListener('click', function () {

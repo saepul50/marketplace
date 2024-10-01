@@ -5,6 +5,7 @@ use SilverStripe\Forms\GridField\GridField;
 use SilverStripe\Forms\GridField\GridFieldConfig_RecordEditor;
 use SilverStripe\Forms\TextField;
 use SilverStripe\ORM\DataObject;
+use SilverStripe\Security\Security;
 
     class ShopCategoryObject extends DataObject{
         private static $db = [
@@ -13,6 +14,9 @@ use SilverStripe\ORM\DataObject;
     
         private static $has_many = [
             'ProductSubCategory' => ShopSubCategoryObject::class,
+        ];
+        private static $has_one = [
+            'Vendor' => Vendor::class,
         ];
         public function getCMSFields() {
             $fields = new FieldList(
@@ -27,7 +31,21 @@ use SilverStripe\ORM\DataObject;
             return $fields;
         }    
 
-
+        public function onBeforeWrite()
+        {
+            parent::onBeforeWrite();
+            $member = Security::getCurrentUser();
+            $vendor = Vendor::get()->filter('OwnerID', $member->ID)->first();
+            if (!$this->ID) {
+                if ($member = Security::getCurrentUser()) {
+                    $this->VendorID = $vendor->ID;
+    
+                }else{
+                    user_error('No vendor found for this member', E_USER_WARNING); 
+                }
+                
+            }
+        }
         public function canCreate($member = null, $context = [])
         {
             return true; 
