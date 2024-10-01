@@ -45,7 +45,7 @@
                 <div class="top-filter-head">Product Filters</div>
                 <div class="common-filter">
                     <div class="head">Brands</div>
-                    <form id="filterForm" action="#">
+                    <form id="filterForm">
                         <ul>
                             <li class="filter-list">
                                 <input class="pixel-radio" type="radio" id="allbrand" name="brand" value="all" <% if $CurrentFilter == 'all' %>checked<% end_if %>>
@@ -134,7 +134,7 @@
             </div>
             <!-- End Filter Bar -->
             <!-- Start Best Seller -->
-            <section class="lattest-product-area pb-40 category-list">
+            <section class="lattest-product-area category-list">
                 <div class="row">
                     <!-- single product -->
                      <% loop $PaginatedProduct %>
@@ -180,15 +180,6 @@
             <!-- End Best Seller -->
             <!-- Start Filter Bar -->
             <div class="filter-bar d-flex flex-wrap align-items-center">
-                <div class="sorting mr-auto">
-                    <%-- <form method="post" id="myForm1" action="{$BaseHref}/shopcategory/filter">
-                        <select id="filteras" class="selectpicker filter-class" name="filter" onchange="submitForm2()">
-                            <option value="12">Show 12</option>
-                            <option value="9">Show 9</option>
-                            <option value="6">Show 6</option>
-                        </select>
-                    </form> --%>
-                </div>
                 <% with  $PaginatedProduct %>
                     <nav class="blog-pagination justify-content-center d-flex " style="left: 50%;padding: 0 !important;">
                         <% if $MoreThanOnePage %>
@@ -219,17 +210,6 @@
 <% include DealsOfTheWeek %>
 </body>
 
-<script>
-    const savedSort = localStorage.getItem('ShowFilter');
-        if (savedSort) {
-            const filters = document.querySelectorAll('.filter-class');
-            filters.forEach(filter => {
-                filter.value = savedSort;
-                const selectedOption = filter.querySelector(`option[value="${savedSort}"]`);
-                if (selectedOption) {
-                    selectedOption.classList.add('selected');
-                }
-            });
-        }	
-		$('.nav-item#shop').addClass('active');
-</script>
+    <script>
+        $('.nav-item#shop').addClass('active');
+    </script>

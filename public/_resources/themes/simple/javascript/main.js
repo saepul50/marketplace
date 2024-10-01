@@ -175,14 +175,9 @@ $(document).ready(function () {
   $('.main-nav-list.child a').on('click', function (e) {
     e.preventDefault();
     var subCategoryID = $(this).data('id');
-
-    if ($(this).hasClass('active')) {
-      currentParams.delete('subcategory');
-      window.location.href = window.location.pathname + '?' + currentParams.toString();
-    } else {
-      currentParams.set('subcategory', subCategoryID);
-      window.location.href = window.location.pathname + '?' + currentParams.toString();
-    }
+    var currentParams = new URLSearchParams(window.location.search);
+    currentParams.set('subcategory', subCategoryID);
+    window.location.href = window.location.pathname + '?' + currentParams.toString();
   });
 
   const events = document.querySelectorAll('.event');
@@ -2636,8 +2631,9 @@ $('.productCheckbox').on('change', function () {
   updateSubtotal();
 });
 function showSection(sectionId, navItem) {
-  $('.Semua, .Pending, .Proses, .Selesai, .Canceled').hide();
+  $('.Semua, .Pending, .Proses, .Selesai, .Canceled, .Awal, .Akhir').hide();
   $(sectionId).show();
+  console.log(sectionId)
   $('.navi-item').removeClass('active');
   $(navItem).addClass('active');
 }
@@ -2661,12 +2657,21 @@ $('#navCanceled').click(function () {
   showSection('#canceled', '#navCanceled');
   toggleOrderDetail(false);
 });
+$('#navUtama').click(function () {
+  showSection('#awal', '#navUtama');
+  toggleOrderDetail(false);
+});
+$('#navProduct').click(function () {
+  showSection('#akhir', '#navProduct');
+  toggleOrderDetail(false);
+});
 
 const urlParams = new URLSearchParams(window.location.search);
 if (urlParams.has('detailOrder')) {
   toggleOrderDetail(true);
 } else {
   $('#navSemua').click();
+  $('#navUtama').click();
 }
 function toggleOrderDetail(showDetail) {
   if (showDetail) {

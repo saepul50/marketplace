@@ -151,7 +151,7 @@
         </div>
     </section>
     
-    <div class=" " style ="background-color: white; padding-top: 10rem;">
+    <div class="pt-5 pb-3" style ="background-color: white;">
         <div class="container">
             <div class="row">
                 <div class="col-4 d-flex p-3" style="background-color: #f5f5f5; gap:1.2rem; border-radius: 10px;">
@@ -162,113 +162,114 @@
                     </div>
                     <h5 class="mt-2">$Vendor.Name</h5>
                 </div>
-                <div class="col-8 ">
-                    <div class="d-flex ml-1"  >
-                        <span class="lnr lnr-store mt-1" style="font-size:17px"></span>
-                        <p class="ml-2">Product : </p>
+                <div class="col-8 d-flex flex-column justify-content-between">
+                    <div class="d-flex align-items-center" style="gap: 8px;">
+                        <i class='bx bxs-store' style="color: darkorange; font-size:17px"></i>
+                        <p class="m-0">Product : $Count</p>
                     </div>
-                    <div class="d-flex ml-1" >
-                        <span class="lnr lnr-star mt-1"  style="font-size:17px"></span>
-                        <p class="ml-2">Rating : </p>
-                        <p> 10</p>
+                    <div class="d-flex align-items-center" style="gap: 8px;">
+                        <i class='bx bxs-star' style="color: #FDD835; font-size:17px"></i>
+                        <p class="m-0">Rating :</p>
+                        <p class="m-0">10</p>
                     </div>
-                    <div class="d-flex ml-1" >
-                    <span class="lnr lnr-star mt-1"  style="font-size:17px"></span>
-                    <p class="ml-2">Bergabung  : </p>
-                    <p> 10 Tahun lalu</p>
-                </div>
+                    <div class="d-flex align-items-center" style="gap: 8px;">
+                        <i class='bx bx-log-in' style="font-size:17px"></i>
+                        <p class="m-0">Bergabung :</p>
+                        <p class="m-0">10 Tahun lalu</p>
+                    </div>
                 </div>
             </div>
         </div>
-        <section class="order_details py-4">
+        <section class="order_details py-2">
             <div class= "myorder text-center mt-2" id="myOrder">
-                <nav class=" d-flex flex-wrap navihistory container">
-                    <h5 id="navSemua" class="navi-item" style="cursor: pointer; margin-bottom:0 !important;">Halaman Utama</h5>
-                    <h5 id="navPending" class="navi-item" style="cursor: pointer;  margin-bottom:0 !important;">Produk</h5>
+                <nav class=" d-flex flex-wrap navihistory container" id="navtabs">
+                <a href="#awal"><h5 id="navSemua" class="navi-item" style="cursor: pointer; margin-bottom:0 !important;">Halaman Utama</h5></a>
+                <a href="#Product"><h5 id="navPending" class="navi-item" style="cursor: pointer;  margin-bottom:0 !important;" >Produk</h5></a>
                 </nav>
             </div>
         </section>
-    </div>
-        <div class="tab-content py-5    " id="nav-tabContent" style="background-color:#f5f5f5; ">
-            <div class="container Semua" id="semua">
-                <div class="d-flex row ">
-                    <% loop $Promo %>
-                        <div class="col">
-                            <section class="couponContainer">
-                                <section class="ticketHolder noFloat">
-                                <div class="coupon">
-                                    <div class="inner">
-                                    <div class="savings">Save $Diskon</div>
-                                    <div class="reveal">
-                                        <div>Coupon Code:</div>
-                                        <div class="couponCode">$Code</div>
-                                    </div>
-                                    </div>
+        </div>
+        <div class="tab-content py-5" id="nav-tabContent" style="background-color:#f5f5f5; ">
+            <%-- Halaman Utama --%>
+            <div class="container Semua show active" id="semua">
+                <div id="awal">
+                    <div class="container py-4" id="kupon" style="background-color:white;" > 
+                        <div class="rows">
+                            <div class="d-flex row container" style="gap:15px; font-size:10px;">
+                                <div class="card col-6 col-md-6 col-lg-3 row d-flex" style="flex-direction:row !important; margin-left:.2rem;">
+                                <div class="col-7  col-md-5 mt-1">
+                                    <h6 class="fw-bold">Diskon 15%</h6>
+                                    <p style="margin-bottom:0 !important;">MIN. blj Rp.0 s/d Rp 35RB</p>
+                                    <p>Berakhir Dalam : 10 Menit</p>
+                                </div>
+                                <div class="col-5 col-md-7 d-flex align-items-center">
+                                    <button class="primary-btn" style="color:black; border-radius:25px !important; line-height:2 !important; padding:0 .5rem !important; background:#488bf7 !important;">Klaim</button>
+                                </div>
                                 </div>
                                 <div class="clear"></div>
                                 </section>   
                             </section>
                         </div>
-                    <% end_loop %>
-                </div>  
-                
-                <div cl ass="container mt-5" >
-                    <div class="d-flex justify-content-between mb-2">
-                        <h6>KAMU MUNGKIN SUKA</h6>
-                        <a href="#" style="color:#777777;">Lihat Semua ></a>
-                    </div>
-                    <div class="row">
-                        <% loop $ProductObjects.Limit(7) %>
-                                <a href="{$BaseHref}/productdetails/view/$ID">
-                                    <div class="col-lg-3 col-md-6">
-                                        <div class="single-product">
-                                            <% with $ProductImages.First %>
-                                                <img src="$URL" class="img-fluid" style="object-fit: cover;">
-                                            <% end_with %>
-                                            <div class="product-details">
-                                                <h6>$Title</h6>
-                                                <div class="price">
-                                                    <% if $Promotion %>
-                                                        <h6>$minPriceDiscounted</h6>
-                                                        <h6 class="l-through">$minPrice</h6>
-                                                    <% else %>
-                                                        <h6>$minPrice</h6>
-                                                    <% end_if %>
-                                                </div>
-                                                <div class="prd-bottom">
-        
-                                                    <a href="" class="social-info">
-                                                        <span class="ti-bag"></span>
-                                                        <p class="hover-text">add to bag</p>
-                                                    </a>
-                                                    <a href="" class="social-info">
-                                                        <span class="lnr lnr-heart"></span>
-                                                        <p class="hover-text">Wishlist</p>
-                                                    </a>
-                                                    <a href="" class="social-info">
-                                                        <span class="lnr lnr-sync"></span>
-                                                        <p class="hover-text">compare</p>
-                                                    </a>
-                                                    <a href="" class="social-info">
-                                                        <span class="lnr lnr-move"></span>
-                                                        <p class="hover-text">view more</p>
-                                                    </a>
+                    </div>   
+                    
+                    <div class="container mt-5" >
+                        <div class="d-flex justify-content-between mb-2">
+                            <h6>KAMU MUNGKIN SUKA</h6>
+                            <a href="#" style="color:#777777;">Lihat Semua ></a>
+                        </div>
+                        <div class="row">
+                            <% loop $ProductObjects.Limit(7) %>
+                                    <a href="{$BaseHref}/productdetails/view/$ID">
+                                        <div class="col-lg-3 col-md-6">
+                                            <div class="single-product">
+                                                <% with $ProductImages.First %>
+                                                    <img src="$URL" class="img-fluid" style="object-fit: cover;">
+                                                <% end_with %>
+                                                <div class="product-details">
+                                                    <h6>$Title</h6>
+                                                    <div class="price">
+                                                        <% if $Promotion %>
+                                                            <h6>$minPriceDiscounted</h6>
+                                                            <h6 class="l-through">$minPrice</h6>
+                                                        <% else %>
+                                                            <h6>$minPrice</h6>
+                                                        <% end_if %>
+                                                    </div>
+                                                    <div class="prd-bottom">
+            
+                                                        <a href="" class="social-info">
+                                                            <span class="ti-bag"></span>
+                                                            <p class="hover-text">add to bag</p>
+                                                        </a>
+                                                        <a href="" class="social-info">
+                                                            <span class="lnr lnr-heart"></span>
+                                                            <p class="hover-text">Wishlist</p>
+                                                        </a>
+                                                        <a href="" class="social-info">
+                                                            <span class="lnr lnr-sync"></span>
+                                                            <p class="hover-text">compare</p>
+                                                        </a>
+                                                        <a href="" class="social-info">
+                                                            <span class="lnr lnr-move"></span>
+                                                            <p class="hover-text">view more</p>
+                                                        </a>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </a>
-                            <% end_loop %>
+                                    </a>
+                                <% end_loop %>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="container Pending" id="pending">
-                <div class="container" style="padding-bottom: 5rem;">
+                <%-- Product --%>
+                <div class="container " id="Product" style="padding-bottom: 5rem;padding-top: 5rem;">
                     <div class="row">
                         <div class="col-xl-3 col-lg-4 col-md-5">
                             <div class="sidebar-categories">
                                 <div class="head">Browse Categories</div>
                                 <ul class="main-categories">
+                                    <% if $Category.exists %>
                                     <% loop $Category %>
                                         <li class="main-nav-list">
                                             <a data-toggle="collapse" data-target="#collapseExample-$ID" aria-expanded="false" aria-controls="collapseExample" href="#">
@@ -287,6 +288,9 @@
                                             </ul>
                                         </li>
                                     <% end_loop %>
+                                    <% else %>
+                                        <li class="main-nav-list child py-2">This Category is Coming Soon</li>  
+                                    <% end_if %>
                                 </ul>
                             </div>
                             <div class="sidebar-filter mt-50">
@@ -308,34 +312,6 @@
                                     </ul>
                                 </form>
                             </div>
-                            <%-- <div class="common-filter">
-                                <div class="head">Color</div>
-                                <form action="#">
-                                    <ul>
-                                        <li class="filter-list"><input class="pixel-radio" type="radio" id="black" name="color"><label for="black">Black<span>(29)</span></label></li>
-                                        <li class="filter-list"><input class="pixel-radio" type="radio" id="balckleather" name="color"><label for="balckleather">Black
-                                                Leather<span>(29)</span></label></li>
-                                        <li class="filter-list"><input class="pixel-radio" type="radio" id="blackred" name="color"><label for="blackred">Black
-                                                with red<span>(19)</span></label></li>
-                                        <li class="filter-list"><input class="pixel-radio" type="radio" id="gold" name="color"><label for="gold">Gold<span>(19)</span></label></li>
-                                        <li class="filter-list"><input class="pixel-radio" type="radio" id="spacegrey" name="color"><label for="spacegrey">Spacegrey<span>(19)</span></label></li>
-                                    </ul>
-                                </form>
-                            </div> --%>
-                            <%-- <div class="common-filter">
-                                <div class="head">Price</div>
-                                <div class="price-range-area">
-                                    <div id="price-range"></div>
-                                    <div class="value-wrapper d-flex">
-                                        <div class="price">Price:</div>
-                                        <span>$</span>
-                                        <div id="lower-value"></div>
-                                        <div class="to">to</div>
-                                        <span>$</span>
-                                        <div id="upper-value"></div>
-                                    </div>
-                                </div>
-                            </div> --%>
                         </div>
                         </div>
                         <div class="col-xl-9 col-lg-8 col-md-7">
@@ -429,13 +405,6 @@
                             <!-- Start Filter Bar -->
                             <div class="filter-bar d-flex flex-wrap align-items-center">
                                 <div class="sorting mr-auto">
-                                    <%-- <form method="post" id="myForm1" action="{$BaseHref}/shopcategory/filter">
-                                        <select id="filteras" class="selectpicker filter-class" name="filter" onchange="submitForm2()">
-                                            <option value="12">Show 12</option>
-                                            <option value="9">Show 9</option>
-                                            <option value="6">Show 6</option>
-                                        </select>
-                                    </form> --%>
                                 </div>
                                 <% with  $PaginatedProduct %>
                                     <nav class="blog-pagination justify-content-center d-flex " style="left: 50%;padding: 0 !important;">
@@ -462,9 +431,22 @@
                             <!-- End Filter Bar -->
                         </div>
                     </div>
-                </div>
             </div>
         </div>
         <% else %>
         <p>jsjadj</p>
 <% end_if %>
+<script>
+    const savedSort = localStorage.getItem('ShowFilter');
+        if (savedSort) {
+            const filters = document.querySelectorAll('.filter-class');
+            filters.forEach(filter => {
+                filter.value = savedSort;
+                const selectedOption = filter.querySelector(`option[value="${savedSort}"]`);
+                if (selectedOption) {
+                    selectedOption.classList.add('selected');
+                }
+            });
+        }	
+		$('.nav-item#shop').addClass('active');
+</script>
