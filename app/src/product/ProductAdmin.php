@@ -34,17 +34,17 @@ use SilverStripe\Security\Security;
         public function getList() {
             $list = parent::getList();
             $member = Security::getCurrentUser();
+            $vendor = Vendor::get()->filter('OwnerID', $member->ID)->first();
     
             $modelClass = $this->modelClass;
     
             if ($member->ID !== 1) {
                 if ($modelClass === ProductObject::class) {
-                    $vendor = Vendor::get()->filter('OwnerID', $member->ID)->first();
                     $list = ProductObject::class::get()->filter('VendorID', $vendor->ID);
                 } elseif ($modelClass === ProductBrandObject::class) {
-                    $list = ProductBrandObject::get();
+                    $list = ProductBrandObject::get()->filter('VendorID', $vendor->ID);
                 } elseif($modelClass === ShopCategoryObject::class ){
-                    $list = ShopCategoryObject::get();
+                    $list = ShopCategoryObject::get()->filter('VendorID', $vendor->ID);
                 }
             } else if ($member->ID == 1) {
                 if ($modelClass === ProductObject::class) {
@@ -58,17 +58,5 @@ use SilverStripe\Security\Security;
     
             return $list;
         }
-
-
-
-
-
-
-
-
-
-
-
-
 
     }

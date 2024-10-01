@@ -14,6 +14,8 @@ use SilverStripe\Control\PjaxResponseNegotiator;
 use SilverStripe\Forms\TabSet;
 use SilverStripe\Security\Permission;
 use SilverStripe\Security\PermissionProvider;
+use SilverStripe\Security\Permission;
+use SilverStripe\Security\PermissionProvider;
 use SilverStripe\Security\Security;
 
 class StatusAdmin extends LeftAndMain implements PermissionProvider{

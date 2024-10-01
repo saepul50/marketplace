@@ -2772,7 +2772,7 @@ updateSubtotal();
 updateFinalPrice();
 });
 const events = document.querySelector('.event');
-console.log(dayjs());
+
 
 stars.forEach(star => {
   star.addEventListener('click', function () {

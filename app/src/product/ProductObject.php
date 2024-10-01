@@ -196,6 +196,11 @@ use SilverStripe\View\Requirements;
     //     return $result;
     // }
     public function getCMSFields() {
+        $member = Security::getCurrentUser();
+        $vendor = Vendor::get()->filter('OwnerID', $member->ID)->first();
+
+
+        if($member->ID == 1){
         $categories = ShopCategoryObject::get()->map('ID', 'Title')->toArray();
         $brands = ProductBrandObject::get()->map('ID', 'Title')->toArray();
         $sortVariants = $this->ProductVariants()->sort('VariantName');
@@ -259,6 +264,71 @@ use SilverStripe\View\Requirements;
         );
     
         return $fields;
+        } else if ($member->ID !== 1) {
+        $categories = ShopCategoryObject::get()->filter('VendorID', $vendor->ID)->map('ID', 'Title')->toArray();
+        $brands = ProductBrandObject::get()->filter('VendorID', $vendor->ID)->map('ID', 'Title')->toArray();
+        $sortVariants = $this->ProductVariants()->sort('VariantName');
+        
+        $categoryField = DropdownField::create('ProductCategoryID', 'Category', $categories)
+            ->setEmptyString('Select a Category');
+    
+        $subCategoryField = CheckboxSetField::create('ProductSubCategory', 'Sub Category', []);
+        if ($this->ProductCategoryID) {
+            $validSubCategories = ShopSubCategoryObject::get()->filter('ProductCategoryID', $this->ProductCategoryID)->map('ID', 'Title')->toArray();
+            $subCategoryField->setSource($validSubCategories);
+        }
+        
+        // Debug::show($subCategoryField);
+        // die();
+        Requirements::customScript(<<<JS
+            (function($) {
+                $('#Form_ItemEditForm_ProductCategoryID').change(function() {
+                    var categoryID = $(this).val();
+                    $.ajax({
+                        url: '/marketplace/productdetails/getSubCategories/' + categoryID,
+                        success: function(data) {
+                            var subCategories = JSON.parse(data);
+                            var checkboxSetField = $('#Form_ItemEditForm_ProductSubCategory');
+                            checkboxSetField.empty();
+                            $.each(subCategories, function(id, title) {
+                                checkboxSetField.append('<label><input type="checkbox" name="ProductSubCategory[]" value="' + id + '"> ' + title + '</label>');
+                            });
+                        }
+                    });
+                });
+            })(jQuery);
+        JS
+        );
+    
+        $fields = new FieldList(
+            TextField::create('Title', 'Product Name'),
+            TextField::create('Rating'),
+            TextAreaField::create('Features'),
+            TextAreaField::create('Description'),
+            UploadField::create('ProductImages', 'Product Images')
+                ->setAllowedFileCategories('image/supported')
+                ->setIsMultiUpload(true),
+            UploadField::create('ProductVideo'),
+            DropdownField::create('ProductBrandsID', 'Brand', $brands)
+                ->setEmptyString('Select a Brand'),
+            $categoryField,
+            $subCategoryField,
+            GridField::create(
+                'ProductVariants',
+                'Variants',
+                $sortVariants,
+                GridFieldConfig_RecordEditor::create()
+            ),
+            GridField::create(
+                'Promotion',
+                'Promotion',
+                $this->Promotion(),
+                GridFieldConfig_RecordEditor::create()
+            )
+        );
+    
+        return $fields;
+        }
     }
 
 
