@@ -266,8 +266,8 @@ use SilverStripe\View\Requirements;
     
         return $fields;
         } else if ($member->ID !== 1) {
-        $categories = ShopCategoryObject::get()->filter('VendorID', $vendor->ID)->map('ID', 'Title')->toArray();
-        $brands = ProductBrandObject::get()->filter('VendorID', $vendor->ID)->map('ID', 'Title')->toArray();
+        $categories = ShopCategoryObject::get();
+        $brands = ProductBrandObject::get();
         $sortVariants = $this->ProductVariants()->sort('VariantName');
         
         $categoryField = DropdownField::create('ProductCategoryID', 'Category', $categories)

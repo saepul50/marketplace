@@ -2,6 +2,7 @@
 use SilverStripe\ORM\DataObject;
 
 use SilverStripe\Assets\Image;
+use SilverStripe\Security\Security;
 
 class BannerPromo extends DataObject{
     private static $db = [
@@ -22,18 +23,34 @@ class BannerPromo extends DataObject{
 
     public function canCreate($member = null, $context = [])
         {
-            return false; 
+            // $member = Security::getCurrentUser();
+            // if($member && $member->inGroup('Seller')){
+            //     return true;
+            // }
+            return true;
         }
         public function canView($member = null)
         {
+            // $member = Security::getCurrentUser();
+            // if($member && $member->inGroup('Seller')){
+            //     return true;
+            // }
             return true;
         }
         public function canEdit($member = null)
         {
+            // $member = Security::getCurrentUser();
+            // if($member && $member->inGroup('Seller')){
+            //     return true;
+            // }
             return true;
         }
         public function canDelete($member = null)
         {
-            return false;
+            // $member = Security::getCurrentUser();
+            // if($member && $member->inGroup('Seller')){
+            //     return true;
+            // }
+            return true;
         }
 }
