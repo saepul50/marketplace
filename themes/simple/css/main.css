@@ -3338,10 +3338,15 @@ label {
     margin-top: 5px; }
   .sidebar-filter .common-filter {
     border-bottom: 1px solid #eee;
-    padding-bottom: 25px; }
+    padding-bottom: 25px; 
+    box-shadow: 0 10px 10px rgba(153, 153, 153, 0.1);}
     .sidebar-filter .common-filter .filter-list {
       position: relative;
-      padding-left: 28px; }
+      padding-left: 28px;
+      font-size: 14px;
+      display: block;
+      line-height: 50px;
+      border-bottom: 1px solid #eee; }
 
 .filter-list {
   line-height: 30px; }

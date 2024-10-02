@@ -3,6 +3,7 @@
 namespace {
 
     use SilverStripe\CMS\Controllers\ContentController;
+    use SilverStripe\Control\HTTPRequest;
     use SilverStripe\Security\Security;
 
     /**
@@ -26,7 +27,9 @@ namespace {
          *
          * @var array
          */
-        private static $allowed_actions = [];
+        private static $allowed_actions = [
+            'ProductListSearch'
+        ];
 
         protected function init()
         {
@@ -43,6 +46,15 @@ namespace {
                 return $totalCart;
             }
             return null;
+        }
+        public function ProductListSearch(HTTPRequest $request) {
+            $member = Security::getCurrentUser();
+            if ($member) {
+                $product = ProductObject::get();
+                $productNames = $product->column('Title');
+                return json_encode($productNames);
+            }
+            return json_encode([]);
         }
     }
 }

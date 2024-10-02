@@ -151,7 +151,7 @@
         </div>
     </section>
     
-    <div class="pt-5 pb-3" style ="background-color: white;">
+    <div class="pt-5 pb-3" style ="background-color: #fff;">
         <div class="container">
             <div class="row">
                 <div class="col-4 d-flex p-3" style="background-color: #f5f5f5; gap:1.2rem; border-radius: 10px;">
@@ -181,7 +181,7 @@
             </div>
         </div>
         <section class="order_details py-2">
-            <div class= "myorder text-center mt-2" id="myOrder">
+            <div class= "myorder text-center mt-2 pb-3" id="myOrder" style="box-shadow: 0 10px 10px rgba(153, 153, 153, 0.1) !important;">
                 <nav class=" d-flex flex-wrap navihistory container" id="navtabs">
                     <h5 id="navUtama" class="navi-item" style="cursor: pointer; margin-bottom:0 !important;">Halaman Utama</h5>
                     <h5 id="navProduct" class="navi-item" style="cursor: pointer;  margin-bottom:0 !important;" >Produk</h5>
@@ -268,53 +268,54 @@
                     <div class="row">
                         <div class="col-xl-3 col-lg-4 col-md-5">
                             <div class="sidebar-categories">
+                                <h6 class="py-2" id="refreshfilter" data-id="$Vendor.Pathname" style="cursor: pointer;">Refresh Filter</h6>
                                 <div class="head">Browse Categories</div>
-                                <ul class="main-categories">
-                                    <% if $Category %>
-                                        <% loop $Category %>
-                                            <li class="main-nav-list">
-                                                <a data-toggle="collapse" data-target="#collapseExample-$ID" aria-expanded="false" aria-controls="collapseExample" href="#">
-                                                    <span class="lnr lnr-arrow-right"></span>$Title <span class="number">($ProductSubCategory.Count)</span>
-                                                </a>
-                                                <ul class="collapse" id="collapseExample-$ID" data-toggle="collapse" aria-expanded="false" aria-controls="category-$ID">
-                                                    <% if $ProductSubCategory %>
-                                                        <% loop $ProductSubCategory %>
-                                                            <li class="main-nav-list child">
-                                                                <a href="#" data-id="$ID" class="subcategory-link">$Title <span class="number">($ProductObject.Count)</span></a>
-                                                            </li>
-                                                        <% end_loop %>
-                                                    <% else %>
-                                                        <li class="main-nav-list child py-2">This SubCategory is Coming Soon</li>
-                                                    <% end_if %>
-                                                </ul>
-                                            </li>
-                                        <% end_loop %>
-                                    <% else %>
-                                        <li class="main-nav-list child py-2">This Category is Coming Soon</li>  
-                                    <% end_if %>
-                                </ul>
-                            </div>
-                            <div class="sidebar-filter mt-50">
-                            <div class="top-filter-head">Product Filters</div>
-                            <div class="common-filter">
-                                <div class="head">Brands</div>
-                                <form id="filterForm" action="#">
-                                    <ul>
-                                        <li class="filter-list">
-                                            <input class="pixel-radio" type="radio" id="allbrand" name="brand" value="all" <% if $CurrentFilter == 'all' %>checked<% end_if %>>
-                                            <label for="allbrand">All <span>($Count)</span></label>
-                                        </li>
-                                        <% loop $Brand %>
-                                            <li class="filter-list">
-                                                <input class="pixel-radio" type="radio" id="$Title.LowerCase" data-id="$ID" name="brand" value="$ID" <% if $CurrentFilter == $ID %>checked<% end_if %>>
-                                                <label for="$Title.LowerCase">$Title <span>($ProductCount)</span></label>
-                                            </li>
-                                        <% end_loop %>
+                                    <ul class="main-categories">
+                                        <% if $Category %>
+                                            <% loop $Category %>
+                                                <li class="main-nav-list">
+                                                    <a data-toggle="collapse" data-target="#collapseExample-$ID" aria-expanded="false" aria-controls="collapseExample" href="#">
+                                                        <span class="lnr lnr-arrow-right"></span>$Title <span class="number">($ProductSubCategory.Count)</span>
+                                                    </a>
+                                                    <ul class="collapse" id="collapseExample-$ID" data-toggle="collapse" aria-expanded="false" aria-controls="category-$ID">
+                                                        <% if $ProductSubCategory %>
+                                                            <% loop $ProductSubCategory %>
+                                                                <li class="main-nav-list child">
+                                                                    <a href="#" data-id="$ID" class="subcategory-link">$Title <span class="number">($ProductObject.Count)</span></a>
+                                                                </li>
+                                                            <% end_loop %>
+                                                        <% else %>
+                                                            <li class="main-nav-list child py-2">This SubCategory is Coming Soon</li>
+                                                        <% end_if %>
+                                                    </ul>
+                                                </li>
+                                            <% end_loop %>
+                                        <% else %>
+                                            <li class="main-nav-list child py-2">This Category is Coming Soon</li>  
+                                        <% end_if %>
                                     </ul>
-                                </form>
-                            </div>
-                        </div>
-                        </div>
+                                </div>
+                                <div class="sidebar-filter mt-50">
+                                    <div class="top-filter-head">Product Filters</div>
+                                        <div class="common-filter">
+                                            <div class="head">Brands</div>
+                                            <form id="filterForm" action="#">
+                                                <ul>
+                                                    <li class="filter-list">
+                                                        <input class="pixel-radio" type="radio" id="allbrand" name="brand" value="all" <% if $CurrentFilter == 'all' %>checked<% end_if %>>
+                                                        <label for="allbrand">All <span>($Count)</span></label>
+                                                    </li>
+                                                    <% loop $Brand %>
+                                                        <li class="filter-list">
+                                                            <input class="pixel-radio" type="radio" id="$Title.LowerCase" data-id="$ID" name="brand" value="$ID" <% if $CurrentFilter == $ID %>checked<% end_if %>>
+                                                            <label for="$Title.LowerCase">$Title <span>($ProductCount)</span></label>
+                                                        </li>
+                                                    <% end_loop %>
+                                                </ul>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
                         <div class="col-xl-9 col-lg-8 col-md-7">
                             <!-- Start Filter Bar -->
                             <div class="filter-bar d-flex flex-wrap align-items-center">

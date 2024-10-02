@@ -131,6 +131,86 @@
 								</div>
 							</div>
 				</div>
+				<div class="vendor d-flex flex-column align-items-center py-3 mt-5" style="background-color: #e8f0f2;">
+					<% loop $Product.Vendor %>
+					<div class="d-flex align-items-center">
+						<div class="col-2 d-flex justify-content-center p-0">
+							<% with $ProfilImage %>
+								<img src="$URL" class="img-fluid" style="aspect-ratio: 1/1; object-fit: cover; border-radius: 50%; width: 70%; height: auto;">
+							<% end_with %>
+						</div>
+						<div class="col-10 col-xl-4 p-0 d-flex d-xl-inline justify-content-between justify-content-xl-start" style="border-right: 1px solid #ddd;">
+							<h5>$Name</h5>
+							<a class="d-xl-inline-block pr-3 pr-xl-0" href="/marketplace/venn/$Pathname"><button class="genric-btn primary-border p-0" style="position: relative; padding: 0 2rem; font-size: 14px;"><i class='bx bxs-chat' style="position: absolute; bottom: 27%; left: 7%; font-size: 18px;"></i><p class="m-0" style="padding: 0 1rem 0 2rem;">Chat Sekarang</p></button></a>
+							<a class="d-none d-xl-inline-block" href="/marketplace/venn/$Pathname"><button class="genric-btn default-border p-0" style="position: relative; padding: 0 2rem; font-size: 14px;"><i class='bx bxs-store' style="position: absolute; bottom: 30%; left: 7%; font-size: 18px;"></i><p class="m-0" style="padding: 0 1rem 0 2rem;">Kunjungi Toko</p></button></a>
+						</div>
+						<div class="col-6 d-none d-lg-flex justify-content-around">
+							<div class="col-3">
+								<div class="d-flex flex-column justify-content-between">
+									<div class="d-flex align-items-center py-2 justify-content-between">
+										<p class="m-0">Penilaian</p>
+										<p class="m-0 pl-2" style="color: darkorange; font-weight: 500;">$Up.Ave</p>
+									</div>
+									<div class="d-flex align-items-center py-2 justify-content-between">
+										<p class="m-0">Produk</p>
+										<p class="m-0 pl-2" style="color: darkorange; font-weight: 500;">$Up.Product.Vendor.Products.Count</p>
+									</div>
+								</div>
+							</div>
+							<div class="col-3">
+								<div class="d-flex flex-column justify-content-between">
+									<div class="d-flex align-items-center py-2 justify-content-between">
+										<p class="m-0">Chat Dibalas</p>
+										<p class="m-0 pl-2" style="color: darkorange; font-weight: 500;">$Up.Ave</p>
+									</div>
+									<div class="d-flex align-items-center py-2 justify-content-between">
+										<p class="m-0">Respon Penjual</p>
+										<p class="m-0 pl-2" style="color: darkorange; font-weight: 500;">$Up.Ave</p>
+									</div>
+								</div>
+							</div>
+							<div class="col-3">
+								<div class="d-flex flex-column justify-content-between">
+									<div class="d-flex align-items-center py-2 justify-content-between">
+										<p class="m-0">Bergabung</p>
+										<p class="m-0 pl-2" style="color: darkorange; font-weight: 500;">$Up.Ave</p>
+									</div>
+									<div class="d-flex align-items-center py-2 justify-content-between">
+										<p class="m-0">Pengikut</p>
+										<p class="m-0 pl-2" style="color: darkorange; font-weight: 500;">$Up.Ave</p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-12 d-flex d-lg-none justify-content-around pt-2">
+						<div class="col-4" style="border-right: 1px solid #ccc;">
+							<div class="d-flex flex-column justify-content-between">
+								<div class="d-flex align-items-center py-2">
+									<p class="m-0 pr-2" style="font-weight: 500;">$Up.Ave</p>
+									<p class="m-0">Penilaian</p>
+								</div>
+							</div>
+						</div>
+						<div class="col-4" style="border-right: 1px solid #ccc;">
+							<div class="d-flex flex-column justify-content-between">
+								<div class="d-flex align-items-center py-2">
+									<p class="m-0 pr-2" style="font-weight: 500;">$Up.Ave</p>
+									<p class="m-0">Penilaian</p>
+								</div>
+							</div>
+						</div>
+						<div class="col-4">
+							<div class="d-flex flex-column justify-content-between">
+								<div class="d-flex align-items-center py-2">
+									<p class="m-0 pr-2" style="font-weight: 500;">$Up.Ave</p>
+									<p class="m-0">Penilaian</p>
+								</div>
+							</div>
+						</div>
+					</div>
+					<% end_loop %>
+				</div>
 			</div>
 		</div>
 		<!--================End Single Product Area =================-->

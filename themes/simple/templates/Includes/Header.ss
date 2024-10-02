@@ -19,6 +19,9 @@
 			font-size: 14px;
 			font-weight: bold;
 		}
+		#history_list li.selected{
+			background-color: #f5f5f5 !important;
+		}
 	</style>
 <header class="header_area sticky-header">
 	<div class="main_menu">
@@ -83,13 +86,21 @@
 				</div>
 			</nav>
 		</div>
-		<div class="search_input" id="search_input_box">
-			<div class="container">
-				<form class="d-flex justify-content-between">
-					<input type="text" class="form-control" id="search_input" placeholder="Search Here">
-					<button type="submit" class="btn"></button>
-					<span class="lnr lnr-cross" id="close_search" title="Close Search"></span>
-				</form>
+		<div id="search_column">
+			<div class="search_input mb-5" id="search_input_box">
+				<div class="container">
+					<form class="d-flex justify-content-between" id="searchForm">
+						<input type="text" class="form-control" id="search_input" placeholder="Search Here">
+						<button type="submit" class="btn"></button>
+						<span class="lnr lnr-cross" id="close_search" title="Close Search"></span>
+					</form>
+				</div>
+			</div>
+			<div id="search_history" class="search_input pt-5" style="padding-bottom: .01rem; background-color: #fff; text-align: left; box-shadow: 0px 0px 5px #fff;">
+				<div class="container">
+					<ul id="history_list">
+					</ul>
+				</div>
 			</div>
 		</div>
 	</header>
