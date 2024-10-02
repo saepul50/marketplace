@@ -42,25 +42,14 @@ $(document).ready(function () {
       .done(function (data) {
         var response = JSON.parse(data);
         if (response.success) {
-          Swal.fire({
-            title: "SUCCESS",
-            text: "Success",
-            icon: "success",
-            timer: 1000
-          })
+          
           setInterval(href, 1000);
 
           function href() {
             location.reload();
           }
         } else {
-          Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text: response.message,
-            showConfirmButton: false,
-            timer: 1500
-          });
+        
         }
 
       }).fail(function () {

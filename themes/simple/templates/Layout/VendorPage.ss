@@ -219,7 +219,7 @@
                             <a href="#" style="color:#777777;">Lihat Semua ></a>
                         </div>
                         <div class="row">
-                            <% loop $ProductObjects.Limit(7) %>
+                            <% loop $ProductObjects.Limit(4) %>
                                     <a href="{$BaseHref}/productdetails/view/$ID">
                                         <div class="col-lg-3 col-md-4 col-sm-6  ">
                                             <div class="single-product">
