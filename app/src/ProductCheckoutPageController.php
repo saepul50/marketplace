@@ -20,12 +20,19 @@ class ProductCheckoutPageController extends PageController{
         'transaction',
         'manualTF',
         'cash',
+        'coupon',
     ];
     public function index(HTTPRequest $request)
     {
+      
+        
         $checkoutData = $request->getSession()->get('CheckoutProductData');
         // Debug::show($checkoutData);
         $AddressData = $request->getSession()->get('AddressData');
+        $Coupon = $request->getSession()->get('Coupon');
+        $diskon = PromoToko::get()->filter('Code', $Coupon);
+
+
         $listDataCheckout = new ArrayList();
         
         if ($checkoutData && is_array($checkoutData)) {
@@ -37,8 +44,45 @@ class ProductCheckoutPageController extends PageController{
         // die();
         return $this->customise([
             'CheckoutProductData' => $listDataCheckout,
-            'AddressData' => $AddressData
+            'AddressData' => $AddressData,
+            'Diskon' => $diskon,
+            'Code' => $Coupon
         ])->renderWith(['ProductCheckoutPage', 'Page']);
+    }
+
+    public function coupon(HTTPRequest $request){
+        $coupon = PromoToko::get()->column('Code');
+        $data = $request->postVar('Coupon'); 
+        $promo = PromoToko::get()->filter('Code', $data)->first();
+        date_default_timezone_set('Asia/Jakarta');  
+
+        if ($promo) {
+            $diskon = $promo->Diskon;
+            $time = strtotime($promo->ExpDate);
+            // Debug::show($promo->ExpDate);
+            // Debug::show($time >= time());
+
+            if ($time >= time()) { 
+                $request->getSession()->set('Coupon', $data);
+                return json_encode([
+                    'success' => true,
+                    'message' => "Success! You get a discount of {$diskon}%."
+                ]);
+            } else {
+                return json_encode([
+                    'success' => false,
+                    'message' => 'Coupon has expired.'
+                ]);
+            }
+        } else {
+            return json_encode([
+                'success' => false,
+                'message' => 'Coupon not found.'
+            ]);
+        }
+        
+
+        
     }
     public function address(HTTPRequest $request){
         if ($request) {

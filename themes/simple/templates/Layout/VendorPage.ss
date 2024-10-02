@@ -1,72 +1,152 @@
 <% if $Vendor %>
     <style>
-        .card {
-            width: 100%;
-            max-width: 400px;
-            height: auto;
-            border-radius: 5px;
-            background-color: #488bf7;
-            text-transform: uppercase;
-            font-family: cursive;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 5px;
-            position: relative;
-            overflow: hidden;
-            color: #fff;
-          }
-        
-          .card::after {
-            content: "";
-            width: 20px;
-            height: 90%;
-            position: absolute;
-            right: 0;
-            background-image: radial-gradient(circle at center, #fff 60%, #488bf7 60% 100%);
-            --size: 5px;
-            background-size: var(--size) var(--size);
-            background-repeat: repeat-y;
-            background-position: center;
-            transform: translateY(0px);
-            padding-block: 6px;
-          }
-          @media (max-width: 768px) {
-            .card {
-              max-width: 100%;
-              height: auto;
+        /* General Styles (Not Needed) */
+              @import url(https://fonts.googleapis.com/css?family=Roboto:300);
+  
+              .clear {
+              clear:both;
+              }
+              .description {
+              text-align:center;
+              font-size:1.5em;
+              margin:50px;
+              }
+  
+              /* ///////////////////////////////////////
+                  // Ticket Layout & Positioning \\
+              ////////////////////////////////////////*/
+              /* This is for the page layout, feel free to remove */
+              .ticketHolder {
+              display: block;
+              margin: 10px auto;
+              float: left;
+              height: 100px;
+              }
+              section.couponContainer {
+              min-width:250px;
+              clear: both;
+              }
+  
+              /* ///////////////////////////////////////
+                  // Ticket Styles \\
+              ////////////////////////////////////////*/
+              .coupon {
+              margin:0 auto;
+              max-width: 180px;
+              padding: 20px 0;
+              border: 2px solid #910000;
+              border-width: 1px 0;
+              position:relative;
+              background: rgb(201,12,18);
+              
+              transition:All 0.2549s ease;
+              -webkit-transition:All 0.2549s ease;
+              -moz-transition:All 0.2549s ease;
+              -o-transition:All 0.2549s ease;
+              
+              }
+              .coupon:hover {
+              box-shadow: 0 0 15px #555;
+              transform: rotate(360deg) scale(1.1);
+              -webkit-transform: rotate(360deg) scale(1.1);
+              -moz-transform: rotate(360deg) scale(1.1);
+              -o-transform: rotate(360deg) scale(1.1);
+              -ms-transform: rotate(360deg) scale(1.1);
+              }
+              .coupon .inner{
+              font-family: 'Roboto', sans-serif;
+              position: relative;
+              padding: 0px 40px;
+              margin: 0 -20px;
+              background: rgb(201,12,18);
+              border: 2px solid #910000;
+              border-width: 0 1px;
+              }
+              .coupon .inner div {
+              color:#efefef;
+              font-size: 1.1em;
+              margin: 0;
+              text-align:center;
+              }
+              .savings {
+              font-size:1.8em!important;
+              padding: 8px 0;
+              }
+              .coupon .inner div.couponCode {
+              font-size:2em;
+              color:#fff;
+              line-height: 1em;
+              }
+              .coupon:before, .coupon:after,
+              .coupon .inner:before, .coupon .inner:after {
+              box-sizing: border-box;
+              content:'';
+              position: absolute;
+              width: 80px;
+              height: 80px;
+              border: 20px solid rgb(201,12,18);
+              border-radius: 50%;
+              background: transparent;
+              box-shadow: inset 0 0 0 2px #910000;
+              }
+              .coupon:before{
+              top: -40px;
+              left: -60px;
+              clip: rect(40px, auto, auto, 40px); /* CSS 2.1 way - deprecated */
+              -webkit-clip-path: rectangle(50%, 50%, 100%, 100%, 0, 0); /* CSS 3 */
+              }
+              .coupon:after{
+              top: -40px;
+              right: -59px;
+              clip: rect(40px, 40px, auto, auto);
+              -webkit-clip-path: rectangle(0, 50%, 50%, 100%, 0, 0);
+              }
+              .coupon .inner:before {
+              bottom: -60px;
+              left: -40px;
+              clip: rect(auto, auto, 40px, 40px);
+              -webkit-clip-path: rectangle(50%, 0, 100%, 50%, 0, 0);
+              }
+              .coupon .inner:after {
+              bottom: -60px;
+              right: -40px;
+              clip: rect(auto, 40px, 40px, auto);
+              -webkit-clip-path: rectangle(0, 0, 50%, 50%, 0, 0);
+              }
+              .noFloat {
+              float:none;
+              }
+              .reveal {
+              display:none;
+              }
+              .coupon:hover .reveal {
+              display:block;
+              }
+              .coupon:hover .savings {
+              display:none;
+              }
+            @media (max-width: 768px) {
+          
+              .primary-btn {
+                line-height: 1.5 !important;
+                padding: 0 0.4rem !important;
+              }
             }
-        
-            .card h6, .card p {
-              font-size: 0.8rem;
+          
+            @media (max-width: 576px) {
+             
+              .primary-btn {
+                font-size: 0.7rem;
+                line-height: 1.4 !important;
+                padding: 0 0.3rem !important;
+              }
             }
-        
-            .primary-btn {
-              line-height: 1.5 !important;
-              padding: 0 0.4rem !important;
-            }
-          }
-        
-          @media (max-width: 576px) {
-            .card {
-              max-width: 100%;
-            }
-        
-            .card h6, .card p {
-              font-size: 0.7rem;
-            }
-        
-            .primary-btn {
-              font-size: 0.7rem;
-              line-height: 1.4 !important;
-              padding: 0 0.3rem !important;
-            }
-          }
-    </style>
+      </style>
     
     <section class="banner-area organic-breadcrumb" style ="background: url($SiteConfig.Background.getURL()) center no-repeat;background-size: cover; position: relative ">
         <div class="container">
             <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+              
             </div>
         </div>
     </section>
@@ -111,23 +191,28 @@
         <div class="tab-content mt-3 pb-3" id="nav-tabContent" style="background-color:#fff; ">
             <%-- Halaman Utama --%>
                 <div id="awal" class="Awal">
-                    <div class="container py-4" id="kupon" style="background-color:white;" > 
-                        <div class="rows">
-                            <div class="d-flex row container" style="gap:15px; font-size:10px;">
-                                <div class="card col-6 col-md-6 col-lg-3 row d-flex" style="flex-direction:row !important; margin-left:.2rem;">
-                                <div class="col-7  col-md-5 mt-1">
-                                    <h6 class="fw-bold">Diskon 15%</h6>
-                                    <p style="margin-bottom:0 !important;">MIN. blj Rp.0 s/d Rp 35RB</p>
-                                    <p>Berakhir Dalam : 10 Menit</p>
+                    <div class="container">
+                        <div class="d-flex row ">
+                            <% loop $Promo %>
+                                <div class="col">
+                                    <section class="couponContainer">
+                                        <section class="ticketHolder noFloat">
+                                        <div class="coupon">
+                                            <div class="inner">
+                                            <div class="savings">Save $Diskon %</div>
+                                            <div class="reveal">
+                                                <div>Coupon Code:</div>
+                                                <div class="couponCode">$Code</div>
+                                            </div>
+                                            </div>
+                                        </div>
+                                        <div class="clear"></div>
+                                        </section>   
+                                    </section>
                                 </div>
-                                <div class="col-5 col-md-7 d-flex align-items-center">
-                                    <button class="primary-btn" style="color:black; border-radius:25px !important; line-height:2 !important; padding:0 .5rem !important; background:#488bf7 !important;">Klaim</button>
-                                </div>
-                                </div>
-                            </div>
+                            <% end_loop %>
                         </div>
-                    </div>   
-                    
+                    </div>
                     <div class="container mt-5" >
                         <div class="d-flex justify-content-between mb-2">
                             <h6>KAMU MUNGKIN SUKA</h6>
@@ -136,7 +221,7 @@
                         <div class="row">
                             <% loop $ProductObjects.Limit(7) %>
                                     <a href="{$BaseHref}/productdetails/view/$ID">
-                                        <div class="col-lg-3 col-md-6">
+                                        <div class="col-lg-3 col-md-4 col-sm-6  ">
                                             <div class="single-product">
                                                 <% with $ProductImages.First %>
                                                     <img src="$URL" class="img-fluid" style="object-fit: cover; aspect-ratio: 4/3;">
@@ -153,19 +238,19 @@
                                                     </div>
                                                     <div class="prd-bottom">
             
-                                                        <a href="" class="social-info">
+                                                        <a  class="social-info">
                                                             <span class="ti-bag"></span>
                                                             <p class="hover-text">add to bag</p>
                                                         </a>
-                                                        <a href="" class="social-info">
+                                                        <a  class="social-info">
                                                             <span class="lnr lnr-heart"></span>
                                                             <p class="hover-text">Wishlist</p>
                                                         </a>
-                                                        <a href="" class="social-info">
+                                                        <a  class="social-info">
                                                             <span class="lnr lnr-sync"></span>
                                                             <p class="hover-text">compare</p>
                                                         </a>
-                                                        <a href="" class="social-info">
+                                                        <a  class="social-info">
                                                             <span class="lnr lnr-move"></span>
                                                             <p class="hover-text">view more</p>
                                                         </a>
@@ -281,9 +366,11 @@
                                      <% loop $PaginatedProduct %>
                                         <div class="col-lg-4 col-md-6">
                                             <div class="single-product">
+                                                <a href="{$BaseHref}/productdetails/view/$ID">
                                                 <% with $ProductImages.First %>
                                                     <img src="$URL" class="img-fluid" style="object-fit: cover; aspect-ratio: 4/3">
                                                 <% end_with %>
+                                                </a>
                                                 <div class="product-details">
                                                     <h6>$Title</h6>
                                                     <div class="price">
@@ -296,19 +383,19 @@
                                                     </div>
                                                     <div class="prd-bottom">
                     
-                                                        <a href="{$BaseHref}/productdetails/view/$ID" class="social-info">
+                                                        <a  class="social-info">
                                                             <span class="ti-bag"></span>
                                                             <p class="hover-text">add to bag</p>
                                                         </a>
-                                                        <a href="{$BaseHref}/productdetails/view/$ID" class="social-info">
+                                                        <a  class="social-info">
                                                             <span class="lnr lnr-heart"></span>
                                                             <p class="hover-text">Wishlist</p>
                                                         </a>
-                                                        <a href="{$BaseHref}/productdetails/view/$ID" class="social-info">
+                                                        <a class="social-info">
                                                             <span class="lnr lnr-sync"></span>
                                                             <p class="hover-text">compare</p>
                                                         </a>
-                                                        <a href="{$BaseHref}/productdetails/view/$ID" class="social-info">
+                                                        <a  class="social-info">
                                                             <span class="lnr lnr-move"></span>
                                                             <p class="hover-text">view more</p>
                                                         </a>

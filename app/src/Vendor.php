@@ -20,17 +20,16 @@ use SilverStripe\Security\Member;
         ];
         private static $has_one = [
             'ProfilImage' => Image::class,
-            'Owner' => Member::class
+            'Owner' => Member::class,
         ];
         private static $has_many = [
             'AboutFile' => File::class,
             'Products' => ProductObject::class,
-            'Brands' => ProductBrandObject::class,
-            'Category' => ShopCategoryObject::class
+            'PromoToko' => PromoToko::class
         ];
         public function onBeforeWrite() {
             parent::onBeforeWrite();
-    
+            
             if (!$this->Pathname) {
                 $this->Pathname = strtolower(str_replace(' ', '', $this->Name));
             }

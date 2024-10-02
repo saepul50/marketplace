@@ -15,9 +15,6 @@ use SilverStripe\Security\Security;
         private static $has_many = [
             'ProductSubCategory' => ShopSubCategoryObject::class,
         ];
-        private static $has_one = [
-            'Vendor' => Vendor::class,
-        ];
         public function getCMSFields() {
             $fields = new FieldList(
                 TextField::create('Title'),
@@ -31,24 +28,14 @@ use SilverStripe\Security\Security;
             return $fields;
         }    
 
-        public function onBeforeWrite()
-        {
-            parent::onBeforeWrite();
-            $member = Security::getCurrentUser();
-            $vendor = Vendor::get()->filter('OwnerID', $member->ID)->first();
-            if (!$this->ID) {
-                if ($member = Security::getCurrentUser()) {
-                    $this->VendorID = $vendor->ID;
-    
-                }else{
-                    user_error('No vendor found for this member', E_USER_WARNING); 
-                }
-                
-            }
-        }
+
         public function canCreate($member = null, $context = [])
         {
-            return true; 
+            $member = Security::getCurrentUser();
+            if($member && $member->inGroup('Administrators')){
+                return true;
+            }
+            return false;
         }
         public function canView($member = null)
         {
@@ -56,10 +43,18 @@ use SilverStripe\Security\Security;
         }
         public function canEdit($member = null)
         {
-            return true;
+            $member = Security::getCurrentUser();
+            if($member && $member->inGroup('Administrators')){
+                return true;
+            }
+            return false;
         }
         public function canDelete($member = null)
         {
-            return true;
+            $member = Security::getCurrentUser();
+            if($member && $member->inGroup('Administrators')){
+                return true;
+            }
+            return false;
         }
     }
