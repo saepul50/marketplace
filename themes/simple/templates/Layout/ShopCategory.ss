@@ -17,7 +17,80 @@
 <!-- End Banner Area -->
 <div class="container" style="padding-bottom: 5rem;">
     <div class="row">
-        <div class="col-xl-12 col-lg-12 col-md-12">
+        <div class="col-xl-3 col-lg-4 col-md-5">
+            <div class="sidebar-categories">
+                <div class="head">Browse Categories</div>
+                <ul class="main-categories">
+                    <% loop $Category %>
+                        <li class="main-nav-list">
+                            <a data-toggle="collapse" data-target="#collapseExample-$ID" aria-expanded="false" aria-controls="collapseExample" href="#">
+                                <span class="lnr lnr-arrow-right"></span>$Title <span class="number">($ProductSubCategory.Count)</span>
+                            </a>
+                            <ul class="collapse" id="collapseExample-$ID" data-toggle="collapse" aria-expanded="false" aria-controls="category-$ID">
+                                <% if $ProductSubCategory.exists %>
+                                    <% loop $ProductSubCategory %>
+                                        <li class="main-nav-list child">
+                                            <a href="#" data-id="$ID" class="subcategory-link">$Title <span class="number">($ProductObject.Count)</span></a>
+                                        </li>
+                                    <% end_loop %>
+                                <% else %>
+                                    <li class="main-nav-list child py-2">This Category is Coming Soon</li>
+                                <% end_if %>
+                            </ul>
+                        </li>
+                    <% end_loop %>
+                </ul>
+            </div>
+            <div class="sidebar-filter mt-50">
+                <div class="top-filter-head">Product Filters</div>
+                <div class="common-filter">
+                    <div class="head">Brands</div>
+                    <form id="filterForm">
+                        <ul>
+                            <li class="filter-list">
+                                <input class="pixel-radio" type="radio" id="allbrand" name="brand" value="all" <% if $CurrentFilter == 'all' %>checked<% end_if %>>
+                                <label for="allbrand">All <span>($PaginatedProduct.Count)</span></label>
+                            </li>
+                            <% loop $Brand %>
+                                <li class="filter-list">
+                                    <input class="pixel-radio" type="radio" id="$Title.LowerCase" data-id="$ID" name="brand" value="$ID" <% if $CurrentFilter == $ID %>checked<% end_if %>>
+                                    <label for="$Title.LowerCase">$Title <span>($Product.Count)</span></label>
+                                </li>
+                            <% end_loop %>
+                        </ul>
+                    </form>
+                </div>
+                <%-- <div class="common-filter">
+                    <div class="head">Color</div>
+                    <form action="#">
+                        <ul>
+                            <li class="filter-list"><input class="pixel-radio" type="radio" id="black" name="color"><label for="black">Black<span>(29)</span></label></li>
+                            <li class="filter-list"><input class="pixel-radio" type="radio" id="balckleather" name="color"><label for="balckleather">Black
+                                    Leather<span>(29)</span></label></li>
+                            <li class="filter-list"><input class="pixel-radio" type="radio" id="blackred" name="color"><label for="blackred">Black
+                                    with red<span>(19)</span></label></li>
+                            <li class="filter-list"><input class="pixel-radio" type="radio" id="gold" name="color"><label for="gold">Gold<span>(19)</span></label></li>
+                            <li class="filter-list"><input class="pixel-radio" type="radio" id="spacegrey" name="color"><label for="spacegrey">Spacegrey<span>(19)</span></label></li>
+                        </ul>
+                    </form>
+                </div> --%>
+                <%-- <div class="common-filter">
+                    <div class="head">Price</div>
+                    <div class="price-range-area">
+                        <div id="price-range"></div>
+                        <div class="value-wrapper d-flex">
+                            <div class="price">Price:</div>
+                            <span>$</span>
+                            <div id="lower-value"></div>
+                            <div class="to">to</div>
+                            <span>$</span>
+                            <div id="upper-value"></div>
+                        </div>
+                    </div>
+                </div> --%>
+            </div>
+        </div>
+        <div class="col-xl-9 col-lg-8 col-md-7">
             <!-- Start Filter Bar -->
             <div class="filter-bar d-flex flex-wrap align-items-center">
                 <div class="sorting">
@@ -35,21 +108,6 @@
                             <option value="9">Show 9</option>
                             <option value="6">Show 6</option>
                         </select>
-                    </form>
-                </div>
-                <div class="sorting">
-                    <form method="post" action="{$Basehref}/marketplace/shopcategory">
-                        <div class="input-group">
-                            <input type="text" class="form-control" id="search" name="search"placeholder="Search Product" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Search Posts'">
-                            <span class="input-group-btn">
-                                <button class="btn btn-default" type="submit"><i class="lnr lnr-magnifier"></i></button>
-                            </span>
-                        </div><!-- /input-group -->
-                        <% if $ActiveFilter %>
-                            <% loop $ActiveFilter %>
-                            <p class="ml-3">Searching for $Label</p>
-                            <% end_loop %>
-                        <% end_if %>
                     </form>
                 </div>
                 <% with  $PaginatedProduct %>

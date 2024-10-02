@@ -93,9 +93,9 @@ class VendorPageController extends PageController {
         $page = $data['select'];
 
         $request->getSession()->set('PageLength', $page);
-        return json_encode([
-            'success' => true,
-            'message' => 'success'
-        ]);
+        // return json_encode([
+        //     'success' => true,
+        //     'message' => 'success'
+        // ]);
     }
 }

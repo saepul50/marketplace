@@ -51,6 +51,7 @@
 								<li class="nav-item"><a class="nav-link" href="{$BaseHref}/productcheckout">Product Checkout</a></li>
 								<li class="nav-item"><a class="nav-link" href="{$BaseHref}/cart">Shopping Cart</a></li>
 								<li class="nav-item"><a class="nav-link" href="{$BaseHref}/confirm">Shopping History</a></li>
+								<li class="nav-item"><a class="nav-link" href="{$BaseHref}/shopresult">Shopping Result</a></li>
 							</ul>
 						</li>
 						<li class="nav-item submenu dropdown" id="blog">
