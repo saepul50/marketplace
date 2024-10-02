@@ -973,6 +973,8 @@ $('#search_input').on('keydown', function (e) {
 });
 $('#searchForm').submit(function(e) {
   e.preventDefault();
+  var searchkey = $('#search_input').val();
+  var searchph = $('#search_input').attr('placeholder');
   
 });
   /*==========================
