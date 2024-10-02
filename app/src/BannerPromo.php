@@ -13,7 +13,7 @@ class BannerPromo extends DataObject{
         'Banner' => Image::class
     ];
 
-    private static $has_many = [
+    private static $many_many = [
         'Products' => ProductObject::class
     ];
 

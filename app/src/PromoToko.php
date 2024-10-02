@@ -1,5 +1,6 @@
 <?php 
 use SilverStripe\Dev\Debug;
+use SilverStripe\Forms\DateField;
 use SilverStripe\Forms\HiddenField;
 use SilverStripe\Forms\ReadonlyField;
 use SilverStripe\Forms\TextField;
@@ -11,7 +12,7 @@ class PromoToko extends DataObject{
     private static $db = [
         'Diskon' => 'Int',
         'Code' => 'Varchar',
-        'ExpDate' => 'Date',
+        'ExpDate' => 'Datetime',
         'MaximumUse' => 'Int',
     ];
 
@@ -87,7 +88,6 @@ class PromoToko extends DataObject{
     
         $fields->addFieldToTab('Root.Main', HiddenField::create('Code', 'Code'));
         $fields->addFieldToTab('Root.Main', TextField::create('Diskon', 'Diskon %'));
-        $fields->addFieldToTab('Root.Main', TextField::create('ExpDate', 'Exp.Date'));
         $fields->addFieldToTab('Root.Main', TextField::create('MaximumUse', 'Maximum Use'));
         $fields->addFieldToTab('Root.Main', HiddenField::create('VendorID', 'VendorID'));
         return $fields;

@@ -24,8 +24,9 @@ class VendorPageController extends PageController {
             $productQuery = ProductObject::get()->filter('VendorID', $vendor->ID);
             $ProductObject = ProductObject::get()->filter('VendorID', $vendor->ID);
             $count = $productQuery->count();
-            $promo = PromoToko::get()->filter('VendorID', $vendor->ID);
-            // Debug::show($promo);
+            date_default_timezone_set('Asia/Jakarta'); 
+            $promo = PromoToko::get()->filter(['VendorID'=> $vendor->ID,'ExpDate:GreaterThanOrEqual' => time()]);
+           
             
             $pagelength = $request->getSession()->get('PageLength');
             $sortOption = $request->getVar('sort');

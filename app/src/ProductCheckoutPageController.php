@@ -52,23 +52,35 @@ class ProductCheckoutPageController extends PageController{
 
     public function coupon(HTTPRequest $request){
         $coupon = PromoToko::get()->column('Code');
-        $data = $request->postVar('Coupon');
-        $diskon = PromoToko::get()->filter('Code',$data)->column('Diskon');
+        $data = $request->postVar('Coupon'); 
+        $promo = PromoToko::get()->filter('Code', $data)->first();
+        date_default_timezone_set('Asia/Jakarta');  
 
+        if ($promo) {
+            $diskon = $promo->Diskon;
+            $time = strtotime($promo->ExpDate);
+            // Debug::show($promo->ExpDate);
+            // Debug::show($time >= time());
 
-        if(in_array($data, $coupon)){
-            $request->getSession()->set('Coupon', $data);
-            return json_encode([
-                'success' => true,
-                'message' => "Success You Get Diskon {$diskon["0"]}% "
-            ]);
+            if ($time >= time()) { 
+                $request->getSession()->set('Coupon', $data);
+                return json_encode([
+                    'success' => true,
+                    'message' => "Success! You get a discount of {$diskon}%."
+                ]);
+            } else {
+                return json_encode([
+                    'success' => false,
+                    'message' => 'Coupon has expired.'
+                ]);
+            }
         } else {
             return json_encode([
                 'success' => false,
-                'message' => 'Coupon Not Found'
+                'message' => 'Coupon not found.'
             ]);
         }
-
+        
 
         
     }

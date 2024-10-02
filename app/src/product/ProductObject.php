@@ -36,12 +36,15 @@ use SilverStripe\View\Requirements;
         'ProductVideo' => File::class,
         'ProductCategory' => ShopCategoryObject::class,
         'ProductBrands' => ProductBrandObject::class,
-        'Banner' => BannerPromo::class,
     ];
     
     private static $many_many = [
         'ProductImages' => Image::class,
         'ProductSubCategory' => ShopSubCategoryObject::class
+    ];
+    
+    private static $belongs_many_many = [
+        'Banner' => BannerPromo::class,
     ];
 
     private static $owns = [

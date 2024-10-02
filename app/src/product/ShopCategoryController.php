@@ -5,6 +5,7 @@ use SilverStripe\Control\HTTPRequest;
 use SilverStripe\Dev\Debug;
 use SilverStripe\ORM\ArrayList;
 use SilverStripe\ORM\PaginatedList;
+use SilverStripe\View\ArrayData;
 
 
     class ShopCategoryController extends PageController{
@@ -29,6 +30,15 @@ use SilverStripe\ORM\PaginatedList;
             if ($subCategoryFilter && $subCategoryFilter !== 'all') {
                 $productQuery = $productQuery->filter('ProductSubCategory.ID', $subCategoryFilter);
             }
+            if ($search = $request->postVar('search')) {
+                $activeFilters = ArrayList::create();
+                $activeFilters->push(ArrayData::create([
+                    'Label' => "'$search'"
+                ]));
+                $productQuery = $productQuery->filter([
+                    'Title:PartialMatch' => $search
+                ]);
+            }
             $products = $productQuery->toArray();
             if ($sortOption == 2) {
                 usort($products, function($a, $b) {
@@ -39,7 +49,7 @@ use SilverStripe\ORM\PaginatedList;
                     return $b->minPriceDiscountedSort() <=> $a->minPriceDiscountedSort();
                 });
             }
-        
+            // Debug::show($products);
             $paginatedProduct = PaginatedList::create(new ArrayList($products), $this->getRequest())
                 ->setPageLength($pagelength)
                 ->setPaginationGetVar('s');

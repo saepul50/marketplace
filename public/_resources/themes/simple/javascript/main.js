@@ -221,11 +221,11 @@ $(document).ready(function () {
             icon: "success",
             timer: 1700
           })
-          setInterval(href, 1800);
+          // setInterval(href, 1800);
 
-          function href() {
-            location.reload();
-          }
+          // function href() {
+          //   location.reload();
+          // }
         } else {
           Swal.fire({
             icon: "error",
