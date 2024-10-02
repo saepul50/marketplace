@@ -91,6 +91,7 @@ class StatusAdmin extends LeftAndMain implements PermissionProvider{
         foreach($list as $product){
             $category = ShopCategoryObject::get()->Filter('ID', $product->ProductCategoryID);
             $categoryTitle = $category[0]->Title;
+            // Debug::show($categoryTitle);
             if ($categoryTitle){
                 if (!isset($labelCategory[$categoryTitle])) {
                     $labelCategory[$categoryTitle] = 0;

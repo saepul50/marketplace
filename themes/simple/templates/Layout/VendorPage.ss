@@ -183,35 +183,36 @@
         <section class="order_details py-2">
             <div class= "myorder text-center mt-2" id="myOrder">
                 <nav class=" d-flex flex-wrap navihistory container" id="navtabs">
-                <a href="#awal"><h5 id="navSemua" class="navi-item" style="cursor: pointer; margin-bottom:0 !important;">Halaman Utama</h5></a>
-                <a href="#Product"><h5 id="navPending" class="navi-item" style="cursor: pointer;  margin-bottom:0 !important;" >Produk</h5></a>
+                    <h5 id="navUtama" class="navi-item" style="cursor: pointer; margin-bottom:0 !important;">Halaman Utama</h5>
+                    <h5 id="navProduct" class="navi-item" style="cursor: pointer;  margin-bottom:0 !important;" >Produk</h5>
                 </nav>
             </div>
         </section>
-        </div>
-        <div class="tab-content py-5" id="nav-tabContent" style="background-color:#f5f5f5; ">
+        <div class="tab-content mt-3 pb-3" id="nav-tabContent" style="background-color:#fff; ">
             <%-- Halaman Utama --%>
-            <div class="container Semua show active" id="semua">
-                <div id="awal">
-                    <div class="container py-4" id="kupon" style="background-color:white;" > 
-                        <div class="rows">
-                            <div class="d-flex row container" style="gap:15px; font-size:10px;">
-                                <div class="card col-6 col-md-6 col-lg-3 row d-flex" style="flex-direction:row !important; margin-left:.2rem;">
-                                <div class="col-7  col-md-5 mt-1">
-                                    <h6 class="fw-bold">Diskon 15%</h6>
-                                    <p style="margin-bottom:0 !important;">MIN. blj Rp.0 s/d Rp 35RB</p>
-                                    <p>Berakhir Dalam : 10 Menit</p>
+                <div id="awal" class="Awal">
+                    <div class="container">
+                        <div class="d-flex row ">
+                            <% loop $Promo %>
+                                <div class="col">
+                                    <section class="couponContainer">
+                                        <section class="ticketHolder noFloat">
+                                        <div class="coupon">
+                                            <div class="inner">
+                                            <div class="savings">Save $Diskon %</div>
+                                            <div class="reveal">
+                                                <div>Coupon Code:</div>
+                                                <div class="couponCode">$Code</div>
+                                            </div>
+                                            </div>
+                                        </div>
+                                        <div class="clear"></div>
+                                        </section>   
+                                    </section>
                                 </div>
-                                <div class="col-5 col-md-7 d-flex align-items-center">
-                                    <button class="primary-btn" style="color:black; border-radius:25px !important; line-height:2 !important; padding:0 .5rem !important; background:#488bf7 !important;">Klaim</button>
-                                </div>
-                                </div>
-                                <div class="clear"></div>
-                                </section>   
-                            </section>
+                            <% end_loop %>
                         </div>
-                    </div>   
-                    
+                    </div>
                     <div class="container mt-5" >
                         <div class="d-flex justify-content-between mb-2">
                             <h6>KAMU MUNGKIN SUKA</h6>
@@ -220,10 +221,10 @@
                         <div class="row">
                             <% loop $ProductObjects.Limit(7) %>
                                     <a href="{$BaseHref}/productdetails/view/$ID">
-                                        <div class="col-lg-3 col-md-6">
+                                        <div class="col-lg-3 col-md-4 col-sm-6  ">
                                             <div class="single-product">
                                                 <% with $ProductImages.First %>
-                                                    <img src="$URL" class="img-fluid" style="object-fit: cover;">
+                                                    <img src="$URL" class="img-fluid" style="object-fit: cover; aspect-ratio: 4/3;">
                                                 <% end_with %>
                                                 <div class="product-details">
                                                     <h6>$Title</h6>
@@ -237,19 +238,19 @@
                                                     </div>
                                                     <div class="prd-bottom">
             
-                                                        <a href="" class="social-info">
+                                                        <a  class="social-info">
                                                             <span class="ti-bag"></span>
                                                             <p class="hover-text">add to bag</p>
                                                         </a>
-                                                        <a href="" class="social-info">
+                                                        <a  class="social-info">
                                                             <span class="lnr lnr-heart"></span>
                                                             <p class="hover-text">Wishlist</p>
                                                         </a>
-                                                        <a href="" class="social-info">
+                                                        <a  class="social-info">
                                                             <span class="lnr lnr-sync"></span>
                                                             <p class="hover-text">compare</p>
                                                         </a>
-                                                        <a href="" class="social-info">
+                                                        <a  class="social-info">
                                                             <span class="lnr lnr-move"></span>
                                                             <p class="hover-text">view more</p>
                                                         </a>
@@ -263,31 +264,31 @@
                     </div>
                 </div>
                 <%-- Product --%>
-                <div class="container " id="Product" style="padding-bottom: 5rem;padding-top: 5rem;">
+                <div class="container Akhir py-3" id="akhir">
                     <div class="row">
                         <div class="col-xl-3 col-lg-4 col-md-5">
                             <div class="sidebar-categories">
                                 <div class="head">Browse Categories</div>
                                 <ul class="main-categories">
-                                    <% if $Category.exists %>
-                                    <% loop $Category %>
-                                        <li class="main-nav-list">
-                                            <a data-toggle="collapse" data-target="#collapseExample-$ID" aria-expanded="false" aria-controls="collapseExample" href="#">
-                                                <span class="lnr lnr-arrow-right"></span>$Title <span class="number">($ProductSubCategory.Count)</span>
-                                            </a>
-                                            <ul class="collapse" id="collapseExample-$ID" data-toggle="collapse" aria-expanded="false" aria-controls="category-$ID">
-                                                <% if $ProductSubCategory.exists %>
-                                                    <% loop $ProductSubCategory %>
-                                                        <li class="main-nav-list child">
-                                                            <a href="#" data-id="$ID" class="subcategory-link">$Title <span class="number">($ProductObject.Count)</span></a>
-                                                        </li>
-                                                    <% end_loop %>
-                                                <% else %>
-                                                    <li class="main-nav-list child py-2">This SubCategory is Coming Soon</li>
-                                                <% end_if %>
-                                            </ul>
-                                        </li>
-                                    <% end_loop %>
+                                    <% if $Category %>
+                                        <% loop $Category %>
+                                            <li class="main-nav-list">
+                                                <a data-toggle="collapse" data-target="#collapseExample-$ID" aria-expanded="false" aria-controls="collapseExample" href="#">
+                                                    <span class="lnr lnr-arrow-right"></span>$Title <span class="number">($ProductSubCategory.Count)</span>
+                                                </a>
+                                                <ul class="collapse" id="collapseExample-$ID" data-toggle="collapse" aria-expanded="false" aria-controls="category-$ID">
+                                                    <% if $ProductSubCategory %>
+                                                        <% loop $ProductSubCategory %>
+                                                            <li class="main-nav-list child">
+                                                                <a href="#" data-id="$ID" class="subcategory-link">$Title <span class="number">($ProductObject.Count)</span></a>
+                                                            </li>
+                                                        <% end_loop %>
+                                                    <% else %>
+                                                        <li class="main-nav-list child py-2">This SubCategory is Coming Soon</li>
+                                                    <% end_if %>
+                                                </ul>
+                                            </li>
+                                        <% end_loop %>
                                     <% else %>
                                         <li class="main-nav-list child py-2">This Category is Coming Soon</li>  
                                     <% end_if %>
@@ -300,12 +301,12 @@
                                 <form id="filterForm" action="#">
                                     <ul>
                                         <li class="filter-list">
-                                            <input class="pixel-radio" type="radio" id="allbrand" name="brand" value="all" >
+                                            <input class="pixel-radio" type="radio" id="allbrand" name="brand" value="all" <% if $CurrentFilter == 'all' %>checked<% end_if %>>
                                             <label for="allbrand">All <span>($Count)</span></label>
                                         </li>
                                         <% loop $Brand %>
                                             <li class="filter-list">
-                                                <input class="pixel-radio" type="radio" id="$Title.LowerCase" data-id="$ID" name="brand" value="$ID" >
+                                                <input class="pixel-radio" type="radio" id="$Title.LowerCase" data-id="$ID" name="brand" value="$ID" <% if $CurrentFilter == $ID %>checked<% end_if %>>
                                                 <label for="$Title.LowerCase">$Title <span>($ProductCount)</span></label>
                                             </li>
                                         <% end_loop %>
@@ -325,7 +326,7 @@
                                     </select>
                                 </div>
                                 <div class="sorting mr-auto">
-                                    <form method="post" id="myForm" action="{$BaseHref}/shopcategory">
+                                    <form method="post" id="myForm" action="{$BaseHref}/vendorpage">
                                         <select id="filtera" class="selectpicker filter-class" name="filter">
                                             <option value="">Show $CurrentLength</option>
                                             <option value="12">Show 12</option>
@@ -364,9 +365,11 @@
                                      <% loop $PaginatedProduct %>
                                         <div class="col-lg-4 col-md-6">
                                             <div class="single-product">
+                                                <a href="{$BaseHref}/productdetails/view/$ID">
                                                 <% with $ProductImages.First %>
                                                     <img src="$URL" class="img-fluid" style="object-fit: cover; aspect-ratio: 4/3">
                                                 <% end_with %>
+                                                </a>
                                                 <div class="product-details">
                                                     <h6>$Title</h6>
                                                     <div class="price">
@@ -379,19 +382,19 @@
                                                     </div>
                                                     <div class="prd-bottom">
                     
-                                                        <a href="{$BaseHref}/productdetails/view/$ID" class="social-info">
+                                                        <a  class="social-info">
                                                             <span class="ti-bag"></span>
                                                             <p class="hover-text">add to bag</p>
                                                         </a>
-                                                        <a href="{$BaseHref}/productdetails/view/$ID" class="social-info">
+                                                        <a  class="social-info">
                                                             <span class="lnr lnr-heart"></span>
                                                             <p class="hover-text">Wishlist</p>
                                                         </a>
-                                                        <a href="{$BaseHref}/productdetails/view/$ID" class="social-info">
+                                                        <a class="social-info">
                                                             <span class="lnr lnr-sync"></span>
                                                             <p class="hover-text">compare</p>
                                                         </a>
-                                                        <a href="{$BaseHref}/productdetails/view/$ID" class="social-info">
+                                                        <a  class="social-info">
                                                             <span class="lnr lnr-move"></span>
                                                             <p class="hover-text">view more</p>
                                                         </a>
@@ -403,7 +406,7 @@
                             </section>
                             <!-- End Best Seller -->
                             <!-- Start Filter Bar -->
-                            <div class="filter-bar d-flex flex-wrap align-items-center">
+                            <div class="filter-bar d-flex flex-wrap align-items-right">
                                 <div class="sorting mr-auto">
                                 </div>
                                 <% with  $PaginatedProduct %>
@@ -433,20 +436,9 @@
                     </div>
             </div>
         </div>
-        <% else %>
-        <p>jsjadj</p>
+<% else %>
+    <p>jsjadj</p>
 <% end_if %>
 <script>
-    const savedSort = localStorage.getItem('ShowFilter');
-        if (savedSort) {
-            const filters = document.querySelectorAll('.filter-class');
-            filters.forEach(filter => {
-                filter.value = savedSort;
-                const selectedOption = filter.querySelector(`option[value="${savedSort}"]`);
-                if (selectedOption) {
-                    selectedOption.classList.add('selected');
-                }
-            });
-        }	
-		$('.nav-item#shop').addClass('active');
+    $('.nav-item#shop').addClass('active');
 </script>

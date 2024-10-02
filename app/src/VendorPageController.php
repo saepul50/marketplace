@@ -24,6 +24,8 @@ class VendorPageController extends PageController {
             $productQuery = ProductObject::get()->filter('VendorID', $vendor->ID);
             $ProductObject = ProductObject::get()->filter('VendorID', $vendor->ID);
             $count = $productQuery->count();
+            $promo = PromoToko::get()->filter('VendorID', $vendor->ID);
+            // Debug::show($promo);
             
             $pagelength = $request->getSession()->get('PageLength');
             $sortOption = $request->getVar('sort');
@@ -78,6 +80,7 @@ class VendorPageController extends PageController {
                 'CurrentSubCategory' => $subCategoryFilter,
                 'Vendor' => $vendor,
                 'Count' => $count,
+                'Promo' => $promo,
                 'ProductObjects' => $ProductObject  
                 ])->renderWith(['VendorPage', 'Page']);
         } else{

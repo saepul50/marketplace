@@ -11,6 +11,8 @@ class PromoToko extends DataObject{
     private static $db = [
         'Diskon' => 'Int',
         'Code' => 'Varchar',
+        'ExpDate' => 'Date',
+        'MaximumUse' => 'Int',
     ];
 
     private static $has_one = [
@@ -19,7 +21,10 @@ class PromoToko extends DataObject{
 
     public function summaryFields(){
         return  [
-            'Diskon' => 'Diskon'
+            'Diskon' => 'Diskon',
+            'Code' => 'Code',
+            'ExpDate' => 'Exp.Date',
+            'MaximumUse' => 'Maximum Use'
         ];
 
     }
@@ -28,7 +33,7 @@ class PromoToko extends DataObject{
     {
         parent::onBeforeWrite();
 
-        $s = substr(str_shuffle(str_repeat("0123456789abcdefghijklmnopqrstuvwxyz", 5)), 0, 5);
+        $s = substr(str_shuffle(str_repeat("0123456789ABCDEFGHIJKLMNOPGRSTUFWXYZ", 5)), 0, 5);
         $this->Code = $s;
         $member = Security::getCurrentUser();
         $vendor = Vendor::get()->filter('OwnerID', $member->ID)->first();
@@ -82,6 +87,8 @@ class PromoToko extends DataObject{
     
         $fields->addFieldToTab('Root.Main', HiddenField::create('Code', 'Code'));
         $fields->addFieldToTab('Root.Main', TextField::create('Diskon', 'Diskon %'));
+        $fields->addFieldToTab('Root.Main', TextField::create('ExpDate', 'Exp.Date'));
+        $fields->addFieldToTab('Root.Main', TextField::create('MaximumUse', 'Maximum Use'));
         $fields->addFieldToTab('Root.Main', HiddenField::create('VendorID', 'VendorID'));
         return $fields;
     }

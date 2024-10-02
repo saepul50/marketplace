@@ -20,12 +20,19 @@ class ProductCheckoutPageController extends PageController{
         'transaction',
         'manualTF',
         'cash',
+        'coupon',
     ];
     public function index(HTTPRequest $request)
     {
+      
+        
         $checkoutData = $request->getSession()->get('CheckoutProductData');
         // Debug::show($checkoutData);
         $AddressData = $request->getSession()->get('AddressData');
+        $Coupon = $request->getSession()->get('Coupon');
+        $diskon = PromoToko::get()->filter('Code', $Coupon);
+
+
         $listDataCheckout = new ArrayList();
         
         if ($checkoutData && is_array($checkoutData)) {
@@ -37,8 +44,33 @@ class ProductCheckoutPageController extends PageController{
         // die();
         return $this->customise([
             'CheckoutProductData' => $listDataCheckout,
-            'AddressData' => $AddressData
+            'AddressData' => $AddressData,
+            'Diskon' => $diskon,
+            'Code' => $Coupon
         ])->renderWith(['ProductCheckoutPage', 'Page']);
+    }
+
+    public function coupon(HTTPRequest $request){
+        $coupon = PromoToko::get()->column('Code');
+        $data = $request->postVar('Coupon');
+        $diskon = PromoToko::get()->filter('Code',$data)->column('Diskon');
+
+
+        if(in_array($data, $coupon)){
+            $request->getSession()->set('Coupon', $data);
+            return json_encode([
+                'success' => true,
+                'message' => "Success You Get Diskon {$diskon["0"]}% "
+            ]);
+        } else {
+            return json_encode([
+                'success' => false,
+                'message' => 'Coupon Not Found'
+            ]);
+        }
+
+
+        
     }
     public function address(HTTPRequest $request){
         if ($request) {

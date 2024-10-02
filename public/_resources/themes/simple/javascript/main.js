@@ -204,6 +204,50 @@ $(document).ready(function () {
 
   });
 
+  
+  $("#Couponform").submit(function (event) {
+    event.preventDefault(); 
+    $.post("/marketplace/productcheckout/coupon", {
+      Coupon: $("#Couponin").val(),
+
+    })
+      .done(function (data) {
+        var response = JSON.parse(data);
+        console.log(response);
+        if (response.success) {
+          Swal.fire({
+            title: "SUCCESS",
+            text: response.message,
+            icon: "success",
+            timer: 1700
+          })
+          setInterval(href, 1800);
+
+          function href() {
+            location.reload();
+          }
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: response.message,
+            showConfirmButton: false,
+            timer: 1500
+          });
+        }
+
+      }).fail(function () {
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: "There was an issue  Please try again later.",
+          confirmButtonColor: "#d33",
+        });
+      });
+
+    return false;
+  });
+
 
   //blogg
   $("#blogcomment").submit(function (event) {
@@ -565,66 +609,7 @@ $(document).ready(function () {
   })
 
   //product
-  $("#reviewform").submit(function (event) {
-    event.stopPropagation()
-
-    const rating = document.getElementById("ratingValue");
-    let angka = rating.getAttribute('value');
-    console.log(angka);
-    if (parseInt(angka) === 0) {
-      Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: "Input Rating First",
-        showConfirmButton: false,
-      });
-    } else {
-      $.post("/marketplace/productdetails/review", {
-        Review: $("#reviewmsg").val(),
-        Rating: $("#ratingValue").val(),
-        ID: $("#ID").val(),
-      })
-        .done(function (data) {
-          var response = JSON.parse(data);
-          if (response.success) {
-            Swal.fire({
-              title: "SUCCESS",
-              text: "Review submitted successfully!",
-              icon: "success",
-              timer: 1000,
-            });
-            document.getElementById('reviewmsg').value = null;
-            stars.forEach((s) => s.classList.remove("one",
-              "two",
-              "three",
-              "four",
-              "five",
-              "selected"));
-            setInterval(href, 1500);
-
-            function href() {
-              location.reload();
-            }
-          } else {
-            Swal.fire({
-              icon: "error",
-              title: "Oops...",
-              text: response.message,
-              showConfirmButton: false,
-              timer: 1500
-            });
-          }
-        })
-        .fail(function () {
-          Swal.fire({
-            icon: "error",
-            title: "Error",
-            text: "There was an issue submitting the review. Please try again later.",
-            confirmButtonColor: "#d33"
-          });
-        });
-    }
-  });
+  
   // PRODUCT
   $("#kkls").submit(function (event) {
     event.preventDefault();
@@ -840,52 +825,10 @@ $("#reviewform").submit(function (event) {
       });
   }
 });
-// PRODUCT
-$("#kkls").submit(function (event) {
-  event.preventDefault();
-
-  $.post("/marketplace/productdetails/productcomment", {
-    Message: $("#slsd").val(),
-    ID: $("#asdasda").val(),
-  })
-    .done(function (data) {
-      var response = JSON.parse(data);
-      if (response.success) {
-        Swal.fire({
-          title: "SUCCESS",
-          text: "Success",
-          icon: "success",
-          timer: 1000
-        })
-        setInterval(href, 1500);
-
-        function href() {
-          location.reload();
-        }
-      } else {
-        Swal.fire({
-          icon: "error",
-          title: "Oops...",
-          text: response.message,
-          showConfirmButton: false,
-          timer: 1500
-        });
-      }
-
-    }).fail(function () {
-      Swal.fire({
-        icon: "error",
-        title: "Error",
-        text: "There was an issue  Please try again later.",
-        confirmButtonColor: "#d33",
-      });
-    });
-
-  return false; // Ensure no form submission (and thus no refresh)
-});
 
 
-$("#productcommentreply").off(function (event) {
+
+$("#productcommentreply").submit(function (event) {
   event.preventDefault(); // Prevents the form from doing a default refresh
 
   $.post("/marketplace/productdetails/productreply", {
@@ -903,11 +846,11 @@ $("#productcommentreply").off(function (event) {
           icon: "success",
           timer: 1000
         })
-        setInterval(href, 1000);
+        // setInterval(href, 1000);
 
-        function href() {
-          location.reload();
-        }
+        // function href() {
+        //   location.reload();
+        // }
       } else {
         Swal.fire({
           icon: "error",
@@ -1688,49 +1631,7 @@ $('#exampleModal').on('show.bs.modal', function (event) {
 
 
 
-// PRODUCT
-$("#kkls").submit(function (event) {
-  event.preventDefault(); // Prevents the form from doing a default refresh
 
-  $.post("/marketplace/productdetails/productcomment", {
-    Message: $("#slsd").val(),
-    ID: $("#asdasda").val(),
-  })
-    .done(function (data) {
-      var response = JSON.parse(data);
-      if (response.success) {
-        Swal.fire({
-          title: "SUCCESS",
-          text: "Success",
-          icon: "success",
-          timer: 1000
-        })
-        setInterval(href, 1500);
-
-        function href() {
-          location.reload();
-        }
-      } else {
-        Swal.fire({
-          icon: "error",
-          title: "Oops...",
-          text: response.message,
-          showConfirmButton: false,
-          timer: 1500
-        });
-      }
-
-    }).fail(function () {
-      Swal.fire({
-        icon: "error",
-        title: "Error",
-        text: "There was an issue  Please try again later.",
-        confirmButtonColor: "#d33",
-      });
-    });
-
-  return false; // Ensure no form submission (and thus no refresh)
-});
 
 
 
@@ -2545,6 +2446,7 @@ function fetchcost() {
   $('#shippingProduct').html(`Rp. ${formatNumber(cost)}`);
   $('#shippingNFProduct').html(cost);
   updateFinalPrice();
+  // console.log(cost);  
 };
 function TimeCheckout() {
   var now = new Date();
@@ -2762,16 +2664,30 @@ document.querySelectorAll('.cartProduct').forEach(item => {
 function updateFinalPrice() {
   const subTotal = document.querySelector('#subTotalPriceProduct').textContent;
   const subShipping = document.querySelector('#shippingProduct').textContent;
+  const  Diskon = document.querySelector('#Diskon').textContent;
   const subTotalInt = parseFloat(subTotal.replace('Rp. ', '').replace(/\./g, ''));
   const subShippingInt = parseFloat(subShipping.replace('Rp. ', '').replace(/\./g, ''));
   // console.log(subTotalInt)
   // console.log(subShipping)
-  const FinalPrice = subTotalInt + subShippingInt;
+  const TotalPrice = subTotalInt + subShippingInt ;
+  
+  let FinalPrice;
+
+  if(Diskon){
+    const DiskonInt = parseFloat(Diskon.replace('%', '').trim());
+    if(!isNaN(DiskonInt) && DiskonInt > 0){
+        const Discountamount = (DiskonInt / 100) * TotalPrice;
+        FinalPrice = TotalPrice - Discountamount;
+      } else {
+      FinalPrice = TotalPrice;
+      };
+  } else{
+    FinalPrice = TotalPrice;
+  }
   const FinalElement = document.querySelector('#finalPriceProduct');
   const FinalNFElement = document.querySelector('#finalPriceNFProduct');
   FinalElement.textContent = `Rp. ${formatNumber(FinalPrice)}`;
   FinalNFElement.textContent = FinalPrice;
-  // console.log(FinalPrice)
 }
 updateSubtotal();
 updateFinalPrice();

@@ -136,7 +136,7 @@ class ProductDetailsController extends PageController
             return $this->redirect(Director::absoluteBaseURL() . '/login');
         } else {
         $data = $request->postVars();
-
+        Debug::show($data);
         $comment = ProductReply::create();
         $comment->MemberID = $member->ID;
         $comment->SendTo = $data['Send'];

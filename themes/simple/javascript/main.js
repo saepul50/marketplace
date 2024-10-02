@@ -668,6 +668,9 @@ $(document).ready(function () {
 
     return false; // Ensure no form submission (and thus no refresh)
   });
+
+
+
 $("#editprofileform").submit(function (event) {
   event.preventDefault(); // Prevents the form from doing a default refresh
   var province = parseInt($('.province_select .list .selected').data('value'));
@@ -2373,6 +2376,8 @@ function fetchcourir() {
     }
   });
 }
+
+
 SelectorPayment();
 SelectorPaymentGate();
 $("input[name='selectorpayment']").on('change', function () {
