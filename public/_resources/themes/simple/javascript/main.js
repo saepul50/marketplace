@@ -978,13 +978,17 @@ $('#search_input').on('keydown', function (e) {
 });
 $('#search_input').on('keydown', function (e) {
   if (e.key === 'Tab') {
-      const placeholder = $(this).attr('placeholder');
+    const placeholder = $(this).attr('placeholder');
       if (placeholder) {
           e.preventDefault();
           $(this).val(placeholder);
           selectedIndex = -1;
       }
   }
+});
+$('#searchForm').submit(function(e) {
+  e.preventDefault();
+  
 });
   /*==========================
   javaScript for sticky header
