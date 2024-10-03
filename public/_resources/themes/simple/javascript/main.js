@@ -1,56 +1,4 @@
-const stars = document.querySelectorAll(".star");
-const rating = document.getElementById("rating");
-const ratingDisplay = document.getElementById('rating');
-const ratingValueInput = document.getElementById('ratingValue');
-stars.forEach((star) => {
-  star.addEventListener("click", () => {
-    const value = parseInt(star.getAttribute("data-value"));
-    rating.innerText = value;
 
-    // Remove all existing classes from stars
-    stars.forEach((s) => s.classList.remove("one",
-      "two",
-      "three",
-      "four",
-      "five"));
-    stars.forEach((s, index) => {
-      if (index < value) {
-        s.classList.add(getStarColorClass(value));
-      }
-    });
-    stars.forEach((s) => s.classList.remove("selected"));
-    star.classList.add("selected");
-  });
-});
-stars.forEach(star => {
-  star.addEventListener('click', function () {
-    const rating = this.getAttribute('data-value');
-    ratingDisplay.textContent = rating; 
-    ratingValueInput.value = rating; 
-    stars.forEach(s => {
-      s.classList.remove('selected');
-    });
-    for (let i = 0; i < rating; i++) {
-      stars[i].classList.add('selected');
-    }
-  });
-});
-function getStarColorClass(value) {
-  switch (value) {
-    case 1:
-      return "one";
-    case 2:
-      return "two";
-    case 3:
-      return "three";
-    case 4:
-      return "four";
-    case 5:
-      return "five";
-    default:
-      return "";
-  }
-}
 
 
 $(document).ready(function () {
@@ -2712,6 +2660,6 @@ function updateFinalPrice() {
 updateSubtotal();
 updateFinalPrice();
 });
-const events = document.querySelector('.event');
 
+const events = document.querySelector('.event');
 

@@ -1181,4 +1181,46 @@
 <% end_if %>
 <script>
    $('.nav-item#shop').addClass('active');
+   const stars = document.querySelectorAll('.star');
+const rating = document.getElementById("rating");
+const ratingValueInput = document.getElementById('ratingValue');
+stars.forEach((star) => {
+  star.addEventListener("click", () => {
+    const value = parseInt(star.getAttribute("data-value"));
+    console.log(value);
+    rating.innerText = value;
+
+    // Remove all existing classes from stars
+    stars.forEach((s) => s.classList.remove("one",
+      "two",
+      "three",
+      "four",
+      "five"));
+    stars.forEach((s, index) => {
+      if (index < value) {
+        s.classList.add(getStarColorClass(value));
+      }
+    });
+    stars.forEach((s) => s.classList.remove("selected"));
+    star.classList.add("selected");
+  });
+});
+
+function getStarColorClass(value) {
+  switch (value) {
+    case 1:
+      return "one";
+    case 2:
+      return "two";
+    case 3:
+      return "three";
+    case 4:
+      return "four";
+    case 5:
+      return "five";
+    default:
+      return "";
+  }
+}
+
 </script>
