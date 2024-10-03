@@ -56,6 +56,8 @@ class ProductDetailsController extends PageController
         $two = $rating->filter('Rating', 2)->count();
         $one = $rating->filter('Rating', 1)->count();
         $ave = $rating->avg('Rating');
+        $product->Rating = $ave;
+        $product->write();
         $formatave = number_format($ave, 2);
         $sortOption = $request->getVar('sort');
         $ratings = ProductRating::get()->filter('ProductObjectID', $id);

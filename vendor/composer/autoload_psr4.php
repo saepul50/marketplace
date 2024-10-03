@@ -89,6 +89,7 @@ return array(
     'SilverStripe\\Admin\\Tests\\Behat\\Context\\' => array($vendorDir . '/silverstripe/admin/tests/behat/src'),
     'SilverStripe\\Admin\\Tests\\' => array($vendorDir . '/silverstripe/admin/tests/php'),
     'SilverStripe\\Admin\\' => array($vendorDir . '/silverstripe/admin/code', $vendorDir . '/silverstripe/admin/_legacy'),
+    'SilverShop\\HasOneField\\' => array($vendorDir . '/silvershop/silverstripe-hasonefield/src'),
     'Sheadawson\\DependentDropdown\\Tests\\' => array($vendorDir . '/sheadawson/silverstripe-dependentdropdownfield/tests'),
     'Sheadawson\\DependentDropdown\\' => array($vendorDir . '/sheadawson/silverstripe-dependentdropdownfield/src'),
     'Psr\\SimpleCache\\' => array($vendorDir . '/psr/simple-cache/src'),

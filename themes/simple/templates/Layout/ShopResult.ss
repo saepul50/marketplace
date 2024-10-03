@@ -7,7 +7,7 @@
                     <h1>Shop Category page</h1>
                     <nav class="d-flex align-items-center">
                         <a href="{$BaseHref}">Home<span class="lnr lnr-arrow-right"></span></a>
-                        <a href="{$BaseHref}/shopcategory">Shop<span class="lnr lnr-arrow-right"></span></a>
+                        <a href="{$BaseHref}/shopresult">Shop<span class="lnr lnr-arrow-right"></span></a>
                         <a href="#">Fashon Category</a>
                     </nav>
                 </div>
@@ -28,7 +28,7 @@
                         </select>
                     </div>
                     <div class="sorting mr-auto">
-                        <form method="post" id="myForm" action="{$BaseHref}/shopcategory">
+                        <form method="post" id="myForm" action="{$BaseHref}/shopresult">
                             <select id="filtera" class="selectpicker filter-class" name="filter">
                                 <option value="">Show $CurrentLength</option>
                                 <option value="12">Show 12</option>
@@ -38,7 +38,7 @@
                         </form>
                     </div>
                     <div class="sorting">
-                        <form method="post" action="{$Basehref}/marketplace/shopcategory">
+                        <form method="post" action="{$Basehref}/marketplace/shopresult">
                             <div class="input-group">
                                 <input type="text" class="form-control" id="search" name="search"placeholder="Search Product" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Search Posts'">
                                 <span class="input-group-btn">

@@ -25,7 +25,7 @@ class ShopResultController extends PageController{
         if ($subCategoryFilter && $subCategoryFilter !== 'all') {
             $productQuery = $productQuery->filter('ProductSubCategory.ID', $subCategoryFilter);
         }
-        if ($search = $request->postVar('search')) {
+        if ($search = $request->getVar('search')) {
             $activeFilters = ArrayList::create();
             $activeFilters->push(ArrayData::create([
                 'Label' => "'$search'"

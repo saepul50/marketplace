@@ -3961,6 +3961,58 @@
             "install-path": "../sheadawson/silverstripe-dependentdropdownfield"
         },
         {
+            "name": "silvershop/silverstripe-hasonefield",
+            "version": "4.0.1",
+            "version_normalized": "4.0.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/silvershop/silverstripe-hasonefield.git",
+                "reference": "ac9184afc05378773347d06866e8b129aea2c9bf"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/silvershop/silverstripe-hasonefield/zipball/ac9184afc05378773347d06866e8b129aea2c9bf",
+                "reference": "ac9184afc05378773347d06866e8b129aea2c9bf",
+                "shasum": ""
+            },
+            "require": {
+                "silverstripe/framework": "^4.0 || ^5.0",
+                "silverstripe/vendor-plugin": "^1.0 || ^2.0"
+            },
+            "replace": {
+                "hchokshi/silverstripe-hasonefield": "*"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^5.7"
+            },
+            "time": "2023-08-30T04:02:14+00:00",
+            "type": "silverstripe-vendormodule",
+            "extra": {
+                "branch-alias": {
+                    "dev-main": "4.x-dev"
+                },
+                "expose": [
+                    "client"
+                ]
+            },
+            "installation-source": "dist",
+            "autoload": {
+                "psr-4": {
+                    "SilverShop\\HasOneField\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-2-Clause"
+            ],
+            "description": "Edit a has_one relationship using a GridField, triggered by clicking a button.",
+            "support": {
+                "issues": "https://github.com/silvershop/silverstripe-hasonefield/issues",
+                "source": "https://github.com/silvershop/silverstripe-hasonefield/tree/4.0.1"
+            },
+            "install-path": "../silvershop/silverstripe-hasonefield"
+        },
+        {
             "name": "silverstripe-themes/simple",
             "version": "3.3.2",
             "version_normalized": "3.3.2.0",

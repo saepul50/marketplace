@@ -11,11 +11,6 @@
               font-size:1.5em;
               margin:50px;
               }
-  
-              /* ///////////////////////////////////////
-                  // Ticket Layout & Positioning \\
-              ////////////////////////////////////////*/
-              /* This is for the page layout, feel free to remove */
               .ticketHolder {
               display: block;
               margin: 10px auto;
@@ -26,10 +21,6 @@
               min-width:250px;
               clear: both;
               }
-  
-              /* ///////////////////////////////////////
-                  // Ticket Styles \\
-              ////////////////////////////////////////*/
               .coupon {
               margin:0 auto;
               max-width: 180px;
@@ -141,12 +132,12 @@
                 padding: 0 0.3rem !important;
               }
             }
-      </style>
+    </style>
     
     <section class="banner-area organic-breadcrumb" style ="background: url($SiteConfig.Background.getURL()) center no-repeat;background-size: cover; position: relative ">
         <div class="container">
             <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
-              
+            
             </div>
         </div>
     </section>
@@ -160,7 +151,8 @@
                             <img alt="Profile img" src="$URL" class="img-fluid" style="border-radius: 50%;">
                         <% end_with %>
                     </div>
-                    <h5 class="mt-2">$Vendor.Name</h5>
+                    <h5 class="mt-2">$Vendor.Name</h5> 
+
                 </div>
                 <div class="col-8 d-flex flex-column justify-content-between">
                     <div class="d-flex align-items-center" style="gap: 8px;">
@@ -213,54 +205,387 @@
                             <% end_loop %>
                         </div>
                     </div>
+                    <% if $ProductObjects %>
                     <div class="container mt-5" >
                         <div class="d-flex justify-content-between mb-2">
                             <h6>KAMU MUNGKIN SUKA</h6>
-                            <a href="#" style="color:#777777;">Lihat Semua ></a>
+                        <a href="#" style="color:#777777;">Lihat Semua ></a>
                         </div>
                         <div class="row">
-                            <% loop $ProductObjects.Limit(4) %>
-                                    <a href="{$BaseHref}/productdetails/view/$ID">
-                                        <div class="col-lg-3 col-md-4 col-sm-6  ">
-                                            <div class="single-product">
-                                                <% with $ProductImages.First %>
-                                                    <img src="$URL" class="img-fluid" style="object-fit: cover; aspect-ratio: 4/3;">
-                                                <% end_with %>
-                                                <div class="product-details">
-                                                    <h6>$Title</h6>
-                                                    <div class="price">
-                                                        <% if $Promotion %>
-                                                            <h6>$minPriceDiscounted</h6>
-                                                            <h6 class="l-through">$minPrice</h6>
-                                                        <% else %>
-                                                            <h6>$minPrice</h6>
-                                                        <% end_if %>
-                                                    </div>
-                                                    <div class="prd-bottom">
-            
-                                                        <a  class="social-info">
-                                                            <span class="ti-bag"></span>
-                                                            <p class="hover-text">add to bag</p>
-                                                        </a>
-                                                        <a  class="social-info">
-                                                            <span class="lnr lnr-heart"></span>
-                                                            <p class="hover-text">Wishlist</p>
-                                                        </a>
-                                                        <a  class="social-info">
-                                                            <span class="lnr lnr-sync"></span>
-                                                            <p class="hover-text">compare</p>
-                                                        </a>
-                                                        <a  class="social-info">
-                                                            <span class="lnr lnr-move"></span>
-                                                            <p class="hover-text">view more</p>
-                                                        </a>
+                        <% loop $ProductObjects.Limit(4) %>
+                                        <a href="{$BaseHref}/productdetails/view/$ID">
+                                            <div class="col-lg-3 col-md-4 col-sm-6  ">
+                                                <div class="single-product">
+                                                    <% with $ProductImages.First %>
+                                                        <img src="$URL" class="img-fluid" style="object-fit: cover; aspect-ratio: 4/3;">
+                                                    <% end_with %>
+                                                    <div class="product-details">
+                                                        <h6>$Title</h6>
+                                                        <div class="price">
+                                                            <% if $Promotion %>
+                                                                <h6>$minPriceDiscounted</h6>
+                                                                <h6 class="l-through">$minPrice</h6>
+                                                            <% else %>
+                                                                <h6>$minPrice</h6>
+                                                            <% end_if %>
+                                                        </div>
+                                                        <div class="prd-bottom">
+                
+                                                            <a  class="social-info">
+                                                                <span class="ti-bag"></span>
+                                                                <p class="hover-text">add to bag</p>
+                                                            </a>
+                                                            <a  class="social-info">
+                                                                <span class="lnr lnr-heart"></span>
+                                                                <p class="hover-text">Wishlist</p>
+                                                            </a>
+                                                            <a  class="social-info">
+                                                                <span class="lnr lnr-sync"></span>
+                                                                <p class="hover-text">compare</p>
+                                                            </a>
+                                                            <a  class="social-info">
+                                                                <span class="lnr lnr-move"></span>
+                                                                <p class="hover-text">view more</p>
+                                                            </a>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
+                                        </a>
+                                    <% end_loop %>
+                                    <% else %>
+                                        <div class="container mt-5" >
+                                            <div class="d-flex justify-content-between mb-2">
+                                                <h6>KAMU MUNGKIN SUKA</h6>
+                                            <a href="#" style="color:#777777;">Lihat Semua ></a>
+                                            </div>
+                                            <div class="row " style="justify-content:center;">
+                                            <div class="col-lg-3 col-md-4 col-sm-6  ">
+                                            <p>Product Kosong</P>
+                                            </div>
                                         </div>
-                                    </a>
-                                <% end_loop %>
+                            <% end_if %>
                         </div>
+                    </div>
+               
+                    
+                    <% if $MainBannerPromos.exists %>
+                        <% loop $MainBannerPromos %>
+                            <div class="container">
+                                <% with $Banner %>
+                                    <img src="$URL" class="img-fluid" width="100%" height="700">
+                                <% end_with %>
+                    
+                                <!-- Promo Products -->
+                                <div class="row mt-3">
+                                    <% loop $Products.Limit(4) %>
+                                        <a href="{$BaseHref}/productdetails/view/$ID">
+                                            <div class="col-lg-3 col-md-4 col-sm-6">
+                                                <div class="single-product">
+                                                    <% with $ProductImages.First %>
+                                                        <img src="$URL" class="img-fluid" style="object-fit: cover; aspect-ratio: 4/3;">
+                                                    <% end_with %>
+                                                    <div class="product-details">
+                                                        <h6>$Title</h6>
+                                                        <div class="price">
+                                                            <% if $Promotion %>
+                                                                <h6>$minPriceDiscounted</h6>
+                                                                <h6 class="l-through">$minPrice</h6>
+                                                            <% else %>
+                                                                <h6>$minPrice</h6>
+                                                            <% end_if %>
+                                                        </div>
+                                                        <div class="prd-bottom">
+                                                            <a class="social-info">
+                                                                <span class="ti-bag"></span>
+                                                                <p class="hover-text">add to bag</p>
+                                                            </a>
+                                                            <a class="social-info">
+                                                                <span class="lnr lnr-heart"></span>
+                                                                <p class="hover-text">Wishlist</p>
+                                                            </a>
+                                                            <a class="social-info">
+                                                                <span class="lnr lnr-sync"></span>
+                                                                <p class="hover-text">compare</p>
+                                                            </a>
+                                                            <a class="social-info">
+                                                                <span class="lnr lnr-move"></span>
+                                                                <p class="hover-text">view more</p>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    <% end_loop %>
+                                </div>
+                            </div>
+                        <% end_loop %>
+                    <% end_if %>
+
+                    <div class="container">
+                        <% if $BestSeller %>
+                        <div class="d-flex justify-content-between mb-2">
+                            <h6>Best Seller</h6>
+                            <a href="#" style="color:#777777;">Lihat Semua ></a>
+                        </div>
+                        <div class="row">
+                                <% loop $BestSeller.Limit(4) %>
+                                        <a href="{$BaseHref}/productdetails/view/$ID">
+                                            <div class="col-lg-3 col-md-4 col-sm-6  ">
+                                                <div class="single-product">
+                                                    <% with $ProductImages.First %>
+                                                        <img src="$URL" class="img-fluid" style="object-fit: cover; aspect-ratio: 4/3;">
+                                                    <% end_with %>
+                                                    <div class="product-details">
+                                                        <h6>$Title</h6>
+                                                        <div class="price">
+                                                            <% if $Promotion %>
+                                                                <h6>$minPriceDiscounted</h6>
+                                                                <h6 class="l-through">$minPrice</h6>
+                                                            <% else %>
+                                                                <h6>$minPrice</h6>
+                                                            <% end_if %>
+                                                        </div>
+                                                        <div class="prd-bottom">
+                
+                                                            <a  class="social-info">
+                                                                <span class="ti-bag"></span>
+                                                                <p class="hover-text">add to bag</p>
+                                                            </a>
+                                                            <a  class="social-info">
+                                                                <span class="lnr lnr-heart"></span>
+                                                                <p class="hover-text">Wishlist</p>
+                                                            </a>
+                                                            <a  class="social-info">
+                                                                <span class="lnr lnr-sync"></span>
+                                                                <p class="hover-text">compare</p>
+                                                            </a>
+                                                            <a  class="social-info">
+                                                                <span class="lnr lnr-move"></span>
+                                                                <p class="hover-text">view more</p>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    <% end_loop %>
+                                </div>
+                            <% end_if %>
+                    </div>
+
+                    <% if $SubBannerPromos.exists %>
+                        <% loop $SubBannerPromos %>
+                            <div class="container">
+                                <% with $Banner %>
+                                    <img src="$URL" class="img-fluid" width="100%" height="700">
+                                <% end_with %>
+                    
+                                <!-- Promo Products -->
+                                <div class="row mt-3">
+                                    <% loop $Products.Limit(4) %>
+                                        <a href="{$BaseHref}/productdetails/view/$ID">
+                                            <div class="col-lg-3 col-md-4 col-sm-6">
+                                                <div class="single-product">
+                                                    <% with $ProductImages.First %>
+                                                        <img src="$URL" class="img-fluid" style="object-fit: cover; aspect-ratio: 4/3;">
+                                                    <% end_with %>
+                                                    <div class="product-details">
+                                                        <h6>$Title</h6>
+                                                        <div class="price">
+                                                            <% if $Promotion %>
+                                                                <h6>$minPriceDiscounted</h6>
+                                                                <h6 class="l-through">$minPrice</h6>
+                                                            <% else %>
+                                                                <h6>$minPrice</h6>
+                                                            <% end_if %>
+                                                        </div>
+                                                        <div class="prd-bottom">
+                                                            <a class="social-info">
+                                                                <span class="ti-bag"></span>
+                                                                <p class="hover-text">add to bag</p>
+                                                            </a>
+                                                            <a class="social-info">
+                                                                <span class="lnr lnr-heart"></span>
+                                                                <p class="hover-text">Wishlist</p>
+                                                            </a>
+                                                            <a class="social-info">
+                                                                <span class="lnr lnr-sync"></span>
+                                                                <p class="hover-text">compare</p>
+                                                            </a>
+                                                            <a class="social-info">
+                                                                <span class="lnr lnr-move"></span>
+                                                                <p class="hover-text">view more</p>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    <% end_loop %>
+                                </div>
+                            </div>
+                        <% end_loop %>
+                    <% end_if %>
+                    <% if $SubBanner2Promos.exists %>
+                        <% loop $SubBanner2Promos %>
+                            <div class="container">
+                                <% with $Banner %>
+                                    <img src="$URL" class="img-fluid" width="100%" height="700">
+                                <% end_with %>
+                    
+                                <!-- Promo Products -->
+                                <div class="row mt-3">
+                                    <% loop $Products.Limit(4) %>
+                                        <a href="{$BaseHref}/productdetails/view/$ID">
+                                            <div class="col-lg-3 col-md-4 col-sm-6">
+                                                <div class="single-product">
+                                                    <% with $ProductImages.First %>
+                                                        <img src="$URL" class="img-fluid" style="object-fit: cover; aspect-ratio: 4/3;">
+                                                    <% end_with %>
+                                                    <div class="product-details">
+                                                        <h6>$Title</h6>
+                                                        <div class="price">
+                                                            <% if $Promotion %>
+                                                                <h6>$minPriceDiscounted</h6>
+                                                                <h6 class="l-through">$minPrice</h6>
+                                                            <% else %>
+                                                                <h6>$minPrice</h6>
+                                                            <% end_if %>
+                                                        </div>
+                                                        <div class="prd-bottom">
+                                                            <a class="social-info">
+                                                                <span class="ti-bag"></span>
+                                                                <p class="hover-text">add to bag</p>
+                                                            </a>
+                                                            <a class="social-info">
+                                                                <span class="lnr lnr-heart"></span>
+                                                                <p class="hover-text">Wishlist</p>
+                                                            </a>
+                                                            <a class="social-info">
+                                                                <span class="lnr lnr-sync"></span>
+                                                                <p class="hover-text">compare</p>
+                                                            </a>
+                                                            <a class="social-info">
+                                                                <span class="lnr lnr-move"></span>
+                                                                <p class="hover-text">view more</p>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    <% end_loop %>
+                                </div>
+                            </div>
+                        <% end_loop %>
+                    <% end_if %>
+                    <% if $SubBanner3Promos.exists %>
+                        <% loop $SubBanner3Promos %>
+                            <div class="container">
+                                <% with $Banner %>
+                                    <img src="$URL" class="img-fluid" width="100%" height="700">
+                                <% end_with %>
+                    
+                                <!-- Promo Products -->
+                                <div class="row mt-3">
+                                    <% loop $Products.Limit(4) %>
+                                        <a href="{$BaseHref}/productdetails/view/$ID">
+                                            <div class="col-lg-3 col-md-4 col-sm-6">
+                                                <div class="single-product">
+                                                    <% with $ProductImages.First %>
+                                                        <img src="$URL" class="img-fluid" style="object-fit: cover; aspect-ratio: 4/3;">
+                                                    <% end_with %>
+                                                    <div class="product-details">
+                                                        <h6>$Title</h6>
+                                                        <div class="price">
+                                                            <% if $Promotion %>
+                                                                <h6>$minPriceDiscounted</h6>
+                                                                <h6 class="l-through">$minPrice</h6>
+                                                            <% else %>
+                                                                <h6>$minPrice</h6>
+                                                            <% end_if %>
+                                                        </div>
+                                                        <div class="prd-bottom">
+                                                            <a class="social-info">
+                                                                <span class="ti-bag"></span>
+                                                                <p class="hover-text">add to bag</p>
+                                                            </a>
+                                                            <a class="social-info">
+                                                                <span class="lnr lnr-heart"></span>
+                                                                <p class="hover-text">Wishlist</p>
+                                                            </a>
+                                                            <a class="social-info">
+                                                                <span class="lnr lnr-sync"></span>
+                                                                <p class="hover-text">compare</p>
+                                                            </a>
+                                                            <a class="social-info">
+                                                                <span class="lnr lnr-move"></span>
+                                                                <p class="hover-text">view more</p>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    <% end_loop %>
+                                </div>
+                            </div>
+                        <% end_loop %>
+                    <% end_if %>
+                    
+        
+                    <div class="container">
+                        <% if $BestRating  %>
+                            <div class="d-flex justify-content-between mb-2">
+                                <h6>Best Rating</h6>
+                                <a href="#" style="color:#777777;">Lihat Semua ></a>
+                            </div>
+                            <div class="row">
+                                <% loop $BestRating.Limit(4) %>
+                                        <a href="{$BaseHref}/productdetails/view/$ID">
+                                            <div class="col-lg-3 col-md-4 col-sm-6  ">
+                                                <div class="single-product">
+                                                    <% with $ProductImages.First %>
+                                                        <img src="$URL" class="img-fluid" style="object-fit: cover; aspect-ratio: 4/3;">
+                                                    <% end_with %>
+                                                    <div class="product-details">
+                                                        <h6>$Title</h6>
+                                                        <div class="price">
+                                                            <% if $Promotion %>
+                                                                <h6>$minPriceDiscounted</h6>
+                                                                <h6 class="l-through">$minPrice</h6>
+                                                            <% else %>
+                                                                <h6>$minPrice</h6>
+                                                            <% end_if %>
+                                                        </div>
+                                                        <div class="prd-bottom">
+                
+                                                            <a  class="social-info">
+                                                                <span class="ti-bag"></span>
+                                                                <p class="hover-text">add to bag</p>
+                                                            </a>
+                                                            <a  class="social-info">
+                                                                <span class="lnr lnr-heart"></span>
+                                                                <p class="hover-text">Wishlist</p>
+                                                            </a>
+                                                            <a  class="social-info">
+                                                                <span class="lnr lnr-sync"></span>
+                                                                <p class="hover-text">compare</p>
+                                                            </a>
+                                                            <a  class="social-info">
+                                                                <span class="lnr lnr-move"></span>
+                                                                <p class="hover-text">view more</p>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    <% end_loop %>
+                            </div>
+                        <% end_if %>
                     </div>
                 </div>
                 <%-- Product --%>
@@ -363,47 +688,52 @@
                             <section class="lattest-product-area pb-40 category-list">
                                 <div class="row">
                                     <!-- single product -->
-                                     <% loop $PaginatedProduct %>
-                                        <div class="col-lg-4 col-md-6">
-                                            <div class="single-product">
-                                                <a href="{$BaseHref}/productdetails/view/$ID">
-                                                <% with $ProductImages.First %>
-                                                    <img src="$URL" class="img-fluid" style="object-fit: cover; aspect-ratio: 4/3">
-                                                <% end_with %>
-                                                </a>
-                                                <div class="product-details">
-                                                    <h6>$Title</h6>
-                                                    <div class="price">
-                                                        <% if $Promotion %>
-                                                            <h6>$minPriceDiscounted</h6>
-                                                            <h6 class="l-through">$minPrice</h6>
-                                                        <% else %>
-                                                            <h6>$minPrice</h6>
-                                                        <% end_if %>
-                                                    </div>
-                                                    <div class="prd-bottom">
-                    
-                                                        <a  class="social-info">
-                                                            <span class="ti-bag"></span>
-                                                            <p class="hover-text">add to bag</p>
-                                                        </a>
-                                                        <a  class="social-info">
-                                                            <span class="lnr lnr-heart"></span>
-                                                            <p class="hover-text">Wishlist</p>
-                                                        </a>
-                                                        <a class="social-info">
-                                                            <span class="lnr lnr-sync"></span>
-                                                            <p class="hover-text">compare</p>
-                                                        </a>
-                                                        <a  class="social-info">
-                                                            <span class="lnr lnr-move"></span>
-                                                            <p class="hover-text">view more</p>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                     <% end_loop %>
+                                     <% if $PaginatedProduct %>
+                                        
+                                        <% loop $PaginatedProduct %>
+                                           <div class="col-lg-4 col-md-6">
+                                               <div class="single-product">
+                                                   <a href="{$BaseHref}/productdetails/view/$ID">
+                                                   <% with $ProductImages.First %>
+                                                       <img src="$URL" class="img-fluid" style="object-fit: cover; aspect-ratio: 4/3">
+                                                   <% end_with %>
+                                                   </a>
+                                                   <div class="product-details">
+                                                       <h6>$Title</h6>
+                                                       <div class="price">
+                                                           <% if $Promotion %>
+                                                               <h6>$minPriceDiscounted</h6>
+                                                               <h6 class="l-through">$minPrice</h6>
+                                                           <% else %>
+                                                               <h6>$minPrice</h6>
+                                                           <% end_if %>
+                                                       </div>
+                                                       <div class="prd-bottom">
+                       
+                                                           <a  class="social-info">
+                                                               <span class="ti-bag"></span>
+                                                               <p class="hover-text">add to bag</p>
+                                                           </a>
+                                                           <a  class="social-info">
+                                                               <span class="lnr lnr-heart"></span>
+                                                               <p class="hover-text">Wishlist</p>
+                                                           </a>
+                                                           <a class="social-info">
+                                                               <span class="lnr lnr-sync"></span>
+                                                               <p class="hover-text">compare</p>
+                                                           </a>
+                                                           <a  class="social-info">
+                                                               <span class="lnr lnr-move"></span>
+                                                               <p class="hover-text">view more</p>
+                                                           </a>
+                                                       </div>
+                                                   </div>
+                                               </div>
+                                           </div>
+                                        <% end_loop %>
+                                        <% else %>
+                                            
+                                     <% end_if %>
                             </section>
                             <!-- End Best Seller -->
                             <!-- Start Filter Bar -->
@@ -442,4 +772,24 @@
 <% end_if %>
 <script>
     $('.nav-item#shop').addClass('active');
+    function timeSince(date) {
+        var seconds = Math.floor(((new Date().getTime()/1000) - date)),
+        interval = Math.floor(seconds / 31536000);
+        
+        if (interval > 1) return interval + "y";
+        
+        interval = Math.floor(seconds / 2592000);
+        if (interval > 1) return interval + "m";
+        
+        interval = Math.floor(seconds / 86400);
+        if (interval >= 1) return interval + "d";
+        
+        interval = Math.floor(seconds / 3600);
+        if (interval >= 1) return interval + "h";
+        
+        interval = Math.floor(seconds / 60);
+        if (interval > 1) return interval + " m";
+        
+        return Math.floor(seconds) + "s";
+      }
 </script>

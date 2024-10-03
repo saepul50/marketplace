@@ -9,7 +9,8 @@
         "silverstripe/recipe-cms": "~5.2.0@stable",
         "silverstripe-themes/simple": "~3.3.1@stable",
         "silverstripe/login-forms": "~5.2.0@stable",
-        "sheadawson/silverstripe-dependentdropdownfield": "^3.0"
+        "sheadawson/silverstripe-dependentdropdownfield": "^3.0",
+        "silvershop/silverstripe-hasonefield": "^4.0"
     },
     "require-dev": {
         "phpunit/phpunit": "^9.6"

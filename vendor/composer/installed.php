@@ -3,7 +3,7 @@
         'name' => 'silverstripe/installer',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '6314d9fb9f565823ce610d9cd9dfd29d56f305b9',
+        'reference' => '1ef82246405edc1585c8cd6c076e185a8a6be629',
         'type' => 'silverstripe-recipe',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -90,6 +90,12 @@
             'install_path' => __DIR__ . '/../guzzlehttp/psr7',
             'aliases' => array(),
             'dev_requirement' => false,
+        ),
+        'hchokshi/silverstripe-hasonefield' => array(
+            'dev_requirement' => false,
+            'replaced' => array(
+                0 => '*',
+            ),
         ),
         'intervention/image' => array(
             'pretty_version' => '2.7.2',
@@ -571,6 +577,15 @@
             'aliases' => array(),
             'dev_requirement' => false,
         ),
+        'silvershop/silverstripe-hasonefield' => array(
+            'pretty_version' => '4.0.1',
+            'version' => '4.0.1.0',
+            'reference' => 'ac9184afc05378773347d06866e8b129aea2c9bf',
+            'type' => 'silverstripe-vendormodule',
+            'install_path' => __DIR__ . '/../silvershop/silverstripe-hasonefield',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
         'silverstripe-themes/simple' => array(
             'pretty_version' => '3.3.2',
             'version' => '3.3.2.0',
@@ -673,7 +688,7 @@
         'silverstripe/installer' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '6314d9fb9f565823ce610d9cd9dfd29d56f305b9',
+            'reference' => '1ef82246405edc1585c8cd6c076e185a8a6be629',
             'type' => 'silverstripe-recipe',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

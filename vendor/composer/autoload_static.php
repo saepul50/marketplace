@@ -113,6 +113,7 @@ class ComposerStaticInitf73c716c6c95b927e7c2bbb4085d0b13
             'SilverStripe\\Admin\\Tests\\Behat\\Context\\' => 39,
             'SilverStripe\\Admin\\Tests\\' => 25,
             'SilverStripe\\Admin\\' => 19,
+            'SilverShop\\HasOneField\\' => 23,
             'Sheadawson\\DependentDropdown\\Tests\\' => 35,
             'Sheadawson\\DependentDropdown\\' => 29,
         ),
@@ -512,6 +513,10 @@ class ComposerStaticInitf73c716c6c95b927e7c2bbb4085d0b13
         array (
             0 => __DIR__ . '/..' . '/silverstripe/admin/code',
             1 => __DIR__ . '/..' . '/silverstripe/admin/_legacy',
+        ),
+        'SilverShop\\HasOneField\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/silvershop/silverstripe-hasonefield/src',
         ),
         'Sheadawson\\DependentDropdown\\Tests\\' => 
         array (

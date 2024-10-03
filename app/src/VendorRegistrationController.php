@@ -96,8 +96,16 @@ class VendorRegistrationController extends PageController{
                     }
                     $vendor->ProvinsiID = $data['VendorProv'];
                     $vendor->RegencyID = $data['VendorReg'];
-                    $vendor->Postal = $data['VendorPost'];
+                    $vendor->Postal = $data['VendorPost']; 
+                    
                     $vendor->write();
+                    $group = Group::get()->filter('Title', 'Seller')->first();
+                                if ($group) {
+                                    // Add the current user to the 'Seller' group
+                                    $member->Groups()->add($group);
+                                    $member->VendorID = $vendor->ID;
+                                    $member->write();
+                                }  
                     return json_encode(['success' => true, 'message' => 'Registrasi vendor berhasil!']);
                 } else {
                     return json_encode(['success' => false, 'message' => 'Kode OTP telah kedaluwarsa']);
@@ -110,12 +118,7 @@ class VendorRegistrationController extends PageController{
     }
     public function codeotp(HTTPRequest $request){
         $member = Security::getCurrentUser();
-        $group = Group::get()->filter('Title', 'Seller')->first();
-        if ($group) {
-            // Add the current user to the 'Seller' group
-            $member->Groups()->add($group);
-            $member->write();
-        }    
+         
         // Debug::show($member->ID);
         // die();
         $data = json_decode($request->postVar('DataVendor'),true);

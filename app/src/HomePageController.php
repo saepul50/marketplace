@@ -28,7 +28,9 @@ class HomePageController extends PageController{
         shuffle($products);
         return new ArrayList($products);
     }
-
+    public function Member() {
+        return Member::get();
+    }
     public function getMember(){
         return Security::getCurrentUser();
     }

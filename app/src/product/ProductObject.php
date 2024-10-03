@@ -1,5 +1,6 @@
 <?php
 use Sheadawson\DependentDropdown\Forms\DependentDropdownField;
+use SilverStripe\Forms\RequiredFields;
 use SilverStripe\ORM\DataObject;
 use SilverStripe\Assets\Image;
 use SilverStripe\Assets\File;
@@ -335,6 +336,41 @@ use SilverStripe\View\Requirements;
         }
     }
 
-
+    function getCMSValidator() {
+        return new ProductObject_Validator();
+    }
 
 }
+
+class ProductObject_Validator extends RequiredFields {
+
+    function php($data) {
+        $bRet = parent::php($data);
+
+        //do checking here
+        if (empty($data['Title']))
+            $this->validationError('Title','Title cannot be empty','required');
+
+        if (empty($data['Features']))
+            $this->validationError('Features','Features cannot be empty','required');
+
+        if (empty($data['Description']))
+            $this->validationError('Description','Description cannot be empty','required');
+        if (empty($data['Rating']))
+            $this->validationError('Rating','Rating cannot be empty','required');        
+        if (empty($data['ProductImages']))
+            $this->validationError('ProductImages','ProductImages cannot be empty','required');
+
+        if (empty($data['ProductBrandsID']))
+                    $this->validationError('ProductBrandsID','ProductBrandsID cannot be empty','required');
+        if (empty($data['ProductCategoryID']))
+                    $this->validationError('ProductCategoryID','ProductCategoryID cannot be empty','required');
+        if (empty($data['ProductVariants']))
+                    $this->validationError('ProductVariants','ProductVariants cannot be empty','required');
+        if (empty($data['ProductImages']))
+                    $this->validationError('ProductImages','ProductImages cannot be empty','required');
+
+        return count($this->getErrors());
+    }
+}
+

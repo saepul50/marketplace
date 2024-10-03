@@ -13,7 +13,8 @@ class MyMemberExtension extends DataExtension
     ];
     
     private static $has_one = [
-        'ProfileImage' => Image::class
+        'ProfileImage' => Image::class,
+        'Vendor' => Vendor::class
     ];
 
     private static $owns = [

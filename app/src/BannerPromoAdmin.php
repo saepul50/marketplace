@@ -35,4 +35,24 @@ class BannerPromoAdmin extends ModelAdmin{
     //     $modelClass = $this->modelClass;
 
     // }
+
+
+    
+    public function onBeforeWrite()
+    {
+        parent::onBeforeWrite();
+        $member = Security::getCurrentUser();
+        $vendor = Vendor::get()->filter('OwnerID', $member->ID)->first();
+        // Debug::show($vendor);
+        if (!$this->ID) {
+            if ($member = Security::getCurrentUser()) {
+                $this->VendorID = $vendor->ID;
+
+            }else{
+                user_error('No vendor found for this member', E_USER_WARNING); 
+            }
+            
+        }
+       
+    }
 }
