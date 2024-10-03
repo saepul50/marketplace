@@ -162,12 +162,12 @@
                     <div class="d-flex align-items-center" style="gap: 8px;">
                         <i class='bx bxs-star' style="color: #FDD835; font-size:17px"></i>
                         <p class="m-0">Rating :</p>
-                        <p class="m-0">10</p>
+                        <p class="m-0">$OverralAverage</p>
                     </div>
                     <div class="d-flex align-items-center" style="gap: 8px;">
                         <i class='bx bx-log-in' style="font-size:17px"></i>
                         <p class="m-0">Bergabung :</p>
-                        <p class="m-0">10 Tahun lalu</p>
+                        <p class="m-0" data-date="$Vendor.Created" id="since"></p>
                     </div>
                 </div>
             </div>
@@ -773,23 +773,30 @@
 <script>
     $('.nav-item#shop').addClass('active');
     function timeSince(date) {
-        var seconds = Math.floor(((new Date().getTime()/1000) - date)),
-        interval = Math.floor(seconds / 31536000);
-        
-        if (interval > 1) return interval + "y";
-        
-        interval = Math.floor(seconds / 2592000);
-        if (interval > 1) return interval + "m";
-        
-        interval = Math.floor(seconds / 86400);
-        if (interval >= 1) return interval + "d";
-        
-        interval = Math.floor(seconds / 3600);
-        if (interval >= 1) return interval + "h";
-        
-        interval = Math.floor(seconds / 60);
-        if (interval > 1) return interval + " m";
-        
-        return Math.floor(seconds) + "s";
-      }
+    const now = new Date();
+    const seconds = Math.floor((now - date) / 1000);
+
+    const intervals = {
+        tahun: 31536000,
+        bulan: 2592000,
+        hari: 86400,
+        jam: 3600,
+        menit: 60,
+    };
+
+    for (const [unit, value] of Object.entries(intervals)) {
+        const timePassed = Math.floor(seconds / value);
+        if (timePassed >= 1) {
+            return `${timePassed} ${unit}${timePassed > 1 ? '' : ''} lalu`;
+        }
+    }
+
+    return "just now";
+    }
+
+    const event = document.querySelector('#since');
+    const inputDate = new Date((event.dataset.date).replace(' ', 'T'));
+    const pastDate = new Date(inputDate);  
+    var ss = timeSince(pastDate);
+    event.textContent = ss;
 </script>

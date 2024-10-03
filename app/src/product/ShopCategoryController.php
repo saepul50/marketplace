@@ -17,7 +17,7 @@ use SilverStripe\View\ArrayData;
             $brandFilter = $request->getVar('filter');
             $subCategoryFilter = $request->getVar('subcategory');
             $pagelength = $request->getSession()->get('PageLength');
-            
+            $mainsearch = ProductObject::get();
             $categories = ShopCategoryObject::get();
             $subCategoryList = ShopSubCategoryObject::get();
             $brandList = ProductBrandObject::get();
@@ -62,7 +62,8 @@ use SilverStripe\View\ArrayData;
                 'CurrentFilter' => $brandFilter,
                 'CurrentLength' => $pagelength,
                 'CurrentSort' => $sortOption,
-                'CurrentSubCategory' => $subCategoryFilter
+                'CurrentSubCategory' => $subCategoryFilter,
+                'MainSearch' => $mainsearch
             ];
         }
 

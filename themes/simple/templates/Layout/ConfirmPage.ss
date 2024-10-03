@@ -27,6 +27,7 @@
    .five {
       color: #FBD600;
    }
+   
 </style>
 <!-- Start Banner Area -->
 <section class="banner-area organic-breadcrumb"
@@ -1055,7 +1056,7 @@
                      <span id="rating">0</span>/5
                   </div>
                   <div class="stars pl-4" style="margin-top: -.3rem" id="stars">
-                     <span class="star" data-value="1">★</span>
+                     <span class="star " data-value="1">★</span>
                      <span class="star" data-value="2">★</span>
                      <span class="star" data-value="3">★</span>
                      <span class="star" data-value="4">★</span>

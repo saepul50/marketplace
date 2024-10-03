@@ -39,10 +39,40 @@ class VendorPageController extends PageController {
             $productQuery = ProductObject::get()->filter('VendorID', $vendor->ID);
             $ProductObject = ProductObject::get()->filter('VendorID', $vendor->ID);
             $count = $productQuery->count();
+            $bestseller = ProductObject::get()->filter('VendorID', $vendor->ID)->sort('QuantitySold', 'DESC');
+            $bestrating = ProductObject::get()->filter('VendorID', $vendor->ID)->sort('Rating', 'DESC');
+            $pagelength = $request->getSession()->get('PageLength');
+            $sortOption = $request->getVar('sort');
+            $brandFilter = $request->getVar('filter');
+            $subCategoryFilter = $request->getVar('subcategory');
+            $ratingsData = ProductRating::get()->filter('ProductObjectID', $productQuery->column('ID'));
 
-
-
-
+            $productRatings = [];
+            foreach ($ratingsData as $rating) {
+                $productId = $rating->ProductObjectID;
+                if (!isset($productRatings[$productId])) {
+                    $productRatings[$productId] = [
+                        'Ratings' => [],
+                        'Count' => 0,
+                        'Average' => 0, 
+                    ];
+                }
+                $productRatings[$productId]['Ratings'][] = $rating->Rating;
+                $productRatings[$productId]['Count']++;
+            }
+            $totalAverageSum = [];
+            $totalCount = 0;
+            foreach ($productRatings as $productId => &$data) {
+                if ($data['Count'] > 0) {
+                    $data['Average'] = array_sum($data['Ratings']) / $data['Count'];
+                    $totalAverageSum = $data['Average']; 
+                    $totalCount++;
+                } else {
+                    $data['Average'] = 0;
+                }
+            }
+            $overallAverage =  $totalAverageSum / $totalCount;
+            $formatave = number_format($overallAverage, 2);
             $promo = PromoToko::get()->filter(['VendorID'=> $vendor->ID,'ExpDate:GreaterThanOrEqual' => time()]);
             $banner = BannerPromo::get()->filter('VendorID', $vendor->ID)->column('BannerPlacesID'); 
             // Debug::show($banner);
@@ -71,15 +101,8 @@ class VendorPageController extends PageController {
                 $subBanner3Promos =  null ;
             }
 
-           
-            $member = Member::get()->filter('ID' , 2)->first();
-            Debug::show($member);
-            $bestseller = ProductObject::get()->filter('VendorID', $vendor->ID)->sort('QuantitySold', 'DESC');
-            $bestrating = ProductObject::get()->filter('VendorID', $vendor->ID)->sort('Rating', 'DESC');
-            $pagelength = $request->getSession()->get('PageLength');
-            $sortOption = $request->getVar('sort');
-            $brandFilter = $request->getVar('filter');
-            $subCategoryFilter = $request->getVar('subcategory');
+
+        
     
             if ($brandFilter && $brandFilter !== 'all') {
                 $productQuery = $productQuery->filter('ProductBrandsID', $brandFilter);
@@ -128,11 +151,12 @@ class VendorPageController extends PageController {
                 'CurrentSort' => $sortOption,
                 'CurrentSubCategory' => $subCategoryFilter,
                 'Vendor' => $vendor,
-                'Member' => $member,
                 'Count' => $count,
                 'Promo' => $promo,
+                'OverralAverage' => $formatave,
                 'BestSeller' => $bestseller,
                 'BestRating' => $bestrating,
+                'ProductRating' => $productRatings,
                 'MainBannerPromos' => $mainBannerPromos,
                 'SubBannerPromos' => $subBannerPromos,
                 'SubBanner2Promos' => $subBanner2Promos,
