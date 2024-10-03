@@ -37,21 +37,6 @@
                             </select>
                         </form>
                     </div>
-                    <div class="sorting">
-                        <form method="post" action="{$Basehref}/marketplace/shopresult">
-                            <div class="input-group">
-                                <input type="text" class="form-control" id="search" name="search"placeholder="Search Product" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Search Posts'">
-                                <span class="input-group-btn">
-                                    <button class="btn btn-default" type="submit"><i class="lnr lnr-magnifier"></i></button>
-                                </span>
-                            </div><!-- /input-group -->
-                            <% if $ActiveFilter %>
-                                <% loop $ActiveFilter %>
-                                <p class="ml-3">Searching for $Label</p>
-                                <% end_loop %>
-                            <% end_if %>
-                        </form>
-                    </div>
                     <% with  $PaginatedProduct %>
                         <nav class="blog-pagination justify-content-center d-flex " style="left: 50%;padding: 0 !important;">
                             <% if $MoreThanOnePage %>

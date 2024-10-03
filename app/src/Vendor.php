@@ -26,7 +26,7 @@ use SilverStripe\Security\Member;
             'AboutFile' => File::class,
             'Products' => ProductObject::class,
             'PromoToko' => PromoToko::class,
-            'BannerPromo' => BannerPromo::class
+            'Chat' => ChatObject::class
         ];
 
         public function onBeforeWrite() {

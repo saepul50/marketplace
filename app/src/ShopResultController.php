@@ -11,6 +11,7 @@ class ShopResultController extends PageController{
         $sortOption = $request->getVar('sort');
         $brandFilter = $request->getVar('filter');
         $subCategoryFilter = $request->getVar('subcategory');
+        $search = $request->getVar('keywords');
         $pagelength = $request->getSession()->get('PageLength');
         
         $categories = ShopCategoryObject::get();
@@ -18,23 +19,31 @@ class ShopResultController extends PageController{
         $brandList = ProductBrandObject::get();
         
         $productQuery = ProductObject::get();
-        
+        $activeFilters = ArrayList::create();
+
         if ($brandFilter && $brandFilter !== 'all') {
             $productQuery = $productQuery->filter('ProductBrandsID', $brandFilter);
+            $activeFilters->push(ArrayData::create([
+                'Label' => ProductBrandObject::get()->byID($brandFilter)->Title
+            ]));
         }
         if ($subCategoryFilter && $subCategoryFilter !== 'all') {
             $productQuery = $productQuery->filter('ProductSubCategory.ID', $subCategoryFilter);
-        }
-        if ($search = $request->getVar('search')) {
-            $activeFilters = ArrayList::create();
             $activeFilters->push(ArrayData::create([
-                'Label' => "'$search'"
+                'Label' => ShopSubCategoryObject::get()->byID($subCategoryFilter)->Title
             ]));
+        }
+        if ($search) {
             $productQuery = $productQuery->filter([
                 'Title:PartialMatch' => $search
             ]);
+            $activeFilters->push(ArrayData::create([
+                'Label' => "$search"
+            ]));
         }
+
         $products = $productQuery->toArray();
+        
         if ($sortOption == 2) {
             usort($products, function($a, $b) {
                 return $a->minPriceDiscountedSort() <=> $b->minPriceDiscountedSort();
@@ -57,7 +66,8 @@ class ShopResultController extends PageController{
             'CurrentFilter' => $brandFilter,
             'CurrentLength' => $pagelength,
             'CurrentSort' => $sortOption,
-            'CurrentSubCategory' => $subCategoryFilter
+            'CurrentSubCategory' => $subCategoryFilter,
+            'ActiveFilters' => $activeFilters
         ];
     }
 
