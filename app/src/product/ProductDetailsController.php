@@ -41,11 +41,12 @@ class ProductDetailsController extends PageController
     }
     public function view(HTTPRequest $request)
     {
-        $members = Security::getCurrentUser();
+        $member = Security::getCurrentUser();
         $id = $request->param('ID');
     
     
         $product = ProductObject::get()->byID($id);
+        $vendor = $product->Vendor;
         $variant = ProductVariantObject::get()->filter('ProductID', $product->ID);
         $comments = ProductComment::get()->filter('ProductObjectID', $id);
         $rating = ProductRating::get()->filter('ProductObjectID', $id);
@@ -82,7 +83,7 @@ class ProductDetailsController extends PageController
         }
         $membersID =  $rating->column('MemberID');
         if(!empty($membersID)){
-        $members = Member::get()->filter('ID', $membersID);
+            $members = Member::get()->filter('ID', $membersID);
         } else {
             $members = null;
         }
@@ -93,6 +94,7 @@ class ProductDetailsController extends PageController
             'Comment' => $paginatedcomment,
             'Ratings' => $paginatedRatings,
             'Members' => $members,
+            'Member' => $member,
             'Count' => $count,
             'Five' => $five,
             'Four' => $four,
@@ -101,6 +103,7 @@ class ProductDetailsController extends PageController
             'One' => $one,
             'Ave' => $formatave,
             'ID' => $id,
+            'Vendor' => $vendor
         ])->renderWith(['ProductDetails', 'Page']);
     }
     

@@ -25,7 +25,8 @@ use SilverStripe\Security\Member;
         private static $has_many = [
             'AboutFile' => File::class,
             'Products' => ProductObject::class,
-            'PromoToko' => PromoToko::class
+            'PromoToko' => PromoToko::class,
+            'Chat' => ChatObject::class
         ];
         public function onBeforeWrite() {
             parent::onBeforeWrite();

@@ -169,6 +169,7 @@ $(document).ready(function () {
     window.location.href = window.location.pathname + '?' + currentParams.toString();
   });
 
+
   const events = document.querySelectorAll('.event');
   events.forEach(event => {
     const icon = '<i class="lnr lnr-calendar-full"></i>'
@@ -964,7 +965,44 @@ $('#searchForm').submit(function(e) {
   e.preventDefault();
   var searchkey = $('#search_input').val();
   var searchph = $('#search_input').attr('placeholder');
+  var currentParams = new URLSearchParams(window.location.search);
+  if (searchph){
+    if (searchph === 'SearchHere'){
+      return;
+    } else{
+      currentParams.set('keywords', searchph);
+      window.location.href = '/marketplace/shopresult' + '?' + currentParams.toString();
+    }
+  } else{
+    currentParams.set('keywords', searchkey);
+    window.location.href = '/marketplace/shopresult' + '?' + currentParams.toString();
+  }
   
+});
+    /*==========================
+      javaScript for sticky header
+        ============================*/
+          $(".sticky-header").sticky();
+          
+            /*=================================
+              Javascript for banner area carousel
+                ==================================*/
+                  $(".active-banner-slider").owlCarousel({
+                      items: 1,
+                          autoplay: true,
+                              autoplayTimeout: 3000,
+                                  loop: true,
+                                      nav: true,
+                                          navText: [
+                                                "<img src='_resources/themes/simple/images/banner/prev.png'>",
+                                                      "<img src='_resources/themes/simple/images/banner/next.png'>"
+                                                          ],
+                                                              dots: false
+                                                                });
+                                                                
+                                                                  /*=================================
+                                                                  ');
+
 });
   /*==========================
   javaScript for sticky header
@@ -2235,7 +2273,7 @@ $('#searchForm').submit(function(e) {
     var weight = $('#fulldata .weight').text();
     // console.log(idRegency)
     $.ajax({
-      url: '/marketplace/productcheckout/rajoCost',
+      url: '/marketplace/productcheckout/rajoCot',
       type: 'POST',
       data: {
         Courir: courir,
