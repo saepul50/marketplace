@@ -571,7 +571,91 @@ $(document).ready(function () {
   })
 
   //product
+  $('.btn-outline-warning').on('click', function(event) {
+    event.preventDefault();
+    var button = $(this); 
+    var title = button.data('title');
+    var image = button.data('image');
+    var variant = button.data('variant');
+    var get = button.data('get');
+    var id = button.data('id');
+    var button = $('.showModalButton').data('id');
+    var Filter =  $("#ID").val();
+    $('#ID').val(id);
+    $('#title').html(title);
+    $('#variants').html(variant);
+    $('#image').attr('src', image);
+    $('#OrderID').val(get);
+    $('#exampleModalCenter').modal('show');
+    });
   
+    $("#reviewform").submit(function (event) {
+      event.preventDefault();
+      const rating = document.getElementById("ratingValue");
+      // console.log(button);
+      let angka = rating.getAttribute('value');
+      console.log(angka);
+      if(parseInt(angka) === 0 ){
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Input Rating First",
+          showConfirmButton: false,
+        });
+      } else {
+            $.post("/marketplace/productdetails/review", {
+                Review: $("#reviewmsg").val(),  
+                Rating: $("#ratingValue").val(),
+                ID: $("#ID").val(),
+              })
+              .done(function (data) {
+                var response = JSON.parse(data);
+                var Filter =  $("#ID").val();
+                var OrderID =  $("#OrderID").val();
+                
+                if (response.success) {
+                  $('.showModalButton[data-get="' + OrderID + '"][data-id="' + Filter+'"]').prop('disabled', true).text('Submitted'); 
+                  localStorage.setItem('reviewsubmit' + OrderID + Filter, true);
+                  Swal.fire({
+                        title: "SUCCESS",
+                        text: "Review submitted successfully!",
+                        icon: "success",
+                        timer: 1000,
+                      });
+                      $('#exampleModalCenter').removeClass('show').attr("aria-hidden", "true");
+                      $('.modal-backdrop').removeClass('show');
+                      document.getElementById('reviewmsg').value=null;
+                      stars.forEach((s) => s.classList.remove("one", 
+                        "two", 
+                        "three", 
+                        "four", 
+                        "five", 
+                        "selected"));
+                        setInterval(href, 1500);
+  
+                      function href() {
+                        location.reload();
+                      }
+                } else {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Oops...",
+                        text: response.message,
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                }
+            })
+            .fail(function () {
+                Swal.fire({
+                    icon: "error",
+                    title: "Error",
+                    text: "There was an issue submitting the review. Please try again later.",
+                    confirmButtonColor: "#d33"
+                });
+            });
+          }
+        });
   // PRODUCT
   $("#kkls").submit(function (event) {
     event.preventDefault();
