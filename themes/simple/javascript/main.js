@@ -13,21 +13,46 @@ stars.forEach((star) => {
       "three",
       "four",
       "five"));
-
-    // Add the appropriate class to 
-    // each star based on the selected star's value
     stars.forEach((s, index) => {
       if (index < value) {
         s.classList.add(getStarColorClass(value));
       }
     });
-
-    // Remove "selected" class from all stars
     stars.forEach((s) => s.classList.remove("selected"));
-    // Add "selected" class to the clicked star
     star.classList.add("selected");
   });
 });
+stars.forEach(star => {
+  star.addEventListener('click', function () {
+    const rating = this.getAttribute('data-value');
+    ratingDisplay.textContent = rating; 
+    ratingValueInput.value = rating; 
+    stars.forEach(s => {
+      s.classList.remove('selected');
+    });
+    for (let i = 0; i < rating; i++) {
+      stars[i].classList.add('selected');
+    }
+  });
+});
+function getStarColorClass(value) {
+  switch (value) {
+    case 1:
+      return "one";
+    case 2:
+      return "two";
+    case 3:
+      return "three";
+    case 4:
+      return "four";
+    case 5:
+      return "five";
+    default:
+      return "";
+  }
+}
+
+
 $(document).ready(function () {
   "use strict";
   $("#filtera").change(function (event) {
@@ -1780,7 +1805,7 @@ $('#searchForm').submit(function(e) {
     }
   });
   $("#proceedCheckout").on('click', function (e) {
-    // console.log("Tombol proceedCheckout diklik");
+    // console.log("ha");
     e.preventDefault();
     var selectedProducts = [];
     var formData = new FormData();
@@ -2600,7 +2625,48 @@ $('#searchForm').submit(function(e) {
     var id = $(this).data('id');
     window.location.href = '/marketplace/venn/' + id + '?filter=all';
   });
+  $('#ChatBtn').on('click', function (e) {
+    e.preventDefault();
+    var ownerID = $(this).data('owner');
+    var userID = $(this).data('user');
+      window.location.href = '/marketplace/chat/?m=' + userID + 'l' + ownerID;
+  });
+  $('#SendChat').submit(function (e) {
+    e.preventDefault();
+    
+    var message = $('input[name="Message"]').val();
+    var receiverID = $('.sidechat').data('receiver');
+    var senderID = $('.sidechat').data('sender');
+    var unichat =  '?m=' + senderID + 'l' + receiverID;
+    // console.log(message)
+    // console.log(receiverID)
+    // return false;
+    $.post("/marketplace/chat/sendMessage", {
+      Message: message,
+      ReceiverID: receiverID,
+    })
+    .done(function (data) {
+      var response = JSON.parse(data);
+      // return false;
+      if (response.success) {
+        window.location.href = '/marketplace/chat/' + unichat;
+      } else {
+        alert('Fail');
+      }
 
+    }).fail(function () {
+      alert('error');
+    });
+  });
+  $('.sidechat').on('click', function() {
+    $('.sidechat').removeClass('selected');
+
+    $(this).addClass('selected');
+    var receiver = $(this).data('receiver');
+    var sender = $(this).data('sender');
+    window.location.href = '/marketplace/chat/?m=' + sender + 'l' + receiver;
+  });
+  
   const urlParams = new URLSearchParams(window.location.search);
   if (urlParams.has('detailOrder')) {
     toggleOrderDetail(true);
@@ -2734,34 +2800,3 @@ updateFinalPrice();
 const events = document.querySelector('.event');
 
 
-stars.forEach(star => {
-  star.addEventListener('click', function () {
-    const rating = this.getAttribute('data-value');
-    ratingDisplay.textContent = rating; // Update the displayed rating
-    ratingValueInput.value = rating;    // Set the hidden input value for form submission
-
-    // Highlight the selected stars
-    stars.forEach(s => {
-      s.classList.remove('selected');
-    });
-    for (let i = 0; i < rating; i++) {
-      stars[i].classList.add('selected');
-    }
-  });
-});
-function getStarColorClass(value) {
-  switch (value) {
-    case 1:
-      return "one";
-    case 2:
-      return "two";
-    case 3:
-      return "three";
-    case 4:
-      return "four";
-    case 5:
-      return "five";
-    default:
-      return "";
-  }
-}

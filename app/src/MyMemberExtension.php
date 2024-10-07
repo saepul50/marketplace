@@ -17,6 +17,10 @@ class MyMemberExtension extends DataExtension
         'Vendor' => Vendor::class
     ];
 
+    private static $has_many =[
+        'SentMessages' => ChatObject::class . '.Sender',
+        'ReceivedMessages' => ChatObject::class . '.Receiver'
+    ];
     private static $owns = [
         'ProfileImage'
     ];

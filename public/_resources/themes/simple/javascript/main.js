@@ -1814,7 +1814,7 @@ $('#search_input').on('keydown', function (e) {
     }
   });
   $("#proceedCheckout").on('click', function (e) {
-    // console.log("Tombol proceedCheckout diklik");
+    // console.log("ha");
     e.preventDefault();
     var selectedProducts = [];
     var formData = new FormData();
@@ -2634,7 +2634,48 @@ $('#search_input').on('keydown', function (e) {
     var id = $(this).data('id');
     window.location.href = '/marketplace/venn/' + id + '?filter=all';
   });
+  $('#ChatBtn').on('click', function (e) {
+    e.preventDefault();
+    var ownerID = $(this).data('owner');
+    var userID = $(this).data('user');
+      window.location.href = '/marketplace/chat/?m=' + userID + 'l' + ownerID;
+  });
+  $('#SendChat').submit(function (e) {
+    e.preventDefault();
+    
+    var message = $('input[name="Message"]').val();
+    var receiverID = $('.sidechat').data('receiver');
+    var senderID = $('.sidechat').data('sender');
+    var unichat =  '?m=' + senderID + 'l' + receiverID;
+    // console.log(message)
+    // console.log(receiverID)
+    // return false;
+    $.post("/marketplace/chat/sendMessage", {
+      Message: message,
+      ReceiverID: receiverID,
+    })
+    .done(function (data) {
+      var response = JSON.parse(data);
+      // return false;
+      if (response.success) {
+        window.location.href = '/marketplace/chat/' + unichat;
+      } else {
+        alert('Fail');
+      }
 
+    }).fail(function () {
+      alert('error');
+    });
+  });
+  $('.sidechat').on('click', function() {
+    $('.sidechat').removeClass('selected');
+
+    $(this).addClass('selected');
+    var receiver = $(this).data('receiver');
+    var sender = $(this).data('sender');
+    window.location.href = '/marketplace/chat/?m=' + sender + 'l' + receiver;
+  });
+  
   const urlParams = new URLSearchParams(window.location.search);
   if (urlParams.has('detailOrder')) {
     toggleOrderDetail(true);
