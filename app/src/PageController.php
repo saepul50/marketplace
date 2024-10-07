@@ -2,6 +2,7 @@
 
 namespace {
 
+use SilverStripe\Dev\Debug;
     use SilverStripe\CMS\Controllers\ContentController;
     use SilverStripe\Control\HTTPRequest;
     use SilverStripe\Security\Security;
@@ -28,14 +29,47 @@ namespace {
          * @var array
          */
         private static $allowed_actions = [
-            'ProductListSearch'
+            'ProductListSearch',
+            'nepo'
         ];
 
+        
         protected function init()
         {
             parent::init();
+            // $this->customise($this->nepo());
             // You can include any CSS or JS required by your project here.
             // See: https://docs.silverstripe.org/en/developer_guides/templates/requirements/
+        }
+        public function nepo(){
+            $member = Security::getCurrentUser();
+            // Debug::show($member);
+            if(!$member){
+                // Debug::show('ksdkadka');
+                $notif = null ;
+                return  [
+                    'Notif' => $notif
+                ];
+            }else{
+            $notifs = Notification::get()->sort('Created', 'DESC')->filter(['Notif' => 'Unread','CostumerName'=> $member->FirstName  ]);
+            $product = ProductCheckoutObject::get()->filter('HeaderCheckoutID', $notifs->ProductCheckoutHeaderID );
+            // $products = [];
+            // foreach($notifs as $notif){
+            //     $product = $notif;
+            //     $products = $product->Status;
+            //     }
+            }   
+            // Debug::show($product);
+            // Debug::show($notifs);
+            $status = $notifs->column('Status');
+            // Debug::show($status);
+            
+            return[
+                'Notif' => $notifs,
+                'Status' => $status,
+                'Product' => $product,
+                'Count' => $notifs->count(),
+            ];
         }
         public function CartData() {
             $member = Security::getCurrentUser();
@@ -46,7 +80,18 @@ namespace {
                 return $totalCart;
             }
             return null;
+        }    
+        public function CountNotif() {
+            $member = Security::getCurrentUser();
+            // Debug::show($member);
+            // die();
+            if ($member) {
+                $countnotif = Notification::get()->sort('Created', 'DESC')->filter(['Notif' => 'Unread','CostumerName'=> $member->FirstName  ])->count() ;
+                return $countnotif;
+            }
+            return null;
         }
+
         public function ProductListSearch(HTTPRequest $request) {
             $member = Security::getCurrentUser();
             if ($member) {
@@ -56,5 +101,7 @@ namespace {
             }
             return json_encode([]);
         }
+
+    
     }
 }

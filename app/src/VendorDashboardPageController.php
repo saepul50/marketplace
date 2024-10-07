@@ -13,10 +13,18 @@ use SilverStripe\Security\Security;
             if (!$vendor) {
                 return 'Anda belum membuat toko.';
             }
+            $data = $this->nepo(); // Call the nepo() method from PageController
 
             $products = $vendor->Products();
-            return $this->customise(['Vendor' => $vendor, 'Products' => $products])->renderWith(['VendorDashboard', 'Page']);
+            return $this->customise([
+                'Notif' => $data['Notif'],
+                'Product' => $data['Product'],
+                'Count' => $data['Count'],
+                'Vendor' => $vendor, 
+                'Products' => $products
+            ])->renderWith(['VendorDashboard', 'Page']);
         }
+
         public function addProduct(HTTPRequest $request){
             $member = Security::getCurrentUser();
             $vendor = Vendor::get()->filter(['OwnerID' => $member->ID])->first();

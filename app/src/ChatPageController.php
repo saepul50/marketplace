@@ -14,8 +14,13 @@ use SilverStripe\Security\Security;
             $chat = ChatObject::get();
             $memberID = $member->ID;
             // Debug::show($vendors);
-            // die();
+            // die();   
+            $data = $this->nepo(); // Call the nepo() method from PageController
+
             return $this->customise([
+                'Notif' => $data['Notif'],
+                'Product' => $data['Product'],
+                'Count' => $data['Count'],
                 'ChatID' => $id,
                 'Vendor' => $vendor,
                 'UserID' => $memberID,

@@ -87,8 +87,12 @@ class BlogPageController extends PageController
         if ($categori) {
             $categoriesWithCounts = BlogCategory::getCategoriesWithCounts();
         }
-    
+        $data = $this->nepo(); // Call the nepo() method from PageController
+
         return [
+            'Notif' => $data['Notif'],
+            'Product' => $data['Product'],
+            'Count' => $data['Count'],
             'BlogCategoriesWithCounts' => $categoriesWithCounts, // Ensure this only runs if categories exist
             'Result' => $paginated,
             'Latestpost' => BlogAdd::get()->sort('Created', 'DESC'),

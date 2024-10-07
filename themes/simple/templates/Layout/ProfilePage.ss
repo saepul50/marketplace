@@ -41,7 +41,7 @@
             </div>
         <% end_if %>
         <div class="py-3" style="background-color: #fff">
-            <a href="{$BaseHref}/history" class="d-flex justify-content-between align-items-center col-10"  style="color:black;">
+            <a href="{$BaseHref}/confirm" class="d-flex justify-content-between align-items-center col-10"  style="color:black;">
                 <div class="d-flex ml-2">
                     <span class="lnr lnr-history fs-1" style="color: darkblue; font-size: 26px;"></span>
                     <p class="ml-3 m-0">History Order</p>

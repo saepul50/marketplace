@@ -19,8 +19,33 @@
 			font-size: 14px;
 			font-weight: bold;
 		}
+
+		
 		#history_list li.selected{
 			background-color: #f5f5f5 !important;
+		}
+		a{
+			color:black !important;
+		}
+		.notip-item:hover{
+			background-color:whitesmoke;
+			color:black;
+		}
+		.badge {
+			position: absolute;
+			display: flex;
+			justify-content: center;
+			align-items: flex-start;
+			width: 18px;
+			height: 17px;
+			line-height: 0.8em !important;
+			top: 24px;
+			right: -7px;
+			background-color: red;
+			border-radius: 50%;
+			color: #fff !important;
+			font-size: 14px;
+			font-weight: bold;
 		}
 	</style>
 <header class="header_area sticky-header">
@@ -80,8 +105,71 @@
 							</a>
 						</li>
 						<li class="nav-item">
-							<button class="search" style=" outline: none !important; box-shadow: none;"><span class="lnr lnr-magnifier " id="search"></span></button>
-							</li>
+						<span class="search" style=" outline: none !important; box-shadow: none;"></span>
+							<span class="lnr lnr-magnifier " id="search"></span>
+						</li>
+						<li class="nav-item submenu dropdown">
+							<div class="cart">
+								<span class="ti-bell"><% if $CountNotif %><span class="badge">$CountNotif</span> <% else %>	 <% end_if %></span>
+							</div>
+							<div class="dropdown-menu dropdown-menu-right" id="fate" style=" width: 30rem;  padding-bottom: 0 !important;">
+									<h5 class="text-muted " style="padding:10px;">Notifikasi Baru Diterima</h5>
+									<% if  $nepo %>
+									<% loop $Notif.Limit(8) %>
+										<% if $Status == 'Dikemas' %>
+											<a href="{$BaseHref}/confirm/order/$Order/$ID?detailOrder=true">
+											<div class=" d-flex p-2  notip-item  mt-2">
+												<div class="content  d-flex justify-content-between " style="width:85%;">
+													<div style="inline-size: 100%; overflow-wrap: break-word;">
+														<h6 class="header fw-bol ml-2" style="font-weight:bold;">Pesanan Anda Sudah Dikemas Dan Siap Dikirim</h6>
+													</div>
+												</div>
+											</div>
+											</a>
+										<% else_if  $Status == 'Dikirim' %>
+											<a href="{$BaseHref}/confirm/order/$Order/$ID?detailOrder=true">
+											<div class=" d-flex    p-2  notip-item mt-2">
+												<div class="content  d-flex justify-content-between " style="width:85%;">
+													<div style="inline-size: 100%; overflow-wrap: break-word;">
+														<h6 class="header fw-bold ml-2" style="font-weight:bold;">Pesanan Anda Sudah Diberikan ke Jasa Pengantaran</h6>
+														
+													</div>
+												</div>
+											</div>
+											</a>
+										<% else_if  $Status == 'Selesai' %>
+											<a href="{$BaseHref}/confirm/order/$Order/$ID?detailOrder=true">
+											<div class=" d-flex   p-2 notip-item mt-2">
+												<div class="content  d-flex justify-content-between " style="width:85%;">
+													<div style="inline-size: 100%; overflow-wrap: break-word;">
+														<h6 class="header fw-bold ml-2" style="font-weight:bold;">Pesanan Anda Sudah Sampai Ditujuan </h6>
+														
+													</div>
+												</div>
+											</div>
+											</a>
+										<% else_if  $Status == 'Dibatalkan' %>
+											<a href="{$BaseHref}/confirm/order/$Order/$ID?detailOrder=true">
+											<div class=" d-flex  p-2 notip-item  mt-2">
+												<div class="content  d-flex justify-content-between " style="width:85%;">
+													<div style="inline-size: 100%; overflow-wrap: break-word;">
+														<h6 class="header fw-bold ml-2" style="font-weight:bold;">Waduh Maaf Ya Orderan Kamu Dibatalkan  </h6>
+
+													</div>
+												</div>
+											</div>
+											</a>
+										<% end_if %>
+									<% end_loop %>
+								
+								<% end_if %>
+								<a href="{$BaseHref}/usernotif" class="text-center " style="color:black;">
+									<div class="text-center" style="border-top: 1px solid rgba(0, 0, 0, .09);border-bottom: 1px solid rgba(0, 0, 0, .09);padding: 5px;">
+										Tampilkan Semua
+									</div>
+								</a>
+							</div>
+						</li>
 						</ul>
 					</div>
 				</div>
@@ -100,6 +188,9 @@
 			<div id="search_history" class="search_input pt-5" style="padding-bottom: .01rem; background-color: #fff; text-align: left; box-shadow: 0px 0px 5px #fff;">
 				<div class="container">
 					<ul id="history_list">
+						<% loop $ProductObjects %>
+							
+						<% end_loop %> 
 					</ul>
 				</div>
 			</div>

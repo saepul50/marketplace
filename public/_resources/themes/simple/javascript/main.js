@@ -3,6 +3,14 @@
 
 $(document).ready(function () {
   "use strict";
+
+  $(".notip").hover(function(){
+    $(".fate").fadeIn("fast");
+  })
+
+
+
+
   $("#filtera").change(function (event) {
     event.preventDefault(); // Prevents the form from doing a default refresh
     var selected = $("#filtera").val();
@@ -589,6 +597,19 @@ $(document).ready(function () {
     $('#exampleModalCenter').modal('show');
     });
   
+
+
+
+
+    $('#Nilai').on('click', function (event) {
+      event.preventDefault();
+      var button = $(this )
+      // var recipient = button.data('whatever')\
+      var id = button.data('id');
+      var order = button.data('get');
+      $('#ProductID').val(id);
+      $('#OrderID').val(order);
+    })
     $("#reviewform").submit(function (event) {
       event.preventDefault();
       const rating = document.getElementById("ratingValue");
@@ -606,7 +627,7 @@ $(document).ready(function () {
             $.post("/marketplace/productdetails/review", {
                 Review: $("#reviewmsg").val(),  
                 Rating: $("#ratingValue").val(),
-                ID: $("#ID").val(),
+                ID: $("#ProductID").val(),
               })
               .done(function (data) {
                 var response = JSON.parse(data);
@@ -2747,3 +2768,18 @@ updateFinalPrice();
 
 const events = document.querySelector('.event');
 
+// stars.forEach(star => {
+//   star.addEventListener('click', function() {
+//     const rating = this.getAttribute('data-value');
+//     ratingDisplay.textContent = rating; // Update the displayed rating
+//     ratingValueInput.value = rating;    // Set the hidden input value for form submission
+
+//     // Highlight the selected stars
+//     stars.forEach(s => {
+//       s.classList.remove('selected');
+//     });
+//     for (let i = 0; i < rating; i++) {
+//       stars[i].classList.add('selected');
+//     }
+//   });
+// });

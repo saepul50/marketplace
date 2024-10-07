@@ -140,8 +140,12 @@ class VendorPageController extends PageController {
                     'ProductCount' => $productCount
                 ]));
             }
+            $data = $this->nepo(); // Call the nepo() method from PageController
 
             return $this->customise([
+                // 'Notif' => $data['Notif'],
+                // 'Product' => $data['Product'],
+                // 'Counts' => $data['Count'],
                 'SubCategory' => $subCategoryList,
                 'Brand' => $brandsWithCount,
                 'Category' => $categories,

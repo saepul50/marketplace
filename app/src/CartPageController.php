@@ -19,6 +19,15 @@ class CartPageController extends PageController{
         'addcart' => true,
         'remove'
     ];
+    public function index() {
+        $data = $this->nepo(); // Call the nepo() method from PageController
+
+        return [
+            'Notif' => $data['Notif'],
+            'Product' => $data['Product'],
+            'Count' => $data['Count'],
+        ];
+    }
     public function getCart(){
         $member = Security::getCurrentUser();
         if ($member) {

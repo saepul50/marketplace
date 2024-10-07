@@ -13,6 +13,21 @@ class  LoginPageController extends PageController{
         'proseslogin',
         'prosesregistrasi',
     ];
+
+    public function index() {
+        $member = Security::getCurrentUser();
+        if($member){
+        $data = $this->nepo(); // Call the nepo() method from PageController
+
+        return [
+            'Notif' => $data['Notif'],
+            'Product' => $data['Product'],
+            'Count' => $data['Count'],
+        ];
+        } else{
+
+        }
+    }
     public function getMember() {
         $member = Security::getCurrentUser();
         if ($member) {

@@ -129,7 +129,7 @@
                                           <h5>x $ProductQuantity</h5>
                                        </td>
                                     <td class="col-1">
-                                       <button type="button" class="genric-btn primary-border showModalButton" style=""
+                                       <button type="button" class="genric-btn primary-border showModalButton" style="" id="Nilai"
                                           data-toggle="modal" data-target="#exampleModalCenter"
                                           data-title="$ProductTitle" data-get="$Up.OrderID" data-image="$ProductImage"
                                           data-variant="$ProductVariant" data-id="$ProductID"
@@ -356,7 +356,7 @@
                                        <h5>x $ProductQuantity</h5>
                                     </td>
                                     <td class="col-1">
-                                       <button type="button" class="genric-btn primary-border showModalButton" style=""
+                                       <button type="button" class="genric-btn primary-border showModalButton" style="" id="Nilai"
                                           data-toggle="modal" data-target="#exampleModalCenter"
                                           data-title="$ProductTitle" data-get="$Up.OrderID" data-image="$ProductImage"
                                           data-variant="$ProductVariant" data-id="$ProductID"
@@ -566,8 +566,7 @@
                            <div class="d-flex align-items-center py-2 px-3 w-100"
                               style="background-color: #FFFEFB; border: 1px solid #F3DB97;">
                               <i class='bx bx-bell'></i>
-                              <p class="m-0 ps-3 d-flex">Terimakasih telah berbelanja semoga barang sampai dengan aman
-                                 dan tepat waktu</p>
+                              <p class="m-0 ps-3 d-flex">Terimakasih telah berbelanja semoga barang sesuai dengan yang kamu inginkan</p>
                            </div>
                         </div>
                         <div class="d-flex payment py-2" style="border-top: 1px solid #cdcdcd;">
@@ -706,9 +705,7 @@
                            <div class="d-flex align-items-center py-2 px-3 w-100"
                               style="background-color: #FFFEFB; border: 1px solid #F3DB97;">
                               <i class='bx bx-bell'></i>
-                              <p class="m-0 ps-3 d-flex">Mohon lakukan pembayaran sebesar <span
-                                    class="pl-2 d-flex align-items-center"
-                                    style="color: darkorange; font-weight: 500;">$FinalPrice</span></p>
+                              <p class="m-0 ps-3 d-flex">Ditunggu yah barang sedang dikemas oleh penjual</p>
                            </div>
                         </div>
                         <div class="d-flex payment py-2" style="border-top: 1px solid #cdcdcd;">
@@ -854,9 +851,7 @@
                            <div class="d-flex align-items-center py-2 px-3 w-100"
                               style="background-color: #FFFEFB; border: 1px solid #F3DB97;">
                               <i class='bx bx-bell'></i>
-                              <p class="m-0 ps-3 d-flex">Mohon lakukan pembayaran sebesar <span
-                                    class="pl-2 d-flex align-items-center"
-                                    style="color: darkorange; font-weight: 500;">$FinalPrice</span></p>
+                              <p class="m-0 ps-3 d-flex">Barangmu Sudah Sampai ke pihak pengantar Paket akan segera dikirim yah</p>
                            </div>
                         </div>
                         <div class="d-flex payment py-2" style="border-top: 1px solid #cdcdcd;">
@@ -995,9 +990,7 @@
                            <div class="d-flex align-items-center py-2 px-3 w-100"
                               style="background-color: #FFFEFB; border: 1px solid #F3DB97;">
                               <i class='bx bx-bell'></i>
-                              <p class="m-0 ps-3 d-flex">Mohon lakukan pembayaran sebesar <span
-                                    class="pl-2 d-flex align-items-center"
-                                    style="color: darkorange; font-weight: 500;">$FinalPrice</span></p>
+                              <p class="m-0 ps-3 d-flex">Pesanan telah Dibatalkan coba tanyakan penjual atau lihat aturan pembelian</p>
                            </div>
                         </div>
                         <div class="d-flex payment py-2" style="border-top: 1px solid #cdcdcd;">
@@ -1071,7 +1064,7 @@
                            onblur="this.placeholder = 'Review'" required
                            style="height: 200px;"></textarea>
                         <input type="hidden" id="ratingValue" name="ratingValue" value="0">
-                        <input type="hidden" id="ID" name="ID" value="">
+                        <input type="hidden" id="ProductID" name="ID" value="">
                         <input type="hidden" id="OrderID" name="ID" value="">
                      </div>
                   </div>
@@ -1184,6 +1177,7 @@
    const stars = document.querySelectorAll('.star');
 const rating = document.getElementById("rating");
 const ratingValueInput = document.getElementById('ratingValue');
+const ratingDisplay = document.getElementById('rating');
 stars.forEach((star) => {
   star.addEventListener("click", () => {
     const value = parseInt(star.getAttribute("data-value"));
@@ -1222,5 +1216,19 @@ function getStarColorClass(value) {
       return "";
   }
 }
+stars.forEach(star => {
+  star.addEventListener('click', function() {
+    const rating = this.getAttribute('data-value');
+    ratingDisplay.textContent = rating; // Update the displayed rating
+    ratingValueInput.value = rating;    // Set the hidden input value for form submission
 
+    // Highlight the selected stars
+    stars.forEach(s => {
+      s.classList.remove('selected');
+    });
+    for (let i = 0; i < rating; i++) {
+      stars[i].classList.add('selected');
+    }
+  });
+});
 </script>

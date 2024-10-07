@@ -25,6 +25,7 @@ use SilverStripe\ORM\FieldType\DBHTMLText;
         ];
         private static $has_many = [
             'Items'=> ProductCheckoutObject::class,
+            'Notification' => Notification::class
         ];
         private static $has_one = [
             'ProofImage' => Image::class
@@ -42,6 +43,7 @@ use SilverStripe\ORM\FieldType\DBHTMLText;
             
             if ($this->isChanged('Status')) {
                 $this->handleStatusChange();
+                $this->statusnotif();
             }
         }
         
@@ -57,6 +59,18 @@ use SilverStripe\ORM\FieldType\DBHTMLText;
                 }
             }
         }        
+
+        protected function statusnotif(){
+            date_default_timezone_set('Asia/Jakarta');  
+            $notif = Notification::create();
+            $notif->ProductCheckoutHeaderID = $this->ID;
+            $notif->CostumerName = $this->CustomerName;
+            $notif->Status = $this->Status;
+            $notif->Order = $this->OrderID;
+            $notif->Notif = 'Unread';
+            $notif->write();
+
+        }
         public function getCMSFields() {
             $fields = parent::getCMSFields();
             
@@ -118,5 +132,5 @@ use SilverStripe\ORM\FieldType\DBHTMLText;
         {
             return false;
         }
-    
+
     }
