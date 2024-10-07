@@ -1,60 +1,16 @@
-const stars = document.querySelectorAll(".star");
-const rating = document.getElementById("rating");
-const ratingDisplay = document.getElementById('rating');
-const ratingValueInput = document.getElementById('ratingValue');
-stars.forEach((star) => {
-  star.addEventListener("click", () => {
-    const value = parseInt(star.getAttribute("data-value"));
-    rating.innerText = value;
 
-    // Remove all existing classes from stars
-    stars.forEach((s) => s.classList.remove("one",
-      "two",
-      "three",
-      "four",
-      "five"));
-    stars.forEach((s, index) => {
-      if (index < value) {
-        s.classList.add(getStarColorClass(value));
-      }
-    });
-    stars.forEach((s) => s.classList.remove("selected"));
-    star.classList.add("selected");
-  });
-});
-stars.forEach(star => {
-  star.addEventListener('click', function () {
-    const rating = this.getAttribute('data-value');
-    ratingDisplay.textContent = rating; 
-    ratingValueInput.value = rating; 
-    stars.forEach(s => {
-      s.classList.remove('selected');
-    });
-    for (let i = 0; i < rating; i++) {
-      stars[i].classList.add('selected');
-    }
-  });
-});
-function getStarColorClass(value) {
-  switch (value) {
-    case 1:
-      return "one";
-    case 2:
-      return "two";
-    case 3:
-      return "three";
-    case 4:
-      return "four";
-    case 5:
-      return "five";
-    default:
-      return "";
-  }
-}
 
 
 $(document).ready(function () {
   "use strict";
+
+  $(".notip").hover(function(){
+    $(".fate").fadeIn("fast");
+  })
+
+
+
+
   $("#filtera").change(function (event) {
     event.preventDefault(); // Prevents the form from doing a default refresh
     var selected = $("#filtera").val();
@@ -193,7 +149,6 @@ $(document).ready(function () {
     currentParams.set('subcategory', subCategoryID);
     window.location.href = window.location.pathname + '?' + currentParams.toString();
   });
-
 
   const events = document.querySelectorAll('.event');
   events.forEach(event => {
@@ -624,7 +579,104 @@ $(document).ready(function () {
   })
 
   //product
+  $('.btn-outline-warning').on('click', function(event) {
+    event.preventDefault();
+    var button = $(this); 
+    var title = button.data('title');
+    var image = button.data('image');
+    var variant = button.data('variant');
+    var get = button.data('get');
+    var id = button.data('id');
+    var button = $('.showModalButton').data('id');
+    var Filter =  $("#ID").val();
+    $('#ID').val(id);
+    $('#title').html(title);
+    $('#variants').html(variant);
+    $('#image').attr('src', image);
+    $('#OrderID').val(get);
+    $('#exampleModalCenter').modal('show');
+    });
   
+
+
+
+
+    $('#Nilai').on('click', function (event) {
+      event.preventDefault();
+      var button = $(this )
+      // var recipient = button.data('whatever')\
+      var id = button.data('id');
+      var order = button.data('get');
+      $('#ProductID').val(id);
+      $('#OrderID').val(order);
+    })
+    $("#reviewform").submit(function (event) {
+      event.preventDefault();
+      const rating = document.getElementById("ratingValue");
+      // console.log(button);
+      let angka = rating.getAttribute('value');
+      console.log(angka);
+      if(parseInt(angka) === 0 ){
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Input Rating First",
+          showConfirmButton: false,
+        });
+      } else {
+            $.post("/marketplace/productdetails/review", {
+                Review: $("#reviewmsg").val(),  
+                Rating: $("#ratingValue").val(),
+                ID: $("#ProductID").val(),
+              })
+              .done(function (data) {
+                var response = JSON.parse(data);
+                var Filter =  $("#ID").val();
+                var OrderID =  $("#OrderID").val();
+                
+                if (response.success) {
+                  $('.showModalButton[data-get="' + OrderID + '"][data-id="' + Filter+'"]').prop('disabled', true).text('Submitted'); 
+                  localStorage.setItem('reviewsubmit' + OrderID + Filter, true);
+                  Swal.fire({
+                        title: "SUCCESS",
+                        text: "Review submitted successfully!",
+                        icon: "success",
+                        timer: 1000,
+                      });
+                      $('#exampleModalCenter').removeClass('show').attr("aria-hidden", "true");
+                      $('.modal-backdrop').removeClass('show');
+                      document.getElementById('reviewmsg').value=null;
+                      stars.forEach((s) => s.classList.remove("one", 
+                        "two", 
+                        "three", 
+                        "four", 
+                        "five", 
+                        "selected"));
+                        setInterval(href, 1500);
+  
+                      function href() {
+                        location.reload();
+                      }
+                } else {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Oops...",
+                        text: response.message,
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                }
+            })
+            .fail(function () {
+                Swal.fire({
+                    icon: "error",
+                    title: "Error",
+                    text: "There was an issue submitting the review. Please try again later.",
+                    confirmButtonColor: "#d33"
+                });
+            });
+          }
+        });
   // PRODUCT
   $("#kkls").submit(function (event) {
     event.preventDefault();
@@ -978,56 +1030,13 @@ $('#search_input').on('keydown', function (e) {
 });
 $('#search_input').on('keydown', function (e) {
   if (e.key === 'Tab') {
-    const placeholder = $(this).attr('placeholder');
+      const placeholder = $(this).attr('placeholder');
       if (placeholder) {
           e.preventDefault();
           $(this).val(placeholder);
           selectedIndex = -1;
       }
   }
-});
-$('#searchForm').submit(function(e) {
-  e.preventDefault();
-  var searchkey = $('#search_input').val();
-  var searchph = $('#search_input').attr('placeholder');
-  var currentParams = new URLSearchParams(window.location.search);
-  if (searchph){
-    if (searchph === 'SearchHere'){
-      return;
-    } else{
-      currentParams.set('keywords', searchph);
-      window.location.href = '/marketplace/shopresult' + '?' + currentParams.toString();
-    }
-  } else{
-    currentParams.set('keywords', searchkey);
-    window.location.href = '/marketplace/shopresult' + '?' + currentParams.toString();
-  }
-  
-});
-    /*==========================
-      javaScript for sticky header
-        ============================*/
-          $(".sticky-header").sticky();
-          
-            /*=================================
-              Javascript for banner area carousel
-                ==================================*/
-                  $(".active-banner-slider").owlCarousel({
-                      items: 1,
-                          autoplay: true,
-                              autoplayTimeout: 3000,
-                                  loop: true,
-                                      nav: true,
-                                          navText: [
-                                                "<img src='_resources/themes/simple/images/banner/prev.png'>",
-                                                      "<img src='_resources/themes/simple/images/banner/next.png'>"
-                                                          ],
-                                                              dots: false
-                                                                });
-                                                                
-                                                                  /*=================================
-                                                                  ');
-
 });
   /*==========================
   javaScript for sticky header
@@ -2298,7 +2307,7 @@ $('#searchForm').submit(function(e) {
     var weight = $('#fulldata .weight').text();
     // console.log(idRegency)
     $.ajax({
-      url: '/marketplace/productcheckout/rajoCot',
+      url: '/marketplace/productcheckout/rajoCost',
       type: 'POST',
       data: {
         Courir: courir,
@@ -2797,6 +2806,21 @@ function updateFinalPrice() {
 updateSubtotal();
 updateFinalPrice();
 });
+
 const events = document.querySelector('.event');
 
+// stars.forEach(star => {
+//   star.addEventListener('click', function() {
+//     const rating = this.getAttribute('data-value');
+//     ratingDisplay.textContent = rating; // Update the displayed rating
+//     ratingValueInput.value = rating;    // Set the hidden input value for form submission
 
+//     // Highlight the selected stars
+//     stars.forEach(s => {
+//       s.classList.remove('selected');
+//     });
+//     for (let i = 0; i < rating; i++) {
+//       stars[i].classList.add('selected');
+//     }
+//   });
+// });
