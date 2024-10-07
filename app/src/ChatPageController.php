@@ -70,6 +70,8 @@ class ChatPageController extends PageController {
                 $senderVendor = Vendor::get()->filter('OwnerID', $receiver)->exists();
 
                 return [
+                    'CurrentUser' => $currentMember->ID,
+                    'Receiver' => $receiver,
                     'ChatList' => $chatList,
                     'Messages' => $messages,
                     'Vendor' => Vendor::get()->filter('OwnerID', $receiver)[0],

@@ -173,7 +173,7 @@
         </div>
 
         <div class="chat-input px-3 py-2">
-            <form id="SendChat">
+            <form id="SendChat" data-receiver="$Receiver" data-sender="$CurrentUser">
                 <div class="input-group">
                     <input type="text" name="Message" class="form-control" placeholder="Tulis pesan..." style="box-shadow: none; border-radius: 20px;">
                     <div class="input-group-append">
