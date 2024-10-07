@@ -5,9 +5,9 @@ class TrackingPageController extends PageController{
         $data = $this->nepo(); // Call the nepo() method from PageController
 
         return [
-            'Notif' => $data['Notif'],
-            'Product' => $data['Product'],
-            'Count' => $data['Count'],
+            'Notif' => $data['Notif'] ?? null,
+            'Product' => $data['Product'] ?? null,
+            'Count' => $data['Count'] ?? null,
         ];
     }
 }

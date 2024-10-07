@@ -34,15 +34,23 @@ class HomePageController extends PageController{
     public function getMember(){
         return Security::getCurrentUser();
     }
+ 
     public function index() {
+        $member = Security::getCurrentUser();
+        if($member){
         $data = $this->nepo(); // Call the nepo() method from PageController
-        if($data != null){
 
         return [
             'Notif' => $data['Notif'],
             'Product' => $data['Product'],
             'Count' => $data['Count'],
         ];
+        } else{
+            return [
+                'Notif' => null,
+                'Product' => null,
+                'Count' =>  null,
+            ];
         }
     }
 }

@@ -46,30 +46,27 @@ use SilverStripe\Dev\Debug;
             // Debug::show($member);
             if(!$member){
                 // Debug::show('ksdkadka');
-                $notif = null ;
-                return  [
-                    'Notif' => $notif
-                ];
+                return null;
             }else{
-            $notifs = Notification::get()->sort('Created', 'DESC')->filter(['Notif' => 'Unread','CostumerName'=> $member->FirstName  ]);
-            $product = ProductCheckoutObject::get()->filter('HeaderCheckoutID', $notifs->ProductCheckoutHeaderID );
-            // $products = [];
-            // foreach($notifs as $notif){
-            //     $product = $notif;
-            //     $products = $product->Status;
-            //     }
-            }   
+                $notifs = Notification::get()->sort('Created', 'DESC')->filter(['Notif' => 'Unread','CostumerName'=> $member->FirstName  ]);
+                $product = ProductCheckoutObject::get()->filter('HeaderCheckoutID', $notifs->ProductCheckoutHeaderID );
+                // $products = [];
+                // foreach($notifs as $notif){
+                //     $product = $notif;
+                //     $products = $product->Status;
+                //     }
+                $status = $notifs->column('Status');
+                // Debug::show($status);
+                
+                return[
+                    'Notif' => $notifs,
+                    'Status' => $status,
+                    'Product' => $product,
+                    'Count' => $notifs->count(),
+                ];
+            }  
             // Debug::show($product);
             // Debug::show($notifs);
-            $status = $notifs->column('Status');
-            // Debug::show($status);
-            
-            return[
-                'Notif' => $notifs,
-                'Status' => $status,
-                'Product' => $product,
-                'Count' => $notifs->count(),
-            ];
         }
         public function CartData() {
             $member = Security::getCurrentUser();
@@ -102,6 +99,12 @@ use SilverStripe\Dev\Debug;
             return json_encode([]);
         }
 
-    
+        public function PromotionObjects() {
+            return PromotionObject::get();
+        }
+        public function Object(){
+            $data = PromotionObject::get();
+            return ProductObject::get()->filter('ID' , $data);
+        }
     }
 }

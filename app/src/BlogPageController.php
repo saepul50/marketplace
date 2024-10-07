@@ -36,13 +36,10 @@ class BlogPageController extends PageController
         // Fetch categories
         $categori = BlogCategory::get();
         if (!$categori || $categori->count() === 0) {
-            $categori = null; // No categories found
+            $categori = null;
         }
-    
-        // Fetch all blog posts
         $contents = BlogAdd::get();
         if ($contents->exists()) {
-            // Process each blog post
             foreach ($contents as $content) {
                 $comments = BlogComment::get()->filter('BlogAddID', $content->ID);
                 $countcomment = $comments->count();
@@ -53,8 +50,6 @@ class BlogPageController extends PageController
         } else {
             $contents = null;
         }
-    
-        // Check for search filter
         if ($search = $request->postVar('search')) {
             $activeFilters = ArrayList::create();
             $activeFilters->push(ArrayData::create([
@@ -64,45 +59,39 @@ class BlogPageController extends PageController
                 'Title:PartialMatch' => $search
             ]);
         }
-    
-        // Handle no results for contents
         if (!$contents || !$contents->exists()) {
-            $contents = BlogAdd::get(); // Reload all posts if none were found
+            $contents = BlogAdd::get(); 
         }
-    
-        // Paginate the content
         $paginated = PaginatedList::create(
             $contents,
             $this->getRequest()
         )->setPageLength(4)->setPaginationGetVar('s');
     
-        // Fetch user groups
         $grup = null;
         if ($member) {
             $grup = $member->Groups();
-        }
-    
-        // Only fetch categories with counts if they exist
+        
         $categoriesWithCounts = null;
         if ($categori) {
             $categoriesWithCounts = BlogCategory::getCategoriesWithCounts();
         }
-        $data = $this->nepo(); // Call the nepo() method from PageController
+        $data = $this->nepo(); 
 
         return [
-            'Notif' => $data['Notif'],
-            'Product' => $data['Product'],
-            'Count' => $data['Count'],
-            'BlogCategoriesWithCounts' => $categoriesWithCounts, // Ensure this only runs if categories exist
+            'Notif' => $data['Notif'] ?? null,
+            'Product' => $data['Product'] ?? null,
+            'Count' => $data['Count'] ?? null,
+            'BlogCategoriesWithCounts' => $categoriesWithCounts,
             'Result' => $paginated,
             'Latestpost' => BlogAdd::get()->sort('Created', 'DESC'),
-            'ActiveFilter' => $activeFilters ?? null,  // Ensure null if no filters
+            'ActiveFilter' => $activeFilters ?? null,
             'Categori' => $categori,
             'Groups' => $grup,
             'Popularpost' => BlogAdd::get()->sort('ViewCount', 'DESC'),
             'Content' => $contents
         ];
     }
+}
     
     
 

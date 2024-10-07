@@ -5,6 +5,7 @@ use SilverStripe\Control\HTTPRequest;
 use SilverStripe\Dev\Debug;
 use SilverStripe\ORM\ArrayList;
 use SilverStripe\ORM\PaginatedList;
+use SilverStripe\Security\Security;
 use SilverStripe\View\ArrayData;
 
 
@@ -13,6 +14,7 @@ use SilverStripe\View\ArrayData;
             'filter'
         ];
         public function index(HTTPRequest $request) {
+            $member = Security::getCurrentUser();
             $sortOption = $request->getVar('sort');
             $brandFilter = $request->getVar('filter');
             $subCategoryFilter = $request->getVar('subcategory');
@@ -56,9 +58,9 @@ use SilverStripe\View\ArrayData;
                     $data = $this->nepo(); 
                
             return [
-                'Notif' => $data['Notif'],
-                'Product' => $data['Product'],
-                'Count' => $data['Count'],
+                'Notif' => $data['Notif'] ?? null,
+                'Product' => $data['Product'] ?? null,
+                'Count' => $data['Count'] ?? null,
                 'SubCategory' => $subCategoryList,
                 'Brand' => $brandList,
                 'Category' => $categories,

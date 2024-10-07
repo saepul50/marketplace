@@ -47,10 +47,9 @@
 				<div class="col-lg-3 col-md-6 col-sm-6">
 					<div class="single-features">
 						<div class="f-icon">
+						<i class="fa fa-truck" aria-hidden="true" style="font-size: 40px;"></i>
 						</div>
-						<% if $Member %>
 						<h6>Free Delivery</h6>
-						<% end_if %>
 						<p>Free Shipping on all order</p>
 					</div>
 				</div>
@@ -58,6 +57,7 @@
 				<div class="col-lg-3 col-md-6 col-sm-6">
 					<div class="single-features">
 						<div class="f-icon">
+						<i class="fa fa-refresh" aria-hidden="true" style="font-size: 40px;"></i>
 						</div>
 						<h6>Return Policy</h6>
 						<p>Free Shipping on all order</p>
@@ -67,6 +67,7 @@
 				<div class="col-lg-3 col-md-6 col-sm-6">
 					<div class="single-features">
 						<div class="f-icon">
+						<i class="fa fa-headphones" aria-hidden="true" style="font-size: 40px;"></i>
 						</div>
 						<h6>24/7 Support</h6>
 						<p>Free Shipping on all order</p>
@@ -76,6 +77,7 @@
 				<div class="col-lg-3 col-md-6 col-sm-6">
 					<div class="single-features">
 						<div class="f-icon">
+						<i class="fa fa-database" aria-hidden="true" style="font-size: 40px;"></i>
 						</div>
 						<h6>Secure Payment</h6>
 						<p>Free Shipping on all order</p>

@@ -25,7 +25,11 @@ class  LoginPageController extends PageController{
             'Count' => $data['Count'],
         ];
         } else{
-
+            return [
+                'Notif' => null,
+                'Product' => null,
+                'Count' =>  null,
+            ];
         }
     }
     public function getMember() {
