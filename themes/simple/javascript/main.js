@@ -2640,12 +2640,12 @@ $('#searchForm').submit(function(e) {
     var unichat =  '?m=' + senderID + 'l' + receiverID;
     // console.log(senderID)
     // console.log(receiverID)
-    // return false;
     $.post("/marketplace/chat/sendMessage", {
       Message: message,
       ReceiverID: receiverID,
     })
     .done(function (data) {
+      // return false;
       var response = JSON.parse(data);
       // return false;
       if (response.success) {

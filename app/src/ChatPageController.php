@@ -18,7 +18,9 @@ class ChatPageController extends PageController {
 
         public function index(HTTPRequest $request) {
             $currentMember = Security::getCurrentUser();
-            
+            $SessionChat = $request->getSession()->get('ownerVendor');
+            // Debug::show($SessionChat);
+            // die();
             if ($currentMember) {
                 $url = $request->getVar('m');
                 $chatList = ChatObject::get()->filterAny([
@@ -26,10 +28,19 @@ class ChatPageController extends PageController {
                     'SenderID' => [$currentMember->ID]
                 ]);
                 if (!$chatList->exists()) {
+                    $user = explode('l', $url)[0];
+                    $receiver = explode('l', $url)[1];
+                    $unichat1 = '?m=' . $user . 'l' . $receiver;
+                    $unichat2 = '?m=' . $receiver . 'l' . $user;
                     $chatList = new ArrayList();
-                    $vendor = Vendor::get()->filter('OwnerID', $currentMember->ID);
+                    $vendor = Vendor::get()->filter('OwnerID', $receiver);
                     return [
+                        'Receiver' => $receiver,
                         'ChatVendor' => $vendor[0],
+                        'ChatList' => $chatList,
+                        'Messages' => new ArrayList(),
+                        'Vendor' => Vendor::get(),
+                        'CurrentUser' => $currentMember->ID,
                     ];
                 }
                 $groupedChats = [];
@@ -41,34 +52,66 @@ class ChatPageController extends PageController {
                     }
                     $lastMessage = ChatObject::get()
                     ->filter([
-                            'SenderID' => [$chat->SenderID, $chat->ReceiverID],
-                            'ReceiverID' => [$chat->ReceiverID, $chat->SenderID]
-                        ])
-                        ->sort('LastEdited', 'DESC')
-                        ->first();
-                        
+                        'SenderID' => [$chat->SenderID, $chat->ReceiverID],
+                        'ReceiverID' => [$chat->ReceiverID, $chat->SenderID]
+                    ])
+                    ->sort('LastEdited', 'DESC')
+                    ->first();
+                    
+                    if($currentMember->ID == $chat->ReceiverID){
+                        $vendor = Vendor::get()->filterAny([
+                            'OwnerID' => $chat->SenderID
+                        ])->first();
+                    } else{
+                        $vendor = Vendor::get()->filterAny([
+                            'OwnerID' => $chat->ReceiverID
+                        ])->first();
+                    }
                     $chat->LastMessage = $lastMessage;
+                    $chat->Vendor = $vendor;
                 }
                 $chatList = new ArrayList($groupedChats);
                 if (!$url) {
                     return [
                         'ChatList' => $chatList,
                         'Messages' => new ArrayList(),
-                        'Vendor' => Vendor::get()
+                        'Vendor' => Vendor::get(),
+                        'CurrentUser' => $currentMember->ID,
+                        'Receiver' => $SessionChat,
                     ];
                 }
+                // Debug::show($currentMember->ID);
+                // die();
                 $user = explode('l', $url)[0];
                 $receiver = explode('l', $url)[1];
                 $unichat1 = '?m=' . $user . 'l' . $receiver;
                 $unichat2 = '?m=' . $receiver . 'l' . $user;
-                // Debug::show(Vendor::get()->filter('OwnerID', $receiver));
+                // if (!$chatList->exists()) {
+                //     $chatList = new ArrayList();
+                //     $vendor = Vendor::get()->filter('OwnerID', $receiver);
+                //     return [
+                //         'ChatVendor' => $vendor[0],
+                //         'ChatList' => $chatList,
+                //         'Messages' => new ArrayList(),
+                //         'Vendor' => Vendor::get(),
+                //         'CurrentUser' => $currentMember->ID,
+                //     ];
+                // }
+                // Debug::show($receiver);
                 // die();
                 $messages = ChatObject::get()->filter([
                     'unichat' => [$unichat1, $unichat2]
                 ])->sort('LastEdited', 'DESC');
                 
-                $senderVendor = Vendor::get()->filter('OwnerID', $receiver)->exists();
-
+                if($receiver == $currentMember->ID){
+                    $senderVendor = Vendor::get()->filter('OwnerID', $user)->exists();
+                    $chatMain = Member::get()->byID($user);
+                } else{
+                    $senderVendor = Vendor::get()->filter('OwnerID', $receiver)->exists();
+                    $chatMain = Member::get()->byID($receiver);
+                }
+                // Debug::show($chatMain);
+                // die();
                 return [
                     'CurrentUser' => $currentMember->ID,
                     'Receiver' => $receiver,
@@ -76,7 +119,7 @@ class ChatPageController extends PageController {
                     'Messages' => $messages,
                     'Vendor' => Vendor::get()->filter('OwnerID', $receiver)[0],
                     'SenderVendor' => $senderVendor,
-                    'chatMain' => Member::get()->byID($receiver)
+                    'chatMain' => $chatMain
                 ];
             }
             return $this->redirect('login');
@@ -103,8 +146,9 @@ class ChatPageController extends PageController {
         if ($currentMember && $request->isPOST()) {
             $messageContent = $request->postVar('Message');
             $receiverID = $request->postVar('ReceiverID');
+            $receiverVendor = Vendor::get()->filter('OwnerID', $receiverID)[0];
             $unichat = '?m=' . $currentMember->ID . 'l' . $receiverID;
-            // Debug::show($unichat);
+            // Debug::show($receiverVendor);
             // die();
             $chat = ChatObject::create();
             $chat->SenderID = $currentMember->ID;
@@ -112,6 +156,9 @@ class ChatPageController extends PageController {
             $chat->ReceiverID = $receiverID;
             $chat->Message = $messageContent;
             $chat->Unichat = $unichat;
+            if($receiverVendor){
+                $chat->VendorID = $receiverVendor->ID;
+            }
             $chat->write();
             
             return json_encode(['success' => true, 'message' => 'Sukses']);
