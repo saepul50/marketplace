@@ -19,7 +19,7 @@ use SilverStripe\Security\Security;
 class StatusAdmin extends LeftAndMain implements PermissionProvider{
     private static $menu_title = 'Status';
     private static $url_segment = 'status'; 
-    private static $menu_icon_class = '';
+    private static $menu_icon_class = 'font-icon-chart-pie';
     private static $allowed_actions = [
         'dashboard',
     ];
@@ -62,7 +62,7 @@ class StatusAdmin extends LeftAndMain implements PermissionProvider{
         } else {
             $vendor = Vendor::get()->filter('OwnerID', $member->ID)->first();
             $list = ProductObject::get()->filter('VendorID', $vendor->ID) ;
-            Debug::show($list);
+            // Debug::show($list);
             // die();
             if($list && $list->exists()){
                 $order = ProductCheckoutObject::get()->filter(['ProductID'=> $list->column('ID')]);
@@ -71,17 +71,20 @@ class StatusAdmin extends LeftAndMain implements PermissionProvider{
                 $headerid = $order->column('HeaderCheckoutID');
                 $data = ProductCheckoutHeaderObject::get()->filter(['ID' => $headerid]);
                 $datatime = ProductCheckoutHeaderObject::get()->filter(['ID' => $headerid, 'TimeCheckout:GreaterThanOrEqual' => $startOfWeek]); 
+                } else {
+                    $data = null;
                 }
+
             } else {
                 $data = null;
             } 
         }
+        // Debug::show($data);
         $transactionsPerDate = [];
         $transactionsPerDateCan = [];
         $labelTransactions = [];
         $labelCategory = [];
         if($data && $data->exists()){
-        
             $count = $data->count();
             $pending = $data->filter('Status', 'Dikemas')->count();  
             $Completed = $data->filter('Status', 'Selesai')->count();  
@@ -93,17 +96,22 @@ class StatusAdmin extends LeftAndMain implements PermissionProvider{
                 $transactionsPerDateCan[$date] = 0;
                 $labelTransactions[] = $date;
             }
-            foreach($list as $product){
+
+            foreach ($list as $product) {
                 $category = ShopCategoryObject::get()->Filter('ID', $product->ProductCategoryID);
-                $categoryTitle = $category[0]->Title;
-                // Debug::show($categoryTitle);
-                if ($categoryTitle){
-                    if (!isset($labelCategory[$categoryTitle])) {
-                        $labelCategory[$categoryTitle] = 0;
+                if ($category && $category->exists()) {
+                    $categoryTitle = $category[0]->Title;
+                    if ($categoryTitle) {
+                        if (!isset($labelCategory[$categoryTitle])) {
+                            $labelCategory[$categoryTitle] = 0;
+                        }
+                        $labelCategory[$categoryTitle]++;
                     }
-                    $labelCategory[$categoryTitle]++;
+                } else {
+                    // Debug::show("No category found for Product ID: " . $product->ID);
                 }
             }
+            
             foreach ($data as $checkout) {
                 if($checkout->Status != 'Dibatalkan'){
                     $checkoutDate = DateTime::createFromFormat('d/m/Y H:i:s', $checkout->TimeCheckout);

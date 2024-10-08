@@ -99,12 +99,12 @@
     <div class="content pb-5">
         <ul class="nav nav-tabs" id="myTab" role="tablist">
             <li class="nav-item">
-                <a class="nav-link nav-linked" name="tabs" id="home-tab" data-toggle="tab" href="home" role="tab"
+                <a class="nav-link nav-linked active" name="tabs" id="home-tab" data-toggle="tab" href="home" role="tab"
                     aria-controls="home" aria-selected="true">Atur Informasi Toko</a>
             </li>
         </ul>
         <div class="tab-content" id="myTabContent">
-            <div class="tab-pane fade" id="home" role="tabpanel" aria-labelledby="home-tab">
+            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                 <form>
                     <div class="row">
                         <div class="col-5 mt-4 text-center">

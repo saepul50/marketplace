@@ -79,18 +79,10 @@
                         </div>
                         <div class="d-flex flex-column justify-content-between py-1 col-9 px-0 pr-3">
                             <div class="d-flex justify-content-between align-items-center">
-                                <% if $ReceiverID == $CurrentMember.ID %>
-                                    <% if $Vendor.exists %>
-                                        <h5 class="m-0" style="font-weight: 400; color: #000;">$Sender.Vendor.Name</h5>
-                                    <% else %>
-                                        <h5 class="m-0" style="font-weight: 400; color: #000;">$Sender.FirstName</h5>
-                                    <% end_if %>
+                                <% if $Up.SenderVendor %>
+                                    <h5 class="m-0" style="font-weight: 400; color: #000;">$Vendor.Name</h5>
                                 <% else %>
-                                    <% if $Vendor.exists %>
-                                        <h5 class="m-0" style="font-weight: 400; color: #000;">$Receiver.Vendor.Name</h5>
-                                    <% else %>
-                                        <h5 class="m-0" style="font-weight: 400; color: #000;">$Receiver.FirstName</h5>
-                                    <% end_if %>
+                                    <h5 class="m-0" style="font-weight: 400; color: #000;">$chatMain.FirstName</h5>
                                 <% end_if %>
                                 
                                 <% if $Vendor.exists %>

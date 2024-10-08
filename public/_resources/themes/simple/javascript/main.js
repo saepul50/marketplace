@@ -2330,6 +2330,7 @@ $('#searchForm').submit(function(e) {
       }
     });
   }
+  
   SelectorPayment();
   SelectorPaymentGate();
   $("input[name='selectorpayment']").on('change', function () {
