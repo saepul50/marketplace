@@ -47,7 +47,7 @@
             </div>
         </div>
         <% if $ChatList %>
-            <% loop $ChatList %>
+            <% loop $ChatList.Sort('LastEdited', DESC) %>
                 <% if $ReceiverID == CurrentMember.ID %>
                     <div class="sidechat" data-receiver="$SenderID" data-sender="$CurrentMember.ID">
                 <% else %>
@@ -55,8 +55,9 @@
                 <% end_if %>
                     <div class="listchat px-1 py-2 d-flex align-items-center" style="border-radius: 30px;">
                         <div class="col-3">
-                            <% if $Up.SenderVendor %>
-                                <% with $Up.Vendor.ProfilImage %>
+                        <% if $ReceiverID == $CurrentMember.ID %>
+                            <% if $Vendor.exists %>
+                                <% with $Vendor.ProfilImage %>
                                     <img src="$Up.Vendor.ProfilImage.URL" class="img-fluid" style="border-radius: 50%; object-fit: cover; aspect-ratio: 1/1;">
                                 <% end_with %>
                             <% else %>
@@ -64,16 +65,35 @@
                                     <img src="$URL" class="img-fluid" style="border-radius: 50%; object-fit: cover; aspect-ratio: 1/1;">
                                 <% end_with %>
                             <% end_if %>
+                        <% else %>
+                            <% if $Vendor.exists %>
+                                <% with $Vendor.ProfilImage %>
+                                    <img src="$Up.Vendor.ProfilImage.URL" class="img-fluid" style="border-radius: 50%; object-fit: cover; aspect-ratio: 1/1;">
+                                <% end_with %>
+                            <% else %>
+                                <% with $Receiver.ProfileImage %>
+                                    <img src="$URL" class="img-fluid" style="border-radius: 50%; object-fit: cover; aspect-ratio: 1/1;">
+                                <% end_with %>
+                            <% end_if %>
+                        <% end_if %>
                         </div>
                         <div class="d-flex flex-column justify-content-between py-1 col-9 px-0 pr-3">
                             <div class="d-flex justify-content-between align-items-center">
-                                <% if $Up.SenderVendor %>
-                                    <h5 class="m-0" style="font-weight: 400; color: #000;">$Receiver.Vendor.Name</h5>
+                                <% if $ReceiverID == $CurrentMember.ID %>
+                                    <% if $Vendor.exists %>
+                                        <h5 class="m-0" style="font-weight: 400; color: #000;">$Sender.Vendor.Name</h5>
+                                    <% else %>
+                                        <h5 class="m-0" style="font-weight: 400; color: #000;">$Sender.FirstName</h5>
+                                    <% end_if %>
                                 <% else %>
-                                    <h5 class="m-0" style="font-weight: 400; color: #000;">$Receiver.FirstName</h5>
+                                    <% if $Vendor.exists %>
+                                        <h5 class="m-0" style="font-weight: 400; color: #000;">$Receiver.Vendor.Name</h5>
+                                    <% else %>
+                                        <h5 class="m-0" style="font-weight: 400; color: #000;">$Receiver.FirstName</h5>
+                                    <% end_if %>
                                 <% end_if %>
                                 
-                                <% if $Up.SenderVendor %>
+                                <% if $Vendor.exists %>
                                     <p class="m-0" style="font-size: 13px; font-weight: 500; color: darkorange; background-color: #ffa5004a; padding: .2rem .4rem; border-radius: 10px;">penjual</p>
                                 <% end_if %>
                                 
@@ -113,9 +133,7 @@
                 <% if $SenderVendor %>
                     <img src="$Vendor.ProfilImage.URL" class="img-fluid mr-3 " style="border-radius: 50%; width: 60px; height: 60px; object-fit: cover;">
                 <% else %>
-                    <% with $ChatMain.ProfileImage %>
-                        <img src="$URL" class="img-fluid mr-3 " style="border-radius: 50%; width: 60px; height: 60px; object-fit: cover;">
-                    <% end_with %>
+                    <img src="$chatMain.ProfileImage.URL" class="img-fluid mr-3 " style="border-radius: 50%; width: 60px; height: 60px; object-fit: cover;">
                 <% end_if %>
                 <div class="d-flex flex-column justify-content-around py-3 col-10 px-0 pr-3">
                     <div class="d-flex align-items-center">
@@ -124,7 +142,7 @@
                         <% else %>
                             <h5 class="m-0" style="font-weight: 400; color: #000;">$chatMain.FirstName</h5>
                         <% end_if %>
-                        <% if $IsVendor %>
+                        <% if $SenderVendor %>
                             <p class="m-0 ml-3" style="font-size: 13px; font-weight: 500; color: darkorange; background-color: #ffa5004a; padding: .2rem .4rem; border-radius: 10px;">penjual</p>
                         <% end_if %>
                     </div>
