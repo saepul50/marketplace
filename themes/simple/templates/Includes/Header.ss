@@ -24,9 +24,6 @@
 		#history_list li.selected{
 			background-color: #f5f5f5 !important;
 		}
-		a{
-			color:black !important;
-		}
 		.notip-item:hover{
 			background-color:whitesmoke;
 			color:black;
@@ -117,7 +114,7 @@
 									<% if  $nepo %>
 									<% loop $Notif.Limit(8) %>
 										<% if $Status == 'Dikemas' %>
-											<a href="{$BaseHref}/confirm/order/$Order/$ID?detailOrder=true">
+											<a href="{$BaseHref}/confirm/order/$Order/$ID?detailOrder=true" style="color: black !important">
 											<div class=" d-flex p-2  notip-item  mt-2">
 												<div class="content  d-flex justify-content-between " style="width:85%;">
 													<div style="inline-size: 100%; overflow-wrap: break-word;">
@@ -127,7 +124,7 @@
 											</div>
 											</a>
 										<% else_if  $Status == 'Dikirim' %>
-											<a href="{$BaseHref}/confirm/order/$Order/$ID?detailOrder=true">
+											<a href="{$BaseHref}/confirm/order/$Order/$ID?detailOrder=true" style="color: black !important">
 											<div class=" d-flex    p-2  notip-item mt-2">
 												<div class="content  d-flex justify-content-between " style="width:85%;">
 													<div style="inline-size: 100%; overflow-wrap: break-word;">
@@ -138,7 +135,7 @@
 											</div>
 											</a>
 										<% else_if  $Status == 'Selesai' %>
-											<a href="{$BaseHref}/confirm/order/$Order/$ID?detailOrder=true">
+											<a href="{$BaseHref}/confirm/order/$Order/$ID?detailOrder=true" style="color: black !important">
 											<div class=" d-flex   p-2 notip-item mt-2">
 												<div class="content  d-flex justify-content-between " style="width:85%;">
 													<div style="inline-size: 100%; overflow-wrap: break-word;">
@@ -149,7 +146,7 @@
 											</div>
 											</a>
 										<% else_if  $Status == 'Dibatalkan' %>
-											<a href="{$BaseHref}/confirm/order/$Order/$ID?detailOrder=true">
+											<a href="{$BaseHref}/confirm/order/$Order/$ID?detailOrder=true" style="color: black !important">
 											<div class=" d-flex  p-2 notip-item  mt-2">
 												<div class="content  d-flex justify-content-between " style="width:85%;">
 													<div style="inline-size: 100%; overflow-wrap: break-word;">

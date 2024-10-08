@@ -1,5 +1,6 @@
 <?php
 use Sheadawson\DependentDropdown\Forms\DependentDropdownField;
+use SilverStripe\Forms\ReadonlyField;
 use SilverStripe\Forms\RequiredFields;
 use SilverStripe\ORM\DataObject;
 use SilverStripe\Assets\Image;
@@ -307,7 +308,7 @@ use SilverStripe\View\Requirements;
     
         $fields = new FieldList(
             TextField::create('Title', 'Product Name'),
-            TextField::create('Rating'),
+            ReadonlyField::create('Rating'),
             TextAreaField::create('Features'),
             TextAreaField::create('Description'),
             UploadField::create('ProductImages', 'Product Images')
@@ -356,8 +357,7 @@ class ProductObject_Validator extends RequiredFields {
 
         if (empty($data['Description']))
             $this->validationError('Description','Description cannot be empty','required');
-        if (empty($data['Rating']))
-            $this->validationError('Rating','Rating cannot be empty','required');        
+
         if (empty($data['ProductImages']))
             $this->validationError('ProductImages','ProductImages cannot be empty','required');
 
