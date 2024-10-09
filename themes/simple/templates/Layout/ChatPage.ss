@@ -79,7 +79,7 @@
                         </div>
                         <div class="d-flex flex-column justify-content-between py-1 col-9 px-0 pr-3">
                             <div class="d-flex justify-content-between align-items-center">
-                                <% if $Up.SenderVendor %>
+                                <% if $Vendor.exists %>
                                     <h5 class="m-0" style="font-weight: 400; color: #000;">$Vendor.Name</h5>
                                 <% else %>
                                     <h5 class="m-0" style="font-weight: 400; color: #000;">$chatMain.FirstName</h5>
@@ -100,17 +100,17 @@
                     </div>
                 </div>
             <% end_loop %>
-        <% else_if $ChatVendor %>
+        <% else_if $chatMain %>
             <div class="sidechat">
                 <div class="listchat px-1 py-2 d-flex align-items-center" style="border-radius: 30px;">
                     <div class="col-3">
-                        <% with $ChatVendor.ProfilImage %>
+                        <% with $Vendor.ProfilImage %>
                             <img src="$URL" class="img-fluid" style="border-radius: 50%; object-fit: cover; aspect-ratio: 1/1;">
                         <% end_with %>
                     </div>
                     <div class="d-flex flex-column justify-content-between py-1 col-9 px-0 pr-3">
                         <div class="d-flex justify-content-between align-items-center">
-                            <h5 class="m-0" style="font-weight: 400; color: #000;">$ChatVendor.Name</h5>
+                            <h5 class="m-0" style="font-weight: 400; color: #000;">$Vendor.Name</h5>
                             <p class="m-0" style="font-size: 13px; font-weight: 500; color: darkorange; background-color: #ffa5004a; padding: .2rem .4rem; border-radius: 10px;">penjual</p>
                         </div>
                     </div>
@@ -120,7 +120,7 @@
     </div>
 
     <div class="mainchat col-8 d-flex flex-column justify-content-between px-0">
-        <div class="listchat py-1 d-flex align-items-center pl-3">
+        <div class="listchat py-1 pl-3 pt-4 d-flex align-items-center">
             <% if $chatMain %>
                 <% if $SenderVendor %>
                     <img src="$Vendor.ProfilImage.URL" class="img-fluid mr-3 " style="border-radius: 50%; width: 60px; height: 60px; object-fit: cover;">
@@ -138,37 +138,51 @@
                             <p class="m-0 ml-3" style="font-size: 13px; font-weight: 500; color: darkorange; background-color: #ffa5004a; padding: .2rem .4rem; border-radius: 10px;">penjual</p>
                         <% end_if %>
                     </div>
+                    <%-- <p class="m-0" style="color: #707070;">
+                        <% with $chatMain %>
+                            <% if $isOnline %>
+                                Online
+                            <% else_if $LastLogin %>
+                                Terakhir online $LastLogin.Format('d-m-Y H:i:s')
+                            <% else %>
+                                Tidak pernah login
+                            <% end_if %>
+                        <% end_with %>
+                    </p> --%>
                 </div>
             </div>
 
             <div class="chat-content px-3 flex-grow-1 overflow-auto d-flex flex-column-reverse" style="max-height: calc(100vh - 150px); overflow-y: auto;">
-                <% loop $Messages %>
-                    <% if $Sender.ID == $CurrentMember.ID %>
-                        <div class="d-flex align-items-end justify-content-end mb-3">
-                            <div class="bubble-right" style="background-color: #d1ecf1; padding: 10px 15px; border-radius: 20px; max-width: 70%; word-break: break-word;">
-                                <p class="m-0" style="color: #000;">$Message</p>
-                                <small class="d-flex justify-content-end">$Time.Format('HH.MM')</small>
+                <% if $Messages %>
+                    <% loop $Messages %>
+                        <% if $Sender.ID == $CurrentMember.ID %>
+                            <div class="d-flex align-items-end justify-content-end mb-3">
+                                <div class="bubble-right" style="background-color: #d1ecf1; padding: 10px 15px; border-radius: 20px; max-width: 70%; word-break: break-word;">
+                                    <p class="m-0" style="color: #000;">$Message</p>
+                                    <small class="d-flex justify-content-end">$Time.Format('HH.MM')</small>
+                                </div>
                             </div>
-                        </div>
-                    <% else %>
-                        <div class="d-flex align-items-center mb-3">
-                            <% if $IsVendor %>
-                                <% with $Up.Vendor.ProfilImage %>
-                                    <img src="$URL" class="img-fluid mr-3" style="border-radius: 50%; width: 40px;">
-                                <% end_with %>
-                            <% else %>
-                                <% with $Sender.ProfileImage %>
-                                    <img src="$URL" class="img-fluid mr-3" style="border-radius: 50%; width: 40px;">
-                                <% end_with %>
-                            <% end_if %>
-                            <div class="bubble-left" style="background-color: #fff; padding: 10px 15px; border-radius: 20px; max-width: 70%; word-break: break-word;">
-                                <p class="m-0" style="color: #000;">$Message</p>
-                                <small class="d-flex justify-content-end">$Time.Format('HH.MM')</small>
+                        <% else %>
+                            <div class="d-flex align-items-center mb-3">
+                                <% if $IsVendor %>
+                                    <% with $Up.Vendor.ProfilImage %>
+                                        <img src="$URL" class="img-fluid mr-3" style="border-radius: 50%; width: 40px;">
+                                    <% end_with %>
+                                <% else %>
+                                    <% with $Sender.ProfileImage %>
+                                        <img src="$URL" class="img-fluid mr-3" style="border-radius: 50%; width: 40px;">
+                                    <% end_with %>
+                                <% end_if %>
+                                <div class="bubble-left" style="background-color: #fff; padding: 10px 15px; border-radius: 20px; max-width: 70%; word-break: break-word;">
+                                    <p class="m-0" style="color: #000;">$Message</p>
+                                    <small class="d-flex justify-content-end">$Time.Format('HH.MM')</small>
+                                </div>
                             </div>
-                        </div>
-                    <% end_if %>
-                <% end_loop %>
+                        <% end_if %>
+                    <% end_loop %>
+                <% end_if %>
             <% else_if $ChatVendor %>
+            <p>b</p>
                 <% with $ChatVendor.ProfilImage %>
                     <img src="$URL" class="img-fluid mr-3 " style="border-radius: 50%; width: 60px; height: 60px; object-fit: cover;">
                 <% end_with %>
@@ -177,7 +191,6 @@
                         <h5 class="m-0" style="font-weight: 400; color: #000;">$ChatVendor.Name</h5>
                         <p class="m-0 ml-3" style="font-size: 13px; font-weight: 500; color: darkorange; background-color: #ffa5004a; padding: .2rem .4rem; border-radius: 10px;">penjual</p>
                     </div>
-                        <p class="m-0" style="color: #707070;">Terakhir online $Sender.LastLogin</p>
                 </div>
             <% end_if %>
         </div>

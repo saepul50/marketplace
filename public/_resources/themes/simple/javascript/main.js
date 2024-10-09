@@ -910,16 +910,16 @@ $(document).ready(function () {
   });
 
   // Search Toggle
-  // $("#search_input_box").hide();
-  $("#search_column").hide();
+  $("#search_input_box").hide();
+  $("#search_history").hide();
   $("#search").on("click", function () {
-    // $("#search_input_box").slideToggle();
-    $("#search_column").slideToggle();
+    $("#search_input_box").slideToggle();
+    $("#search_history").slideToggle();
     $("#search_input").focus();
   });
   $("#close_search").on("click", function () {
-    // $('#search_input_box').slideUp(500);
-    $('#search_column').slideUp(500);
+    $('#search_input_box').slideUp(500);
+    $('#search_history').slideUp(100);
   });
   function fetchProductName() {
     return $.ajax({
@@ -2626,6 +2626,23 @@ $('#searchForm').submit(function(e) {
     var id = $(this).data('id');
     window.location.href = '/marketplace/venn/' + id + '?filter=all';
   });
+  $('#chaticons').on('click', function (e) {
+    e.preventDefault();
+    $.post("/marketplace/chat/clearSession", {})
+    .done(function (data) {
+      // return false;
+      var response = JSON.parse(data);
+      // return false;
+      if (response.success) {
+        window.location.href = '/marketplace/chat/';
+      } else {
+        alert('Fail');
+      }
+
+    }).fail(function () {
+      alert('error');
+    });
+  });
   $('#ChatBtn').on('click', function (e) {
     e.preventDefault();
     var ownerID = $(this).data('owner');
@@ -2661,13 +2678,175 @@ $('#searchForm').submit(function(e) {
   });
   $('.sidechat').on('click', function() {
     $('.sidechat').removeClass('selected');
-
+    
     $(this).addClass('selected');
     var receiver = $(this).data('receiver');
     var sender = $(this).data('sender');
     window.location.href = '/marketplace/chat/?m=' + sender + 'l' + receiver;
   });
-  
+  $('#profilechange').submit(function(e) {
+    e.preventDefault();
+    var firstname = $(this).find('#firstname').val();
+    var lastname = $(this).find('#lastname').val();
+    var userid = $(this).find('#userid').val();
+    var changeprofile = $('#transfer-image')[0].files[0];
+    var form = new FormData();
+
+    var datachange = {
+      FirstName: firstname,
+      LastName: lastname,
+      UserID: userid
+    };
+    form.append('dataChange', JSON.stringify(datachange));
+    form.append('profileChange', changeprofile);
+    $.ajax({
+      url: '/marketplace/profile/ChangeData',
+      type: 'POST',
+      data: form,
+      processData: false,
+      contentType: false,
+      success: function (results) {
+        var response = JSON.parse(results);
+        if (response.success) {
+          var changedFields = response.changedFields.join(', ');
+          iziToast.success({
+            icon: 'fa fa-check',
+            timeout: 4000,
+            title: 'Sukses',
+            message: 'Data '+ changedFields + ' Telah Diperbarui',
+            position: 'bottomRight',
+            onClosed: function () {
+              return false;
+              // window.location.href = "/marketplace/";
+            }
+          });
+        } else {
+          iziToast.error({
+            title: 'Failed ',
+            message: response.message,
+            position: 'bottomRight'
+          });
+        }
+      },
+      error: function (xhr, status, error) {
+        iziToast.error({
+          title: 'Error',
+          message: error,
+          position: 'bottomRight'
+        });
+      }
+    });
+  });
+  var email = $('#profilechange').find('#email-label').text();
+  var hashedEmail = hashEmail(email);
+  $('#email-label').text(hashedEmail);
+  $('#reqChangePass').on('click', function() {
+    var form = new FormData();
+    var otpCode = generateOTP();
+    var changePass = {
+      CodeOTP: otpCode,
+      EmailChange: email
+    };
+    form.append('ChangePass', JSON.stringify(changePass));
+    iziToast.success({
+      icon: 'fa fa-check',
+      timeout: 5000,
+      title: 'Sukses',
+      message: 'Tunggu sebentar...',
+      position: 'bottomRight',
+      onClosed: function () {
+        $('#OTPCodeChangePass').modal('show');
+      }
+    });
+    $.ajax({
+      url: '/marketplace/profile/SentOTP',
+      type: 'POST',
+      data: form,
+      processData: false,
+      contentType: false,
+      success: function (results) {
+        iziToast.success({
+          icon: 'fa fa-check',
+          timeout: 3500,
+          title: 'Sukses',
+          message: 'OTP berhasil dikirim, OTP akan expired setelah 3 menit!',
+          position: 'bottomRight',
+          onClosed: function () {
+            $('#OTPCodeChangePass').modal('show');
+          }
+        });
+      },
+      error: function (xhr, status, error) {
+        iziToast.error({
+          title: 'Error',
+          message: error,
+          position: 'bottomRight'
+        });
+      }
+    })
+  });
+  $('#sentOTPChangePass').submit(function (e) {
+    e.preventDefault();
+    let otpCode = '';
+    otpInputs.each(function () {
+      otpCode += $(this).val();
+    });
+    // console.log(otpCode)
+    $.post("/marketplace/profile/CheckOTP", {
+      OTPCode: otpCode
+    })
+    .done(function (data) {
+      // return false;
+      var response = JSON.parse(data);
+      if (response.success) {
+        $('#ChangePass').modal('show');
+      } else {
+        alert('Fail');
+      }
+
+    }).fail(function () {
+      alert('error');
+    });
+  });
+  $('#ChangePass').submit(function (e) {
+    e.preventDefault();
+
+    var password = $(this).find('#newpass').val();
+    var confirmpassword = $(this).find('#confpass').val();
+    if(password != confirmpassword){
+      iziToast.warning({ position: "bottomRight", title: 'Caution', message: 'Password Tidak Sama' });
+    }
+    $.post("/marketplace/profile/ChangePass", {
+      NewPassword: password
+    })
+    .done(function (data) {
+      var response = JSON.parse(data);
+      if (response.success) {
+        iziToast.success({
+          icon: 'fa fa-check',
+          timeout: 3500,
+          title: 'Sukses',
+          message: 'Password Berhasil Diperbarui',
+          position: 'bottomRight',
+          onClosed: function () {
+            window.location.reload();
+          }
+        });
+      } else {
+        iziToast.error({
+          title: 'Failed ',
+          message: response.message,
+          position: 'bottomRight'
+        });
+      }
+
+    }).fail(function () {
+      iziToast.error({
+        title: 'Error ',
+        position: 'bottomRight'
+      });
+    });
+  });
   const urlParams = new URLSearchParams(window.location.search);
   if (urlParams.has('detailOrder')) {
     toggleOrderDetail(true);
@@ -2689,6 +2868,30 @@ $('#searchForm').submit(function(e) {
       $('#myOrder').show();
       $('#detailOrder').hide();
     }
+  }
+  if(urlParams.has('account')){
+    toggleSwitchProfile(true);
+  } else {
+      toggleSwitchProfile(false);
+  }
+  function toggleSwitchProfile(stts) {
+    if (stts) {
+      $('#ProfileMainpage').hide();
+      $('#ProfileAccountSec').show();
+    } else {
+      $('#ProfileMainpage').show();
+      $('#ProfileAccountSec').hide();
+    }
+  }
+  function hashEmail(email) {
+    var emailParts = email.split('@');
+    var namePart = emailParts[0];
+    
+    if (namePart.length > 1) {
+        var hashedName = namePart[0] + '****';
+        return hashedName + '@' + emailParts[1];
+    }
+    return email;
   }
   function formatNumber(number) {
     let parts = number.toString().split('.');

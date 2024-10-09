@@ -1,26 +1,4 @@
 	<style>
-		.ti-bag {
-		position: relative;
-		}
-
-		.ti-bag .cart-count {
-			position: absolute;
-			display: flex;
-			justify-content: center;
-			align-items: flex-start;
-			width: 18px;
-			height: 18px;
-			line-height: 1rem !important;
-			top: -8px;
-			right: -10px; 
-			background-color: red;
-			border-radius: 50%;
-			color: #fff !important; 
-			font-size: 14px;
-			font-weight: bold;
-		}
-
-		
 		#history_list li.selected{
 			background-color: #f5f5f5 !important;
 		}
@@ -98,16 +76,20 @@
 					<ul class="nav navbar-nav navbar-right">
 						<li class="nav-item">
 							<a href="{$BaseHref}/cart" class="cart">
-								<span class="ti-bag"><% if $CartData %><span class="cart-count">$CartData</span><% end_if %></span>
+								<span class="cart" style=" outline: none !important; box-shadow: none;"></span>
+								<i class='bx bx-shopping-bag' style="font-size: 18px;"><% if $CartData %><span class="cart-count">$CartData</span><% end_if %></i>
 							</a>
 						</li>
 						<li class="nav-item">
-						<span class="search" style=" outline: none !important; box-shadow: none;"></span>
-							<span class="lnr lnr-magnifier " id="search"></span>
+							<div id="chaticons">
+								<span class="chat" style=" outline: none !important; box-shadow: none;"></span>
+								<i class='bx bx-conversation' style="font-size: 18px;"></i>
+							</div>
 						</li>
 						<li class="nav-item submenu dropdown">
-							<div class="cart">
-								<span class="ti-bell"><% if $CountNotif %><span class="badge">$CountNotif</span> <% else %>	 <% end_if %></span>
+							<div class="notif">
+								<span class="notif" style=" outline: none !important; box-shadow: none;"></span>
+								<i class='bx bx-bell' style="font-size: 18px;"><% if $CountNotif %><span class="badge">$CountNotif</span> <% else %>	 <% end_if %></i>
 							</div>
 							<div class="dropdown-menu dropdown-menu-right" id="fate" style=" width: 30rem;  padding-bottom: 0 !important;">
 									<h5 class="text-muted " style="padding:10px;">Notifikasi Baru Diterima</h5>
@@ -167,30 +149,34 @@
 								</a>
 							</div>
 						</li>
-						</ul>
-					</div>
-				</div>
-			</nav>
-		</div>
-		<div id="search_column">
-			<div class="search_input mb-5" id="search_input_box">
-				<div class="container">
-					<form class="d-flex justify-content-between" id="searchForm">
-						<input type="text" class="form-control" id="search_input" placeholder="Search Here">
-						<button type="submit" class="btn"></button>
-						<span class="lnr lnr-cross" id="close_search" title="Close Search"></span>
-					</form>
-				</div>
-			</div>
-			<div id="search_history" class="search_input pt-5" style="padding-bottom: .01rem; background-color: #fff; text-align: left; box-shadow: 0px 0px 5px #fff;">
-				<div class="container">
-					<ul id="history_list">
-						<% loop $ProductObjects %>
-							
-						<% end_loop %> 
+						<li class="nav-item">
+							<span class="search" style=" outline: none !important; box-shadow: none;"></span>
+							<i class='bx bx-search' style="font-size: 18px;" id="search"></i>
+						</li>
 					</ul>
 				</div>
 			</div>
+		</nav>
+	</div>
+	<div id="search_column">
+		<div class="search_input mb-5" id="search_input_box">
+			<div class="container">
+				<form class="d-flex justify-content-between" id="searchForm">
+					<input type="text" class="form-control" id="search_input" placeholder="Search Here">
+					<button type="submit" class="btn"></button>
+					<span class="lnr lnr-cross" id="close_search" title="Close Search"></span>
+				</form>
+			</div>
 		</div>
-	</header>
+		<div id="search_history" class="search_input pt-5" style="position: fixed; padding-bottom: .01rem; background-color: #fff; text-align: left; box-shadow: 0px 0px 5px #fff; width: 100%; max-width: 1200px; left: 50%; transform: translateX(-50%);">
+			<div class="container">
+				<ul id="history_list">
+					<% loop $ProductObjects %>
+						
+					<% end_loop %> 
+				</ul>
+			</div>
+		</div>
+	</div>
+</header>
 	<!-- End Header Area -->
