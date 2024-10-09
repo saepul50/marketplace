@@ -1,56 +1,3 @@
-const stars = document.querySelectorAll(".star");
-const rating = document.getElementById("rating");
-const ratingDisplay = document.getElementById('rating');
-const ratingValueInput = document.getElementById('ratingValue');
-stars.forEach((star) => {
-  star.addEventListener("click", () => {
-    const value = parseInt(star.getAttribute("data-value"));
-    rating.innerText = value;
-
-    // Remove all existing classes from stars
-    stars.forEach((s) => s.classList.remove("one",
-      "two",
-      "three",
-      "four",
-      "five"));
-    stars.forEach((s, index) => {
-      if (index < value) {
-        s.classList.add(getStarColorClass(value));
-      }
-    });
-    stars.forEach((s) => s.classList.remove("selected"));
-    star.classList.add("selected");
-  });
-});
-stars.forEach(star => {
-  star.addEventListener('click', function () {
-    const rating = this.getAttribute('data-value');
-    ratingDisplay.textContent = rating; 
-    ratingValueInput.value = rating; 
-    stars.forEach(s => {
-      s.classList.remove('selected');
-    });
-    for (let i = 0; i < rating; i++) {
-      stars[i].classList.add('selected');
-    }
-  });
-});
-function getStarColorClass(value) {
-  switch (value) {
-    case 1:
-      return "one";
-    case 2:
-      return "two";
-    case 3:
-      return "three";
-    case 4:
-      return "four";
-    case 5:
-      return "five";
-    default:
-      return "";
-  }
-}
 
 
 $(document).ready(function () {
@@ -236,11 +183,11 @@ $(document).ready(function () {
             icon: "success",
             timer: 1700
           })
-          // setInterval(href, 1800);
+          setInterval(href, 1800);
 
-          // function href() {
-          //   location.reload();
-          // }
+          function href() {
+            location.reload();
+          }
         } else {
           Swal.fire({
             icon: "error",
@@ -1585,50 +1532,7 @@ $('#searchForm').submit(function(e) {
       });
   });
 
-  $("#blogcomment").submit(function (event) {
-    event.preventDefault(); // Prevents the form from doing a default refresh
-
-    $.post("/blog/handelComment", {
-      Name: $("#name").val(),
-      Message: $("#message").val(),
-      ID: $("#BlogAddID").val(),
-    })
-      .done(function (data) {
-        var response = JSON.parse(data);
-        if (response.success) {
-          Swal.fire({
-            title: "SUCCESS",
-            text: "Success",
-            icon: "success",
-            timer: 1000
-          })
-          setInterval(href, 1500);
-
-          function href() {
-            location.reload();
-          }
-        } else {
-          Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text: response.message,
-            showConfirmButton: false,
-            timer: 1500
-          });
-        }
-
-      }).fail(function () {
-        Swal.fire({
-          icon: "error",
-          title: "Error",
-          text: "There was an issue  Please try again later.",
-          confirmButtonColor: "#d33",
-        });
-      });
-
-    return false; // Ensure no form submission (and thus no refresh)
-  });
-
+  
 
   $("#replycomment").submit(function (event) {
     event.preventDefault(); // Prevents the form from doing a default refresh

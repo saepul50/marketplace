@@ -49,7 +49,7 @@
                         <ul>
                             <li class="filter-list">
                                 <input class="pixel-radio" type="radio" id="allbrand" name="brand" value="all" <% if $CurrentFilter == 'all' %>checked<% end_if %>>
-                                <label for="allbrand">All <span>($PaginatedProduct.Count)</span></label>
+                                <label for="allbrand">All <span>($All)</span></label>
                             </li>
                             <% loop $Brand %>
                                 <li class="filter-list">
@@ -141,7 +141,7 @@
                         <div class="col-lg-4 col-md-6">
                             <div class="single-product">
                                 <% with $ProductImages.First %>
-                                    <a href="{$BaseHref}/productdetails/view/$ID"><img src="$URL" class="img-fluid" style="object-fit: cover; aspect-ratio: 4/3"></a>
+                                    <a href="{$BaseHref}/productdetails/view/$Up.ID"><img src="$URL" class="img-fluid" style="object-fit: cover; aspect-ratio: 4/3"></a>
                                 <% end_with %>
                                 <div class="product-details">
                                     <h6>$Title</h6>

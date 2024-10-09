@@ -74,14 +74,7 @@
 								<li class="nav-item"><a class="nav-link" href="{$BaseHref}/shopresult">Shopping Result</a></li>
 							</ul>
 						</li>
-						<li class="nav-item submenu dropdown" id="blog">
-							<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-							 aria-expanded="false">Blog</a>
-							<ul class="dropdown-menu">
-								<li class="nav-item"><a class="nav-link" href="{$BaseHref}/blog">Blog</a></li>
-								<%-- <li class="nav-item"><a class="nav-link" href="{$BaseHref}/blog-detail">Blog Details</a></li> --%>
-							</ul>
-						</li>
+						<li class="nav-item" ><a class="nav-link" href="{$BaseHref}/blog">Blog</a></li>
 						<li class="nav-item submenu dropdown" id="pages">
 							<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
 							 aria-expanded="false">Pages</a>
@@ -190,7 +183,7 @@
 		</div>
 		<div id="search_history" class="search_input pt-5" style="position: fixed; padding-bottom: .01rem; background-color: #fff; text-align: left; box-shadow: 0px 0px 5px #fff; width: 100%; max-width: 1200px; left: 50%; transform: translateX(-50%);">
 			<div class="container">
-				<ul id="history_list">
+				<ul id="history_list" style="margin-bottom:0 !important">
 					<% loop $ProductObjects %>
 						
 					<% end_loop %> 

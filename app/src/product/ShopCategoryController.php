@@ -25,6 +25,7 @@ use SilverStripe\View\ArrayData;
             $brandList = ProductBrandObject::get();
             
             $productQuery = ProductObject::get();
+            $productObject = ProductObject::get();
             
             if ($brandFilter && $brandFilter !== 'all') {
                 $productQuery = $productQuery->filter('ProductBrandsID', $brandFilter);
@@ -69,7 +70,8 @@ use SilverStripe\View\ArrayData;
                 'CurrentLength' => $pagelength,
                 'CurrentSort' => $sortOption,
                 'CurrentSubCategory' => $subCategoryFilter,
-                'MainSearch' => $mainsearch
+                'MainSearch' => $mainsearch,
+                'All' => $productObject->count(),
             ];
         }
 
