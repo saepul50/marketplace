@@ -22,6 +22,26 @@
 			font-size: 14px;
 			font-weight: bold;
 		}
+		.bx-shopping-bag {
+		position: relative;
+		}
+
+		.bx-shopping-bag .cart-count {
+			position: absolute;
+			display: flex;
+			justify-content: center;
+			align-items: flex-start;
+			width: 18px;
+			height: 18px;
+			line-height: 1rem !important;
+			top: -8px;
+			right: -10px; 
+			background-color: red;
+			border-radius: 50%;
+			color: #fff !important; 
+			font-size: 14px;
+			font-weight: bold;
+		}
 	</style>
 <header class="header_area sticky-header">
 	<div class="main_menu">

@@ -2821,6 +2821,7 @@ $('#searchForm').submit(function(e) {
     })
     .done(function (data) {
       var response = JSON.parse(data);
+      // console.log(response.message);
       if (response.success) {
         iziToast.success({
           icon: 'fa fa-check',
@@ -2833,11 +2834,25 @@ $('#searchForm').submit(function(e) {
           }
         });
       } else {
-        iziToast.error({
-          title: 'Failed ',
-          message: response.message,
-          position: 'bottomRight'
-        });
+        if(response.message.PREVIOUS_PASSWORD) {
+          iziToast.error({
+            title: 'Failed ',
+            message: response.message.PREVIOUS_PASSWORD.message,
+            position: 'bottomRight'
+          });
+        } else if(response.message.TOO_SHORT) {
+          iziToast.error({
+            title: 'Failed ',
+            message: response.message.TOO_SHORT.message,
+            position: 'bottomRight'
+          });
+
+        } else {
+          iziToast.error({
+            title: 'Failed ',
+            position: 'bottomRight'
+          });
+        }
       }
 
     }).fail(function () {

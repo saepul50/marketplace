@@ -146,22 +146,22 @@ class ProfilePageController extends PageController{
                     $Account->changePassword($NewPassword);
                     $Account->write();
 
-                    return [
-                        'Success' => true,
-                        'Message' => 'Password berhasil diubah.'
-                    ];
+                    return json_encode ([
+                        'success' => true,
+                        'message' => 'Password berhasil diubah.'
+                    ]);
                 } else {
-                    return [
-                        'Success' => false,
-                        'Message' => $validationResult->getMessages()
-                    ];
+                    return json_encode ([
+                        'success' => false,
+                        'message' => $validationResult->getMessages()
+                    ]);
                 }
             }
         }
 
-        return [
-            'Success' => false,
-            'Message' => 'Akun Tidak Ada'
-        ];
+        return json_encode( [
+            'success' => false,
+            'message' => 'Akun Tidak Ada'
+        ]);
     }
 }
