@@ -166,7 +166,91 @@ $(document).ready(function () {
 
   });
 
+  $('#Nilai').on('click', function(event) {
+    event.preventDefault();
+    var button = $(this); 
+    var title = button.data('title');
+    var image = button.data('image');
+    var variant = button.data('variant');
+    var get = button.data('get');
+    var id = button.data('id');
+    var button = $('.showModalButton').data('id');
+    var Filter =  $("#ID").val();
+    $('#ProductID').val(id);
+    $('#title').html(title);
+    $('#variants').html(variant);
+    $('#image').attr('src', image);
+    $('#OrderID').val(get);
+    $('#exampleModalCenter').modal('show');
+    });
   
+    $("#reviewform").submit(function (event) {
+      event.preventDefault();
+      const rating = document.getElementById("ratingValue");
+      // console.log(button);
+      let angka = rating.getAttribute('value');
+      console.log(angka);
+      if(parseInt(angka) === 0 ){
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Input Rating First",
+          showConfirmButton: false,
+        });
+      } else {
+            $.post("/marketplace/productdetails/review", {
+                Review: $("#reviewmsg").val(),  
+                Rating: $("#ratingValue").val(),
+                ID: $("#ProductID").val(),
+              })
+              .done(function (data) {
+                var response = JSON.parse(data);
+                var Filter =  $("#ID").val();
+                var OrderID =  $("#OrderID").val();
+                
+                if (response.success) {
+                  $('.showModalButton[data-get="' + OrderID + '"][data-id="' + Filter+'"]').prop('disabled', true).text('Submitted'); 
+                  localStorage.setItem('reviewsubmit' + OrderID + Filter, true);
+                  Swal.fire({
+                        title: "SUCCESS",
+                        text: "Review submitted successfully!",
+                        icon: "success",
+                        timer: 1000,
+                      });
+                      $('#exampleModalCenter').removeClass('show').attr("aria-hidden", "true");
+                      $('.modal-backdrop').removeClass('show');
+                      document.getElementById('reviewmsg').value=null;
+                      stars.forEach((s) => s.classList.remove("one", 
+                        "two", 
+                        "three", 
+                        "four", 
+                        "five", 
+                        "selected"));
+                        setInterval(href, 1500);
+  
+                      function href() {
+                        location.reload();
+                      }
+                } else {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Oops...",
+                        text: response.message,
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                }
+            })
+            .fail(function () {
+                Swal.fire({
+                    icon: "error",
+                    title: "Error",
+                    text: "There was an issue submitting the review. Please try again later.",
+                    confirmButtonColor: "#d33"
+                });
+            });
+          }
+        });
   $("#Couponform").submit(function (event) {
     event.preventDefault(); 
     $.post("/marketplace/productcheckout/coupon", {
@@ -961,19 +1045,21 @@ $('#searchForm').submit(function(e) {
                 ==================================*/
                   $(".active-banner-slider").owlCarousel({
                       items: 1,
-                          autoplay: true,
-                              autoplayTimeout: 3000,
-                                  loop: true,
-                                      nav: true,
-                                          navText: [
-                                                "<img src='_resources/themes/simple/images/banner/prev.png'>",
-                                                      "<img src='_resources/themes/simple/images/banner/next.png'>"
-                                                          ],
-                                                              dots: false
-                                                                });
-                                                                
-                                                                  /*=================================
-                                                                  ');
+                      autoplay: true,
+                      autoplayTimeout: 3000,
+                      loop: true,
+                      nav: true,
+                      navText: ['',''], 
+                      dots: false,
+                      onInitialized: function() {
+                          $('.owl-prev').html('<img src="/marketplace/_resources/themes/simple/images/banner/prev.png" alt="Previous">');
+                          $('.owl-next').html('<img src="/marketplace/_resources/themes/simple/images/banner/next.png" alt="Next">');
+                      }
+                      });
+                      $('.owl-prev').html('<img src="/marketplace/_resources/themes/simple/images/banner/prev.png" alt="Previous">');
+                      $('.owl-next').html('<img src="/marketplace/_resources/themes/simple/images/banner/next.png" alt="Next">');  
+/*=================================
+');
 
 });
   /*==========================
@@ -990,29 +1076,33 @@ $('#searchForm').submit(function(e) {
     autoplayTimeout: 3000,
     loop: true,
     nav: true,
-    navText: [
-      "<img src='_resources/themes/simple/images/banner/prev.png'>",
-      "<img src='_resources/themes/simple/images/banner/next.png'>"
-    ],
-    dots: false
+    navText: ['',''], 
+    dots: false,
+    onInitialized: function() {
+        $('.owl-prev').html('<img src="/marketplace/_resources/themes/simple/images/banner/prev.png" alt="Previous">');
+        $('.owl-next').html('<img src="/marketplace/_resources/themes/simple/images/banner/next.png" alt="Next">');
+    }
   });
-
+  $('.owl-prev').html('<img src="/marketplace/_resources/themes/simple/images/banner/prev.png" alt="Previous">');
+  $('.owl-next').html('<img src="/marketplace/_resources/themes/simple/images/banner/next.png" alt="Next">');
   /*=================================
   Javascript for product area carousel
   ==================================*/
   $(".active-product-area").owlCarousel({
     items: 1,
-    autoplay: false,
-    autoplayTimeout: 5000,
+    autoplay: true,
+    autoplayTimeout: 3000,
     loop: true,
     nav: true,
-    navText: [
-      "<img src='_resources/themes/simple/images/banner/prev.png'>",
-      "<img src='_resources/themes/simple/images/banner/next.png'>"
-    ],
-    dots: false
+    navText: ['',''], 
+    dots: false,
+    onInitialized: function() {
+        $('.owl-prev').html('<img src="/marketplace/_resources/themes/simple/images/banner/prev.png" alt="Previous">');
+        $('.owl-next').html('<img src="/marketplace/_resources/themes/simple/images/banner/next.png" alt="Next">');
+    }
   });
-
+  
+  
   /*=================================
   Javascript for single product area carousel
   ==================================*/
@@ -1034,6 +1124,10 @@ $('#searchForm').submit(function(e) {
     autoplayTimeout: 5000,
     loop: true,
     nav: true,
+    navText: [
+      '<i class="fa fa-long-arrow-left" aria-hidden="true" style="font-size: 40px;"></i>',
+      '<i class="fa fa-long-arrow-right" aria-hidden="true" style="font-size: 40px;"></i>'
+  ],
     dots: false
   });
 

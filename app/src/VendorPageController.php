@@ -82,6 +82,7 @@ class VendorPageController extends PageController {
                 }
                 $overallAverage =  $totalAverageSum / $totalCount;
                 $formatave = number_format($overallAverage, 2);
+                // Debug::show($productRatings);
             }
             $promo = PromoToko::get()->filter(['VendorID'=> $vendor->ID,'ExpDate:GreaterThanOrEqual' => time()]);
             $banner = BannerPromo::get()->filter('VendorID', $vendor->ID)->column('BannerPlacesID'); 
@@ -153,9 +154,9 @@ class VendorPageController extends PageController {
             $data = $this->nepo(); 
         
             return $this->customise([
-                // 'Notif' => $data['Notif'],
-                // 'Product' => $data['Product'],
-                // 'Counts' => $data['Count'],
+                'Notif' => $data['Notif'],
+                'Product' => $data['Product'],
+                'Counts' => $data['Count'],
                 'SubCategory' => $subCategoryList,
                 'Brand' => $brandsWithCount,
                 'Category' => $categories,

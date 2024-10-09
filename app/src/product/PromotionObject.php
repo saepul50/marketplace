@@ -28,8 +28,8 @@ use SilverStripe\Security\Security;
             'ShowPromotion4' => 'Boolean',
             'ShowPromotion5' => 'Boolean',
             'ShowPromotion6' => 'Boolean',
-            'ShowPromotion7' => 'Boolean',
-            
+            'ExclusiveSlider' => 'Boolean',
+
         ];
         private static $has_one = [
             'Product' => ProductObject::class,
@@ -72,7 +72,8 @@ use SilverStripe\Security\Security;
                 CheckboxField::create('ShowPromotion1', 'Main Promotion'),
                 CheckboxField::create('ShowPromotion2', 'Limited Weekly Deals'),
                 CheckboxField::create('ShowPromotion3', 'Featured Item Bottom 1'),
-                CheckboxField::create('ShowPromotion4', 'Featured Item Bottom 2')
+                CheckboxField::create('ShowPromotion4', 'Featured Item Bottom 2'),
+                CheckboxField::create('ExclusiveSlider', 'Exclusive Products Slider '),
             );
         } elseif ($member->ID != 1) {
             $fields = FieldList::create(
@@ -92,7 +93,8 @@ use SilverStripe\Security\Security;
                 CheckboxField::create('ShowPromotion1', 'Main Promotion'),
                 CheckboxField::create('ShowPromotion2', 'Limited Weekly Deals'),
                 CheckboxField::create('ShowPromotion3', 'Featured Item Bottom 1'),
-                CheckboxField::create('ShowPromotion4', 'Featured Item Bottom 2')
+                CheckboxField::create('ShowPromotion4', 'Featured Item Bottom 2'),
+                CheckboxField::create('ExclusiveSlider', 'Exclusive Products Slider '),
             ); 
         }
             if ($this->ProductImagesInputID) {

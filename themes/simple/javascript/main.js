@@ -975,10 +975,10 @@ $('#searchForm').submit(function(e) {
                               autoplayTimeout: 3000,
                                   loop: true,
                                       nav: true,
-                                          navText: [
-                                                "<img src='_resources/themes/simple/images/banner/prev.png'>",
-                                                      "<img src='_resources/themes/simple/images/banner/next.png'>"
-                                                          ],
+                                      navText: [
+                                        "<img src='/marketplace/_resources/themes/simple/images/banner/prev.png'>",
+                                        "<img src='/marketplace/_resources/themes/simple/images/banner/next.png'>"
+                                      ],
                                                               dots: false
                                                                 });
                                                                 
@@ -1001,8 +1001,8 @@ $('#searchForm').submit(function(e) {
     loop: true,
     nav: true,
     navText: [
-      "<img src='_resources/themes/simple/images/banner/prev.png'>",
-      "<img src='_resources/themes/simple/images/banner/next.png'>"
+        '<img src="/marketplace/_resources/themes/simple/images/banner/prev.png" alt="Previous">',
+        '<img src="/marketplace/_resources/themes/simple/images/banner/next.png" alt="Next">'
     ],
     dots: false
   });
@@ -1017,8 +1017,8 @@ $('#searchForm').submit(function(e) {
     loop: true,
     nav: true,
     navText: [
-      "<img src='_resources/themes/simple/images/banner/prev.png'>",
-      "<img src='_resources/themes/simple/images/banner/next.png'>"
+      "<img src='/marketplace/_resources/themes/simple/images/banner/prev.png'>",
+      "<img src='/marketplace/_resources/themes/simple/images/banner/next.png'>"
     ],
     dots: false
   });
