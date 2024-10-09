@@ -28,18 +28,36 @@ class ChatPageController extends PageController {
                     'SenderID' => [$currentMember->ID]
                 ]);
                 if (!$chatList->exists()) {
-                    $user = explode('l', $url)[0];
-                    $receiver = explode('l', $url)[1];
-                    $unichat1 = '?m=' . $user . 'l' . $receiver;
-                    $unichat2 = '?m=' . $receiver . 'l' . $user;
-                    $chatList = new ArrayList();
-                    $vendor = Vendor::get()->filter('OwnerID', $receiver);
+                    // die();
+                    if($url){
+                        $user = explode('l', $url)[0];
+                        $receiver = explode('l', $url)[1];
+                        $unichat1 = '?m=' . $user . 'l' . $receiver;
+                        $unichat2 = '?m=' . $receiver . 'l' . $user;
+
+                        if($receiver == $currentMember->ID){
+                            $senderVendor = Vendor::get()->filter('OwnerID', $user)->exists();
+                            $chatMain = Member::get()->byID($user);
+                        } else{
+                            $senderVendor = Vendor::get()->filter('OwnerID', $receiver)->exists();
+                            $chatMain = Member::get()->byID($receiver);
+                        }
+                        // Debug::show(Vendor::get()->filter('OwnerID', $receiver)[0]);
+                        // die();
+                        return [
+                            'CurrentUser' => $currentMember->ID,
+                            'Receiver' => $receiver,
+                            'ChatList' => new ArrayList(),
+                            'Vendor' => Vendor::get()->filter('OwnerID', $receiver)[0],
+                            'SenderVendor' => $senderVendor,
+                            'chatMain' => $chatMain
+                        ];
+                    }
                     return [
-                        'Receiver' => $receiver,
-                        'ChatVendor' => $vendor[0],
-                        'ChatList' => $chatList,
+                        'Receiver' => $SessionChat,
+                        'ChatVendor' => null,
+                        'ChatList' => new ArrayList(),
                         'Messages' => new ArrayList(),
-                        'Vendor' => Vendor::get(),
                         'CurrentUser' => $currentMember->ID,
                     ];
                 }
@@ -86,19 +104,7 @@ class ChatPageController extends PageController {
                 $receiver = explode('l', $url)[1];
                 $unichat1 = '?m=' . $user . 'l' . $receiver;
                 $unichat2 = '?m=' . $receiver . 'l' . $user;
-                // if (!$chatList->exists()) {
-                //     $chatList = new ArrayList();
-                //     $vendor = Vendor::get()->filter('OwnerID', $receiver);
-                //     return [
-                //         'ChatVendor' => $vendor[0],
-                //         'ChatList' => $chatList,
-                //         'Messages' => new ArrayList(),
-                //         'Vendor' => Vendor::get(),
-                //         'CurrentUser' => $currentMember->ID,
-                //     ];
-                // }
-                // Debug::show($receiver);
-                // die();
+
                 $messages = ChatObject::get()->filter([
                     'unichat' => [$unichat1, $unichat2]
                 ])->sort('LastEdited', 'DESC');
