@@ -441,7 +441,7 @@
 										<div class="d-flex " style="gap:10px;">
 											<label for="filter" class="mt-2">Urutkan</label>
 											<form id="rating-filter-form" action="" method="get">
-												<select name="sort" id="rating-filter" class="selectpicker" onchange="saveSelectionAndSubmit()" style="display:block !important;">
+												<select name="" id="rating-filter" class="selectpicker" onchange="saveSelectionAndSubmit()" style="display:block !important;">
 													<option value="Latest">Latest</option>
 													<option value="Highest Rating">Highest Rating</option>
 													<option value="Lowest Rating">Lowest Rating</option>

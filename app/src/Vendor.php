@@ -39,7 +39,7 @@ use SilverStripe\Security\Member;
         public function onBeforeWrite() {
             parent::onBeforeWrite();
             
-            if (!$this->Pathname) {
+            if ($this->Pathname != $this->Name) {
                 $this->Pathname = strtolower(str_replace(' ', '', $this->Name));
             }
         }
@@ -77,7 +77,7 @@ use SilverStripe\Security\Member;
             $fields->addFieldToTab('Root.Main', ReadonlyField::create('Address'));
             $fields->addFieldToTab('Root.Main', TextField::create('AddressDetail'));
             $fields->addFieldToTab('Root.Main', ReadOnlyField::create('Postal'));
-            $fields->removeByName(array('Products','PromoToko','Chat'));
+            $fields->removeByName(array('Products','PromoToko','Chat','BannerPlaces'));
             
             return $fields;
         }

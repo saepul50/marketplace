@@ -13,20 +13,24 @@
         <div class="row">
             <div class="col-lg-9">
                 <div class="row">
-                    <% loop $PromotionObjects %>
+                    <% loop $PromotionObjects.Limit(12) %>
                          <% if $ShowPromotion2 %>
-                            <div class="col-lg-4 col-md-4 col-sm-6 mb-20">
+                            <div class="col-lg-4 col-md-4 col-sm-8 mb-20">
                                 <div class="single-related-product d-flex">
-                                    <% with $Object %>
-                                        
+                                <% with $Product %>
+                                    <a href="{$BaseHref}/productdetails/view/$ID"><img src="$Up.ProductImages.URL" alt="" width="70" height="70"></a>
                                         <div class="desc">
-                                            <a href="#" class="title">$Title</a>
+                                            <a href="{$BaseHref}/productdetails/view/$ID" class="title" style="text-transform:none;">$Title</a>
                                             <div class="price">
-                                                <h6>$189.00</h6>
-                                                <h6 class="l-through">$210.00</h6>
+                                                <% if $Promotion %>
+													<h6>$minPriceDiscounted</h6>
+													<h6 class="l-through">$minPrice</h6>
+												<% else %>
+													<h6>$minPrice</h6>
+												<% end_if %>
                                             </div>
                                         </div>
-                                    <% end_with   %>
+                                <% end_with   %>
                                 </div>
                             </div>
                         <% end_if %>

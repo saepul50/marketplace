@@ -28,7 +28,8 @@ use SilverStripe\Security\Security;
             'ShowPromotion4' => 'Boolean',
             'ShowPromotion5' => 'Boolean',
             'ShowPromotion6' => 'Boolean',
-            'ShowPromotion7' => 'Boolean'
+            'ShowPromotion7' => 'Boolean',
+            
         ];
         private static $has_one = [
             'Product' => ProductObject::class,

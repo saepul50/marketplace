@@ -1,11 +1,16 @@
 <?php 
+use PharIo\Manifest\Requirement;
+use SilverStripe\Forms\GridField\GridFieldAddNewButton;
+use SilverStripe\Forms\GridField\GridFieldConfig_RecordEditor;
 use SilverStripe\Dev\Debug;
 use SilverStripe\Admin\LeftAndMain;
 use SilverStripe\Admin\ModelAdmin;
 use SilverStripe\Control\Director;
 use SilverStripe\Forms\GridField\GridFieldConfig;
 use SilverStripe\Forms\GridField\GridFieldFilterHeader;
+use SilverStripe\ORM\ArrayList;
 use SilverStripe\Security\Security;
+use SilverStripe\View\Requirements;
 
 
 class EditVendorAdmin extends ModelAdmin{
@@ -19,14 +24,14 @@ class EditVendorAdmin extends ModelAdmin{
         // Vendor::get()->filter('OwnerID', $member->ID),
         Vendor::class
     ];
-
+    
     protected function init() {
         parent::init();
         $member = Security::getCurrentUser();
         if (!$member) {
             return $this->redirect(Director::absoluteBaseURL() . '/Security/login');
         }
-
+        
         $vendor = Vendor::get()->filter('OwnerID', $member->ID)->first();
         $currentURL = Director::absoluteURL($_SERVER['REQUEST_URI']);
         
@@ -45,15 +50,34 @@ class EditVendorAdmin extends ModelAdmin{
         }
 
         $vendor = Vendor::get()->filter('OwnerID', $member->ID)->first();
-        $currentURL = Director::absoluteURL($_SERVER['REQUEST_URI']);
+        $gridfieldconfig = GridFieldConfig_RecordEditor::create();
+
+        $gridfieldconfig->removeComponentsByType('SilverStripe\Forms\GridField\GridFieldPaginator');
+        $gridfieldconfig->removeComponentsByType('SilverStripe\Forms\GridField\GridField_ActionMenu');
+        $gridfieldconfig->removeComponentsByType('SilverStripe\Forms\GridField\GridField_ActionMenu');
         
-        if (strpos($currentURL, '/item/') === false) {
-            if ($vendor) {
-                return $this->redirect($this->Link("Vendor/EditForm/field/Vendor/item/{$vendor->ID}/edit"));
-            } else {
-                return $this->redirect(Director::absoluteBaseURL() . '/vendorregistration');
-            }
+        // Remove the "Add new record" button
+        $gridfieldconfig->removeComponentsByType('SilverStripe\Forms\GridField\GridFieldAddNewButton');
+
+        if($vendor){
+                $list = new ArrayList([$vendor]);
+        } else{
+            $list = Vendor::get()->filter('ID', -1);
         }
+        $fields = $this->getVendorFields($list, $gridfieldconfig);
+
         return parent::getEditForm($id, $fields);
+
     }
+
+    private function getVendorFields($list, $gridFieldConfig) {
+        $fields = parent::getEditForm()->Fields();
+        $gridField = $fields->fieldByName('Vendor');
+        if ($gridField) {
+            $gridField->setList($list);
+            $gridField->setConfig($gridFieldConfig);
+        }
+        return $fields;
+    }
+
 }

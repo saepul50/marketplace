@@ -141,7 +141,7 @@
                         <div class="col-lg-4 col-md-6">
                             <div class="single-product">
                                 <% with $ProductImages.First %>
-                                    <img src="$URL" class="img-fluid" style="object-fit: cover; aspect-ratio: 4/3">
+                                    <a href="{$BaseHref}/productdetails/view/$ID"><img src="$URL" class="img-fluid" style="object-fit: cover; aspect-ratio: 4/3"></a>
                                 <% end_with %>
                                 <div class="product-details">
                                     <h6>$Title</h6>
@@ -155,19 +155,19 @@
 									</div>
                                     <div class="prd-bottom">
     
-                                        <a href="{$BaseHref}/productdetails/view/$ID" class="social-info">
+                                        <a  class="social-info">
                                             <span class="ti-bag"></span>
                                             <p class="hover-text">add to bag</p>
                                         </a>
-                                        <a href="{$BaseHref}/productdetails/view/$ID" class="social-info">
+                                        <a  class="social-info">
                                             <span class="lnr lnr-heart"></span>
                                             <p class="hover-text">Wishlist</p>
                                         </a>
-                                        <a href="{$BaseHref}/productdetails/view/$ID" class="social-info">
+                                        <a  class="social-info">
                                             <span class="lnr lnr-sync"></span>
                                             <p class="hover-text">compare</p>
                                         </a>
-                                        <a href="{$BaseHref}/productdetails/view/$ID" class="social-info">
+                                        <a  class="social-info">
                                             <span class="lnr lnr-move"></span>
                                             <p class="hover-text">view more</p>
                                         </a>
