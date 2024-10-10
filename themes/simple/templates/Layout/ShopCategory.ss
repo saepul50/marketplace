@@ -49,7 +49,7 @@
                         <ul>
                             <li class="filter-list">
                                 <input class="pixel-radio" type="radio" id="allbrand" name="brand" value="all" <% if $CurrentFilter == 'all' %>checked<% end_if %>>
-                                <label for="allbrand">All <span>($PaginatedProduct.Count)</span></label>
+                                <label for="allbrand">All <span>($All)</span></label>
                             </li>
                             <% loop $Brand %>
                                 <li class="filter-list">

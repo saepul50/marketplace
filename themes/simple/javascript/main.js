@@ -90,6 +90,17 @@ $(document).ready(function () {
   var selectedBrand = currentParams.get('filter');
   var selectedSubCategory = currentParams.get('subcategory');
   var selectedSort = currentParams.get('sort');
+
+  var message = currentParams.get('m');
+  
+  if(message){
+    var slicedMessage = message.split('l');
+    var receiverChat = slicedMessage[1].trim();
+    var thisReceiver = document.querySelector(`.sidechat[data-receiver="${receiverChat}"]`);
+    if (thisReceiver) {
+      thisReceiver.classList.add('chatActive');
+    }
+  }
   if (selectedBrand) {
     $('#navProduct').click();
     $('#filterForm input[name="brand"]').each(function () {
@@ -2628,12 +2639,26 @@ $('#searchForm').submit(function(e) {
   $('#chaticons').on('click', function (e) {
     e.preventDefault();
     $.post("/marketplace/chat/clearSession", {})
+    window.location.href = '/marketplace/chat/';
+  });
+  $('#closeProductChat').on('click', function (e) {
+    e.preventDefault();
+    $.post("/marketplace/chat/clearSession", {})
+    window.location.reload();
+  });
+  $('#ChatBtn').on('click', function (e) {
+    e.preventDefault();
+    var ownerID = $(this).data('owner');
+    var userID = $(this).data('user');
+    var productID = $(this).data('product');
+    $.post("/marketplace/chat/session", {
+      OwnerID: ownerID,
+      ProductID: productID
+    })
     .done(function (data) {
-      // return false;
       var response = JSON.parse(data);
-      // return false;
       if (response.success) {
-        window.location.href = '/marketplace/chat/';
+        window.location.href = '/marketplace/chat/?m=' + userID + 'l' + ownerID;
       } else {
         alert('Fail');
       }
@@ -2642,30 +2667,30 @@ $('#searchForm').submit(function(e) {
       alert('error');
     });
   });
-  $('#ChatBtn').on('click', function (e) {
-    e.preventDefault();
-    var ownerID = $(this).data('owner');
-    var userID = $(this).data('user');
-    window.location.href = '/marketplace/chat/?m=' + userID + 'l' + ownerID;
-  });
   $('#SendChat').submit(function (e) {
     e.preventDefault();
     
-    var message = $('input[name="Message"]').val();
-    var receiverID = $(this).data('receiver');
+    var message = $('textarea[name="MessageChat"]').val();
     var senderID = $(this).data('sender');
+    var receiverID = $(this).data('receiver');
+    var productID = $('.reqProduct').find('.thisReqProduct').attr('id');
+    // console.log(productID)
+    // return false
+    if(!message || !receiverID ){
+      return;
+    }
     var unichat =  '?m=' + senderID + 'l' + receiverID;
-    // console.log(senderID)
-    // console.log(receiverID)
     $.post("/marketplace/chat/sendMessage", {
       Message: message,
       ReceiverID: receiverID,
+      ProductID: productID
     })
     .done(function (data) {
       // return false;
       var response = JSON.parse(data);
       // return false;
       if (response.success) {
+        $.post("/marketplace/chat/clearSession", {})
         window.location.href = '/marketplace/chat/' + unichat;
       } else {
         alert('Fail');
@@ -2820,6 +2845,7 @@ $('#searchForm').submit(function(e) {
     })
     .done(function (data) {
       var response = JSON.parse(data);
+      console.log(response)
       if (response.success) {
         iziToast.success({
           icon: 'fa fa-check',
@@ -2892,6 +2918,11 @@ $('#searchForm').submit(function(e) {
     }
     return email;
   }
+  const textareachat = document.querySelector('textarea[name="MessageChat"]');
+  textareachat.addEventListener('input', function () {
+      this.style.height = 'auto';
+      this.style.height = (this.scrollHeight) + 'px';
+  });
   function formatNumber(number) {
     let parts = number.toString().split('.');
     let integerPart = parts[0];
