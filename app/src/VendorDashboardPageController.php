@@ -13,13 +13,9 @@ use SilverStripe\Security\Security;
             if (!$vendor) {
                 return 'Anda belum membuat toko.';
             }
-            $data = $this->nepo(); // Call the nepo() method from PageController
 
             $products = $vendor->Products();
             return $this->customise([
-                'Notif' => $data['Notif'],
-                'Product' => $data['Product'],
-                'Count' => $data['Count'],
                 'Vendor' => $vendor, 
                 'Products' => $products
             ])->renderWith(['VendorDashboard', 'Page']);

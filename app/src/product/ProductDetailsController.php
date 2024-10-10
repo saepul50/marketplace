@@ -178,14 +178,6 @@ class ProductDetailsController extends PageController
      }
     }
 
-    public function index() {
-        $data = $this->nepo(); 
 
-        return [
-            'Notif' => $data['Notif'],
-            'Product' => $data['Product'],
-            'Count' => $data['Count'],
-        ];
-    }
 
 }

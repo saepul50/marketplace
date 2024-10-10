@@ -41,12 +41,8 @@ class ProductCheckoutPageController extends PageController{
         }
         // Debug::show($listDataCheckout);
         // die();
-        $data = $this->nepo(); // Call the nepo() method from PageController
 
         return $this->customise([
-            'Notif' => $data['Notif'] ?? null,
-            'Product' => $data['Product'] ?? null,
-            'Count' => $data['Count'] ?? null,
             'CheckoutProductData' => $listDataCheckout,
             'AddressData' => $AddressData,
             'Diskon' => $diskon,

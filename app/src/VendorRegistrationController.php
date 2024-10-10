@@ -21,12 +21,8 @@ class VendorRegistrationController extends PageController{
         $member = Security::getCurrentUser();
         $vendor = Vendor::get()->filter('MemberID', $member->ID);
         $VendorData = $request->getSession()->get('VendorData');
-        $data = $this->nepo(); // Call the nepo() method from PageController
 
         return  [
-            'Notif' => $data['Notif'],
-            'Product' => $data['Product'],
-            'Count' => $data['Count'],
 
             'Vendor' => $vendor,
             'VendorData' => $VendorData

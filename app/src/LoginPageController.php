@@ -17,13 +17,7 @@ class  LoginPageController extends PageController{
     public function index() {
         $member = Security::getCurrentUser();
         if($member){
-        $data = $this->nepo(); // Call the nepo() method from PageController
 
-        return [
-            'Notif' => $data['Notif'],
-            'Product' => $data['Product'],
-            'Count' => $data['Count'],
-        ];
         } else{
             return [
                 'Notif' => null,

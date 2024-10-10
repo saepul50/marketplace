@@ -17,17 +17,7 @@ class ProfilePageController extends PageController{
         'CheckOTP',
         'ChangePass',
     ];
-    public function index() {
-        $data = $this->nepo(); // Call the nepo() method from PageController
-        $member = Security::getCurrentUser();
-        // Debug::show($member);
-        return [
-            'Account' =>$member,
-            'Notif' => $data['Notif'] ?? null,
-            'Product' => $data['Product'] ?? null,
-            'Count' => $data['Count'] ?? null,
-        ];
-    }
+
     public function Vendor() {
         $member = Security::getCurrentUser();
         if($member){

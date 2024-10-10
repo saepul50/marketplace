@@ -10,15 +10,7 @@ class RegisPageController extends PageController{
         'prosesregister',
     ];
 
-    public function index() {
-        $data = $this->nepo(); // Call the nepo() method from PageController
 
-        return [
-            'Notif' => $data['Notif'],
-            'Product' => $data['Product'],
-            'Count' => $data['Count'],
-        ];
-    }
     public function prosesregister(HTTPRequest $request)
     {
         // Debug::show($request->postVars());
