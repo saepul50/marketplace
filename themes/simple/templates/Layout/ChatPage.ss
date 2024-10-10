@@ -94,7 +94,12 @@
                                 <% end_if %>
                             </div>
                             <% if $LastMessage %>
-                                <p class="m-0" style="color: #707070;">$LastMessage.Message</p>
+                                <div class="d-flex justify-content-between">
+                                    <p class="m-0" style="color: #707070;">$LastMessage.Message</p>
+                                    <% if $Up.Status %>
+                                    <span class="cart-count">$Up.Status</span>
+                                    <% end_if %>
+                                </div>
                             <% end_if %>
                         </div>
                     </div>

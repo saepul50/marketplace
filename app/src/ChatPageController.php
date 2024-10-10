@@ -19,6 +19,7 @@ class ChatPageController extends PageController {
         public function index(HTTPRequest $request) {
             $currentMember = Security::getCurrentUser();
             $SessionChat = $request->getSession()->get('ownerVendor');
+            $test = ChatObject::get()->filter(['Status' => 'Unread', 'ReceiverID'=> $currentMember->ID])->count();
             // Debug::show($SessionChat);
             // die();
             if ($currentMember) {
@@ -79,23 +80,27 @@ class ChatPageController extends PageController {
                     if($currentMember->ID == $chat->ReceiverID){
                         $vendor = Vendor::get()->filterAny([
                             'OwnerID' => $chat->SenderID
-                        ])->first();
+                            ])->first();
                     } else{
                         $vendor = Vendor::get()->filterAny([
                             'OwnerID' => $chat->ReceiverID
-                        ])->first();
+                            ])->first();
+                        }
+                        $chat->LastMessage = $lastMessage;
+                        $chat->Vendor = $vendor;
                     }
-                    $chat->LastMessage = $lastMessage;
-                    $chat->Vendor = $vendor;
-                }
+                    
                 $chatList = new ArrayList($groupedChats);
                 if (!$url) {
+                    $test = ChatObject::get()->filter(['Status' => 'Unread', 'ReceiverID'=> $currentMember->ID])->count();
+                    // Debug::show($SessionChat);
                     return [
                         'ChatList' => $chatList,
                         'Messages' => new ArrayList(),
                         'Vendor' => Vendor::get(),
                         'CurrentUser' => $currentMember->ID,
                         'Receiver' => $SessionChat,
+                        'Status' => $test,
                     ];
                 }
                 // Debug::show($currentMember->ID);
@@ -121,7 +126,7 @@ class ChatPageController extends PageController {
 
 
 
-                $test = ChatObject::get()->filter(['Status' => 'Unread', 'ReceiverID'=> $currentMember->ID])->count();
+                Debug::show($test);
                 return [
                     'CurrentUser' => $currentMember->ID,
                     'Receiver' => $receiver,
