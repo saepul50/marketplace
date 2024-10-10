@@ -41,55 +41,66 @@
 </section>
 <section id="ProfileMainpage">
     <div class="py-2" style="background-color: #f2f2f2;">
-        <div class="py-3" style="background-color: #fff">
-            <a href="{$BaseHref}/profile/?account" class="d-flex justify-content-between align-items-center col-10"  style="color:black;">
-                <div class="d-flex ml-2">
-                    <i class='bx bx-user' style="color: darkblue; font-size: 26px;"></i>
-                    <p class="ml-3 m-0" style="font-weight: 500;">Akun Saya</p>
-                </div>
-            </a>
-        </div>
-        <% if $Vendor %>
-            <div class="py-3 d-flex align-items-center" style="background-color: #fff">
-                <a href="{$BaseHref}/venn/$Vendor.Pathname" class="d-flex justify-content-between align-items-center col-10"  style="color:black;">
+        <% if $Member %>
+            <div class="py-3" style="background-color: #fff">
+                <a href="{$BaseHref}/profile/?account" class="d-flex justify-content-between align-items-center col-10"  style="color:black;">
                     <div class="d-flex ml-2">
-                        <i class='bx bx-store' style="font-size: 30px; color: darkorange;"></i>
-                        <p class="ml-3 m-0 d-flex align-items-center" style="font-weight: 500;">Toko Saya</p>
+                        <i class='bx bx-user' style="color: darkblue; font-size: 26px;"></i>
+                        <p class="ml-3 m-0" style="font-weight: 500;">Akun Saya</p>
                     </div>
-                </a>
-                <a href="{$BaseHref}/admin" class="col-2 d-flex justify-content-end">
-                    <p class="mr-3 m-0" style="color: #000;">Kelola Toko ></p>
                 </a>
             </div>
-            <% else %>
-            <div class="py-3 d-flex align-items-center" style="background-color: #fff">
-                <a href="{$BaseHref}/vendorregistration" class="d-flex justify-content-between align-items-center col-10"  style="color:black;">
+            <% if $Vendor %>
+                <div class="py-3 d-flex align-items-center" style="background-color: #fff">
+                    <a href="{$BaseHref}/venn/$Vendor.Pathname" class="d-flex justify-content-between align-items-center col-10"  style="color:black;">
+                        <div class="d-flex ml-2">
+                            <i class='bx bx-store' style="font-size: 30px; color: darkorange;"></i>
+                            <p class="ml-3 m-0 d-flex align-items-center" style="font-weight: 500;">Toko Saya</p>
+                        </div>
+                    </a>
+                    <a href="{$BaseHref}/admin" class="col-2 d-flex justify-content-end">
+                        <p class="mr-3 m-0" style="color: #000;">Kelola Toko ></p>
+                    </a>
+                </div>
+                <% else %>
+                <div class="py-3 d-flex align-items-center" style="background-color: #fff">
+                    <a href="{$BaseHref}/vendorregistration" class="d-flex justify-content-between align-items-center col-10"  style="color:black;">
+                        <div class="d-flex ml-2">
+                            <i class='bx bx-store' style="font-size: 30px; color: darkorange;"></i>
+                            <p class="ml-3 m-0" style="font-weight: 500;">Mulai Jual</p>
+                        </div>
+                    </a>
+                    <a href="{$BaseHref}/vendorregistration" class="col-2 d-flex justify-content-end">
+                        <p class="mr-3 m-0" style="color: #000;">Registrasi Gratis ></p>
+                    </a>
+                </div>
+            <% end_if %>
+            <div class="py-3" style="background-color: #fff">
+                <a href="{$BaseHref}/confirm" class="d-flex justify-content-between align-items-center col-10"  style="color:black;">
                     <div class="d-flex ml-2">
-                        <i class='bx bx-store' style="font-size: 30px; color: darkorange;"></i>
-                        <p class="ml-3 m-0" style="font-weight: 500;">Mulai Jual</p>
+                        <i class='bx bx-time-five' style="color: #505050; font-size: 26px;"></i>
+                        <p class="ml-3 m-0" style="font-weight: 500;">History Order</p>
                     </div>
                 </a>
-                <a href="{$BaseHref}/vendorregistration" class="col-2 d-flex justify-content-end">
-                    <p class="mr-3 m-0" style="color: #000;">Registrasi Gratis ></p>
+            </div>
+            <div class="py-3" style="background-color: #fff">
+                <div class="d-flex justify-content-between align-items-center col-10" id="logoutBtn">
+                    <div class="d-flex ml-2">
+                        <i class='bx bx-log-out' style="color: red; font-size: 26px;"></i>
+                        <p class="ml-3 m-0" style="font-weight: 500;">Logout</p>
+                    </div>
+                </div>
+            </div>
+        <% else %>
+            <div class="py-3" style="background-color: #fff">
+                <a href="{$BaseHref}/login" class="d-flex justify-content-between align-items-center col-10"  style="color:black;">
+                    <div class="d-flex ml-2">
+                        <i class='bx bx-log-in' style="color: green; font-size: 26px;"></i>
+                        <p class="ml-3 m-0" style="font-weight: 500;">Login</p>
+                    </div>
                 </a>
             </div>
         <% end_if %>
-        <div class="py-3" style="background-color: #fff">
-            <a href="{$BaseHref}/confirm" class="d-flex justify-content-between align-items-center col-10"  style="color:black;">
-                <div class="d-flex ml-2">
-                    <i class='bx bx-time-five' style="color: #505050; font-size: 26px;"></i>
-                    <p class="ml-3 m-0" style="font-weight: 500;">History Order</p>
-                </div>
-            </a>
-        </div>
-        <div class="py-3" style="background-color: #fff">
-            <div class="d-flex justify-content-between align-items-center col-10" id="logoutBtn">
-                <div class="d-flex ml-2">
-                    <i class='bx bx-exit' style="color: red; font-size: 26px;"></i>
-                    <p class="ml-3 m-0" style="font-weight: 500;">Logout</p>
-                </div>
-            </div>
-        </div>
     </div>
 </section>
 <section id="ProfileAccountSec" style="background-color: #fafafa;">

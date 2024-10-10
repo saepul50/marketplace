@@ -24,34 +24,36 @@ class ProductCheckoutPageController extends PageController{
     ];
     public function index(HTTPRequest $request)
     {
-      
-        
-        $checkoutData = $request->getSession()->get('CheckoutProductData');
-        // Debug::show($checkoutData);
-        $AddressData = $request->getSession()->get('AddressData');
-        $Coupon = $request->getSession()->get('Coupon');
-        $diskon = PromoToko::get()->filter('Code', $Coupon);
-
-        $listDataCheckout = new ArrayList();
-        
-        if ($checkoutData && is_array($checkoutData)) {
-            foreach ($checkoutData as $data) {
-                $listDataCheckout->push($data);
+        $member = Security::getCurrentUser();
+        if($member){
+            $checkoutData = $request->getSession()->get('CheckoutProductData');
+            // Debug::show($checkoutData);
+            $AddressData = $request->getSession()->get('AddressData');
+            $Coupon = $request->getSession()->get('Coupon');
+            $diskon = PromoToko::get()->filter('Code', $Coupon);
+    
+            $listDataCheckout = new ArrayList();
+            
+            if ($checkoutData && is_array($checkoutData)) {
+                foreach ($checkoutData as $data) {
+                    $listDataCheckout->push($data);
+                }
             }
+            // Debug::show($listDataCheckout);
+            // die();
+            $data = $this->nepo(); // Call the nepo() method from PageController
+    
+            return $this->customise([
+                'Notif' => $data['Notif'] ?? null,
+                'Product' => $data['Product'] ?? null,
+                'Count' => $data['Count'] ?? null,
+                'CheckoutProductData' => $listDataCheckout,
+                'AddressData' => $AddressData,
+                'Diskon' => $diskon,
+                'Code' => $Coupon
+            ])->renderWith(['ProductCheckoutPage', 'Page']);
         }
-        // Debug::show($listDataCheckout);
-        // die();
-        $data = $this->nepo(); // Call the nepo() method from PageController
-
-        return $this->customise([
-            'Notif' => $data['Notif'] ?? null,
-            'Product' => $data['Product'] ?? null,
-            'Count' => $data['Count'] ?? null,
-            'CheckoutProductData' => $listDataCheckout,
-            'AddressData' => $AddressData,
-            'Diskon' => $diskon,
-            'Code' => $Coupon
-        ])->renderWith(['ProductCheckoutPage', 'Page']);
+        return $this->redirect('login');
     }
 
     public function coupon(HTTPRequest $request){

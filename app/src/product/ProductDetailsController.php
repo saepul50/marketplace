@@ -9,16 +9,16 @@ use SilverStripe\Security\Security;
 
 class ProductDetailsController extends PageController
 {
-    protected function init()
-    {
-        parent::init();
-        $member = Security::getCurrentUser();
-        // Debug::show($member);
-        // die();
-        if (!$member) {
-            return $this->redirect('login');
-        }
-    }
+    // protected function init()
+    // {
+    //     parent::init();
+    //     $member = Security::getCurrentUser();
+    //     // Debug::show($member);
+    //     // die();
+    //     if (!$member) {
+    //         return $this->redirect('login');
+    //     }
+    // }
     private static $allowed_actions = [
         'getSubCategories',
         'view',
@@ -180,12 +180,14 @@ class ProductDetailsController extends PageController
 
     public function index() {
         $data = $this->nepo(); 
-
-        return [
-            'Notif' => $data['Notif'],
-            'Product' => $data['Product'],
-            'Count' => $data['Count'],
-        ];
+        if($data){
+            return [
+                'Notif' => $data['Notif'],
+                'Product' => $data['Product'],
+                'Count' => $data['Count'],
+            ];
+        }
+        
     }
 
 }

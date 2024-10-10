@@ -24,9 +24,6 @@
 		#history_list li.selected{
 			background-color: #f5f5f5 !important;
 		}
-		a{
-			color:black !important;
-		}
 		.notip-item:hover{
 			background-color:whitesmoke;
 			color:black;
@@ -73,7 +70,6 @@
 								<li class="nav-item"><a class="nav-link" href="{$BaseHref}/productcheckout">Product Checkout</a></li>
 								<li class="nav-item"><a class="nav-link" href="{$BaseHref}/cart">Shopping Cart</a></li>
 								<li class="nav-item"><a class="nav-link" href="{$BaseHref}/confirm">Shopping History</a></li>
-								<li class="nav-item"><a class="nav-link" href="{$BaseHref}/shopresult">Shopping Result</a></li>
 							</ul>
 						</li>
 						<li class="nav-item submenu dropdown" id="blog">
@@ -97,21 +93,21 @@
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
 						<li class="nav-item">
-							<a href="{$BaseHref}/cart" class="cart">
+							<a href="{$BaseHref}/cart" class="cart" style="color: #000;">
 								<span class="cart" style=" outline: none !important; box-shadow: none;"></span>
 								<i class='bx bx-shopping-bag' style="font-size: 18px;"><% if $CartData %><span class="cart-count">$CartData</span><% end_if %></i>
 							</a>
 						</li>
 						<li class="nav-item">
-							<div id="chaticons">
+							<div id="chaticons" style="cursor: pointer;">
 								<span class="chat" style=" outline: none !important; box-shadow: none;"></span>
 								<i class='bx bx-conversation' style="font-size: 18px;"><% if $ChatNotif %><span class="chat-count">$ChatNotif</span><% end_if %></i>
 							</div>
 						</li>
 						<li class="nav-item submenu dropdown">
-							<div class="notif">
+							<div class="notif" style="cursor: pointer;">
 								<span class="notif" style=" outline: none !important; box-shadow: none;"></span>
-								<i class='bx bx-bell' style="font-size: 18px;"><% if $CountNotif %><span class="badge">$CountNotif</span> <% else %>	 <% end_if %></i>
+								<i class='bx bx-bell' style="font-size: 18px;"><% if $CountNotif %><span class="badge">$CountNotif</span> <% else %><% end_if %></i>
 							</div>
 							<div class="dropdown-menu dropdown-menu-right" id="fate" style=" width: 30rem;  padding-bottom: 0 !important;">
 									<h5 class="text-muted " style="padding:10px;">Notifikasi Baru Diterima</h5>
