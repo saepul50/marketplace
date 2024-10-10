@@ -92,11 +92,17 @@ class BlogPageController extends PageController
     public function filter(HTTPRequest $request){
         $p = $request->param('ID');
         $categori = BlogCategory::get()->filter('Title' , $p)->first();
+        $categoris = BlogCategory::get();
         if($categori){
         $object = $categori->BlogAdds();
-        Debug::show($object);
+        // Debug::show($object);
         }
-
+        return $this->customise([
+            'Blog' =>  $object,
+            'Latestpost' => BlogAdd::get()->sort('Created', 'DESC'),
+            'Categori' => $categoris->sort('Count', 'DESC')->filter('Count:GreaterThan', 0),
+            'Popularpost' => BlogAdd::get()->sort('ViewCount', 'DESC'),
+        ])->renderWith(["BlogResult", "Page"]);
     }
 
     public function BlogDetail(HTTPRequest $request)

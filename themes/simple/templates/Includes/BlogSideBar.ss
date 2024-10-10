@@ -21,28 +21,7 @@
             <% end_if %>
             <%-- <div class="br"></div> --%>
         </aside>
-       <%-- <% if $Author %>
-            <aside class="single_sidebar_widget author_widget">
-                <% with $Image %>
-                    <% if $ProfileImage.exists %>
-                        <img class="author_img rounded-circle" id="image" src="$ProfileImage.getURL()" alt="$Name's profile image" width="120" height="120">
-                    <% else %>
-                        <img class="author_img rounded-circle" id="image" src="$SiteConfig.Unknown.getURL()" alt="Default image" width="120" height="120">
-                    <% end_if %>
-                <% end_with %>
-                <h4>$Author</h4>
-                <div class="social_icon">
-                    <a href="#"><i class="fa fa-facebook"></i></a>
-                    <a href="#"><i class="fa fa-twitter"></i></a>
-                    <a href="#"><i class="fa fa-github"></i></a>
-                    <a href="#"><i class="fa fa-behance"></i></a>
-                </div>
-                <p>Boot camps have its supporters andit sdetractors. Some people do not understand why you
-                    should have to spend money on boot camp when you can get. Boot camps have itssuppor
-                    ters andits detractors.</p>
-                <div class="br"></div>
-            </aside>
-        <% end_if %> --%>
+      
         <aside class="single_sidebar_widget popular_post_widget">
             <h3 class="widget_title">Popular Post</h3>         
             <% loop $Popularpost.Limit(5) %>
@@ -77,10 +56,6 @@
                 </div>
             <% end_loop %>  
 
-            <div class="br"></div>
-        </aside>
-        <aside class="single_sidebar_widget ads_widget">
-            <a href="#"><img class="img-fluid" src="$resourceURL('themes/simple/images/blog/add.jpg')" alt=""></a>
             <div class="br"></div>
         </aside>
         <aside class="single_sidebar_widget post_category_widget">

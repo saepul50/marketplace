@@ -132,6 +132,9 @@
                                 </div>
                                 <% if $LastMessage %>
                                     <p class="m-0" style="color: #707070; overflow: hidden; text-overflow: ellipsis;">$LastMessage.Message</p>
+                                    <% if $Up.Count %>
+                                        <span class="badge">$Up.Count</span>
+                                    <% end_if %>
                                 <% end_if %>
                             </div>
                         </div>

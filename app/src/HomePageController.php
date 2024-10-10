@@ -35,16 +35,5 @@ class HomePageController extends PageController{
         return Security::getCurrentUser();
     }
  
-    public function index() {
-        $member = Security::getCurrentUser();
-        if($member){
 
-        } else{
-            return [
-                'Notif' => null,
-                'Product' => null,
-                'Count' =>  null,
-            ];
-        }
-    }
 }
