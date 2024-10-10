@@ -25,16 +25,4 @@ class MyMemberExtension extends DataExtension
         'ProfileImage'
     ];
 
-    
-    public function getCMSFields()
-    { 
-        $fields = parent::getCMSFields();
-        
-      
-        $fields->removeByName(array('Products','PromoToko','Chat','BannerPlaces'));
-        
-        return $fields;
-    }
-
-
 }

@@ -1,9 +1,11 @@
 	<style>
-		.bx-shopping-bag {
+		.bx-shopping-bag,
+		.bx-conversation {
 		position: relative;
 		}
 
-		.bx-shopping-bag .cart-count {
+		.bx-shopping-bag .cart-count,
+		.bx-conversation .chat-count {
 			position: absolute;
 			display: flex;
 			justify-content: center;
@@ -21,6 +23,9 @@
 		}
 		#history_list li.selected{
 			background-color: #f5f5f5 !important;
+		}
+		a{
+			color:black !important;
 		}
 		.notip-item:hover{
 			background-color:whitesmoke;
@@ -42,61 +47,20 @@
 			font-size: 14px;
 			font-weight: bold;
 		}
-		.bx-shopping-bag,
-		.bx-conversation {
-		position: relative;
-		}
-
-		.bx-shopping-bag .cart-count {
-			position: absolute;
-			display: flex;
-			justify-content: center;
-			align-items: flex-start;
-			width: 18px;
-			height: 18px;
-			line-height: 1rem !important;
-			top: -8px;
-			right: -10px; 
-			background-color: red;
-			border-radius: 50%;
-			color: #fff !important; 
-			font-size: 14px;
-			font-weight: bold;
-		}
-		.bx-conversation .cart-count {
-			position: absolute;
-			display: flex;
-			justify-content: center;
-			align-items: flex-start;
-			width: 18px;
-			height: 18px;
-			line-height: 1rem !important;
-			top: -8px;
-			right: -10px; 
-			background-color: red;
-			border-radius: 50%;
-			color: #fff !important; 
-			font-size: 14px;
-			font-weight: bold;
-		}
-		
 	</style>
 <header class="header_area sticky-header">
 	<div class="main_menu">
 		<nav class="navbar navbar-expand-lg navbar-light main_box">
 			<div class="container">
-				<!-- Brand and toggle get grouped for better mobile display -->
 				 <% with $SiteConfig %>
 				 <a class="navbar-brand logo_h" href="{$BaseHref}"><img src="$Image.getURL()" alt=""></a>
 				 <% end_with %>
-				 <%-- <a href="$LogoutURL">ppp</a> --%>
 				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
 				 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<!-- Collect the nav links, forms, and other content for toggling -->
 				<div class="collapse navbar-collapse offset" id="navbarSupportedContent">
 					<ul class="nav navbar-nav menu_nav ml-auto">
 						<li class="nav-item" id="home"><a class="nav-link" href="">Home</a></li>
@@ -112,7 +76,14 @@
 								<li class="nav-item"><a class="nav-link" href="{$BaseHref}/shopresult">Shopping Result</a></li>
 							</ul>
 						</li>
-						<li class="nav-item" ><a class="nav-link" href="{$BaseHref}/blog">Blog</a></li>
+						<li class="nav-item submenu dropdown" id="blog">
+							<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+							 aria-expanded="false">Blog</a>
+							<ul class="dropdown-menu">
+								<li class="nav-item"><a class="nav-link" href="{$BaseHref}/blog">Blog</a></li>
+								<%-- <li class="nav-item"><a class="nav-link" href="{$BaseHref}/blog-detail">Blog Details</a></li> --%>
+							</ul>
+						</li>
 						<li class="nav-item submenu dropdown" id="pages">
 							<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
 							 aria-expanded="false">Pages</a>
@@ -132,13 +103,9 @@
 							</a>
 						</li>
 						<li class="nav-item">
-							<div>
-								<div id="chaticons">
-									<span class="chat" style=" outline: none !important; box-shadow: none;"></span>
-									<i class='bx bx-conversation' style="font-size: 18px;"><% if $Status %>
-									<span class="cart-count">$Status</span>
-									<% end_if %></i>
-								</div>
+							<div id="chaticons">
+								<span class="chat" style=" outline: none !important; box-shadow: none;"></span>
+								<i class='bx bx-conversation' style="font-size: 18px;"><% if $ChatNotif %><span class="chat-count">$ChatNotif</span><% end_if %></i>
 							</div>
 						</li>
 						<li class="nav-item submenu dropdown">
@@ -151,7 +118,7 @@
 									<% if  $nepo %>
 									<% loop $Notif.Limit(8) %>
 										<% if $Status == 'Dikemas' %>
-											<a href="{$BaseHref}/confirm/order/$Order/$ID?detailOrder=true" style="color: black !important">
+											<a href="{$BaseHref}/confirm/order/$Order/$ID?detailOrder=true">
 											<div class=" d-flex p-2  notip-item  mt-2">
 												<div class="content  d-flex justify-content-between " style="width:85%;">
 													<div style="inline-size: 100%; overflow-wrap: break-word;">
@@ -161,7 +128,7 @@
 											</div>
 											</a>
 										<% else_if  $Status == 'Dikirim' %>
-											<a href="{$BaseHref}/confirm/order/$Order/$ID?detailOrder=true" style="color: black !important">
+											<a href="{$BaseHref}/confirm/order/$Order/$ID?detailOrder=true">
 											<div class=" d-flex    p-2  notip-item mt-2">
 												<div class="content  d-flex justify-content-between " style="width:85%;">
 													<div style="inline-size: 100%; overflow-wrap: break-word;">
@@ -172,7 +139,7 @@
 											</div>
 											</a>
 										<% else_if  $Status == 'Selesai' %>
-											<a href="{$BaseHref}/confirm/order/$Order/$ID?detailOrder=true" style="color: black !important">
+											<a href="{$BaseHref}/confirm/order/$Order/$ID?detailOrder=true">
 											<div class=" d-flex   p-2 notip-item mt-2">
 												<div class="content  d-flex justify-content-between " style="width:85%;">
 													<div style="inline-size: 100%; overflow-wrap: break-word;">
@@ -183,7 +150,7 @@
 											</div>
 											</a>
 										<% else_if  $Status == 'Dibatalkan' %>
-											<a href="{$BaseHref}/confirm/order/$Order/$ID?detailOrder=true" style="color: black !important">
+											<a href="{$BaseHref}/confirm/order/$Order/$ID?detailOrder=true">
 											<div class=" d-flex  p-2 notip-item  mt-2">
 												<div class="content  d-flex justify-content-between " style="width:85%;">
 													<div style="inline-size: 100%; overflow-wrap: break-word;">
@@ -225,7 +192,7 @@
 		</div>
 		<div id="search_history" class="search_input pt-5" style="position: fixed; padding-bottom: .01rem; background-color: #fff; text-align: left; box-shadow: 0px 0px 5px #fff; width: 100%; max-width: 1200px; left: 50%; transform: translateX(-50%);">
 			<div class="container">
-				<ul id="history_list" style="margin-bottom:0 !important">
+				<ul id="history_list">
 					<% loop $ProductObjects %>
 						
 					<% end_loop %> 

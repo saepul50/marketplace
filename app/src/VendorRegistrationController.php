@@ -19,18 +19,21 @@ class VendorRegistrationController extends PageController{
     ];
     public function index(HTTPRequest $request){
         $member = Security::getCurrentUser();
-        $vendor = Vendor::get()->filter('MemberID', $member->ID);
-        $VendorData = $request->getSession()->get('VendorData');
-        $data = $this->nepo(); // Call the nepo() method from PageController
+        if($member){
+            $vendor = Vendor::get()->filter('MemberID', $member->ID);
+            $VendorData = $request->getSession()->get('VendorData');
+            $data = $this->nepo();
 
-        return  [
-            'Notif' => $data['Notif'],
-            'Product' => $data['Product'],
-            'Count' => $data['Count'],
+            return  [
+                'Notif' => $data['Notif'],
+                'Product' => $data['Product'],
+                'Count' => $data['Count'],
 
-            'Vendor' => $vendor,
-            'VendorData' => $VendorData
-        ];
+                'Vendor' => $vendor,
+                'VendorData' => $VendorData
+            ];
+        }
+        return $this->redirect('login');
     }
     public function dataInformasi(HTTPRequest $request){
         if ($request) {

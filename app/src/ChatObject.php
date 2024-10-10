@@ -8,7 +8,7 @@ use SilverStripe\Security\Member;
             'Date' => 'Date',
             'Time' => 'Time',
             'Unichat' => 'Varchar',
-            'Status' => 'Text',
+            'NotificationStatus' => "Enum('Unread, Read', 'Unread')",
         ];
         private static $has_one = [
             'Sender' => Member::class,
@@ -27,7 +27,19 @@ use SilverStripe\Security\Member;
                 date_default_timezone_set('Asia/Jakarta');
                 $this->Time = date('H:i:s');
             }
+            if (!$this->NotificationStatus) {
+                $this->NotificationStatus = 'Unread';
+            }
         }
+        public function countUnreadMessages() {
+            return ChatObject::get()
+                ->filter([
+                    'ReceiverID' => $this->ReceiverID,
+                    'SenderID' => $this->SenderID,
+                    'NotificationStatus' => 'Unread'
+                ])
+                ->count();
+        }        
         public function LastMessage() {
             return ChatObject::get()
                 ->filter([

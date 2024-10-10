@@ -2598,6 +2598,11 @@ $('#searchForm').submit(function(e) {
     $.post("/marketplace/chat/clearSession", {})
     window.location.href = '/marketplace/chat/';
   });
+  $('#logoutBtn').on('click', function (e) {
+    e.preventDefault();
+    $.post("/marketplace/profile/logout", {})
+    window.location.href = '/marketplace/';
+  });
   $('#closeProductChat').on('click', function (e) {
     e.preventDefault();
     $.post("/marketplace/chat/clearSession", {})

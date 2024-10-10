@@ -56,6 +56,25 @@
             background: #f1f1f1;
             border-radius: 10px;
         }
+        .notifouter {
+		position: relative;
+		}
+
+		.notifouter .notif {
+			position: absolute;
+			display: flex;
+			justify-content: center;
+			align-items: flex-start;
+			width: 18px;
+			height: 18px;
+			line-height: 1.1rem !important;
+			top: 2px;
+			right: 2px; 
+			background-color: red;
+			border-radius: 50%;
+			color: #fff !important; 
+			font-size: 14px;
+		}
     </style>
 <section class="banner-area organic-breadcrumb"
     style="background: url($SiteConfig.Background.getURL()) center no-repeat;background-size: cover; position: relative ">
@@ -119,7 +138,11 @@
                                     <% if $Vendor.exists %>
                                         <h5 class="m-0" style="font-weight: 400; color: #000;">$Vendor.Name</h5>
                                     <% else %>
-                                        <h5 class="m-0" style="font-weight: 400; color: #000;">$Up.chatMain.FirstName</h5>
+                                        <% if $Receiver.ID = CurrentUser %>
+                                            <h5 class="m-0" style="font-weight: 400; color: #000;">$Receiver.FirstName</h5>
+                                        <% else %>
+                                            <h5 class="m-0" style="font-weight: 400; color: #000;">$Sender.FirstName</h5>
+                                        <% end_if %>
                                     <% end_if %>
                                     
                                     <% if $Vendor.exists %>
@@ -131,7 +154,14 @@
                                     <% end_if %>
                                 </div>
                                 <% if $LastMessage %>
-                                    <p class="m-0" style="color: #707070; overflow: hidden; text-overflow: ellipsis;">$LastMessage.Message</p>
+                                    <div class="d-flex justify-content-between">
+                                        <p class="m-0" style="color: #707070; overflow: hidden; text-overflow: ellipsis;">$LastMessage.Message</p>
+                                        <% if $ReceiverID == $Up.CurrentUser %>
+                                            <% if $UnreadCount %>
+                                                <p class="m-0 notifouter"><span class="notif">$UnreadCount</span></p>
+                                            <% end_if %>
+                                        <% end_if %>
+                                    </div>
                                 <% end_if %>
                             </div>
                         </div>

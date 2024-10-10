@@ -78,6 +78,18 @@ use SilverStripe\Dev\Debug;
             }
             return null;
         }    
+        public function ChatNotif() {
+            $member = Security::getCurrentUser();
+            if ($member) {
+                $CountNotif = ChatObject::get()
+                    ->filter([
+                        'ReceiverID' => $member->ID,
+                        'NotificationStatus' => 'Unread'
+                    ])->count();
+                return $CountNotif;
+            }
+            return null;
+        }           
         public function CountNotif() {
             $member = Security::getCurrentUser();
             // Debug::show($member);

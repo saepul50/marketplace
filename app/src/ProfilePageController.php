@@ -16,6 +16,7 @@ class ProfilePageController extends PageController{
         'SentOTP',
         'CheckOTP',
         'ChangePass',
+        'logout'
     ];
     public function index() {
         $data = $this->nepo(); // Call the nepo() method from PageController
@@ -163,5 +164,10 @@ class ProfilePageController extends PageController{
             'success' => false,
             'message' => 'Akun Tidak Ada'
         ]);
+    }
+    public function logout(HTTPRequest $request){
+        $request->getSession()->clearAll();
+        
+        return json_encode(['success' => true, 'message' => 'Session cleared']);
     }
 }
