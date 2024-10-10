@@ -8,6 +8,16 @@
             overflow-y: auto;
             max-height: calc(700px - 10px);
         }
+        .chat-content {
+            flex-grow: 1;
+            overflow-y: auto;
+            max-height: calc(700px - 10px);
+        }
+        .ChatListSort {
+            flex-grow: 1;
+            overflow-y: auto;
+            max-height: calc(550px - 10px);
+        }
         .SideBar .sidechat .listchat{
             background-color: transparent;
             transition: background-color 0.2s ease-in;
@@ -17,24 +27,34 @@
             background-color: #fff;
         }
 
-        .SideBar .sidechat.selected .listchat {
+        .SideBar .sidechat.chatActive .listchat {
             background-color: #fff;
         }
-        .cart-count{
-            position: absolute;
-			display: flex;
-			justify-content: center;
-			align-items: flex-start;
-			width: 18px;
-			height: 18px;
-			line-height: 1rem !important;
-			top: 2px;
-			right: 2px; 
-			background-color: red;
-			border-radius: 50%;
-			color: #fff !important; 
-			font-size: 14px;
-			font-weight: bold;
+        textarea::-webkit-scrollbar,
+        .chat-content::-webkit-scrollbar,
+        .ChatListSort::-webkit-scrollbar {
+            width: 8px;
+            cursor: pointer;
+        }
+
+        textarea::-webkit-scrollbar-thumb,
+        .chat-content::-webkit-scrollbar-thumb,
+        .ChatListSort::-webkit-scrollbar-thumb {
+            background-color: #888;
+            border-radius: 10px;
+        }
+
+        textarea::-webkit-scrollbar-thumb:hover,
+        .chat-content::-webkit-scrollbar-thumb:hover,
+        .ChatListSort::-webkit-scrollbar-thumb:hover {
+            background-color: #555;
+        }
+
+        textarea::-webkit-scrollbar-track,
+        .chat-content::-webkit-scrollbar-track,
+        .ChatListSort::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
         }
     </style>
 <section class="banner-area organic-breadcrumb"
@@ -51,8 +71,8 @@
         </div>
     </div>
 </section>
-<div class="container d-flex my-5" style="background-color: #e8f0f2; border-radius: 20px; height: 700px;">
-    <div class="SideBar col-4 p-0" style="margin-left: -1rem; border-radius: 25px; background-color: #f2f2f2;">
+<div class="container d-flex my-5" style="background-color: #f5f5f5; border-radius: 20px; height: 700px;">
+    <div class="SideBar col-4 p-0" style="margin-left: -1rem; border-radius: 25px; background-color: #f2f2f2; z-index: 2;">
         <div class="header pl-5 py-4">
             <h4 class="m-0" style="color: #000">Chat</h4>
             <div class="input-group pt-3 pr-5">
@@ -110,7 +130,7 @@
                                 <% end_if %>
                             </div>
                             <% if $LastMessage %>
-                                <div class="d-flex justify-content-between" style="position:relative;">
+                                <div class="d-flex justify-content-between">
                                     <p class="m-0" style="color: #707070;">$LastMessage.Message</p>
                                     <% if $Up.Status %>
                                     <span class="cart-count">$Up.Status</span>
@@ -119,10 +139,10 @@
                             <% end_if %>
                         </div>
                     </div>
-                </div>
-            <% end_loop %>
+                <% end_loop %>
+            </div>
         <% else_if $chatMain %>
-            <div class="sidechat">
+            <div class="sidechat px-2">
                 <div class="listchat px-1 py-2 d-flex align-items-center" style="border-radius: 30px;">
                     <div class="col-3">
                         <% with $Vendor.ProfilImage %>
@@ -141,7 +161,7 @@
     </div>
 
     <div class="mainchat col-8 d-flex flex-column justify-content-between px-0">
-        <div class="listchat py-1 pl-3 pt-4 d-flex align-items-center">
+        <div class="listchat py-1 pl-3 pt-4 d-flex align-items-center" style="box-shadow: 0px 5px 5px #eee; z-index: 1;">
             <% if $chatMain %>
                 <% if $SenderVendor %>
                     <img src="$Vendor.ProfilImage.URL" class="img-fluid mr-3 " style="border-radius: 50%; width: 60px; height: 60px; object-fit: cover;">
@@ -173,16 +193,27 @@
                 </div>
             </div>
 
-            <div class="chat-content px-3 flex-grow-1 overflow-auto d-flex flex-column-reverse" style="max-height: calc(100vh - 150px); overflow-y: auto;">
+            <div class="chat-content px-3 py-2 flex-grow-1 overflow-auto d-flex flex-column-reverse" style="max-height: calc(100vh - 150px); overflow-y: auto;">
                 <% if $Messages %>
                     <% loop $Messages %>
                         <% if $Sender.ID == $CurrentMember.ID %>
                             <div class="d-flex align-items-end justify-content-end mb-3">
                                 <div class="bubble-right" style="background-color: #d1ecf1; padding: 10px 15px; border-radius: 20px; max-width: 70%; word-break: break-word;">
                                     <p class="m-0" style="color: #000;">$Message</p>
-                                    <small class="d-flex justify-content-end">$Time.Format('HH.MM')</small>
+                                    <small class="d-flex justify-content-end">$Time.Format('HH.mm')</small>
                                 </div>
                             </div>
+                            <% if $Product %>
+                                <div class="d-flex align-items-end justify-content-end mb-3">
+                                    <% with $Product %>
+                                        <div class="chat-bubble d-flex align-items-center p-3" style="background-color: #fff; border-radius: 10px; position: relative; max-width: 300px;">
+                                            <img src="$ProductImages.First.URL" class="img-fluid" style="aspect-ratio: 1/1; object-fit: cover; height: 50px; width: auto; border-radius: 50%;">
+                                            <h6 class="m-0 pl-2" style="margin-left: 10px;">$Title</h6>
+                                            <div class="arrow" style="position: absolute; top: 100%; right: 15px; border-width: 10px; border-style: solid; border-color: #fff transparent transparent transparent;"></div>
+                                        </div>
+                                    <% end_with %>
+                                </div>
+                            <% end_if %>
                         <% else %>
                             <div class="d-flex align-items-center mb-3">
                                 <% if $IsVendor %>
@@ -196,14 +227,24 @@
                                 <% end_if %>
                                 <div class="bubble-left" style="background-color: #fff; padding: 10px 15px; border-radius: 20px; max-width: 70%; word-break: break-word;">
                                     <p class="m-0" style="color: #000;">$Message</p>
-                                    <small class="d-flex justify-content-end">$Time.Format('HH.MM')</small>
+                                    <small class="d-flex justify-content-end">$Time.Format('HH.mm')</small>
                                 </div>
                             </div>
+                            <% if $Product %>
+                                <div class="d-flex align-items-end mb-3">
+                                    <% with $Product %>
+                                        <div class="chat-bubble d-flex align-items-center p-3" style="background-color: #fff; border-radius: 10px; position: relative; max-width: 300px;">
+                                            <img src="$ProductImages.First.URL" class="img-fluid" style="aspect-ratio: 1/1; object-fit: cover; height: 50px; width: auto; border-radius: 50%;">
+                                            <h6 class="m-0 pl-2" style="margin-left: 10px;">$Title</h6>
+                                            <div class="arrow" style="position: absolute; top: 100%; left: 15px; border-width: 10px; border-style: solid; border-color: #fff transparent transparent transparent;"></div>
+                                        </div>
+                                    <% end_with %>
+                                </div>
+                            <% end_if %>
                         <% end_if %>
                     <% end_loop %>
                 <% end_if %>
             <% else_if $ChatVendor %>
-            <p>b</p>
                 <% with $ChatVendor.ProfilImage %>
                     <img src="$URL" class="img-fluid mr-3 " style="border-radius: 50%; width: 60px; height: 60px; object-fit: cover;">
                 <% end_with %>
@@ -215,11 +256,27 @@
                 </div>
             <% end_if %>
         </div>
-
+        <% if $Product %>
+            <div class="reqProduct d-flex align-items-center justify-content-between py-1" style="background-color: #fff;">
+                <% loop Product %>
+                    <div class="d-flex align-items-center thisReqProduct" id="$ID">
+                        <div class="col-2">
+                            <img src="$ProductImages.First.URL" class="img-fluid" style="aspect-ratio: 1/1; object-fit: cover;">
+                        </div>
+                        <p class="m-0">$Title</p>
+                    </div>
+                    <div class="d-flex align-items-center pr-4">
+                        <i class='bx bx-x' id="closeProductChat" style="font-size: 30px; cursor: pointer;"></i>
+                    </div>
+                <% end_loop %>
+            </div>  
+        <% end_if %>
         <div class="chat-input px-3 py-2">
             <form id="SendChat" data-receiver="$Receiver" data-sender="$CurrentUser">
                 <div class="input-group">
-                    <input type="text" name="Message" class="form-control" placeholder="Tulis pesan..." style="box-shadow: none; border-radius: 20px;">
+                    <textarea name="MessageChat" class="form-control" placeholder="Tulis pesan..."
+                        style="box-shadow: none; border-radius: 20px; resize: none; max-height: 100px; overflow-y: auto; padding: 10px 20px 10px 10px;" 
+                        rows="1"></textarea>
                     <div class="input-group-append">
                         <button type="submit" data-owner="" class="input-group-text bg-transparent border-0" style="cursor: pointer;">
                             <i class='bx bx-send' style="font-size: 24px; color: #000;"></i>
@@ -230,3 +287,15 @@
         </div>
     </div>
 </div>
+
+    <script>
+        $('textarea[name="MessageChat"]').on('keydown', function (e) {
+            if (e.key === 'Enter') {
+                if (e.shiftKey) {
+                } else {
+                    e.preventDefault();
+                    $('#SendChat').submit();
+                }
+            }
+        });
+    </script>

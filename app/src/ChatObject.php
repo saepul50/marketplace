@@ -13,7 +13,8 @@ use SilverStripe\Security\Member;
         private static $has_one = [
             'Sender' => Member::class,
             'Receiver' => Member::class,
-            'Vendor' => Vendor::class
+            'Vendor' => Vendor::class,
+            'Product' => ProductObject::class
         ];
         public function onBeforeWrite() {
             parent::onBeforeWrite();

@@ -90,6 +90,17 @@ $(document).ready(function () {
   var selectedBrand = currentParams.get('filter');
   var selectedSubCategory = currentParams.get('subcategory');
   var selectedSort = currentParams.get('sort');
+
+  var message = currentParams.get('m');
+  
+  if(message){
+    var slicedMessage = message.split('l');
+    var receiverChat = slicedMessage[1].trim();
+    var thisReceiver = document.querySelector(`.sidechat[data-receiver="${receiverChat}"]`);
+    if (thisReceiver) {
+      thisReceiver.classList.add('chatActive');
+    }
+  }
   if (selectedBrand) {
     $('#navProduct').click();
     $('#filterForm input[name="brand"]').each(function () {
@@ -975,10 +986,10 @@ $('#searchForm').submit(function(e) {
                               autoplayTimeout: 3000,
                                   loop: true,
                                       nav: true,
-                                      navText: [
-                                        "<img src='/marketplace/_resources/themes/simple/images/banner/prev.png'>",
-                                        "<img src='/marketplace/_resources/themes/simple/images/banner/next.png'>"
-                                      ],
+                                          navText: [
+                                                "<img src='_resources/themes/simple/images/banner/prev.png'>",
+                                                      "<img src='_resources/themes/simple/images/banner/next.png'>"
+                                                          ],
                                                               dots: false
                                                                 });
                                                                 
@@ -1001,8 +1012,8 @@ $('#searchForm').submit(function(e) {
     loop: true,
     nav: true,
     navText: [
-        '<img src="/marketplace/_resources/themes/simple/images/banner/prev.png" alt="Previous">',
-        '<img src="/marketplace/_resources/themes/simple/images/banner/next.png" alt="Next">'
+      "<img src='_resources/themes/simple/images/banner/prev.png'>",
+      "<img src='_resources/themes/simple/images/banner/next.png'>"
     ],
     dots: false
   });
@@ -1017,8 +1028,8 @@ $('#searchForm').submit(function(e) {
     loop: true,
     nav: true,
     navText: [
-      "<img src='/marketplace/_resources/themes/simple/images/banner/prev.png'>",
-      "<img src='/marketplace/_resources/themes/simple/images/banner/next.png'>"
+      "<img src='_resources/themes/simple/images/banner/prev.png'>",
+      "<img src='_resources/themes/simple/images/banner/next.png'>"
     ],
     dots: false
   });
@@ -1542,10 +1553,96 @@ $('#searchForm').submit(function(e) {
       });
   });
 
+  $("#blogcomment").submit(function (event) {
+    event.preventDefault(); // Prevents the form from doing a default refresh
+
+    $.post("/blog/handelComment", {
+      Name: $("#name").val(),
+      Message: $("#message").val(),
+      ID: $("#BlogAddID").val(),
+    })
+      .done(function (data) {
+        var response = JSON.parse(data);
+        if (response.success) {
+          Swal.fire({
+            title: "SUCCESS",
+            text: "Success",
+            icon: "success",
+            timer: 1000
+          })
+          setInterval(href, 1500);
+
+          function href() {
+            location.reload();
+          }
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: response.message,
+            showConfirmButton: false,
+            timer: 1500
+          });
+        }
+
+      }).fail(function () {
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: "There was an issue  Please try again later.",
+          confirmButtonColor: "#d33",
+        });
+      });
+
+    return false; // Ensure no form submission (and thus no refresh)
+  });
 
 
+  $("#replycomment").submit(function (event) {
+    event.preventDefault(); // Prevents the form from doing a default refresh
 
- 
+    $.post("/marketplace/blog/handelreply", {
+      Name: $("#name-reply").val(),
+      Send: $("#nama-reply").val(),
+      Message: $("#message-reply").val(),
+      CommentID: $("#commentID-reply").val(),
+      ID: $("#BlogAddID").val(),
+    })
+      .done(function (data) {
+        var response = JSON.parse(data);
+        if (response.success) {
+          Swal.fire({
+            title: "SUCCESS",
+            text: "Success",
+            icon: "success",
+            timer: 1000
+          })
+          setInterval(href, 1500);
+
+          function href() {
+            location.reload();
+          }
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: response.message,
+            showConfirmButton: false,
+            timer: 1500
+          });
+        }
+
+      }).fail(function () {
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: "There was an issue  Please try again later.",
+          confirmButtonColor: "#d33",
+        });
+      });
+
+    return false; // Ensure no form submission (and thus no refresh)
+  });
 
   $('.btn-reply').on('click', function () {
     var CommentID = $(this).data('commentid');
@@ -2499,12 +2596,26 @@ $('#searchForm').submit(function(e) {
   $('#chaticons').on('click', function (e) {
     e.preventDefault();
     $.post("/marketplace/chat/clearSession", {})
+    window.location.href = '/marketplace/chat/';
+  });
+  $('#closeProductChat').on('click', function (e) {
+    e.preventDefault();
+    $.post("/marketplace/chat/clearSession", {})
+    window.location.reload();
+  });
+  $('#ChatBtn').on('click', function (e) {
+    e.preventDefault();
+    var ownerID = $(this).data('owner');
+    var userID = $(this).data('user');
+    var productID = $(this).data('product');
+    $.post("/marketplace/chat/session", {
+      OwnerID: ownerID,
+      ProductID: productID
+    })
     .done(function (data) {
-      // return false;
       var response = JSON.parse(data);
-      // return false;
       if (response.success) {
-        window.location.href = '/marketplace/chat/';
+        window.location.href = '/marketplace/chat/?m=' + userID + 'l' + ownerID;
       } else {
         alert('Fail');
       }
@@ -2513,30 +2624,30 @@ $('#searchForm').submit(function(e) {
       alert('error');
     });
   });
-  $('#ChatBtn').on('click', function (e) {
-    e.preventDefault();
-    var ownerID = $(this).data('owner');
-    var userID = $(this).data('user');
-    window.location.href = '/marketplace/chat/?m=' + userID + 'l' + ownerID;
-  });
   $('#SendChat').submit(function (e) {
     e.preventDefault();
     
-    var message = $('input[name="Message"]').val();
-    var receiverID = $(this).data('receiver');
+    var message = $('textarea[name="MessageChat"]').val();
     var senderID = $(this).data('sender');
+    var receiverID = $(this).data('receiver');
+    var productID = $('.reqProduct').find('.thisReqProduct').attr('id');
+    // console.log(productID)
+    // return false
+    if(!message || !receiverID ){
+      return;
+    }
     var unichat =  '?m=' + senderID + 'l' + receiverID;
-    // console.log(senderID)
-    // console.log(receiverID)
     $.post("/marketplace/chat/sendMessage", {
       Message: message,
       ReceiverID: receiverID,
+      ProductID: productID
     })
     .done(function (data) {
       // return false;
       var response = JSON.parse(data);
       // return false;
       if (response.success) {
+        $.post("/marketplace/chat/clearSession", {})
         window.location.href = '/marketplace/chat/' + unichat;
       } else {
         alert('Fail');
@@ -2691,6 +2802,7 @@ $('#searchForm').submit(function(e) {
     })
     .done(function (data) {
       var response = JSON.parse(data);
+      console.log(response)
       if (response.success) {
         iziToast.success({
           icon: 'fa fa-check',
@@ -2763,6 +2875,11 @@ $('#searchForm').submit(function(e) {
     }
     return email;
   }
+  const textareachat = document.querySelector('textarea[name="MessageChat"]');
+  textareachat.addEventListener('input', function () {
+      this.style.height = 'auto';
+      this.style.height = (this.scrollHeight) + 'px';
+  });
   function formatNumber(number) {
     let parts = number.toString().split('.');
     let integerPart = parts[0];

@@ -1,3 +1,56 @@
+const stars = document.querySelectorAll(".star");
+const rating = document.getElementById("rating");
+const ratingDisplay = document.getElementById('rating');
+const ratingValueInput = document.getElementById('ratingValue');
+stars.forEach((star) => {
+  star.addEventListener("click", () => {
+    const value = parseInt(star.getAttribute("data-value"));
+    rating.innerText = value;
+
+    // Remove all existing classes from stars
+    stars.forEach((s) => s.classList.remove("one",
+      "two",
+      "three",
+      "four",
+      "five"));
+    stars.forEach((s, index) => {
+      if (index < value) {
+        s.classList.add(getStarColorClass(value));
+      }
+    });
+    stars.forEach((s) => s.classList.remove("selected"));
+    star.classList.add("selected");
+  });
+});
+stars.forEach(star => {
+  star.addEventListener('click', function () {
+    const rating = this.getAttribute('data-value');
+    ratingDisplay.textContent = rating; 
+    ratingValueInput.value = rating; 
+    stars.forEach(s => {
+      s.classList.remove('selected');
+    });
+    for (let i = 0; i < rating; i++) {
+      stars[i].classList.add('selected');
+    }
+  });
+});
+function getStarColorClass(value) {
+  switch (value) {
+    case 1:
+      return "one";
+    case 2:
+      return "two";
+    case 3:
+      return "three";
+    case 4:
+      return "four";
+    case 5:
+      return "five";
+    default:
+      return "";
+  }
+}
 
 
 $(document).ready(function () {
@@ -37,6 +90,17 @@ $(document).ready(function () {
   var selectedBrand = currentParams.get('filter');
   var selectedSubCategory = currentParams.get('subcategory');
   var selectedSort = currentParams.get('sort');
+
+  var message = currentParams.get('m');
+  
+  if(message){
+    var slicedMessage = message.split('l');
+    var receiverChat = slicedMessage[1].trim();
+    var thisReceiver = document.querySelector(`.sidechat[data-receiver="${receiverChat}"]`);
+    if (thisReceiver) {
+      thisReceiver.classList.add('chatActive');
+    }
+  }
   if (selectedBrand) {
     $('#navProduct').click();
     $('#filterForm input[name="brand"]').each(function () {
@@ -166,91 +230,7 @@ $(document).ready(function () {
 
   });
 
-  $('#Nilai').on('click', function(event) {
-    event.preventDefault();
-    var button = $(this); 
-    var title = button.data('title');
-    var image = button.data('image');
-    var variant = button.data('variant');
-    var get = button.data('get');
-    var id = button.data('id');
-    var button = $('.showModalButton').data('id');
-    var Filter =  $("#ID").val();
-    $('#ProductID').val(id);
-    $('#title').html(title);
-    $('#variants').html(variant);
-    $('#image').attr('src', image);
-    $('#OrderID').val(get);
-    $('#exampleModalCenter').modal('show');
-    });
   
-    $("#reviewform").submit(function (event) {
-      event.preventDefault();
-      const rating = document.getElementById("ratingValue");
-      // console.log(button);
-      let angka = rating.getAttribute('value');
-      console.log(angka);
-      if(parseInt(angka) === 0 ){
-        Swal.fire({
-          icon: "error",
-          title: "Oops...",
-          text: "Input Rating First",
-          showConfirmButton: false,
-        });
-      } else {
-            $.post("/marketplace/productdetails/review", {
-                Review: $("#reviewmsg").val(),  
-                Rating: $("#ratingValue").val(),
-                ID: $("#ProductID").val(),
-              })
-              .done(function (data) {
-                var response = JSON.parse(data);
-                var Filter =  $("#ID").val();
-                var OrderID =  $("#OrderID").val();
-                
-                if (response.success) {
-                  $('.showModalButton[data-get="' + OrderID + '"][data-id="' + Filter+'"]').prop('disabled', true).text('Submitted'); 
-                  localStorage.setItem('reviewsubmit' + OrderID + Filter, true);
-                  Swal.fire({
-                        title: "SUCCESS",
-                        text: "Review submitted successfully!",
-                        icon: "success",
-                        timer: 1000,
-                      });
-                      $('#exampleModalCenter').removeClass('show').attr("aria-hidden", "true");
-                      $('.modal-backdrop').removeClass('show');
-                      document.getElementById('reviewmsg').value=null;
-                      stars.forEach((s) => s.classList.remove("one", 
-                        "two", 
-                        "three", 
-                        "four", 
-                        "five", 
-                        "selected"));
-                        setInterval(href, 1500);
-  
-                      function href() {
-                        location.reload();
-                      }
-                } else {
-                    Swal.fire({
-                        icon: "error",
-                        title: "Oops...",
-                        text: response.message,
-                        showConfirmButton: false,
-                        timer: 1500
-                    });
-                }
-            })
-            .fail(function () {
-                Swal.fire({
-                    icon: "error",
-                    title: "Error",
-                    text: "There was an issue submitting the review. Please try again later.",
-                    confirmButtonColor: "#d33"
-                });
-            });
-          }
-        });
   $("#Couponform").submit(function (event) {
     event.preventDefault(); 
     $.post("/marketplace/productcheckout/coupon", {
@@ -267,11 +247,11 @@ $(document).ready(function () {
             icon: "success",
             timer: 1700
           })
-          setInterval(href, 1800);
+          // setInterval(href, 1800);
 
-          function href() {
-            location.reload();
-          }
+          // function href() {
+          //   location.reload();
+          // }
         } else {
           Swal.fire({
             icon: "error",
@@ -751,50 +731,7 @@ $(document).ready(function () {
     return false;
   });
 
-  $("#replycomment").off(function (event) {
-    event.preventDefault();
-
-    $.post("/marketplace/blog/handelreply", {
-      Send: $("#nama-reply").val(),
-      Message: $("#message-reply").val(),
-      CommentID: $("#commentID-reply").val(),
-      ID: $("#BlogAddID").val(),
-    })
-      .done(function (data) {
-        var response = JSON.parse(data);
-        if (response.success) {
-          Swal.fire({
-            title: "SUCCESS",
-            text: "Success",
-            icon: "success",
-            timer: 1000
-          })
-          setInterval(href, 1500);
-
-          function href() {
-            location.reload();
-          }
-        } else {
-          Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text: response.message,
-            showConfirmButton: false,
-            timer: 1500
-          });
-        }
-
-      }).fail(function () {
-        Swal.fire({
-          icon: "error",
-          title: "Error",
-          text: "There was an issue  Please try again later.",
-          confirmButtonColor: "#d33",
-        });
-      });
-
-    return false;
-  });
+ 
 
   $('.btn-reply').on('click', function () {
     var CommentID = $(this).data('commentid');
@@ -1045,21 +982,19 @@ $('#searchForm').submit(function(e) {
                 ==================================*/
                   $(".active-banner-slider").owlCarousel({
                       items: 1,
-                      autoplay: true,
-                      autoplayTimeout: 3000,
-                      loop: true,
-                      nav: true,
-                      navText: ['',''], 
-                      dots: false,
-                      onInitialized: function() {
-                          $('.owl-prev').html('<img src="/marketplace/_resources/themes/simple/images/banner/prev.png" alt="Previous">');
-                          $('.owl-next').html('<img src="/marketplace/_resources/themes/simple/images/banner/next.png" alt="Next">');
-                      }
-                      });
-                      $('.owl-prev').html('<img src="/marketplace/_resources/themes/simple/images/banner/prev.png" alt="Previous">');
-                      $('.owl-next').html('<img src="/marketplace/_resources/themes/simple/images/banner/next.png" alt="Next">');  
-/*=================================
-');
+                          autoplay: true,
+                              autoplayTimeout: 3000,
+                                  loop: true,
+                                      nav: true,
+                                          navText: [
+                                                "<img src='_resources/themes/simple/images/banner/prev.png'>",
+                                                      "<img src='_resources/themes/simple/images/banner/next.png'>"
+                                                          ],
+                                                              dots: false
+                                                                });
+                                                                
+                                                                  /*=================================
+                                                                  ');
 
 });
   /*==========================
@@ -1076,33 +1011,29 @@ $('#searchForm').submit(function(e) {
     autoplayTimeout: 3000,
     loop: true,
     nav: true,
-    navText: ['',''], 
-    dots: false,
-    onInitialized: function() {
-        $('.owl-prev').html('<img src="/marketplace/_resources/themes/simple/images/banner/prev.png" alt="Previous">');
-        $('.owl-next').html('<img src="/marketplace/_resources/themes/simple/images/banner/next.png" alt="Next">');
-    }
+    navText: [
+      "<img src='_resources/themes/simple/images/banner/prev.png'>",
+      "<img src='_resources/themes/simple/images/banner/next.png'>"
+    ],
+    dots: false
   });
-  $('.owl-prev').html('<img src="/marketplace/_resources/themes/simple/images/banner/prev.png" alt="Previous">');
-  $('.owl-next').html('<img src="/marketplace/_resources/themes/simple/images/banner/next.png" alt="Next">');
+
   /*=================================
   Javascript for product area carousel
   ==================================*/
   $(".active-product-area").owlCarousel({
     items: 1,
-    autoplay: true,
-    autoplayTimeout: 3000,
+    autoplay: false,
+    autoplayTimeout: 5000,
     loop: true,
     nav: true,
-    navText: ['',''], 
-    dots: false,
-    onInitialized: function() {
-        $('.owl-prev').html('<img src="/marketplace/_resources/themes/simple/images/banner/prev.png" alt="Previous">');
-        $('.owl-next').html('<img src="/marketplace/_resources/themes/simple/images/banner/next.png" alt="Next">');
-    }
+    navText: [
+      "<img src='_resources/themes/simple/images/banner/prev.png'>",
+      "<img src='_resources/themes/simple/images/banner/next.png'>"
+    ],
+    dots: false
   });
-  
-  
+
   /*=================================
   Javascript for single product area carousel
   ==================================*/
@@ -1124,10 +1055,6 @@ $('#searchForm').submit(function(e) {
     autoplayTimeout: 5000,
     loop: true,
     nav: true,
-    navText: [
-      '<i class="fa fa-long-arrow-left" aria-hidden="true" style="font-size: 40px;"></i>',
-      '<i class="fa fa-long-arrow-right" aria-hidden="true" style="font-size: 40px;"></i>'
-  ],
     dots: false
   });
 
@@ -1626,7 +1553,50 @@ $('#searchForm').submit(function(e) {
       });
   });
 
-  
+  $("#blogcomment").submit(function (event) {
+    event.preventDefault(); // Prevents the form from doing a default refresh
+
+    $.post("/blog/handelComment", {
+      Name: $("#name").val(),
+      Message: $("#message").val(),
+      ID: $("#BlogAddID").val(),
+    })
+      .done(function (data) {
+        var response = JSON.parse(data);
+        if (response.success) {
+          Swal.fire({
+            title: "SUCCESS",
+            text: "Success",
+            icon: "success",
+            timer: 1000
+          })
+          setInterval(href, 1500);
+
+          function href() {
+            location.reload();
+          }
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: response.message,
+            showConfirmButton: false,
+            timer: 1500
+          });
+        }
+
+      }).fail(function () {
+        Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: "There was an issue  Please try again later.",
+          confirmButtonColor: "#d33",
+        });
+      });
+
+    return false; // Ensure no form submission (and thus no refresh)
+  });
+
 
   $("#replycomment").submit(function (event) {
     event.preventDefault(); // Prevents the form from doing a default refresh
@@ -2296,7 +2266,7 @@ $('#searchForm').submit(function(e) {
     var weight = $('#fulldata .weight').text();
     // console.log(idRegency)
     $.ajax({
-      url: '/marketplace/productcheckout/rajoCost',
+      url: '/marketplace/productcheckout/rajoCot',
       type: 'POST',
       data: {
         Courir: courir,
@@ -2328,7 +2298,6 @@ $('#searchForm').submit(function(e) {
       }
     });
   }
-  
   SelectorPayment();
   SelectorPaymentGate();
   $("input[name='selectorpayment']").on('change', function () {
@@ -2627,12 +2596,26 @@ $('#searchForm').submit(function(e) {
   $('#chaticons').on('click', function (e) {
     e.preventDefault();
     $.post("/marketplace/chat/clearSession", {})
+    window.location.href = '/marketplace/chat/';
+  });
+  $('#closeProductChat').on('click', function (e) {
+    e.preventDefault();
+    $.post("/marketplace/chat/clearSession", {})
+    window.location.reload();
+  });
+  $('#ChatBtn').on('click', function (e) {
+    e.preventDefault();
+    var ownerID = $(this).data('owner');
+    var userID = $(this).data('user');
+    var productID = $(this).data('product');
+    $.post("/marketplace/chat/session", {
+      OwnerID: ownerID,
+      ProductID: productID
+    })
     .done(function (data) {
-      // return false;
       var response = JSON.parse(data);
-      // return false;
       if (response.success) {
-        window.location.href = '/marketplace/chat/';
+        window.location.href = '/marketplace/chat/?m=' + userID + 'l' + ownerID;
       } else {
         alert('Fail');
       }
@@ -2641,30 +2624,30 @@ $('#searchForm').submit(function(e) {
       alert('error');
     });
   });
-  $('#ChatBtn').on('click', function (e) {
-    e.preventDefault();
-    var ownerID = $(this).data('owner');
-    var userID = $(this).data('user');
-    window.location.href = '/marketplace/chat/?m=' + userID + 'l' + ownerID;
-  });
   $('#SendChat').submit(function (e) {
     e.preventDefault();
     
-    var message = $('input[name="Message"]').val();
-    var receiverID = $(this).data('receiver');
+    var message = $('textarea[name="MessageChat"]').val();
     var senderID = $(this).data('sender');
+    var receiverID = $(this).data('receiver');
+    var productID = $('.reqProduct').find('.thisReqProduct').attr('id');
+    // console.log(productID)
+    // return false
+    if(!message || !receiverID ){
+      return;
+    }
     var unichat =  '?m=' + senderID + 'l' + receiverID;
-    // console.log(senderID)
-    // console.log(receiverID)
     $.post("/marketplace/chat/sendMessage", {
       Message: message,
       ReceiverID: receiverID,
+      ProductID: productID
     })
     .done(function (data) {
       // return false;
       var response = JSON.parse(data);
       // return false;
       if (response.success) {
+        $.post("/marketplace/chat/clearSession", {})
         window.location.href = '/marketplace/chat/' + unichat;
       } else {
         alert('Fail');
@@ -2819,7 +2802,7 @@ $('#searchForm').submit(function(e) {
     })
     .done(function (data) {
       var response = JSON.parse(data);
-      // console.log(response.message);
+      console.log(response)
       if (response.success) {
         iziToast.success({
           icon: 'fa fa-check',
@@ -2832,25 +2815,11 @@ $('#searchForm').submit(function(e) {
           }
         });
       } else {
-        if(response.message.PREVIOUS_PASSWORD) {
-          iziToast.error({
-            title: 'Failed ',
-            message: response.message.PREVIOUS_PASSWORD.message,
-            position: 'bottomRight'
-          });
-        } else if(response.message.TOO_SHORT) {
-          iziToast.error({
-            title: 'Failed ',
-            message: response.message.TOO_SHORT.message,
-            position: 'bottomRight'
-          });
-
-        } else {
-          iziToast.error({
-            title: 'Failed ',
-            position: 'bottomRight'
-          });
-        }
+        iziToast.error({
+          title: 'Failed ',
+          message: response.message,
+          position: 'bottomRight'
+        });
       }
 
     }).fail(function () {
@@ -2906,6 +2875,11 @@ $('#searchForm').submit(function(e) {
     }
     return email;
   }
+  const textareachat = document.querySelector('textarea[name="MessageChat"]');
+  textareachat.addEventListener('input', function () {
+      this.style.height = 'auto';
+      this.style.height = (this.scrollHeight) + 'px';
+  });
   function formatNumber(number) {
     let parts = number.toString().split('.');
     let integerPart = parts[0];
