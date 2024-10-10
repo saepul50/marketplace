@@ -83,60 +83,57 @@
             </div>
         </div>
         <% if $ChatList %>
-            <% loop $ChatList.Sort('LastEdited', DESC) %>
-                <% if $ReceiverID == CurrentMember.ID %>
-                    <div class="sidechat" data-receiver="$SenderID" data-sender="$CurrentMember.ID">
-                <% else %>
-                    <div class="sidechat" data-receiver="$ReceiverID" data-sender="$CurrentMember.ID">
-                <% end_if %>
-                    <div class="listchat px-1 py-2 d-flex align-items-center" style="border-radius: 30px;">
-                        <div class="col-3">
-                        <% if $ReceiverID == $CurrentMember.ID %>
-                            <% if $Vendor.exists %>
-                                <% with $Vendor.ProfilImage %>
-                                    <img src="$Up.Vendor.ProfilImage.URL" class="img-fluid" style="border-radius: 50%; object-fit: cover; aspect-ratio: 1/1;">
-                                <% end_with %>
-                            <% else %>
-                                <% with $Sender.ProfileImage %>
-                                    <img src="$URL" class="img-fluid" style="border-radius: 50%; object-fit: cover; aspect-ratio: 1/1;">
-                                <% end_with %>
-                            <% end_if %>
-                        <% else %>
-                            <% if $Vendor.exists %>
-                                <% with $Vendor.ProfilImage %>
-                                    <img src="$Up.Vendor.ProfilImage.URL" class="img-fluid" style="border-radius: 50%; object-fit: cover; aspect-ratio: 1/1;">
-                                <% end_with %>
-                            <% else %>
-                                <% with $Receiver.ProfileImage %>
-                                    <img src="$URL" class="img-fluid" style="border-radius: 50%; object-fit: cover; aspect-ratio: 1/1;">
-                                <% end_with %>
-                            <% end_if %>
-                        <% end_if %>
-                        </div>
-                        <div class="d-flex flex-column justify-content-between py-1 col-9 px-0 pr-3">
-                            <div class="d-flex justify-content-between align-items-center">
+            <div class="ChatListSort">
+                <% loop $ChatList %>
+                    <% if $ReceiverID == CurrentMember.ID %>
+                        <div class="sidechat px-2" data-receiver="$SenderID" data-sender="$CurrentMember.ID">
+                    <% else %>
+                        <div class="sidechat px-2" data-receiver="$ReceiverID" data-sender="$CurrentMember.ID">
+                    <% end_if %>
+                        <div class="listchat px-1 py-2 d-flex align-items-center" style="border-radius: 30px;">
+                            <div class="col-3">
+                            <% if $ReceiverID == $CurrentMember.ID %>
                                 <% if $Vendor.exists %>
-                                    <h5 class="m-0" style="font-weight: 400; color: #000;">$Vendor.Name</h5>
+                                    <% with $Vendor.ProfilImage %>
+                                        <img src="$Up.Vendor.ProfilImage.URL" class="img-fluid" style="border-radius: 50%; object-fit: cover; aspect-ratio: 1/1;">
+                                    <% end_with %>
                                 <% else %>
-                                    <h5 class="m-0" style="font-weight: 400; color: #000;">$chatMain.FirstName</h5>
+                                    <% with $Sender.ProfileImage %>
+                                        <img src="$URL" class="img-fluid" style="border-radius: 50%; object-fit: cover; aspect-ratio: 1/1;">
+                                    <% end_with %>
                                 <% end_if %>
-                                
+                            <% else %>
                                 <% if $Vendor.exists %>
-                                    <p class="m-0" style="font-size: 13px; font-weight: 500; color: darkorange; background-color: #ffa5004a; padding: .2rem .4rem; border-radius: 10px;">penjual</p>
+                                    <% with $Vendor.ProfilImage %>
+                                        <img src="$Up.Vendor.ProfilImage.URL" class="img-fluid" style="border-radius: 50%; object-fit: cover; aspect-ratio: 1/1;">
+                                    <% end_with %>
+                                <% else %>
+                                    <% with $Receiver.ProfileImage %>
+                                        <img src="$URL" class="img-fluid" style="border-radius: 50%; object-fit: cover; aspect-ratio: 1/1;">
+                                    <% end_with %>
                                 <% end_if %>
-                                
-                                <% if $Date %>
-                                    <p class="m-0" style="font-size: 12px;">$Date.Format('d/M')</p>
-                                <% end_if %>
+                            <% end_if %>
                             </div>
-                            <% if $LastMessage %>
-                                <div class="d-flex justify-content-between">
-                                    <p class="m-0" style="color: #707070;">$LastMessage.Message</p>
-                                    <% if $Up.Status %>
-                                    <span class="cart-count">$Up.Status</span>
+                            <div class="d-flex flex-column justify-content-between py-1 col-9 px-0 pr-3">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <% if $Vendor.exists %>
+                                        <h5 class="m-0" style="font-weight: 400; color: #000;">$Vendor.Name</h5>
+                                    <% else %>
+                                        <h5 class="m-0" style="font-weight: 400; color: #000;">$Up.chatMain.FirstName</h5>
+                                    <% end_if %>
+                                    
+                                    <% if $Vendor.exists %>
+                                        <p class="m-0" style="font-size: 13px; font-weight: 500; color: darkorange; background-color: #ffa5004a; padding: .2rem .4rem; border-radius: 10px;">penjual</p>
+                                    <% end_if %>
+                                    
+                                    <% if $Date %>
+                                        <p class="m-0" style="font-size: 12px;">$Date.Format('d/M')</p>
                                     <% end_if %>
                                 </div>
-                            <% end_if %>
+                                <% if $LastMessage %>
+                                    <p class="m-0" style="color: #707070; overflow: hidden; text-overflow: ellipsis;">$LastMessage.Message</p>
+                                <% end_if %>
+                            </div>
                         </div>
                     </div>
                 <% end_loop %>
