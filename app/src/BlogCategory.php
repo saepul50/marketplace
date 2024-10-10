@@ -1,14 +1,26 @@
 <?php 
+use SilverStripe\AssetAdmin\Forms\UploadField;
+use SilverStripe\Assets\Image;
 use SilverStripe\Dev\Debug;
+use SilverStripe\Forms\ReadonlyField;
 use SilverStripe\ORM\DataObject;
 use SilverStripe\ORM\DB;
 
 class BlogCategory extends DataObject {
     private static $db = [
-        'Title' => 'Text',
-        'Sample' => 'Varchar'
+        'Title' => 'Varchar',
+        'Deskripsi' => 'Varchar(50)',
+        'Count' => 'Varchar'
     ];
 
+
+    private static $has_one = [
+        'Image' => Image::class
+    ];
+
+    private static $owns = [
+        'Image'
+    ];
     private static $belongs_many_many = [
         'BlogAdd' => BlogAdd::class,
     ];
@@ -37,7 +49,7 @@ class BlogCategory extends DataObject {
     
         // Update the Sample field with the count values
         foreach ($categories as $category) {
-            $category->Sample = $counts[$category->ID];
+            $category->Count = $counts[$category->ID];
             $category->write();  // Save the updated Sample field to the database
         }
     
@@ -52,6 +64,18 @@ class BlogCategory extends DataObject {
     public function canEdit($member = null) {
         // Mencegah pengeditan untuk semua pengguna
         return true ;
+    }
+
+    public function getCMSFields(){
+       $fields = parent::getCMSFields();
+
+       $fields->addFieldToTab('Root.Main',UploadField::create('Image','Image'));
+       $fields->addFieldToTab('Root.Main', ReadonlyField::create('Count'));
+       $fields->removeByName(array('BlogAdd'));
+
+
+       return $fields;
+
     }
 }
 
