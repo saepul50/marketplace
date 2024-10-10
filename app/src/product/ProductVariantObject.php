@@ -2,6 +2,7 @@
 
 use SilverStripe\AssetAdmin\Forms\UploadField;
 use SilverStripe\Forms\FieldList;
+use SilverStripe\Forms\RequiredFields;
 use SilverStripe\Forms\TextField;
 use SilverStripe\ORM\DataObject;
 use SilverStripe\Assets\Image;
@@ -79,4 +80,24 @@ use SilverStripe\Assets\Image;
         {
             return true;
         }
+        function getCMSValidator(){
+            return new VariantObject_validator();
+        }
     }
+
+    class VariantObject_validator extends RequiredFields {
+        function php($data) {
+            $bRet = parent::php($data);
+
+            if (empty($data['VariantName']))
+                $this->validationError('VariantName','Variant cannot be empty','required');
+            if (empty($data['Price']))
+                $this->validationError('Price','Price cannot be empty','required');
+            if (empty($data['Stock']))
+                $this->validationError('Stock','Stock cannot be empty','required');
+            if (empty($data['Weight']))
+                $this->validationError('Weight','Weight cannot be empty','required');
+            return count($this->getErrors());
+        }
+    
+    } 

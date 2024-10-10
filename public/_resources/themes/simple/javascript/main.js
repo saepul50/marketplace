@@ -731,50 +731,7 @@ $(document).ready(function () {
     return false;
   });
 
-  $("#replycomment").off(function (event) {
-    event.preventDefault();
-
-    $.post("/marketplace/blog/handelreply", {
-      Send: $("#nama-reply").val(),
-      Message: $("#message-reply").val(),
-      CommentID: $("#commentID-reply").val(),
-      ID: $("#BlogAddID").val(),
-    })
-      .done(function (data) {
-        var response = JSON.parse(data);
-        if (response.success) {
-          Swal.fire({
-            title: "SUCCESS",
-            text: "Success",
-            icon: "success",
-            timer: 1000
-          })
-          setInterval(href, 1500);
-
-          function href() {
-            location.reload();
-          }
-        } else {
-          Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text: response.message,
-            showConfirmButton: false,
-            timer: 1500
-          });
-        }
-
-      }).fail(function () {
-        Swal.fire({
-          icon: "error",
-          title: "Error",
-          text: "There was an issue  Please try again later.",
-          confirmButtonColor: "#d33",
-        });
-      });
-
-    return false;
-  });
+ 
 
   $('.btn-reply').on('click', function () {
     var CommentID = $(this).data('commentid');

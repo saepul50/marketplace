@@ -37,16 +37,25 @@ class VendorPageController extends PageController {
             $subCategoryList = ShopSubCategoryObject::get();
             $brandList = ProductBrandObject::get();
             $productQuery = ProductObject::get()->filter('VendorID', $vendor->ID);
+            if($productQuery && $productQuery->exists()){
             $ProductObject = ProductObject::get()->filter('VendorID', $vendor->ID);
             $count = $productQuery->count();
-            $bestseller = ProductObject::get()->filter('VendorID', $vendor->ID)->sort('QuantitySold', 'DESC');
-            $bestrating = ProductObject::get()->filter('VendorID', $vendor->ID)->sort('Rating', 'DESC');
+            $bestseller = $productQuery->sort('QuantitySold', 'DESC')->filter('QuantitySold:GreaterThan', 0);
+            $bestrating = $productQuery->sort('Rating', 'DESC')->filter('Rating:GreaterThan', 0);
+            $ratingsData = ProductRating::get()->filter('ProductObjectID', $productQuery->column('ID'));
+            } else {
+                $ratingsData = null;
+                $count = null;
+                $bestseller = null;
+                $bestrating = 0;
+
+            }
             $pagelength = $request->getSession()->get('PageLength');
             $sortOption = $request->getVar('sort');
             $brandFilter = $request->getVar('filter');
             $subCategoryFilter = $request->getVar('subcategory');
-            $ratingsData = ProductRating::get()->filter('ProductObjectID', $productQuery->column('ID'));
-
+            
+            if($ratingsData && $ratingsData->exists()){
             $productRatings = [];
             foreach ($ratingsData as $rating) {
                 $productId = $rating->ProductObjectID;
@@ -60,19 +69,21 @@ class VendorPageController extends PageController {
                 $productRatings[$productId]['Ratings'][] = $rating->Rating;
                 $productRatings[$productId]['Count']++;
             }
-            $totalAverageSum = [];
-            $totalCount = 0;
-            foreach ($productRatings as $productId => &$data) {
-                if ($data['Count'] > 0) {
-                    $data['Average'] = array_sum($data['Ratings']) / $data['Count'];
-                    $totalAverageSum = $data['Average']; 
-                    $totalCount++;
-                } else {
-                    $data['Average'] = 0;
+                $totalAverageSum = [];
+                $totalCount = 0;
+                foreach ($productRatings as $productId => &$data) {
+                    if ($data['Count'] > 0) {
+                        $data['Average'] = array_sum($data['Ratings']) / $data['Count'];
+                        $totalAverageSum = $data['Average']; 
+                        $totalCount++;
+                    } else {
+                        $data['Average'] = 0;
+                    }
                 }
+                $overallAverage =  $totalAverageSum / $totalCount;
+                $formatave = number_format($overallAverage, 2);
+                // Debug::show($productRatings);
             }
-            $overallAverage =  $totalAverageSum / $totalCount;
-            $formatave = number_format($overallAverage, 2);
             $promo = PromoToko::get()->filter(['VendorID'=> $vendor->ID,'ExpDate:GreaterThanOrEqual' => time()]);
             $banner = BannerPromo::get()->filter('VendorID', $vendor->ID)->column('BannerPlacesID'); 
             // Debug::show($banner);
@@ -140,12 +151,12 @@ class VendorPageController extends PageController {
                     'ProductCount' => $productCount
                 ]));
             }
-            $data = $this->nepo(); // Call the nepo() method from PageController
-
+            $data = $this->nepo(); 
+        
             return $this->customise([
-                // 'Notif' => $data['Notif'],
-                // 'Product' => $data['Product'],
-                // 'Counts' => $data['Count'],
+                'Notif' => $data['Notif'],
+                'Product' => $data['Product'],
+                'Counts' => $data['Count'],
                 'SubCategory' => $subCategoryList,
                 'Brand' => $brandsWithCount,
                 'Category' => $categories,
@@ -157,16 +168,17 @@ class VendorPageController extends PageController {
                 'Vendor' => $vendor,
                 'Count' => $count,
                 'Promo' => $promo,
-                'OverralAverage' => $formatave,
+                'OverralAverage' => $formatave ?? null,
                 'BestSeller' => $bestseller,
                 'BestRating' => $bestrating,
-                'ProductRating' => $productRatings,
+                'ProductRating' => $productRatings ?? null,
                 'MainBannerPromos' => $mainBannerPromos,
                 'SubBannerPromos' => $subBannerPromos,
                 'SubBanner2Promos' => $subBanner2Promos,
                 'SubBanner3Promos' => $subBanner3Promos,
-                'ProductObjects' => $ProductObject  
+                'ProductObjects' => $ProductObject ?? null  
                 ])->renderWith(['VendorPage', 'Page']);
+            
         } else{
             return null;
         }

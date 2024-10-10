@@ -11,6 +11,9 @@ use SilverStripe\Forms\NumericField;
 use SilverStripe\Forms\TextareaField;
 use SilverStripe\Forms\TextField;
 
+use SilverStripe\Forms\RequiredFields;
+use SilverStripe\Security\Security;
+
     class PromotionObject extends DataObject{
         private static $db = [
             'PromoText1' => 'Text',
@@ -25,7 +28,8 @@ use SilverStripe\Forms\TextField;
             'ShowPromotion4' => 'Boolean',
             'ShowPromotion5' => 'Boolean',
             'ShowPromotion6' => 'Boolean',
-            'ShowPromotion7' => 'Boolean'
+            'ExclusiveSlider' => 'Boolean',
+
         ];
         private static $has_one = [
             'Product' => ProductObject::class,
@@ -48,6 +52,9 @@ use SilverStripe\Forms\TextField;
             return null;
         }
         public function getCMSFields() {
+            $member = Security::getCurrentUser();
+            $vendor = Vendor::get()->filter('OwnerID', $member->ID)->first();
+            if($member->ID == 1){
             $fields = FieldList::create(
                 DropdownField::create('ProductID', 'Select Product', ProductObject::get()->map('ID', 'Title'))
                     ->setEmptyString('--Select a product--')
@@ -65,9 +72,31 @@ use SilverStripe\Forms\TextField;
                 CheckboxField::create('ShowPromotion1', 'Main Promotion'),
                 CheckboxField::create('ShowPromotion2', 'Limited Weekly Deals'),
                 CheckboxField::create('ShowPromotion3', 'Featured Item Bottom 1'),
-                CheckboxField::create('ShowPromotion4', 'Featured Item Bottom 2')
+                CheckboxField::create('ShowPromotion4', 'Featured Item Bottom 2'),
+                CheckboxField::create('ExclusiveSlider', 'Exclusive Products Slider '),
             );
-        
+        } elseif ($member->ID != 1) {
+            $fields = FieldList::create(
+                DropdownField::create('ProductID', 'Select Product', ProductObject::get()->filter('VendorID' , $vendor->ID)->map('ID', 'Title'))
+                    ->setEmptyString('--Select a product--')
+                    ->setDescription('Choose the product for this promotion')
+                    ->setValue($this->Product->ProductID),
+                TextField::create('PromoText1', 'Text 1'),
+                TextField::create('PromoText2', 'Text 2'),
+                TextareaField::create('PromoText3', 'Text 3'),
+                NumericField::create('PromoPrice', 'Promo Price (%)')
+                    ->setDescription('Enter a percentage value (0-100)   e.g., 10 for 10%'),
+                UploadField::create('ProductImagesInput', 'Upload Promo Image (Optional)')
+                    ->setAllowedFileCategories('image/supported')
+                    ->setDescription('Size Recommendation For Main Promotion (1920x720 px)')
+                    ->setIsMultiUpload(false),
+                CheckboxField::create('ShowPromotion1', 'Main Promotion'),
+                CheckboxField::create('ShowPromotion2', 'Limited Weekly Deals'),
+                CheckboxField::create('ShowPromotion3', 'Featured Item Bottom 1'),
+                CheckboxField::create('ShowPromotion4', 'Featured Item Bottom 2'),
+                CheckboxField::create('ExclusiveSlider', 'Exclusive Products Slider '),
+            ); 
+        }
             if ($this->ProductImagesInputID) {
                 $image = $this->ProductImagesInput();
                 if ($image && $image->exists()) {
@@ -135,4 +164,17 @@ use SilverStripe\Forms\TextField;
         {
             return true;
         }
+        // function getCMSValidator(){
+        //     return new PromotionObject_validator();
+        // }
     }
+
+    // class PromotionObject_validator extends RequiredFields {
+    //     function php($data) {
+    //         $bRet = parent::php($data);
+
+    //         if (empty($data['Title']))
+    //             $this->validationError('Title','Title cannot be empty','required');
+    //     }
+    
+    // } 

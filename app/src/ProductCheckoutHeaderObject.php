@@ -79,7 +79,7 @@ use SilverStripe\ORM\FieldType\DBHTMLText;
                     $field->setReadonly(true);
                 }
             }
-
+            $fields->removeByName(array('Notification'));
             if ($statusField = $fields->fieldByName('Root.Main.Status')) {
                 $statusField->setReadonly(false);
             }

@@ -7,7 +7,7 @@ use SilverStripe\Security\Security;
 class BannerPromoAdmin extends ModelAdmin{
     private static $menu_title = 'Banner Promo';
     private static $url_segment = 'banner-promo';
-    private static $menu_icon_class = '';
+    private static $menu_icon_class = 'font-icon-block-layout';
     private static $managed_models = [
         BannerPromo::class,
         PromoToko::class
@@ -54,5 +54,27 @@ class BannerPromoAdmin extends ModelAdmin{
             
         }
        
+    }
+    public function getList() {
+        $list = parent::getList();
+        $member = Security::getCurrentUser();
+        $vendor = Vendor::get()->filter('OwnerID', $member->ID)->first();
+        $modelClass = $this->modelClass;
+
+        if ($member->ID !== 1) {
+            if ($modelClass === PromoToko::class) {
+                $list = PromoToko::get()->filter('VendorID', $vendor->ID);
+            } elseif ($modelClass === BannerPromo::class) {
+                $list = BannerPromo::get()->filter('VendorID', $vendor->ID);;
+            }
+        } else if ($member->ID == 1) {
+            if ($modelClass === PromoToko::class) {
+                $list = PromoToko::get();
+            } elseif ($modelClass === BannerPromo::class) {
+                $list = BannerPromo::get();
+            }
+        }
+
+        return $list;
     }
 }

@@ -67,10 +67,7 @@ class BlogPageController extends PageController
             $this->getRequest()
         )->setPageLength(4)->setPaginationGetVar('s');
     
-        $grup = null;
-        if ($member) {
-            $grup = $member->Groups();
-        
+       
         $categoriesWithCounts = null;
         if ($categori) {
             $categoriesWithCounts = BlogCategory::getCategoriesWithCounts();
@@ -86,12 +83,11 @@ class BlogPageController extends PageController
             'Latestpost' => BlogAdd::get()->sort('Created', 'DESC'),
             'ActiveFilter' => $activeFilters ?? null,
             'Categori' => $categori,
-            'Groups' => $grup,
             'Popularpost' => BlogAdd::get()->sort('ViewCount', 'DESC'),
             'Content' => $contents
         ];
     }
-}
+
     
     
 
@@ -103,10 +99,6 @@ class BlogPageController extends PageController
         if (!$member) {
             return $this->redirect(Director::absoluteBaseURL() . '/login');
         } else {
-            if($member){
-                $grup = $member->Groups();
-                // Debug::show($grup);
-            }
             $k = $request->param('ID');
             $contents = BlogAdd::get()->byID($k);
             $categori = BlogCategory::get();
@@ -145,7 +137,6 @@ class BlogPageController extends PageController
                 'CommentID' => $comments->ID,
                 'Categori' => $categori,
                 'Blog' => $contents,
-                'Groups' => $grup,
                 'ID' => $k,
                 'Count' => $counttotal,
                 'ImageNextBlog' => $nextblog ? $nextblog->HeaderImage : null,
@@ -207,5 +198,11 @@ class BlogPageController extends PageController
         }
     }
 
-
+    public function IsAuthor() {
+        $member = Security::getCurrentUser();
+        if ($member && $member->inGroup(1)) {
+            return true;
+        }
+        return false;
+    }
 }

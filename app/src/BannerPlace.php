@@ -4,6 +4,7 @@ use SilverStripe\Forms\CheckboxField;
 use SilverStripe\Forms\HiddenField;
 use SilverStripe\ORM\ArrayList;
 use SilverStripe\ORM\DataObject;
+use SilverStripe\Security\Security;
 
 class BannerPlace extends DataObject{
     private static $db = [
@@ -11,6 +12,10 @@ class BannerPlace extends DataObject{
         'SubBanner' => 'Boolean',
         'SubBanner2' => 'Boolean',
         'SubBanner3' => 'Boolean',
+    ];
+    
+    private static $has_one = [
+        'Vendor' => Vendor::class
     ];
 
     private static $has_many = [
@@ -34,6 +39,14 @@ class BannerPlace extends DataObject{
     //         }
     //     }
     // }
+
+    public function onBeforeWrite(){
+        parent::onBeforeWrite();
+        $member = Security::getCurrentUser();
+        $vendor = Vendor::get()->filter('OwnerID', $member->ID)->first();
+
+        $this->VendorID = $vendor->ID;
+    }
     public function getCMSFields()
     { 
         $fields = parent::getCMSFields();
@@ -44,6 +57,7 @@ class BannerPlace extends DataObject{
         $fields->addFieldToTab('Root.Main', CheckboxField::create('SubBanner2', 'Sub Banner 2'));
         $fields->addFieldToTab('Root.Main', CheckboxField::create('SubBanner3', 'Sub Banner 3'));
         $fields->addFieldToTab('Root.Main', HiddenField::create('BannerPromoID', 'BannerPromoID'));
+        $fields->addFieldToTab('Root.Main', HiddenField::create('VendorID', 'VendorID'));
 
         
         return $fields;

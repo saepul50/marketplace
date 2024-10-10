@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <!--
 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -172,6 +171,6 @@ Change it, enhance it and most importantly enjoy it!
 	</script>
 
 	
-	<script src="$ThemeDir/js/script.js" defer></script>
+	<%-- <script src="$ThemeDir/js/script.js" defer></script> --%>
 </body>
 

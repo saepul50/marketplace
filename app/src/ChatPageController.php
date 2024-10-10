@@ -202,6 +202,7 @@ class ChatPageController extends PageController {
             $chat->ReceiverID = $receiverID;
             $chat->Message = $messageContent;
             $chat->Unichat = $unichat;
+            $chat->Status = 'Unread';
             if($receiverVendor){
                 $chat->VendorID = $receiverVendor->ID;
             }

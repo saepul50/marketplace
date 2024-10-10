@@ -108,7 +108,7 @@
 														<i class="lnr lnr-chevron-down"></i>
 													</button>
 												</div>
-												<% if $Product.ProductCategory.ID=1 %>
+												<% if $Product.ProductCategory %>
 													<div class="cardVariant pb-2 d-flex align-items-center">
 														<% loop $Product.ProductVariants.sort(VariantName) %>
 															<div class="variantItem m-0 p-0 mr-2 d-flex align-items-center"
@@ -440,7 +440,7 @@
 										<div class="d-flex " style="gap:10px;">
 											<label for="filter" class="mt-2">Urutkan</label>
 											<form id="rating-filter-form" action="" method="get">
-												<select name="sort" id="rating-filter" class="selectpicker" onchange="saveSelectionAndSubmit()" style="display:block !important;">
+												<select name="" id="rating-filter" class="selectpicker" onchange="saveSelectionAndSubmit()" style="display:block !important;">
 													<option value="Latest">Latest</option>
 													<option value="Highest Rating">Highest Rating</option>
 													<option value="Lowest Rating">Lowest Rating</option>

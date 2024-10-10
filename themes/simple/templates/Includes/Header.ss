@@ -22,9 +22,6 @@
 		#history_list li.selected{
 			background-color: #f5f5f5 !important;
 		}
-		a{
-			color:black !important;
-		}
 		.notip-item:hover{
 			background-color:whitesmoke;
 			color:black;
@@ -45,6 +42,43 @@
 			font-size: 14px;
 			font-weight: bold;
 		}
+		.bx-shopping-bag {
+		position: relative;
+		}
+
+		.bx-shopping-bag .cart-count {
+			position: absolute;
+			display: flex;
+			justify-content: center;
+			align-items: flex-start;
+			width: 18px;
+			height: 18px;
+			line-height: 1rem !important;
+			top: -8px;
+			right: -10px; 
+			background-color: red;
+			border-radius: 50%;
+			color: #fff !important; 
+			font-size: 14px;
+			font-weight: bold;
+		}
+		.bx-conversation .cart-count {
+			position: absolute;
+			display: flex;
+			justify-content: center;
+			align-items: flex-start;
+			width: 18px;
+			height: 18px;
+			line-height: 1rem !important;
+			top: -8px;
+			right: -10px; 
+			background-color: red;
+			border-radius: 50%;
+			color: #fff !important; 
+			font-size: 14px;
+			font-weight: bold;
+		}
+		
 	</style>
 <header class="header_area sticky-header">
 	<div class="main_menu">
@@ -77,14 +111,7 @@
 								<li class="nav-item"><a class="nav-link" href="{$BaseHref}/shopresult">Shopping Result</a></li>
 							</ul>
 						</li>
-						<li class="nav-item submenu dropdown" id="blog">
-							<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-							 aria-expanded="false">Blog</a>
-							<ul class="dropdown-menu">
-								<li class="nav-item"><a class="nav-link" href="{$BaseHref}/blog">Blog</a></li>
-								<%-- <li class="nav-item"><a class="nav-link" href="{$BaseHref}/blog-detail">Blog Details</a></li> --%>
-							</ul>
-						</li>
+						<li class="nav-item" ><a class="nav-link" href="{$BaseHref}/blog">Blog</a></li>
 						<li class="nav-item submenu dropdown" id="pages">
 							<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
 							 aria-expanded="false">Pages</a>
@@ -104,9 +131,9 @@
 							</a>
 						</li>
 						<li class="nav-item">
-							<div id="chaticons">
-								<span class="chat" style=" outline: none !important; box-shadow: none;"></span>
-								<i class='bx bx-conversation' style="font-size: 18px;"></i>
+							<div>
+								<span class="cart" style=" outline: none !important; box-shadow: none;"></span>
+								<i class='bx bx-conversation' style="font-size: 18px;"><% if $Status %><span class="cart-count">$Status</span><% end_if %></i>
 							</div>
 						</li>
 						<li class="nav-item submenu dropdown">
@@ -119,7 +146,7 @@
 									<% if  $nepo %>
 									<% loop $Notif.Limit(8) %>
 										<% if $Status == 'Dikemas' %>
-											<a href="{$BaseHref}/confirm/order/$Order/$ID?detailOrder=true">
+											<a href="{$BaseHref}/confirm/order/$Order/$ID?detailOrder=true" style="color: black !important">
 											<div class=" d-flex p-2  notip-item  mt-2">
 												<div class="content  d-flex justify-content-between " style="width:85%;">
 													<div style="inline-size: 100%; overflow-wrap: break-word;">
@@ -129,7 +156,7 @@
 											</div>
 											</a>
 										<% else_if  $Status == 'Dikirim' %>
-											<a href="{$BaseHref}/confirm/order/$Order/$ID?detailOrder=true">
+											<a href="{$BaseHref}/confirm/order/$Order/$ID?detailOrder=true" style="color: black !important">
 											<div class=" d-flex    p-2  notip-item mt-2">
 												<div class="content  d-flex justify-content-between " style="width:85%;">
 													<div style="inline-size: 100%; overflow-wrap: break-word;">
@@ -140,7 +167,7 @@
 											</div>
 											</a>
 										<% else_if  $Status == 'Selesai' %>
-											<a href="{$BaseHref}/confirm/order/$Order/$ID?detailOrder=true">
+											<a href="{$BaseHref}/confirm/order/$Order/$ID?detailOrder=true" style="color: black !important">
 											<div class=" d-flex   p-2 notip-item mt-2">
 												<div class="content  d-flex justify-content-between " style="width:85%;">
 													<div style="inline-size: 100%; overflow-wrap: break-word;">
@@ -151,7 +178,7 @@
 											</div>
 											</a>
 										<% else_if  $Status == 'Dibatalkan' %>
-											<a href="{$BaseHref}/confirm/order/$Order/$ID?detailOrder=true">
+											<a href="{$BaseHref}/confirm/order/$Order/$ID?detailOrder=true" style="color: black !important">
 											<div class=" d-flex  p-2 notip-item  mt-2">
 												<div class="content  d-flex justify-content-between " style="width:85%;">
 													<div style="inline-size: 100%; overflow-wrap: break-word;">
@@ -193,7 +220,7 @@
 		</div>
 		<div id="search_history" class="search_input pt-5" style="position: fixed; padding-bottom: .01rem; background-color: #fff; text-align: left; box-shadow: 0px 0px 5px #fff; width: 100%; max-width: 1200px; left: 50%; transform: translateX(-50%);">
 			<div class="container">
-				<ul id="history_list">
+				<ul id="history_list" style="margin-bottom:0 !important">
 					<% loop $ProductObjects %>
 						
 					<% end_loop %> 

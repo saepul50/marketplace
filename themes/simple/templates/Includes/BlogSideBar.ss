@@ -14,8 +14,8 @@
                     <% end_loop %>
                 <% end_if %>
             </form>
-            <% if $Groups %>
-            <a href="{$BaseHref}/admin" class="btn mt-2" style="font-size: 18px; line-height: 25px; background: #ffba00; color: #fff;  width: 100%; border-radius:50px; margin-bottom: 30px;">Add New Blog</a>
+            <% if $IsAuthor %>
+            <a href="{$BaseHref}/admin/blog" class="btn mt-2" style="font-size: 18px; line-height: 25px; background: #ffba00; color: #fff;  width: 100%; border-radius:50px; margin-bottom: 30px;">Add New Blog</a>
             <% else %>
             <a href="" class="btn mt-2 disabled" style="font-size: 18px; line-height: 25px; background: #ffba00; color: #fff;  width: 100%; border-radius:50px; margin-bottom: 30px;">Add New Blog</a>
             <% end_if %>

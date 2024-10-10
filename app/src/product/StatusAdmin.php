@@ -19,7 +19,7 @@ use SilverStripe\Security\Security;
 class StatusAdmin extends LeftAndMain implements PermissionProvider{
     private static $menu_title = 'Status';
     private static $url_segment = 'status'; 
-    private static $menu_icon_class = '';
+    private static $menu_icon_class = 'font-icon-chart-pie';
     private static $allowed_actions = [
         'dashboard',
     ];
@@ -58,77 +58,91 @@ class StatusAdmin extends LeftAndMain implements PermissionProvider{
             $order = ProductCheckoutObject::get();
             $data = ProductCheckoutHeaderObject::get();
             $datatime = ProductCheckoutHeaderObject::get()->filter('TimeCheckout:GreaterThanOrEqual', $startOfWeek);
-            
-            $count = $data->count();
-            $pending = $data->filter('Status', 'Dikemas')->count();  
-            $Completed = $data->filter('Status', 'Selesai')->count();  
-            $Proccesing = $data->filter('Status', 'Dikirim')->count();  
-            $Cancelled = $data->filter('Status', 'Dibatalkan')->count();  
+        
         } else {
             $vendor = Vendor::get()->filter('OwnerID', $member->ID)->first();
-            $list = ProductObject::get()->filter('VendorID', $vendor->ID);
-            $order = ProductCheckoutObject::get()->filter(['ProductID'=> $list->column('ID')]);
-            $headerid = $order->column('HeaderCheckoutID');
-            $data = ProductCheckoutHeaderObject::get()->filter(['ID' => $headerid]);
-            $datatime = ProductCheckoutHeaderObject::get()->filter(['ID' => $headerid, 'TimeCheckout:GreaterThanOrEqual' => $startOfWeek]);
+            $list = ProductObject::get()->filter('VendorID', $vendor->ID) ;
+            // Debug::show($list);
+            // die();
+            if($list && $list->exists()){
+                $order = ProductCheckoutObject::get()->filter(['ProductID'=> $list->column('ID')]);
+                if($order && $order->exists()){
 
+                $headerid = $order->column('HeaderCheckoutID');
+                $data = ProductCheckoutHeaderObject::get()->filter(['ID' => $headerid]);
+                $datatime = ProductCheckoutHeaderObject::get()->filter(['ID' => $headerid, 'TimeCheckout:GreaterThanOrEqual' => $startOfWeek]); 
+                } else {
+                    $data = null;
+                }
+
+            } else {
+                $data = null;
+            } 
+        }
+        // Debug::show($data);
+        $transactionsPerDate = [];
+        $transactionsPerDateCan = [];
+        $labelTransactions = [];
+        $labelCategory = [];
+        if($data && $data->exists()){
             $count = $data->count();
             $pending = $data->filter('Status', 'Dikemas')->count();  
             $Completed = $data->filter('Status', 'Selesai')->count();  
             $Proccesing = $data->filter('Status', 'Dikirim')->count();  
             $Cancelled = $data->filter('Status', 'Dibatalkan')->count();
-        }
-        $transactionsPerDate = [];
-        $transactionsPerDateCan = [];
-        $labelTransactions = [];
-        $labelCategory = [];
-        for ($i = 0; $i < 7; $i++) {
-            $date = date('d/m/Y', strtotime("-$i days"));
-            $transactionsPerDate[$date] = 0;
-            $transactionsPerDateCan[$date] = 0;
-            $labelTransactions[] = $date;
-        }
-        foreach($list as $product){
-            $category = ShopCategoryObject::get()->Filter('ID', $product->ProductCategoryID);
-            $categoryTitle = $category[0]->Title;
-            // Debug::show($categoryTitle);
-            if ($categoryTitle){
-                if (!isset($labelCategory[$categoryTitle])) {
-                    $labelCategory[$categoryTitle] = 0;
-                }
-                $labelCategory[$categoryTitle]++;
+            for ($i = 0; $i < 7; $i++) {
+                $date = date('d/m/Y', strtotime("-$i days"));
+                $transactionsPerDate[$date] = 0;
+                $transactionsPerDateCan[$date] = 0;
+                $labelTransactions[] = $date;
             }
-        }
-        foreach ($data as $checkout) {
-            if($checkout->Status != 'Dibatalkan'){
-                $checkoutDate = DateTime::createFromFormat('d/m/Y H:i:s', $checkout->TimeCheckout);
-                if ($checkoutDate) {
-                    $dateString = $checkoutDate->format('d/m/Y');
-                    if (isset($transactionsPerDate[$dateString])) {
-                        $transactionsPerDate[$dateString]++;
+
+            foreach ($list as $product) {
+                $category = ShopCategoryObject::get()->Filter('ID', $product->ProductCategoryID);
+                if ($category && $category->exists()) {
+                    $categoryTitle = $category[0]->Title;
+                    if ($categoryTitle) {
+                        if (!isset($labelCategory[$categoryTitle])) {
+                            $labelCategory[$categoryTitle] = 0;
+                        }
+                        $labelCategory[$categoryTitle]++;
                     }
+                } else {
+                    // Debug::show("No category found for Product ID: " . $product->ID);
                 }
-            } else if($checkout->Status === 'Dibatalkan'){
-                $checkoutDate = DateTime::createFromFormat('d/m/Y H:i:s', $checkout->TimeCheckout);
-                if ($checkoutDate) {
-                    $dateString = $checkoutDate->format('d/m/Y');
-                    if (isset($transactionsPerDateCan[$dateString])) {
-                        $transactionsPerDateCan[$dateString]++;
+            }
+            
+            foreach ($data as $checkout) {
+                if($checkout->Status != 'Dibatalkan'){
+                    $checkoutDate = DateTime::createFromFormat('d/m/Y H:i:s', $checkout->TimeCheckout);
+                    if ($checkoutDate) {
+                        $dateString = $checkoutDate->format('d/m/Y');
+                        if (isset($transactionsPerDate[$dateString])) {
+                            $transactionsPerDate[$dateString]++;
+                        }
+                    }
+                } else if($checkout->Status === 'Dibatalkan'){
+                    $checkoutDate = DateTime::createFromFormat('d/m/Y H:i:s', $checkout->TimeCheckout);
+                    if ($checkoutDate) {
+                        $dateString = $checkoutDate->format('d/m/Y');
+                        if (isset($transactionsPerDateCan[$dateString])) {
+                            $transactionsPerDateCan[$dateString]++;
+                        }
                     }
                 }
             }
         }
         return $this->customise([
-            'Dikemas' => $pending,
-            'Selesai' => $Completed,
-            'Dikirim' => $Proccesing,
-            'Dibatalkan' => $Cancelled,
-            'Data' => $count,
-            'Vendor' => $vendor,
-            'Transactions' => json_encode(array_reverse($transactionsPerDate)),
-            'TransactionsCancel' => json_encode(array_reverse($transactionsPerDateCan)),
-            'Labels' => json_encode(array_reverse($labelTransactions)),
-            'LabelsCategory' => json_encode($labelCategory) 
+            'Dikemas' => $pending ?? 0,
+            'Selesai' => $Completed ?? 0,
+            'Dikirim' => $Proccesing ?? 0,
+            'Dibatalkan' => $Cancelled ?? 0,
+            'Data' => $count ?? 0,
+            'Vendor' => $vendor ?? null,
+            'Transactions' => json_encode(array_reverse($transactionsPerDate)) ?? null,
+            'TransactionsCancel' => json_encode(array_reverse($transactionsPerDateCan)) ?? null,
+            'Labels' => json_encode(array_reverse($labelTransactions)) ?? null,
+            'LabelsCategory' => json_encode($labelCategory) ?? null
         ])
         ->renderWith('Status');
     }

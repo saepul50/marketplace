@@ -89,7 +89,7 @@ class ProductDetailsController extends PageController
         } else {
             $members = null;
         }
-        // Debug::show($members);
+        $show = $product->ProductVariants;
 
         return $this->customise([
             'Product' => $product,
