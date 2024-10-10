@@ -16,11 +16,10 @@ class ChatPageController extends PageController {
         'clearSession'
     ];
 
-        public function index(HTTPRequest $request) {
-            $currentMember = Security::getCurrentUser();
-            $SessionChat = $request->getSession()->get('ownerVendor');
-            $test = ChatObject::get()->filter(['Status' => 'Unread', 'ReceiverID'=> $currentMember->ID])->count();
-            // Debug::show($SessionChat);
+    public function index(HTTPRequest $request) {
+        $currentMember = Security::getCurrentUser();
+        $Data = $request->getSession()->get('vendorProduct');
+            // Debug::show($Data);
             // die();
         if ($currentMember) {
             $url = $request->getVar('m');
@@ -72,7 +71,7 @@ class ChatPageController extends PageController {
                         'chatMain' => $chatMain,
                     ];
                 }
-                return [
+                    return [
                     'ChatVendor' => null,
                     'ChatList' => new ArrayList(),
                     'Messages' => new ArrayList(),
@@ -86,11 +85,13 @@ class ChatPageController extends PageController {
                 if (!isset($groupedChats[$key])) {
                     $groupedChats[$key] = $chat;
                 }
+
                 $lastMessage = $chat->LastMessage();
-    
                 if ($lastMessage) {
                     $chat->LastMessage = $lastMessage;
                 }
+
+                $chat->UnreadCount = $chat->countUnreadMessages();
                 
                 if($currentMember->ID == $chat->ReceiverID){
                     $vendor = Vendor::get()->filterAny([
@@ -103,7 +104,7 @@ class ChatPageController extends PageController {
                 }
                 $chat->Vendor = $vendor;
             }
-            $groupedChats = array_values($groupedChats); // Ubah ke indexed array
+            $groupedChats = array_values($groupedChats);
             usort($groupedChats, function($a, $b) {
                 return strtotime($b->LastMessage->LastEdited) - strtotime($a->LastMessage->LastEdited);
             });
@@ -129,7 +130,14 @@ class ChatPageController extends PageController {
             $messages = ChatObject::get()->filter([
                 'unichat' => [$unichat1, $unichat2]
             ])->sort('LastEdited', 'DESC');
-            
+            foreach ($messages as $message) {
+                if ($message->NotificationStatus == 'Unread' && $message->ReceiverID == $currentMember->ID) {
+                    // die();
+                    $message->NotificationStatus = 'Read';
+                    $message->write();
+                }
+            }
+
             if($receiver == $currentMember->ID){
                 $senderVendor = Vendor::get()->filter('OwnerID', $user)->exists();
                 $chatMain = Member::get()->byID($user);
@@ -142,7 +150,7 @@ class ChatPageController extends PageController {
                 if(ProductObject::get()->byID($ProductID)->VendorID == $chatMain->VendorID){
                     $Product = ProductObject::get()->byID($ProductID);
                     
-                    // Debug::show($Product);
+                    // Debug::show($chatMain);
                     // die();
                     return [
                         'CurrentUser' => $currentMember->ID,
