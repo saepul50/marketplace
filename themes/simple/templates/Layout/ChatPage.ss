@@ -20,6 +20,22 @@
         .SideBar .sidechat.selected .listchat {
             background-color: #fff;
         }
+        .cart-count{
+            position: absolute;
+			display: flex;
+			justify-content: center;
+			align-items: flex-start;
+			width: 18px;
+			height: 18px;
+			line-height: 1rem !important;
+			top: 2px;
+			right: 2px; 
+			background-color: red;
+			border-radius: 50%;
+			color: #fff !important; 
+			font-size: 14px;
+			font-weight: bold;
+        }
     </style>
 <section class="banner-area organic-breadcrumb"
     style="background: url($SiteConfig.Background.getURL()) center no-repeat;background-size: cover; position: relative ">
@@ -94,7 +110,7 @@
                                 <% end_if %>
                             </div>
                             <% if $LastMessage %>
-                                <div class="d-flex justify-content-between">
+                                <div class="d-flex justify-content-between" style="position:relative;">
                                     <p class="m-0" style="color: #707070;">$LastMessage.Message</p>
                                     <% if $Up.Status %>
                                     <span class="cart-count">$Up.Status</span>

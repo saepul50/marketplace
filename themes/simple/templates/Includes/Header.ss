@@ -25,6 +25,7 @@
 		.bx-shopping-bag,
 		.bx-conversation {
 		position: relative;
+		color: black;
 		}
 
 		.bx-shopping-bag .cart-count {

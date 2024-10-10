@@ -83,48 +83,24 @@
 <section class="blog_categorie_area">
     <div class="container">
         <div class="row">
-            <div class="col-lg-4 mt-2">
-                <div class="categories_post">
-                    <img src="$resourceURL('themes/simple/images/blog/cat-post/cat-post-3.jpg')" alt="post">
-                    <div class="categories_details kecil">
-                        <div class="categories_text">
-                            <a href="blog-details.html">
-                                <h5>Social Life</h5>
-                            </a>
-                            <div class="border_line"></div>
-                            <p>Enjoy your social life together</p>
-                        </div>
+            <% loop $Categori %>
+                <div class="col-lg-4 mt-2">
+                    <div class="categories_post">
+                        <a href="">
+                            <img src="$Image.URL" alt="post" height="214" width="350">
+                            <div class="categories_details">
+                                <div class="categories_text">
+                                    <a href="blog-details.html">
+                                        <h5>$Title</h5>
+                                    </a>
+                                    <div class="border_line"></div>
+                                    <p>$Deskripsi</p>
+                                </div>
+                            </div>
+                        </a>
                     </div>
                 </div>
-            </div>
-            <div class="col-lg-4 mt-2">
-                <div class="categories_post">
-                    <img src="$resourceURL('themes/simple/images/blog/cat-post/cat-post-2.jpg')" alt="post">
-                    <div class="categories_details">
-                        <div class="categories_text">
-                            <a href="blog-details.html">
-                                <h5>Politics</h5>
-                            </a>
-                            <div class="border_line"></div>
-                            <p>Be a part of politics</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 mt-2">
-                <div class="categories_post">
-                    <img src="$resourceURL('themes/simple/images/blog/cat-post/cat-post-1.jpg')" alt="post">
-                    <div class="categories_details">
-                        <div class="categories_text">
-                            <a href="blog-details.html">
-                                <h5>Food</h5>
-                            </a>
-                            <div class="border_line"></div>
-                            <p>Let the food be finished</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <% end_loop %>
         </div>
     </div>
 </section>

@@ -126,7 +126,7 @@ class ChatPageController extends PageController {
 
 
 
-                Debug::show($test);
+                // Debug::show($test);
                 return [
                     'CurrentUser' => $currentMember->ID,
                     'Receiver' => $receiver,

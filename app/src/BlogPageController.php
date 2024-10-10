@@ -35,6 +35,7 @@ class BlogPageController extends PageController
     
         // Fetch categories
         $categori = BlogCategory::get();
+        // Debug::show($categori);
         if (!$categori || $categori->count() === 0) {
             $categori = null;
         }
