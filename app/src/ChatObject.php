@@ -7,7 +7,8 @@ use SilverStripe\Security\Member;
             'Message' => 'Text',
             'Date' => 'Date',
             'Time' => 'Time',
-            'Unichat' => 'Varchar'
+            'Unichat' => 'Varchar',
+            'Status' => 'Text',
         ];
         private static $has_one = [
             'Sender' => Member::class,

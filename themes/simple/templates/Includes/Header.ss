@@ -42,6 +42,23 @@
 			font-size: 14px;
 			font-weight: bold;
 		}
+		.bx-conversation .cart-count {
+			position: absolute;
+			display: flex;
+			justify-content: center;
+			align-items: flex-start;
+			width: 18px;
+			height: 18px;
+			line-height: 1rem !important;
+			top: -8px;
+			right: -10px; 
+			background-color: red;
+			border-radius: 50%;
+			color: #fff !important; 
+			font-size: 14px;
+			font-weight: bold;
+		}
+		
 	</style>
 <header class="header_area sticky-header">
 	<div class="main_menu">
@@ -94,9 +111,9 @@
 							</a>
 						</li>
 						<li class="nav-item">
-							<div id="chaticons">
-								<span class="chat" style=" outline: none !important; box-shadow: none;"></span>
-								<i class='bx bx-conversation' style="font-size: 18px;"></i>
+							<div>
+								<span class="cart" style=" outline: none !important; box-shadow: none;"></span>
+								<i class='bx bx-conversation' style="font-size: 18px;"><% if $Status %><span class="cart-count">$Status</span><% end_if %></i>
 							</div>
 						</li>
 						<li class="nav-item submenu dropdown">

@@ -116,8 +116,12 @@ class ChatPageController extends PageController {
                     $senderVendor = Vendor::get()->filter('OwnerID', $receiver)->exists();
                     $chatMain = Member::get()->byID($receiver);
                 }
-                // Debug::show($chatMain);
+                // Debug::show($chatList);
                 // die();
+
+
+
+                $test = ChatObject::get()->filter(['Status' => 'Unread', 'ReceiverID'=> $currentMember->ID])->count();
                 return [
                     'CurrentUser' => $currentMember->ID,
                     'Receiver' => $receiver,
@@ -125,7 +129,8 @@ class ChatPageController extends PageController {
                     'Messages' => $messages,
                     'Vendor' => Vendor::get()->filter('OwnerID', $receiver)[0],
                     'SenderVendor' => $senderVendor,
-                    'chatMain' => $chatMain
+                    'chatMain' => $chatMain,
+                    'Status' => $test
                 ];
             }
             return $this->redirect('login');
@@ -162,6 +167,7 @@ class ChatPageController extends PageController {
             $chat->ReceiverID = $receiverID;
             $chat->Message = $messageContent;
             $chat->Unichat = $unichat;
+            $chat->Status = 'Unread';
             if($receiverVendor){
                 $chat->VendorID = $receiverVendor->ID;
             }
