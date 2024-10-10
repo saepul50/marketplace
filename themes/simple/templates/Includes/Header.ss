@@ -42,7 +42,8 @@
 			font-size: 14px;
 			font-weight: bold;
 		}
-		.bx-shopping-bag {
+		.bx-shopping-bag,
+		.bx-conversation {
 		position: relative;
 		}
 
@@ -132,8 +133,12 @@
 						</li>
 						<li class="nav-item">
 							<div>
-								<span class="cart" style=" outline: none !important; box-shadow: none;"></span>
-								<i class='bx bx-conversation' style="font-size: 18px;"><% if $Status %><span class="cart-count">$Status</span><% end_if %></i>
+								<div id="chaticons">
+									<span class="chat" style=" outline: none !important; box-shadow: none;"></span>
+									<i class='bx bx-conversation' style="font-size: 18px;"><% if $Status %>
+									<span class="cart-count">$Status</span>
+									<% end_if %></i>
+								</div>
 							</div>
 						</li>
 						<li class="nav-item submenu dropdown">

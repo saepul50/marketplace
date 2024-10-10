@@ -16,10 +16,11 @@ class ChatPageController extends PageController {
         'clearSession'
     ];
 
-    public function index(HTTPRequest $request) {
-        $currentMember = Security::getCurrentUser();
-        $Data = $request->getSession()->get('vendorProduct');
-            // Debug::show($Data);
+        public function index(HTTPRequest $request) {
+            $currentMember = Security::getCurrentUser();
+            $SessionChat = $request->getSession()->get('ownerVendor');
+            $test = ChatObject::get()->filter(['Status' => 'Unread', 'ReceiverID'=> $currentMember->ID])->count();
+            // Debug::show($SessionChat);
             // die();
         if ($currentMember) {
             $url = $request->getVar('m');
