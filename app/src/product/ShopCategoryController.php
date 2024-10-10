@@ -56,12 +56,9 @@ use SilverStripe\View\ArrayData;
             $paginatedProduct = PaginatedList::create(new ArrayList($products), $this->getRequest())
                 ->setPageLength($pagelength)
                 ->setPaginationGetVar('s'); 
-                    $data = $this->nepo(); 
+                
                
             return [
-                'Notif' => $data['Notif'] ?? null,
-                'Product' => $data['Product'] ?? null,
-                'Count' => $data['Count'] ?? null,
                 'SubCategory' => $subCategoryList,
                 'Brand' => $brandList,
                 'Category' => $categories,

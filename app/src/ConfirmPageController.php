@@ -11,15 +11,6 @@ class ConfirmPageController extends PageController{
         'service'
     ];
 
-    public function index() {
-        $data = $this->nepo(); // Call the nepo() method from PageController
-
-        return [
-            'Notif' => $data['Notif'] ?? null,
-            'Product' => $data['Product'] ?? null,
-            'Count' => $data['Count'] ?? null,
-        ];
-    }
     public function HistoryData() {
         $member = Security::getCurrentUser();
         if ($member) {
@@ -43,7 +34,7 @@ class ConfirmPageController extends PageController{
         // Debug::show($Status);
         // Debug::show($id);
         $member = Security::getCurrentUser();
-        $data = $this->nepo();
+
 
         if ($member) {
             $checkoutObjects = ProductCheckoutObject::get()->filter('MemberID', $member->ID);
@@ -63,9 +54,6 @@ class ConfirmPageController extends PageController{
                 return $this->customise([
                     'CheckoutHeader' => $checkoutHeader,
                     'ShowDetailOrder' => $isDetail,
-                    'Notif' => $data['Notif'],
-                    'Product' => $data['Product'],
-                    'Count' => $data['Count'],
                 ])->renderWith(['ConfirmPage', 'Page']);
             }
         }
