@@ -14,18 +14,7 @@ class  LoginPageController extends PageController{
         'prosesregistrasi',
     ];
 
-    public function index() {
-        $member = Security::getCurrentUser();
-        if($member){
-
-        } else{
-            return [
-                'Notif' => null,
-                'Product' => null,
-                'Count' =>  null,
-            ];
-        }
-    }
+   
     public function getMember() {
         $member = Security::getCurrentUser();
         if ($member) {

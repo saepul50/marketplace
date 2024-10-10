@@ -83,20 +83,20 @@
 <section class="blog_categorie_area">
     <div class="container">
         <div class="row">
-            <% loop $Categori %>
+            <% loop $Categori.Limit(3) %>
                 <div class="col-lg-4 mt-2">
                     <div class="categories_post">
-                        <a href="">
+                        <a href="/marketplace/blog/filter/$Title">
                             <img src="$Image.URL" alt="post" height="214" width="350">
-                            <div class="categories_details">
-                                <div class="categories_text">
-                                    <a href="blog-details.html">
-                                        <h5>$Title</h5>
-                                    </a>
-                                    <div class="border_line"></div>
-                                    <p>$Deskripsi</p>
+                            <a href="/marketplace/blog/filter/$Title" style="color:white;">
+                                <div class="categories_details">
+                                    <div class="categories_text">
+                                            <h5>$Title</h5>
+                                        <div class="border_line"></div>
+                                        <p>$Deskripsi</p>
+                                    </div>
                                 </div>
-                            </div>
+                            </a>
                         </a>
                     </div>
                 </div>

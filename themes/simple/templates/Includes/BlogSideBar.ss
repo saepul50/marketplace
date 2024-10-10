@@ -90,7 +90,7 @@
                     <li>
                         <a href="#" class="d-flex justify-content-between">
                             <p>$Title</p>
-                            <p>$Sample</p>
+                            <p>$Count</p>
                         </a>
                     </li>
                 <% end_loop %>

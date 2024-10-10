@@ -30,22 +30,13 @@ class ConfirmPageController extends PageController{
         // die("da");
         // die();      
         $id = $request->param('ID');
-        $Status = $request->param('OtherID');
+
         // Debug::show($Status);
         // Debug::show($id);
         $member = Security::getCurrentUser();
-
-
         if ($member) {
             $checkoutObjects = ProductCheckoutObject::get()->filter('MemberID', $member->ID);
             $headerCheckoutIDs = $checkoutObjects->column('HeaderCheckoutID');
-            if($Status != null){
-                $gg = Notification::get()->byID($Status);
-                $gg->Notif = "Read";
-                $gg->write();
-            }
-
-            
             $checkoutHeader = ProductCheckoutHeaderObject::get()->filter(['OrderID' => $id])->filter('ID', $headerCheckoutIDs);
             // die();
             // Debug::show($checkoutHeader);

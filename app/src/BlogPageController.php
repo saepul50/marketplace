@@ -17,7 +17,8 @@ class BlogPageController extends PageController
         'BlogDetail',
         'handelComment',
         'handelreply',
-        'CategoryList'
+        'CategoryList',
+        'filter'
     ];
 
     public function CategoryList()
@@ -35,6 +36,7 @@ class BlogPageController extends PageController
     
         // Fetch categories
         $categori = BlogCategory::get();
+        
         // Debug::show($categori);
         if (!$categori || $categori->count() === 0) {
             $categori = null;
@@ -74,19 +76,28 @@ class BlogPageController extends PageController
             $categoriesWithCounts = BlogCategory::getCategoriesWithCounts();
         }
 
+      
         return [
             'BlogCategoriesWithCounts' => $categoriesWithCounts,
             'Result' => $paginated,
             'Latestpost' => BlogAdd::get()->sort('Created', 'DESC'),
             'ActiveFilter' => $activeFilters ?? null,
-            'Categori' => $categori,
+            'Categori' => $categori->sort('Count', 'DESC')->filter('Count:GreaterThan', 0),
             'Popularpost' => BlogAdd::get()->sort('ViewCount', 'DESC'),
             'Content' => $contents
         ];
     }
 
     
-    
+    public function filter(HTTPRequest $request){
+        $p = $request->param('ID');
+        $categori = BlogCategory::get()->filter('Title' , $p)->first();
+        if($categori){
+        $object = $categori->BlogAdds();
+        Debug::show($object);
+        }
+
+    }
 
     public function BlogDetail(HTTPRequest $request)
     {
@@ -117,7 +128,9 @@ class BlogPageController extends PageController
 
             if ($contents) {
                 $categories = $contents->BlogCategories();
+
             }
+            // Debug::show($categories);
             $contents->ViewCount += 1;
             $contents->write();
 

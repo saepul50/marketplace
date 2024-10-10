@@ -122,69 +122,6 @@
 								</div>
 							</div>
 						</li>
-						<li class="nav-item submenu dropdown">
-							<div class="notif">
-								<span class="notif" style=" outline: none !important; box-shadow: none;"></span>
-								<i class='bx bx-bell' style="font-size: 18px;"><% if $CountNotif %><span class="badge">$CountNotif</span> <% else %>	 <% end_if %></i>
-							</div>
-							<div class="dropdown-menu dropdown-menu-right" id="fate" style=" width: 30rem;  padding-bottom: 0 !important;">
-									<h5 class="text-muted " style="padding:10px;">Notifikasi Baru Diterima</h5>
-									<% if  $nepo %>
-									<% loop $Notif.Limit(8) %>
-										<% if $Status == 'Dikemas' %>
-											<a href="{$BaseHref}/confirm/order/$Order/$ID?detailOrder=true" style="color: black !important">
-											<div class=" d-flex p-2  notip-item  mt-2">
-												<div class="content  d-flex justify-content-between " style="width:85%;">
-													<div style="inline-size: 100%; overflow-wrap: break-word;">
-														<h6 class="header fw-bol ml-2" style="font-weight:bold;">Pesanan Anda Sudah Dikemas Dan Siap Dikirim</h6>
-													</div>
-												</div>
-											</div>
-											</a>
-										<% else_if  $Status == 'Dikirim' %>
-											<a href="{$BaseHref}/confirm/order/$Order/$ID?detailOrder=true" style="color: black !important">
-											<div class=" d-flex    p-2  notip-item mt-2">
-												<div class="content  d-flex justify-content-between " style="width:85%;">
-													<div style="inline-size: 100%; overflow-wrap: break-word;">
-														<h6 class="header fw-bold ml-2" style="font-weight:bold;">Pesanan Anda Sudah Diberikan ke Jasa Pengantaran</h6>
-														
-													</div>
-												</div>
-											</div>
-											</a>
-										<% else_if  $Status == 'Selesai' %>
-											<a href="{$BaseHref}/confirm/order/$Order/$ID?detailOrder=true" style="color: black !important">
-											<div class=" d-flex   p-2 notip-item mt-2">
-												<div class="content  d-flex justify-content-between " style="width:85%;">
-													<div style="inline-size: 100%; overflow-wrap: break-word;">
-														<h6 class="header fw-bold ml-2" style="font-weight:bold;">Pesanan Anda Sudah Sampai Ditujuan </h6>
-														
-													</div>
-												</div>
-											</div>
-											</a>
-										<% else_if  $Status == 'Dibatalkan' %>
-											<a href="{$BaseHref}/confirm/order/$Order/$ID?detailOrder=true" style="color: black !important">
-											<div class=" d-flex  p-2 notip-item  mt-2">
-												<div class="content  d-flex justify-content-between " style="width:85%;">
-													<div style="inline-size: 100%; overflow-wrap: break-word;">
-														<h6 class="header fw-bold ml-2" style="font-weight:bold;">Waduh Maaf Ya Orderan Kamu Dibatalkan  </h6>
-
-													</div>
-												</div>
-											</div>
-											</a>
-										<% end_if %>
-									<% end_loop %>
-								
-								<% end_if %>
-								<a href="{$BaseHref}/usernotif" class="text-center " style="color:black;">
-									<div class="text-center" style="border-top: 1px solid rgba(0, 0, 0, .09);border-bottom: 1px solid rgba(0, 0, 0, .09);padding: 5px;">
-										Tampilkan Semua
-									</div>
-								</a>
-							</div>
-						</li>
 						<li class="nav-item">
 							<span class="search" style=" outline: none !important; box-shadow: none;"></span>
 							<i class='bx bx-search' style="font-size: 18px;" id="search"></i>

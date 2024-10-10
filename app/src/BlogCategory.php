@@ -22,7 +22,7 @@ class BlogCategory extends DataObject {
         'Image'
     ];
     private static $belongs_many_many = [
-        'BlogAdd' => BlogAdd::class,
+        'BlogAdds' => BlogAdd::class,
     ];
 
     public static function getCategoriesWithCounts() {
