@@ -529,7 +529,7 @@
                                           <h4>Shipping</h4>
                                        </td>
                                        <td>
-                                          <p>Flat rate: <% loop $Items.First %>$ProductCostShipping<% end_loop %>
+                                          <p><% loop $Items.First %>$ProductCostShipping<% end_loop %>
                                           </p>
                                        </td>
                                     </tr>
@@ -655,7 +655,7 @@
                                           <h4>Shipping</h4>
                                        </td>
                                        <td>
-                                          <p>Flat rate: <% loop $Items.First %>$ProductCostShipping<% end_loop %>
+                                          <p><% loop $Items.First %>$ProductCostShipping<% end_loop %>
                                           </p>
                                        </td>
                                     </tr>
@@ -788,7 +788,7 @@
                                           <h4>Shipping</h4>
                                        </td>
                                        <td>
-                                          <p>Flat rate: <% loop $Items.First %>$ProductCostShipping<% end_loop %>
+                                          <p><% loop $Items.First %>$ProductCostShipping<% end_loop %>
                                           </p>
                                        </td>
                                     </tr>
@@ -914,7 +914,7 @@
                                           <h4>Shipping</h4>
                                        </td>
                                        <td>
-                                          <p>Flat rate: <% loop $Items.First %>$ProductCostShipping<% end_loop %>
+                                          <p><% loop $Items.First %>$ProductCostShipping<% end_loop %>
                                           </p>
                                        </td>
                                     </tr>

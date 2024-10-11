@@ -12,49 +12,48 @@ class ShopResultController extends PageController{
         $brandFilter = $request->getVar('filter');
         $subCategoryFilter = $request->getVar('subcategory');
         $search = $request->getVar('keywords');
-        $pagelength = $request->getSession()->get('PageLength');
-        
+        $pagelength = $request->getSession()->get('PageLength') ?? 10;
+    
         $categories = ShopCategoryObject::get();
         $subCategoryList = ShopSubCategoryObject::get();
         $brandList = ProductBrandObject::get();
-        
+    
         $productQuery = ProductObject::get();
         $activeFilters = ArrayList::create();
-
+    
         if ($brandFilter && $brandFilter !== 'all') {
             $productQuery = $productQuery->filter('ProductBrandsID', $brandFilter);
             $activeFilters->push(ArrayData::create([
                 'Label' => ProductBrandObject::get()->byID($brandFilter)->Title
             ]));
         }
+    
         if ($subCategoryFilter && $subCategoryFilter !== 'all') {
             $productQuery = $productQuery->filter('ProductSubCategory.ID', $subCategoryFilter);
             $activeFilters->push(ArrayData::create([
                 'Label' => ShopSubCategoryObject::get()->byID($subCategoryFilter)->Title
             ]));
         }
+    
         if ($search) {
-            $productQuery = $productQuery->filter([
-                'Title:PartialMatch' => $search
+            $productQuery = $productQuery->filterAny([
+                'Title:PartialMatch' => $search,
+                'ProductCategory.Title:PartialMatch' => $search,
+                'ProductSubCategory.Title:PartialMatch' => $search,
+                'ProductBrands.Title:PartialMatch' => $search
             ]);
             $activeFilters->push(ArrayData::create([
                 'Label' => "$search"
             ]));
         }
-
-        $products = $productQuery->toArray();
-        
+    
         if ($sortOption == 2) {
-            usort($products, function($a, $b) {
-                return $a->minPriceDiscountedSort() <=> $b->minPriceDiscountedSort();
-            });
+            $productQuery = $productQuery->sort('minPriceDiscountedSort', 'ASC');
         } elseif ($sortOption == 3) {
-            usort($products, function($a, $b) {
-                return $b->minPriceDiscountedSort() <=> $a->minPriceDiscountedSort();
-            });
+            $productQuery = $productQuery->sort('minPriceDiscountedSort', 'DESC');
         }
-        // Debug::show($products);
-        $paginatedProduct = PaginatedList::create(new ArrayList($products), $this->getRequest())
+    
+        $paginatedProduct = PaginatedList::create($productQuery, $request)
             ->setPageLength($pagelength)
             ->setPaginationGetVar('s');
     
@@ -69,7 +68,7 @@ class ShopResultController extends PageController{
             'CurrentSubCategory' => $subCategoryFilter,
             'ActiveFilters' => $activeFilters
         ];
-    }
+    }    
 
     public function ProductObjects() {
         return ProductObject::get();
