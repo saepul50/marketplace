@@ -37,7 +37,7 @@ use SilverStripe\ORM\FieldType\DBHTMLText;
             'PaymentMethod' => 'Pembayaran'
         ];
         private static $default_sort = 'Created DESC';
-        protected function onAfterWrite() {
+        public function onAfterWrite() {
             parent::onAfterWrite();
             
             if ($this->isChanged('Status')) {
@@ -45,20 +45,33 @@ use SilverStripe\ORM\FieldType\DBHTMLText;
             }
         }
         
-        protected function handleStatusChange() {
+        public function handleStatusChange() {
             if ($this->Status == 'Selesai') {
                 foreach ($this->Items() as $item) {
                     if ($item) {
                     // Debug::show($item);
                     // die();
-                    $item->updateStock();
-                    $item->updateSold();
+                        $item->updateStock();
+                        $item->updateSold();
                     }
                 }
             }
-        }        
-
-
+            $this->createNotification();
+        }
+        public function createNotification() {
+            $notification = NotificationObject::create();
+            $notification->Type = 'Order';
+            $notification->Status = $this->Status;
+            $notification->Title = 'Pesanan ' . $this->Status;
+            if ($this->Status == 'Selesai') {
+                $notification->Message = 'Pesanan ' . $this->OrderID . ' telah diterima';
+            } else {
+                $notification->Message = 'Pesanan ' . $this->OrderID . ' telah ' . $this->Status;
+            }
+            $notification->HeaderCheckoutID = $this->ID;
+    
+            $notification->write();
+        }
         public function getCMSFields() {
             $fields = parent::getCMSFields();
             
@@ -67,7 +80,6 @@ use SilverStripe\ORM\FieldType\DBHTMLText;
                     $field->setReadonly(true);
                 }
             }
-            $fields->removeByName(array('Notification'));
             if ($statusField = $fields->fieldByName('Root.Main.Status')) {
                 $statusField->setReadonly(false);
             }

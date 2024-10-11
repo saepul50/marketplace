@@ -25,7 +25,4 @@ class MyMemberExtension extends DataExtension
         'ProfileImage'
     ];
 
-    
-
-
 }

@@ -13,8 +13,6 @@ class  LoginPageController extends PageController{
         'proseslogin',
         'prosesregistrasi',
     ];
-
-   
     public function getMember() {
         $member = Security::getCurrentUser();
         if ($member) {

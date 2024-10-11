@@ -34,6 +34,4 @@ class HomePageController extends PageController{
     public function getMember(){
         return Security::getCurrentUser();
     }
- 
-
 }

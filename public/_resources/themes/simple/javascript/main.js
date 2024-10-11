@@ -2599,6 +2599,11 @@ $('#searchForm').submit(function(e) {
     $.post("/marketplace/chat/clearSession", {})
     window.location.href = '/marketplace/chat/';
   });
+  $('#logoutBtn').on('click', function (e) {
+    e.preventDefault();
+    $.post("/marketplace/profile/logout", {})
+    window.location.href = '/marketplace/';
+  });
   $('#closeProductChat').on('click', function (e) {
     e.preventDefault();
     $.post("/marketplace/chat/clearSession", {})
@@ -2831,6 +2836,17 @@ $('#searchForm').submit(function(e) {
     });
   });
   const urlParams = new URLSearchParams(window.location.search);
+  const urlPath = window.location.pathname.split('/');
+  const urlOrder = urlPath[3];
+  if(urlOrder == 'order'){
+    const urlHistory = urlPath[4]
+    if(urlHistory){
+      $.post("/marketplace/notification/NotificationRead", {
+        OrderID: urlHistory
+      })
+    }
+  }
+
   if (urlParams.has('detailOrder')) {
     toggleOrderDetail(true);
   } else {

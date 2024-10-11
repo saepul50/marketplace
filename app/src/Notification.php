@@ -1,7 +1,7 @@
 <?php
 
 
-class UserNotif extends Page{
+class Notification extends Page{
     
 
     public function index(){
