@@ -150,4 +150,7 @@
         </div>
     </div>
 </section>
+<script>
+    $('.nav-item#blog').addClass('active');
+</script>
 <!--================Blog Area =================-->

@@ -13,6 +13,7 @@ use SilverStripe\View\ArrayData;
         private static $allowed_actions = [
             'filter'
         ];
+
         public function index(HTTPRequest $request) {
             $member = Security::getCurrentUser();
             $sortOption = $request->getVar('sort');
@@ -87,6 +88,8 @@ use SilverStripe\View\ArrayData;
                 'message' => 'success'
             ]);
         }
-
+        public function DealsOfTheWeek() {
+            return PromotionObject::get()->filter('ShowPromotion2', true)->limit(9);
+        }
         
     }

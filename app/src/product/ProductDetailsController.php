@@ -178,6 +178,8 @@ class ProductDetailsController extends PageController
      }
     }
 
-
+    public function DealsOfTheWeek() {
+        return PromotionObject::get()->filter('ShowPromotion2', true)->limit(9);
+    }
 
 }

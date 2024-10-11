@@ -13,7 +13,7 @@
         <div class="row">
             <div class="col-lg-9">
                 <div class="row">
-                    <% loop $PromotionObjects.Limit(12) %>
+                    <% loop $DealsOfTheWeek %>
                          <% if $ShowPromotion2 %>
                             <div class="col-lg-4 col-md-4 col-sm-8 mb-20">
                                 <div class="single-related-product d-flex">

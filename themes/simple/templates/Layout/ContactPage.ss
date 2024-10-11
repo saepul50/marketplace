@@ -64,32 +64,5 @@
     </div>
 </section>
 <script>
-    $(document).ready(function () {
-        $("#emailform").submit(function (event) {
-            $.ajax({
-                url: "{$BaseHref}/contact/mail",
-                type: "POST",
-                data: {
-                    name: $("#name").val(),
-                    email: $("#email").val(),
-                    subject: $("#subject").val(),
-                    message: $("#message").val()
-                },
-                success: function (response) {
-                    Swal.fire({
-                        title: "Succes",
-                        text: "Your Message Sending",
-                        icon: "success",
-                        showConfirmButton: false,
-                        timer: 1500
-                    });
-                },
-                error: function (xhr, status, error) {
-                    alert("Failed to send message: " + error); // Add error message
-                }
-            });
-            return false;
-        });
-    });
     $('.nav-item#contact').addClass('active');
 </script>
