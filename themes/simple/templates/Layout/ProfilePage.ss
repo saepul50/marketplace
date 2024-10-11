@@ -75,7 +75,7 @@
                     </a>
                 </div>
             <% end_if %>
-            <div class="py-3" style="background-color: #fff">
+            <div class="py-3 d-flex align-items-center" style="background-color: #fff">
                 <a href="{$BaseHref}/confirm" class="d-flex justify-content-between align-items-center col-10"  style="color:black;">
                     <div class="d-flex ml-2">
                         <i class='bx bx-time-five' style="color: #505050; font-size: 26px;"></i>
@@ -83,7 +83,7 @@
                     </div>
                 </a>
             </div>
-            <div class="py-3" style="background-color: #fff">
+            <div class="py-3 d-flex align-items-center" style="background-color: #fff; cursor: pointer;">
                 <div class="d-flex justify-content-between align-items-center col-10" id="logoutBtn">
                     <div class="d-flex ml-2">
                         <i class='bx bx-log-out' style="color: red; font-size: 26px;"></i>

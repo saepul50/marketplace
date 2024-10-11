@@ -2689,7 +2689,7 @@ $('#searchForm').submit(function(e) {
   $('#logoutBtn').on('click', function (e) {
     e.preventDefault();
     $.post("/marketplace/profile/logout", {})
-    window.location.href = '/marketplace/login';
+    window.location.href = '/marketplace/';
   });
   $('#closeProductChat').on('click', function (e) {
     e.preventDefault();
