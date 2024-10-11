@@ -22,6 +22,7 @@ class StatusAdmin extends LeftAndMain implements PermissionProvider{
     private static $menu_icon_class = 'font-icon-chart-pie';
     private static $allowed_actions = [
         'dashboard',
+        'getrange'
     ];
     private static $required_permission_codes = ['CMS_ACCESS_StatusAdmin'];
     public function providePermissions()
@@ -40,7 +41,7 @@ class StatusAdmin extends LeftAndMain implements PermissionProvider{
         $BaseHref = Director::absoluteBaseURL();
         $iframeField = LiteralField::create(
             'IframeField',
-            $this->dashboard()
+            $this->dashboard($this->getRequest()) 
         );
         $fields->push($iframeField);
         $form = new Form($this, 'EditForm', $fields, new FieldList());
@@ -48,8 +49,14 @@ class StatusAdmin extends LeftAndMain implements PermissionProvider{
         return $form;
     }
 
-    public function dashboard()
+    public function dashboard(HTTPRequest $request)
     {
+        $data = $request->postVars();
+        if (isset($data['length'])) {
+            $request->getSession()->set('Length', $data['length']);
+        }
+    
+        $length = $request->getSession()->get('Length') ?? 31;
         $member = Security::getCurrentUser();
         $startOfWeek = date('Y-m-d H:i:s', strtotime('-7 days'));
         if($member->ID == 1){
@@ -90,13 +97,13 @@ class StatusAdmin extends LeftAndMain implements PermissionProvider{
             $Completed = $data->filter('Status', 'Selesai')->count();  
             $Proccesing = $data->filter('Status', 'Dikirim')->count();  
             $Cancelled = $data->filter('Status', 'Dibatalkan')->count();
-            for ($i = 0; $i < 7; $i++) {
+            for ($i = 0; $i <  $length ; $i++) {
                 $date = date('d/m/Y', strtotime("-$i days"));
                 $transactionsPerDate[$date] = 0;
                 $transactionsPerDateCan[$date] = 0;
                 $labelTransactions[] = $date;
             }
-
+            
             foreach ($list as $product) {
                 $category = ShopCategoryObject::get()->Filter('ID', $product->ProductCategoryID);
                 if ($category && $category->exists()) {
@@ -132,6 +139,10 @@ class StatusAdmin extends LeftAndMain implements PermissionProvider{
                 }
             }
         }
+        // Debug::show($transactionsPerDate);
+        //     Debug::show($transactionsPerDateCan);
+        //     Debug::show($labelTransactions);
+        //     Debug::show($labelCategory);
         return $this->customise([
             'Dikemas' => $pending ?? 0,
             'Selesai' => $Completed ?? 0,
@@ -149,5 +160,18 @@ class StatusAdmin extends LeftAndMain implements PermissionProvider{
     public function canView($member = null)
     {
         return Permission::check('CMS_ACCESS_StatusAdmin');
+    }
+
+
+    public function getrange(HTTPRequest $request){
+        $data = $request->postVars();
+        if (isset($data['length'])) {
+            $request->getSession()->set('Length', $data['length']);
+        }
+
+        return json_encode([
+            'success' => true,
+            'message' => 'Data Got it'
+        ]);
     }
 }

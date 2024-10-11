@@ -24,6 +24,9 @@ Change it, enhance it and most importantly enjoy it!
 <link href="https://cdn.jsdelivr.net/npm/owl.carousel@2.3.4/dist/assets/owl.carousel.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 	<% base_tag %>
 	<title>$SiteConfig.Title</title>
 	<!-- Favicon-->
@@ -32,17 +35,7 @@ Change it, enhance it and most importantly enjoy it!
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	$MetaTags(false)
-	<link rel="stylesheet" href="$ThemeDir/css/linearicons.css" />
-	<link rel="stylesheet" href="$ThemeDir/css/magnific-popup.css" />
-	<link rel="stylesheet" href="$ThemeDir/css/main.css" />
-	<link rel="stylesheet" href="$ThemeDir/css/font-awesome.min.css" />
-	<link rel="stylesheet" href="$ThemeDir/css/themify-icons.css" />
-	<link rel="stylesheet" href="$ThemeDir/css/bootstrap.css" />
-	<link rel="stylesheet" href="$ThemeDir/css/owl.carousel.css" />
-	<link rel="stylesheet" href="$ThemeDir/css/nice-select.css" />
-	<link rel="stylesheet" href="$ThemeDir/css/nouislider.min.css" />
-	<link rel="stylesheet" href="$ThemeDir/css/ion.rangeSlider.css" />
-	<link rel="stylesheet" href="$ThemeDir/css/ion.rangeSlider.skinFlat.css" />
+
 	<style>
 		.fw-bold{
 			font-weight: bold;
@@ -93,6 +86,11 @@ Change it, enhance it and most importantly enjoy it!
 			<div class="mt-2 d-flex" style="height: 350px;">
 				<div class="col-8 p-0">
 					<h4 class="fw-bold">Penjualan</h4>
+					<div id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%">
+						<i class="fa fa-calendar"></i>&nbsp;
+						<span id="daterange"></span> <i class="fa fa-caret-down"></i>
+						<input type="hidden" onchange="myFunction()" id="see">
+					</div>
 					<canvas id="myChart"></canvas>
 				</div>
 				<div class="col-4 p-0">
@@ -103,71 +101,126 @@ Change it, enhance it and most importantly enjoy it!
 		</div>
 	</div>
 	<script>
-	document.addEventListener("DOMContentLoaded", function() {
-		var transactionsctx = document.getElementById('myChart').getContext('2d');
-		var categoriesctx = document.getElementById('CategoryChart').getContext('2d');
-		var transactions = {$Transactions.Raw};
-		var transactionsCancel = {$TransactionsCancel.Raw};
-        var labelstransactions = {$Labels.raw}; 
-        var labelcategories = {$LabelsCategory.raw}; 
-
-		var labelsCategory = Object.keys(labelcategories);
-		var dataCategory = Object.values(labelcategories);
-		var myLineChart = new Chart(transactionsctx, {
-			data: {
-				datasets: [{
-					type: 'line',
-					label: 'Grafik Pemesanan',
-					data: transactions,
-					fill: false,
-					borderColor: 'rgb(75, 192, 192)',
-					tension: 0.1
-				}, {
-					type: 'line',
-					label: 'Pembatalan Pesanan',
-					data: transactionsCancel,
-					fill: false,
-					borderColor: 'rgb(239, 83, 80)',
-					tension: 0.1
-				}],
-				labels: labelstransactions,
-			},
-			options: {
-				responsive: true,
-				scales: {
-					x: {
-						display: true,
-						title: {
+		document.addEventListener("DOMContentLoaded", function() {
+			var transactionsctx = document.getElementById('myChart').getContext('2d');
+			var categoriesctx = document.getElementById('CategoryChart').getContext('2d');
+			var transactions = {$Transactions.Raw}; // Transactions from backend
+			var transactionsCancel = {$TransactionsCancel.Raw}; // Cancellations from backend
+			var labelstransactions = {$Labels.raw}; // Labels from backend
+			var labelcategories = {$LabelsCategory.raw}; // Categories from backend
+			
+			var myLineChart = new Chart(transactionsctx, {
+				data: {
+					datasets: [{
+						type: 'line',
+						label: 'Grafik Pemesanan',
+						data: transactions,
+						fill: false,
+						borderColor: 'rgb(75, 192, 192)',
+						tension: 0.1
+					}, {
+						type: 'line',
+						label: 'Pembatalan Pesanan',
+						data: transactionsCancel,
+						fill: false,
+						borderColor: 'rgb(239, 83, 80)',
+						tension: 0.1
+					}],
+					labels: labelstransactions,
+				},
+				options: {
+					responsive: true,
+					scales: {
+						x: {
 							display: true,
-							text: 'Tanggal'
-						}
-					},
-					y: {
-						display: true,
-						title: {
+							title: {
+								display: true,
+								text: 'Tanggal'
+							}
+						},
+						y: {
 							display: true,
-							text: 'Transaksi'
+							title: {
+								display: true,
+								text: 'Transaksi'
+							}
 						}
 					}
 				}
+			});
+		
+			// Code for category chart
+			var CategoryChart = new Chart(categoriesctx, {
+				type: 'doughnut',
+				data: {
+					labels: Object.keys(labelcategories),
+					datasets: [{
+						data: Object.values(labelcategories),
+						backgroundColor: ['rgb(54, 162, 235)', 'rgba(153, 102, 255)', 'rgba(255, 159, 64)'],
+						hoverOffset: 4
+					}]
+				}
+			});
+		
+
+			// Date range picker logic
+			$(function() {
+				var start = moment().subtract(29, 'days');
+				var end = moment();
+
+				function cb(start, end) {
+					$('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+					$('#see').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+					var datelabels = [];
+					var currentdate = start.clone();
+					while (currentdate.isSameOrBefore(end)) {
+						datelabels.push(currentdate.format('DD/MM/YYYY'));
+						currentdate.add(1, 'days');
+					}
+		
+					var length = datelabels.length;
+					
+
+					$.post("/marketplace/admin/status/dashboard", { length: length }, function(data, status) {
+						console.log("Length posted: " + length);
+						
+					});
+				}
+		
+				$('#reportrange').daterangepicker({
+					startDate: start,
+					endDate: end,
+					ranges: {
+						'Today': [moment(), moment()],
+						'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+						'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+					}
+				}, cb);
+				$('#reportrange').on('apply.daterangepicker', function(ev, picker) {
+					
+					$('#see').val(picker.startDate.format('YYYY-MM-DD') + ' - ' + picker.endDate.format('YYYY-MM-DD'));
+			
+					setTimeout(function() {
+						location.reload();
+					}, 500); 
+				});
+				cb(start, end);
+				
+				
+			});
+				
+			});
+			
+			
+			
+			
+			function myFunction() {
+				console.log("Date range changed!");
+				setTimeout(function() {
+					location.reload();
+				}, 1500);  
 			}
-		});
-		var CategoryChart = new Chart(categoriesctx, {
-			type: 'doughnut',
-			data: {
-				labels: labelsCategory,
-				datasets: [{
-					data: dataCategory,
-					backgroundColor: [
-					'rgb(54, 162, 235)',
-					'rgba(153, 102, 255)',
-					'rgba(255, 159, 64)'
-					],
-					hoverOffset: 4
-				}]
-			}
-		});
-	});
+
 	</script>
 
 	
