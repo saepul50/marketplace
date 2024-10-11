@@ -2532,6 +2532,7 @@ $('#searchForm').submit(function(e) {
     $('.payment_box .list li').removeClass('active');
     $(this).addClass('active');
   });
+  
   $('.nav-linked').on('click', function (e) {
     e.preventDefault();
 
