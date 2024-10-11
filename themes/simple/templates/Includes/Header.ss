@@ -61,14 +61,7 @@
 								<li class="nav-item"><a class="nav-link" href="{$BaseHref}/confirm">Shopping History</a></li>
 							</ul>
 						</li>
-						<li class="nav-item submenu dropdown" id="blog">
-							<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-							 aria-expanded="false">Blog</a>
-							<ul class="dropdown-menu">
-								<li class="nav-item"><a class="nav-link" href="{$BaseHref}/blog">Blog</a></li>
-								<%-- <li class="nav-item"><a class="nav-link" href="{$BaseHref}/blog-detail">Blog Details</a></li> --%>
-							</ul>
-						</li>
+						<li class="nav-item" id="blog"><a class="nav-link" href="{$BaseHref}/blog">Blog</a></li>
 						<li class="nav-item submenu dropdown" id="pages">
 							<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
 							 aria-expanded="false">Pages</a>

@@ -86,6 +86,33 @@ $(document).ready(function () {
         });
       });
   })
+
+  $("#emailform").submit(function (event) {
+    event.preventDefault();
+    $.ajax({
+        url: "/marketplace/contact/mail",
+        type: "POST",
+        data: {
+            name: $("#name").val(),
+            email: $("#email").val(),
+            subject: $("#subject").val(),
+            message: $("#message").val()
+        },
+        success: function (response) {
+            Swal.fire({
+                title: "Succes",
+                text: "Your Message Sending",
+                icon: "success",
+                showConfirmButton: false,
+                timer: 1500
+            });
+        },
+        error: function (xhr, status, error) {
+            alert("Failed to send message: " + error); // Add error message
+        }
+    });
+    return false;
+});
   var currentParams = new URLSearchParams(window.location.search);
   var selectedBrand = currentParams.get('filter');
   var selectedSubCategory = currentParams.get('subcategory');
@@ -2326,7 +2353,7 @@ $('#searchForm').submit(function(e) {
     var weight = $('#fulldata .weight').text();
     // console.log(idRegency)
     $.ajax({
-      url: '/marketplace/productcheckout/rajoCot',
+      url: '/marketplace/productcheckout/rajoCost',
       type: 'POST',
       data: {
         Courir: courir,
@@ -2662,7 +2689,7 @@ $('#searchForm').submit(function(e) {
   $('#logoutBtn').on('click', function (e) {
     e.preventDefault();
     $.post("/marketplace/profile/logout", {})
-    window.location.href = '/marketplace/';
+    window.location.href = '/marketplace/login';
   });
   $('#closeProductChat').on('click', function (e) {
     e.preventDefault();
@@ -2953,10 +2980,12 @@ $('#searchForm').submit(function(e) {
     return email;
   }
   const textareachat = document.querySelector('textarea[name="MessageChat"]');
-  textareachat.addEventListener('input', function () {
-      this.style.height = 'auto';
-      this.style.height = (this.scrollHeight) + 'px';
-  });
+  if(textareachat){
+    textareachat.addEventListener('input', function () {
+        this.style.height = 'auto';
+        this.style.height = (this.scrollHeight) + 'px';
+    });
+  }
   function formatNumber(number) {
     let parts = number.toString().split('.');
     let integerPart = parts[0];

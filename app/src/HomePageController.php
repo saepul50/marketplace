@@ -14,6 +14,9 @@ class HomePageController extends PageController{
         // if (!$member) {
         //     return $this->redirect('login');
         // }
+        // $s = PromotionObject::get()->filter('ShowPromotion2', true)->limit(9);
+        // Debug::show($s);
+
     }
     public function ProductObjects() {
         return ProductObject::get();
@@ -33,5 +36,9 @@ class HomePageController extends PageController{
     }
     public function getMember(){
         return Security::getCurrentUser();
+    }
+
+    public function DealsOfTheWeek() {
+        return PromotionObject::get()->filter('ShowPromotion2', true)->limit(9);
     }
 }

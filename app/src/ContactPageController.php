@@ -12,11 +12,10 @@ class ContactPageController extends PageController{
 
     public function mail(HTTPRequest $request)
     {
-        // Get POST data
+        
         $data = $request->postVars();
         $subject = $request->postVar('subject');
         $email = $request->postVar('email');
-        // Debug::show($data); // Display the POST data for debugging
         $siteconfig = SiteConfig::current_site_config();
         // Debug::show($siteconfig);
         $send = $siteconfig->Email;
