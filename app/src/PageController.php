@@ -5,6 +5,7 @@ namespace {
 use SilverStripe\Dev\Debug;
     use SilverStripe\CMS\Controllers\ContentController;
     use SilverStripe\Control\HTTPRequest;
+    use SilverStripe\ORM\ArrayList;
     use SilverStripe\Security\Security;
 
     /**
@@ -41,33 +42,6 @@ use SilverStripe\Dev\Debug;
             // You can include any CSS or JS required by your project here.
             // See: https://docs.silverstripe.org/en/developer_guides/templates/requirements/
         }
-        // public function nepo(){
-        //     $member = Security::getCurrentUser();
-        //     // Debug::show($member);
-        //     if(!$member){
-        //         // Debug::show('ksdkadka');
-        //         return null;
-        //     }else{
-        //         $notifs = Notification::get()->sort('Created', 'DESC')->filter(['Notif' => 'Unread','CostumerName'=> $member->FirstName  ]);
-        //         $product = ProductCheckoutObject::get()->filter('HeaderCheckoutID', $notifs->ProductCheckoutHeaderID );
-        //         // $products = [];
-        //         // foreach($notifs as $notif){
-        //         //     $product = $notif;
-        //         //     $products = $product->Status;
-        //         //     }
-        //         $status = $notifs->column('Status');
-        //         // Debug::show($status);
-                
-        //         return[
-        //             'Notif' => $notifs,
-        //             'Status' => $status,
-        //             'Product' => $product,
-        //             'Count' => $notifs->count(),
-        //         ];
-        //     }  
-        //     // Debug::show($product);
-        //     // Debug::show($notifs);
-        // }
         public function CartData() {
             $member = Security::getCurrentUser();
             // Debug::show($member);
@@ -90,13 +64,31 @@ use SilverStripe\Dev\Debug;
             }
             return null;
         }           
-        public function CountNotif() {
+        public function Notification() {
             $member = Security::getCurrentUser();
             // Debug::show($member);
             // die();
             if ($member) {
-                $countnotif = Notification::get()->sort('Created', 'DESC')->filter(['Notif' => 'Unread','CostumerName'=> $member->FirstName  ])->count() ;
-                return $countnotif;
+                $Notification = NotificationObject::get();
+                if($Notification){
+                    $UnreadNotifs = NotificationObject::get()->filter([
+                        'Read' => 'Unread',
+                    ])->sort('Created', 'DESC');
+                    
+                    $ownsUnreadNotif = [];
+                    foreach ($UnreadNotifs as $Unnotif) {
+                        $headerCheckout = $Unnotif->HeaderCheckout();
+                        if ($headerCheckout) {
+                            $firstItem = $headerCheckout->Items()->first();
+                            if ($firstItem && $firstItem->MemberID == $member->ID) {
+                                $ownsUnreadNotif[] = $Unnotif;
+                            }
+                        }
+                    }
+                    $ownsUnreadNotif = ArrayList::create($ownsUnreadNotif);
+                    return $ownsUnreadNotif;
+                }
+                return null;
             }
             return null;
         }
@@ -105,8 +97,19 @@ use SilverStripe\Dev\Debug;
             $member = Security::getCurrentUser();
             if ($member) {
                 $product = ProductObject::get();
-                $productNames = $product->column('Title');
-                return json_encode($productNames);
+                $productTitle = $product->column('Title');
+
+                $categories = ShopCategoryObject::get();
+                $categoryTitle = $categories->column('Title');
+
+                $subCategories = ShopSubCategoryObject::get();
+                $subCategoryTitle = $subCategories->column('Title');
+
+                $brands = ProductBrandObject::get();
+                $brandsTitle = $brands->column('Title');
+
+                $allTitle = array_merge($productTitle, $subCategoryTitle, $categoryTitle, $brandsTitle);
+                return json_encode($allTitle);
             }
             return json_encode([]);
         }

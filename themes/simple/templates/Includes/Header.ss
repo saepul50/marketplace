@@ -1,11 +1,13 @@
 	<style>
 		.bx-shopping-bag,
-		.bx-conversation {
+		.bx-chat,
+		.bx-bell {
 		position: relative;
 		}
 
 		.bx-shopping-bag .cart-count,
-		.bx-conversation .chat-count {
+		.bx-chat .chat-count,
+		.bx-bell .notification-count {
 			position: absolute;
 			display: flex;
 			justify-content: center;
@@ -24,25 +26,12 @@
 		#history_list li.selected{
 			background-color: #f5f5f5 !important;
 		}
-		.notip-item:hover{
-			background-color:whitesmoke;
-			color:black;
+		.notip-item{
+			background-color: #fff;
+			transition: background-color .4s ease-out;
 		}
-		.badge {
-			position: absolute;
-			display: flex;
-			justify-content: center;
-			align-items: flex-start;
-			width: 18px;
-			height: 17px;
-			line-height: 0.8em !important;
-			top: 24px;
-			right: -7px;
-			background-color: red;
-			border-radius: 50%;
-			color: #fff !important;
-			font-size: 14px;
-			font-weight: bold;
+		.notip-item:hover{
+			background-color: whitesmoke;
 		}
 	</style>
 <header class="header_area sticky-header">
@@ -101,64 +90,41 @@
 						<li class="nav-item">
 							<div id="chaticons" style="cursor: pointer;">
 								<span class="chat" style=" outline: none !important; box-shadow: none;"></span>
-								<i class='bx bx-conversation' style="font-size: 18px;"><% if $ChatNotif %><span class="chat-count">$ChatNotif</span><% end_if %></i>
+								<i class='bx bx-chat' style="font-size: 18px;"><% if $ChatNotif %><span class="chat-count">$ChatNotif</span><% end_if %></i>
 							</div>
 						</li>
 						<li class="nav-item submenu dropdown">
 							<div class="notif" style="cursor: pointer;">
 								<span class="notif" style=" outline: none !important; box-shadow: none;"></span>
-								<i class='bx bx-bell' style="font-size: 18px;"><% if $CountNotif %><span class="badge">$CountNotif</span> <% else %><% end_if %></i>
+								<i class='bx bx-bell' style="font-size: 18px;"><% if $Notification %><span class="notification-count">$Notification.Count</span> <% else %><% end_if %></i>
 							</div>
 							<div class="dropdown-menu dropdown-menu-right" id="fate" style=" width: 30rem;  padding-bottom: 0 !important;">
-									<h5 class="text-muted " style="padding:10px;">Notifikasi Baru Diterima</h5>
-									<% if  $nepo %>
-									<% loop $Notif.Limit(8) %>
-										<% if $Status == 'Dikemas' %>
-											<a href="{$BaseHref}/confirm/order/$Order/$ID?detailOrder=true">
-											<div class=" d-flex p-2  notip-item  mt-2">
-												<div class="content  d-flex justify-content-between " style="width:85%;">
-													<div style="inline-size: 100%; overflow-wrap: break-word;">
-														<h6 class="header fw-bol ml-2" style="font-weight:bold;">Pesanan Anda Sudah Dikemas Dan Siap Dikirim</h6>
+								<h5 class="text-muted m-0 py-2 pt-0 pl-4 pb-4">Notifikasi Baru Diterima</h5>
+								<% if $Notification %>
+									<% loop $Notification.Limit(8) %>
+												<a href="{$BaseHref}/confirm/order/$Notification.HeaderCheckout.OrderID?detailOrder=true" style="color: #000;">
+													<div class="notifs d-flex align-items-center justify-content-between p-2"  style="border-bottom: 1px solid #ddd; background-color: rgba(255, 165, 0, 0.04);">
+														<div class="d-flex align-items-center">
+															<div class="col-3">
+																<% if $HeaderCheckout.Items.First %>
+																	<% loop $HeaderCheckout.Items.First %>
+																		<img src="$ProductImage" class="img-fluid">
+																	<% end_loop %>
+																<% end_if %>
+															</div>
+															<div class="content ml-4 d-flex ">
+																<div style="inline-size: 100%; overflow-wrap: break-word;">
+																	<h6 class="header fw-bold" style="font-weight: bold;">$Title</h6>
+																	<p class="deskripsi m-0" style="font-size: 14px;">$Message</p>
+																</div>
+															</div>
+														</div>
+														<div class="">
+															<a href="{$BaseHref}/confirm/order/$HeaderCheckout.OrderID?detailOrder=true" style="color: #000"><i class='bx bx-chevron-down' style="font-size: 40px;"></i></a>
+														</div>
 													</div>
-												</div>
-											</div>
-											</a>
-										<% else_if  $Status == 'Dikirim' %>
-											<a href="{$BaseHref}/confirm/order/$Order/$ID?detailOrder=true">
-											<div class=" d-flex    p-2  notip-item mt-2">
-												<div class="content  d-flex justify-content-between " style="width:85%;">
-													<div style="inline-size: 100%; overflow-wrap: break-word;">
-														<h6 class="header fw-bold ml-2" style="font-weight:bold;">Pesanan Anda Sudah Diberikan ke Jasa Pengantaran</h6>
-														
-													</div>
-												</div>
-											</div>
-											</a>
-										<% else_if  $Status == 'Selesai' %>
-											<a href="{$BaseHref}/confirm/order/$Order/$ID?detailOrder=true">
-											<div class=" d-flex   p-2 notip-item mt-2">
-												<div class="content  d-flex justify-content-between " style="width:85%;">
-													<div style="inline-size: 100%; overflow-wrap: break-word;">
-														<h6 class="header fw-bold ml-2" style="font-weight:bold;">Pesanan Anda Sudah Sampai Ditujuan </h6>
-														
-													</div>
-												</div>
-											</div>
-											</a>
-										<% else_if  $Status == 'Dibatalkan' %>
-											<a href="{$BaseHref}/confirm/order/$Order/$ID?detailOrder=true">
-											<div class=" d-flex  p-2 notip-item  mt-2">
-												<div class="content  d-flex justify-content-between " style="width:85%;">
-													<div style="inline-size: 100%; overflow-wrap: break-word;">
-														<h6 class="header fw-bold ml-2" style="font-weight:bold;">Waduh Maaf Ya Orderan Kamu Dibatalkan  </h6>
-
-													</div>
-												</div>
-											</div>
-											</a>
-										<% end_if %>
+												</a>
 									<% end_loop %>
-								
 								<% end_if %>
 								<a href="{$BaseHref}/usernotif" class="text-center " style="color:black;">
 									<div class="text-center" style="border-top: 1px solid rgba(0, 0, 0, .09);border-bottom: 1px solid rgba(0, 0, 0, .09);padding: 5px;">

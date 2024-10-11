@@ -25,7 +25,6 @@ use SilverStripe\ORM\FieldType\DBHTMLText;
         ];
         private static $has_many = [
             'Items'=> ProductCheckoutObject::class,
-            'Notification' => Notification::class
         ];
         private static $has_one = [
             'ProofImage' => Image::class
@@ -38,38 +37,40 @@ use SilverStripe\ORM\FieldType\DBHTMLText;
             'PaymentMethod' => 'Pembayaran'
         ];
         private static $default_sort = 'Created DESC';
-        protected function onAfterWrite() {
+        public function onAfterWrite() {
             parent::onAfterWrite();
             
             if ($this->isChanged('Status')) {
                 $this->handleStatusChange();
-                $this->statusnotif();
             }
         }
         
-        protected function handleStatusChange() {
+        public function handleStatusChange() {
             if ($this->Status == 'Selesai') {
                 foreach ($this->Items() as $item) {
                     if ($item) {
                     // Debug::show($item);
                     // die();
-                    $item->updateStock();
-                    $item->updateSold();
+                        $item->updateStock();
+                        $item->updateSold();
                     }
                 }
             }
-        }        
-
-        protected function statusnotif(){
-            date_default_timezone_set('Asia/Jakarta');  
-            $notif = Notification::create();
-            $notif->ProductCheckoutHeaderID = $this->ID;
-            $notif->CostumerName = $this->CustomerName;
-            $notif->Status = $this->Status;
-            $notif->Order = $this->OrderID;
-            $notif->Notif = 'Unread';
-            $notif->write();
-
+            $this->createNotification();
+        }
+        public function createNotification() {
+            $notification = NotificationObject::create();
+            $notification->Type = 'Order';
+            $notification->Status = $this->Status;
+            $notification->Title = 'Pesanan ' . $this->Status;
+            if ($this->Status == 'Selesai') {
+                $notification->Message = 'Pesanan ' . $this->OrderID . ' telah diterima';
+            } else {
+                $notification->Message = 'Pesanan ' . $this->OrderID . ' telah ' . $this->Status;
+            }
+            $notification->HeaderCheckoutID = $this->ID;
+    
+            $notification->write();
         }
         public function getCMSFields() {
             $fields = parent::getCMSFields();
@@ -79,7 +80,6 @@ use SilverStripe\ORM\FieldType\DBHTMLText;
                     $field->setReadonly(true);
                 }
             }
-            $fields->removeByName(array('Notification'));
             if ($statusField = $fields->fieldByName('Root.Main.Status')) {
                 $statusField->setReadonly(false);
             }

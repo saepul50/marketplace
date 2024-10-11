@@ -458,19 +458,6 @@
                            $Status</p>
                      </div>
                   </div>
-                  <div class="road" style="margin-top: .1rem;">
-                     <div class="d-flex justify-content-around align-items-center">
-                        <div class="icon-wrapper">
-                           <i class='bx bxs-receipt'></i>
-                        </div>
-                        <div class="icon-wrapper">
-                           <i class='bx bxs-wallet-alt'></i>
-                        </div>
-                        <div class="icon-wrapper">
-                           <i class='bx bxs-truck'></i>
-                        </div>
-                     </div>
-                  </div>
                   <div class="text1" style="margin-top: .1rem;">
                      <div class="d-flex justify-content-between align-items-center py-3 px-3">
                         <h5 class="m-0">Terimakasih telah berbelanja di SS!</h5>
@@ -565,8 +552,8 @@
                         <div class="d-flex paymentinfo py-2" style="border-top: 1px solid #cdcdcd;">
                            <div class="d-flex align-items-center py-2 px-3 w-100"
                               style="background-color: #FFFEFB; border: 1px solid #F3DB97;">
-                              <i class='bx bx-bell'></i>
-                              <p class="m-0 ps-3 d-flex">Terimakasih telah berbelanja semoga barang sesuai dengan yang kamu inginkan</p>
+                              <i class='bx bx-bell pr-3'></i>
+                              <p class="m-0 ps-3 d-flex">Terimakasih telah berbelanja di ShoeStore</p>
                            </div>
                         </div>
                         <div class="d-flex payment py-2" style="border-top: 1px solid #cdcdcd;">
@@ -597,19 +584,6 @@
                            Pesanan $Status</p>
                      </div>
                   </div>
-                  <div class="road" style="margin-top: .1rem;">
-                     <div class="d-flex justify-content-around align-items-center">
-                        <div class="icon-wrapper">
-                           <i class='bx bxs-receipt'></i>
-                        </div>
-                        <div class="icon-wrapper">
-                           <i class='bx bxs-wallet-alt'></i>
-                        </div>
-                        <div class="icon-wrapper">
-                           <i class='bx bxs-truck'></i>
-                        </div>
-                     </div>
-                  </div>
                   <div class="text1" style="margin-top: .1rem;">
                      <div class="d-flex justify-content-between align-items-center py-3 px-3">
                         <h5 class="m-0">Terimakasih telah berbelanja di SS!</h5>
@@ -704,8 +678,8 @@
                         <div class="d-flex paymentinfo py-2" style="border-top: 1px solid #cdcdcd;">
                            <div class="d-flex align-items-center py-2 px-3 w-100"
                               style="background-color: #FFFEFB; border: 1px solid #F3DB97;">
-                              <i class='bx bx-bell'></i>
-                              <p class="m-0 ps-3 d-flex">Ditunggu yah barang sedang dikemas oleh penjual</p>
+                              <i class='bx bx-bell pr-3'></i>
+                              <p class="m-0 ps-3 d-flex">Barang sedang dikemas oleh penjual dan akan dikirim secepatnya</p>
                            </div>
                         </div>
                         <div class="d-flex payment py-2" style="border-top: 1px solid #cdcdcd;">
@@ -743,19 +717,6 @@
                            Pesanan $Status</p>
                      </div>
                   </div>
-                  <div class="road" style="margin-top: .1rem;">
-                     <div class="d-flex justify-content-around align-items-center">
-                        <div class="icon-wrapper">
-                           <i class='bx bxs-receipt'></i>
-                        </div>
-                        <div class="icon-wrapper">
-                           <i class='bx bxs-wallet-alt'></i>
-                        </div>
-                        <div class="icon-wrapper">
-                           <i class='bx bxs-truck'></i>
-                        </div>
-                     </div>
-                  </div>
                   <div class="text1" style="margin-top: .1rem;">
                      <div class="d-flex justify-content-between align-items-center py-3 px-3">
                         <h5 class="m-0">Terimakasih telah berbelanja di SS!</h5>
@@ -850,8 +811,8 @@
                         <div class="d-flex paymentinfo py-2" style="border-top: 1px solid #cdcdcd;">
                            <div class="d-flex align-items-center py-2 px-3 w-100"
                               style="background-color: #FFFEFB; border: 1px solid #F3DB97;">
-                              <i class='bx bx-bell'></i>
-                              <p class="m-0 ps-3 d-flex">Barangmu Sudah Sampai ke pihak pengantar Paket akan segera dikirim yah</p>
+                              <i class='bx bx-bell pr-3'></i>
+                              <p class="m-0 ps-3 d-flex">Produk telah dikirim, tunggu produk yang anda pesan sampai ke tujuan</p>
                            </div>
                         </div>
                         <div class="d-flex payment py-2" style="border-top: 1px solid #cdcdcd;">
@@ -882,19 +843,6 @@
                            Pesanan $Status</p>
                      </div>
                   </div>
-                  <div class="road" style="margin-top: .1rem;">
-                     <div class="d-flex justify-content-around align-items-center">
-                        <div class="icon-wrapper">
-                           <i class='bx bxs-receipt'></i>
-                        </div>
-                        <div class="icon-wrapper">
-                           <i class='bx bxs-wallet-alt'></i>
-                        </div>
-                        <div class="icon-wrapper">
-                           <i class='bx bxs-truck'></i>
-                        </div>
-                     </div>
-                  </div>
                   <div class="text1" style="margin-top: .1rem;">
                      <div class="d-flex justify-content-between align-items-center py-3 px-3">
                         <h5 class="m-0">Terimakasih telah berbelanja di SS!</h5>
@@ -989,8 +937,8 @@
                         <div class="d-flex paymentinfo py-2" style="border-top: 1px solid #cdcdcd;">
                            <div class="d-flex align-items-center py-2 px-3 w-100"
                               style="background-color: #FFFEFB; border: 1px solid #F3DB97;">
-                              <i class='bx bx-bell'></i>
-                              <p class="m-0 ps-3 d-flex">Pesanan telah Dibatalkan coba tanyakan penjual atau lihat aturan pembelian</p>
+                              <i class='bx bx-bell pr-3'></i>
+                              <p class="m-0 ps-3 d-flex">Pesanan telah Dibatalkan, anda dapat memesan kembali produk ini</p>
                            </div>
                         </div>
                         <div class="d-flex payment py-2" style="border-top: 1px solid #cdcdcd;">
@@ -1172,63 +1120,63 @@
 <% else %>
 <h5 class="d-flex justify-content-center p-4">Nothing History Purchace</h5>
 <% end_if %>
-<script>
-   $('.nav-item#shop').addClass('active');
-   const stars = document.querySelectorAll('.star');
-const rating = document.getElementById("rating");
-const ratingValueInput = document.getElementById('ratingValue');
-const ratingDisplay = document.getElementById('rating');
-stars.forEach((star) => {
-  star.addEventListener("click", () => {
-    const value = parseInt(star.getAttribute("data-value"));
-    console.log(value);
-    rating.innerText = value;
+   <script>
+      $('.nav-item#shop').addClass('active');
+      const stars = document.querySelectorAll('.star');
+      const rating = document.getElementById("rating");
+      const ratingValueInput = document.getElementById('ratingValue');
+      const ratingDisplay = document.getElementById('rating');
+      stars.forEach((star) => {
+         star.addEventListener("click", () => {
+            const value = parseInt(star.getAttribute("data-value"));
+            console.log(value);
+            rating.innerText = value;
 
-    // Remove all existing classes from stars
-    stars.forEach((s) => s.classList.remove("one",
-      "two",
-      "three",
-      "four",
-      "five"));
-    stars.forEach((s, index) => {
-      if (index < value) {
-        s.classList.add(getStarColorClass(value));
+            // Remove all existing classes from stars
+            stars.forEach((s) => s.classList.remove("one",
+               "two",
+               "three",
+               "four",
+               "five"));
+            stars.forEach((s, index) => {
+               if (index < value) {
+               s.classList.add(getStarColorClass(value));
+               }
+            });
+            stars.forEach((s) => s.classList.remove("selected"));
+            star.classList.add("selected");
+         });
+      });
+
+      function getStarColorClass(value) {
+         switch (value) {
+            case 1:
+               return "one";
+            case 2:
+               return "two";
+            case 3:
+               return "three";
+            case 4:
+               return "four";
+            case 5:
+               return "five";
+            default:
+               return "";
+         }
       }
-    });
-    stars.forEach((s) => s.classList.remove("selected"));
-    star.classList.add("selected");
-  });
-});
+      stars.forEach(star => {
+         star.addEventListener('click', function() {
+            const rating = this.getAttribute('data-value');
+            ratingDisplay.textContent = rating; // Update the displayed rating
+            ratingValueInput.value = rating;    // Set the hidden input value for form submission
 
-function getStarColorClass(value) {
-  switch (value) {
-    case 1:
-      return "one";
-    case 2:
-      return "two";
-    case 3:
-      return "three";
-    case 4:
-      return "four";
-    case 5:
-      return "five";
-    default:
-      return "";
-  }
-}
-stars.forEach(star => {
-  star.addEventListener('click', function() {
-    const rating = this.getAttribute('data-value');
-    ratingDisplay.textContent = rating; // Update the displayed rating
-    ratingValueInput.value = rating;    // Set the hidden input value for form submission
-
-    // Highlight the selected stars
-    stars.forEach(s => {
-      s.classList.remove('selected');
-    });
-    for (let i = 0; i < rating; i++) {
-      stars[i].classList.add('selected');
-    }
-  });
-});
-</script>
+            // Highlight the selected stars
+            stars.forEach(s => {
+               s.classList.remove('selected');
+            });
+            for (let i = 0; i < rating; i++) {
+               stars[i].classList.add('selected');
+            }
+         });
+      });
+   </script>
