@@ -141,7 +141,7 @@
                         <div class="col-lg-4 col-md-6">
                             <div class="single-product">
                                 <% with $ProductImages.First %>
-                                    <a href="{$BaseHref}/productdetails/view/$Up.ID"><img src="$URL" class="img-fluid" style="object-fit: cover; aspect-ratio: 4/3"></a>
+                                    <img src="$URL" class="img-fluid" style="object-fit: cover; aspect-ratio: 4/3">
                                 <% end_with %>
                                 <div class="product-details">
                                     <h6>$Title</h6>
@@ -155,7 +155,7 @@
 									</div>
                                     <div class="prd-bottom">
     
-                                        <a  class="social-info">
+                                        <%-- <a  class="social-info">
                                             <span class="ti-bag"></span>
                                             <p class="hover-text">add to bag</p>
                                         </a>
@@ -166,8 +166,8 @@
                                         <a  class="social-info">
                                             <span class="lnr lnr-sync"></span>
                                             <p class="hover-text">compare</p>
-                                        </a>
-                                        <a  class="social-info">
+                                        </a> --%>
+                                        <a href="{$BaseHref}/productdetails/view/$Up.ID" class="social-info">
                                             <span class="lnr lnr-move"></span>
                                             <p class="hover-text">view more</p>
                                         </a>

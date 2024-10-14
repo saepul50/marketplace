@@ -2958,7 +2958,7 @@ $('#searchForm').submit(function(e) {
   if(urlParams.has('account')){
     toggleSwitchProfile(true);
   } else {
-      toggleSwitchProfile(false);
+    toggleSwitchProfile(false);
   }
   function toggleSwitchProfile(stts) {
     if (stts) {

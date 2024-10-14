@@ -20,18 +20,13 @@ class VendorRegistrationController extends PageController{
     public function index(HTTPRequest $request){
         $member = Security::getCurrentUser();
         if($member){
-            $vendor = Vendor::get()->filter('MemberID', $member->ID);
-            $VendorData = $request->getSession()->get('VendorData');
-            $data = $this->nepo();
-
-            return  [
-                'Notif' => $data['Notif'],
-                'Product' => $data['Product'],
-                'Count' => $data['Count'],
-
-                'Vendor' => $vendor,
-                'VendorData' => $VendorData
-            ];
+            $vendor = Vendor::get()->filter('OwnerID', $member->ID)->first();
+            // Debug::show($vendor);
+            // die();
+            if($vendor){
+                return $this->redirect('venn/' . $vendor->Pathname);
+            }
+            return $this    ;
         }
         return $this->redirect('login');
     }

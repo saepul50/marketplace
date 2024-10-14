@@ -89,7 +89,6 @@
     </div>
 </section>
 <!-- End Banner Area -->
-
 <div class="container shadow p-3 mt-5 mb-5 bg-white rounded" style="    padding-bottom: 2rem !important;">
     <div class="header pt-3">
         <h3>Profile Toko</h3>

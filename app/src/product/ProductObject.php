@@ -68,16 +68,18 @@ use SilverStripe\View\Requirements;
     {
         parent::onBeforeWrite();
         $member = Security::getCurrentUser();
-        $vendor = Vendor::get()->filter('OwnerID', $member->ID)->first();
-        // Debug::show($vendor);
-        if (!$this->ID) {
-            if ($member = Security::getCurrentUser()) {
-                $this->VendorID = $vendor->ID;
+        if($member){
+            $vendor = Vendor::get()->filter('OwnerID', $member->ID)->first();
+            // Debug::show($vendor);
+            if (!$this->ID) {
+                if ($member = Security::getCurrentUser()) {
+                    $this->VendorID = $vendor->ID;
 
-            }else{
-                user_error('No vendor found for this member', E_USER_WARNING); 
+                }else{
+                    user_error('No vendor found for this member', E_USER_WARNING); 
+                }
+                
             }
-            
         }
     }
 
