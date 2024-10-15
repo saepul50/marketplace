@@ -594,41 +594,41 @@
                         <div class="col-xl-3 col-lg-4 col-md-5">
                             <div class="sidebar-categories">
                                 <h6 class="py-2" id="refreshfilter" data-id="$Vendor.Pathname" style="cursor: pointer;">Refresh Filter</h6>
-                                <div class="head">Browse Categories</div>
-                                    <ul class="main-categories">
-                                        <% if $Category %>
-                                            <% loop $Category %>
-                                                <li class="main-nav-list">
-                                                    <a data-toggle="collapse" data-target="#collapseExample-$ID" aria-expanded="false" aria-controls="collapseExample" href="#">
-                                                        <span class="lnr lnr-arrow-right"></span>$Title <span class="number">($ProductSubCategory.Count)</span>
-                                                    </a>
-                                                    <ul class="collapse" id="collapseExample-$ID" data-toggle="collapse" aria-expanded="false" aria-controls="category-$ID">
-                                                        <% if $ProductSubCategory %>
-                                                            <% loop $ProductSubCategory %>
-                                                                <% if $Up.User %>
-                                                                <p>User exists, Vendor ID: $User.VendorID</p>
-                                                                <% else %>
-                                                                    <p>No user found, or user does not have a Vendor ID.</p>
-                                                                <% end_if %>
+                            <div class="head">Browse Categories</div>
+                            <ul class="main-categories">
+                                <ul class="main-categories">
+                                            <% if $Category %>
+                                                <% loop $Category %>
+                                                    <li class="main-nav-list">
+                                                        <a data-toggle="collapse" data-target="#collapseExample-$ID" aria-expanded="false" aria-controls="collapseExample" href="#">
+                                                            <span class="lnr lnr-arrow-right"></span>$Title <span class="number">($ProductSubCategory.Count)</span>
+                                                        </a>
+                                                        <ul class="collapse" id="collapseExample-$ID" data-toggle="collapse" aria-expanded="false" aria-controls="category-$ID">
+                                                            <% if $ProductSubCategory %>
+                                                                <% loop $ProductSubCategory %>
+                                                                    <li class="main-nav-list child">
+                                                                        <a href="#" data-id="$ID" class="subcategory-link">$Title 
+                                                                            <span class="number">
+                                                                              <% if $getproduct($Top.Vendor.ID) %>
+                                                                                ($getproduct($Top.Vendor.ID).Count)
+                                                                                <% else %>
+                                                                                <p>error</P> 
+                                                                              <% end_if %>
+                                                                            </span>
+                                                                        </a>
+                                                                    </li>
+                                                                <% end_loop %>
+                                                            <% else %>
+                                                                <li class="main-nav-list child py-2">This SubCategory is Coming Soon</li>
+                                                            <% end_if %>
                                                             
-                                                                <li class="main-nav-list child">
-                                                                    <% if $Up.User %>
-                                                                        <% with $getproduct($User.VendorID) %>
-                                                                            <a href="#" data-id="$Up.ID" class="subcategory-link">$Up.Title <span class="number">($Count)</span></a>
-                                                                        <% end_with %>
-                                                                    <% end_if %>
-                                                                </li>
-                                                            <% end_loop %>
-                                                        <% else %>
-                                                            <li class="main-nav-list child py-2">This SubCategory is Coming Soon</li>
-                                                        <% end_if %>
-                                                    </ul>
-                                                </li>
-                                            <% end_loop %>
-                                        <% else %>
-                                            <li class="main-nav-list child py-2">This Category is Coming Soon</li>  
-                                        <% end_if %>
-                                    </ul>
+                                                        </ul>
+                                                    </li>
+                                                <% end_loop %>
+                                            <% else %>
+                                                <li class="main-nav-list child py-2">This Category is Coming Soon</li>  
+                                            <% end_if %>
+                                        </ul>
                                 </div>
                                 <div class="sidebar-filter mt-50">
                                     <div class="top-filter-head">Product Filters</div>

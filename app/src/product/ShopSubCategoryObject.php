@@ -43,7 +43,10 @@ use SilverStripe\Security\Security;
     {
         return true;
     }
-    public function getproductobject($VendorID){
+    public function getproduct($VendorID){
+        return $this->ProductObject()->filter('VendorID', $VendorID);
+    } 
+    public function getproductss($VendorID){
         return $this->ProductObject()->filter('VendorID', $VendorID);
     }
         public function getCMSFields() {
