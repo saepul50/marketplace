@@ -46,9 +46,7 @@ use SilverStripe\Security\Security;
     public function getproduct($VendorID){
         return $this->ProductObject()->filter('VendorID', $VendorID);
     } 
-    public function getproductss($VendorID){
-        return $this->ProductObject()->filter('VendorID', $VendorID);
-    }
+   
         public function getCMSFields() {
             $member = Security::getCurrentUser();
             $vendor = Vendor::get()->filter('OwnerID', $member->ID)->first();
