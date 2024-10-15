@@ -33,7 +33,6 @@ class VendorPageController extends PageController {
         $member = Security::getCurrentUser();
         if($member){
             $pathname = $this->getRequest()->param('ID');
-            // Debug::show($this->getRequest()->params());
                 
             date_default_timezone_set('Asia/Jakarta'); 
             if($pathname){
@@ -41,7 +40,6 @@ class VendorPageController extends PageController {
                 $user = Member::get()->filter('VendorID', $vendor->ID)->first();
                 $categories = ShopCategoryObject::get();
                 $subCategoryList = ShopSubCategoryObject::get();
-                Debug::show($user->VendorID);
                 $brandList = ProductBrandObject::get();
                 $productQuery = ProductObject::get()->filter('VendorID', $vendor->ID);
                 if($productQuery && $productQuery->exists()){

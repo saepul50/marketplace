@@ -21,11 +21,9 @@ class VendorRegistrationController extends PageController{
         $member = Security::getCurrentUser();
         if($member){
             $vendor = Vendor::get()->filter('MemberID', $member->ID);
-            $VendorData = $request->getSession()->get('VendorData');
-
+            
             return  [
                 'Vendor' => $vendor,
-                'VendorData' => $VendorData
             ];
         }
         return $this->redirect('login');
