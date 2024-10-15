@@ -612,7 +612,7 @@
                                                                               <% if $getproduct($Top.Vendor.ID) %>
                                                                                 ($getproduct($Top.Vendor.ID).Count)
                                                                                 <% else %>
-                                                                                <p>error</P> 
+                                                                                (0)
                                                                               <% end_if %>
                                                                             </span>
                                                                         </a>
