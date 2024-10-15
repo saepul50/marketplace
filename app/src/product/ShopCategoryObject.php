@@ -57,4 +57,7 @@ use SilverStripe\Security\Security;
             }
             return false;
         }
+        public function getproduct($VendorID){
+            return $this->ProductObject()->filter('VendorID', $VendorID);
+        }
     }

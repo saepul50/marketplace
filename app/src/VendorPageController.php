@@ -33,11 +33,15 @@ class VendorPageController extends PageController {
         $member = Security::getCurrentUser();
         if($member){
             $pathname = $this->getRequest()->param('ID');
+            // Debug::show($this->getRequest()->params());
+                
             date_default_timezone_set('Asia/Jakarta'); 
             if($pathname){
                 $vendor = Vendor::get()->filter(['Pathname' => $pathname])->first();
+                $user = Member::get()->filter('VendorID', $vendor->ID)->first();
                 $categories = ShopCategoryObject::get();
                 $subCategoryList = ShopSubCategoryObject::get();
+                Debug::show($user->VendorID);
                 $brandList = ProductBrandObject::get();
                 $productQuery = ProductObject::get()->filter('VendorID', $vendor->ID);
                 if($productQuery && $productQuery->exists()){
@@ -87,7 +91,7 @@ class VendorPageController extends PageController {
                     $formatave = number_format($overallAverage, 2);
                     // Debug::show($productRatings);
                 }
-                $promo = PromoToko::get()->filter(['VendorID'=> $vendor->ID,'ExpDate:GreaterThanOrEqual' => time()]);
+                $promo = PromoToko::get()->filter(['VendorID'=> $vendor->ID,'ExpDate:GreaterThanOrEqual' => time(),'MaximumUse:GreaterThan' => 0]);
                 $banner = BannerPromo::get()->filter('VendorID', $vendor->ID)->column('BannerPlacesID'); 
                 // Debug::show($banner);
                 if ($banner != null) {
@@ -154,7 +158,8 @@ class VendorPageController extends PageController {
                         'ProductCount' => $productCount
                     ]));
                 }
-                return $this->customise([
+                // Debug::show($vendor);
+                return $this->customise(data: [
                     'SubCategory' => $subCategoryList,
                     'Brand' => $brandsWithCount,
                     'Category' => $categories,
@@ -163,9 +168,11 @@ class VendorPageController extends PageController {
                     'CurrentLength' => $pagelength,
                     'CurrentSort' => $sortOption,
                     'CurrentSubCategory' => $subCategoryFilter,
+                    'ProductSub' => $productQuery,
                     'Vendor' => $vendor,
                     'Count' => $count,
                     'Promo' => $promo,
+                    'User' => $user,
                     'OverralAverage' => $formatave ?? null,
                     'BestSeller' => $bestseller,
                     'BestRating' => $bestrating,

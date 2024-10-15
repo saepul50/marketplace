@@ -2,12 +2,12 @@
 
 use SilverStripe\AssetAdmin\Forms\UploadField;
 use SilverStripe\Forms\FieldList;
+use SilverStripe\Forms\HiddenField;
 use SilverStripe\ORM\DataExtension;
 use SilverStripe\Assets\Image;
 
 class MyMemberExtension extends DataExtension 
 {
-    // define additional properties
     private static $db = [
 	
     ];
@@ -24,5 +24,14 @@ class MyMemberExtension extends DataExtension
     private static $owns = [
         'ProfileImage'
     ];
+
+    public function updateCMSFields(FieldList $fields)
+        { 
+            $fields->addFieldToTab('Root.Main', HiddenField::create('VendorID'));
+            $fields->removeByName(array('SentMessages','ReceivedMessages'));
+
+            
+            return $fields;
+        }
 
 }

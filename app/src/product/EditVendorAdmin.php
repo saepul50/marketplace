@@ -7,10 +7,13 @@ use SilverStripe\Admin\LeftAndMain;
 use SilverStripe\Admin\ModelAdmin;
 use SilverStripe\Control\Director;
 use SilverStripe\Forms\GridField\GridFieldConfig;
+use SilverStripe\Forms\GridField\GridFieldDetailForm;
+use SilverStripe\Forms\GridField\GridFieldDetailForm_ItemRequest;
 use SilverStripe\Forms\GridField\GridFieldFilterHeader;
 use SilverStripe\ORM\ArrayList;
 use SilverStripe\Security\Security;
 use SilverStripe\View\Requirements;
+use SilverStripe\Forms\GridField\GridField;
 
 
 class EditVendorAdmin extends ModelAdmin{
@@ -31,7 +34,7 @@ class EditVendorAdmin extends ModelAdmin{
         if (!$member) {
             return $this->redirect(Director::absoluteBaseURL() . '/Security/login');
         }
-        
+        if($member->ID !== 1){
         $vendor = Vendor::get()->filter('OwnerID', $member->ID)->first();
         $currentURL = Director::absoluteURL($_SERVER['REQUEST_URI']);
         
@@ -42,32 +45,24 @@ class EditVendorAdmin extends ModelAdmin{
                 return $this->redirect(Director::absoluteBaseURL() . '/vendorregistration');
             }
         }
+         } else {
+            return Vendor::get();
+         }
     }
     public function getEditForm($id = null, $fields = null) {
-        $member = Security::getCurrentUser();
-        if (!$member) {
-            return $this->redirect(Director::absoluteBaseURL() . '/Security/login');
-        }
-
-        $vendor = Vendor::get()->filter('OwnerID', $member->ID)->first();
-        $gridfieldconfig = GridFieldConfig_RecordEditor::create();
-
-        $gridfieldconfig->removeComponentsByType('SilverStripe\Forms\GridField\GridFieldPaginator');
-        $gridfieldconfig->removeComponentsByType('SilverStripe\Forms\GridField\GridField_ActionMenu');
-        $gridfieldconfig->removeComponentsByType('SilverStripe\Forms\GridField\GridField_ActionMenu');
         
-        // Remove the "Add new record" button
-        $gridfieldconfig->removeComponentsByType('SilverStripe\Forms\GridField\GridFieldAddNewButton');
+        $form = parent::getEditForm($id, $fields);
+        $gridField = $form->Fields()->dataFieldByName($this->sanitiseClassName($this->modelClass));
 
-        if($vendor){
-                $list = new ArrayList([$vendor]);
-        } else{
-            $list = Vendor::get()->filter('ID', -1);
+        if ($gridField instanceof GridField) {
+            $detailForm = $gridField->getConfig()->getComponentByType(GridFieldDetailForm::class);
+            
+            if ($detailForm) {
+                $detailForm->setItemRequestClass(DetailForm_ItemRequest::class);
+            }
         }
-        $fields = $this->getVendorFields($list, $gridfieldconfig);
 
-        return parent::getEditForm($id, $fields);
-
+        return $form;
     }
 
     private function getVendorFields($list, $gridFieldConfig) {
@@ -80,4 +75,16 @@ class EditVendorAdmin extends ModelAdmin{
         return $fields;
     }
 
+}
+class DetailForm_ItemRequest extends GridFieldDetailForm_ItemRequest
+{
+    public function getNextRecordID()
+    {
+        return false;
+    }
+
+    public function getPreviousRecordID()
+    {
+        return false;
+    }
 }

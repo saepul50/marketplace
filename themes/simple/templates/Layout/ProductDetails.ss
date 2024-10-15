@@ -269,12 +269,12 @@
 												<div class="d-flex">
 													<% with $Member %>
 														<% if $ProfileImage.exists %>
-															<img class="image" id="image" src="$ProfileImage.getURL()"
+															<img class="image" id="image" src="$ProfileImage.getURL()" width="60" height="60"  style="object-fit:cover;"
 																alt="$Name's profile image">
 															<% else %>
 																<img class="image" id="image"
 																	src="$SiteConfig.Unknown.getURL()"
-																	alt="Default image">
+																	alt="Default image" width="60" height="60">
 																<% end_if %>
 																	<% end_with %>
 												</div>
@@ -296,11 +296,11 @@
 														<div class="d-flex">
 															<% with $Member %>
 																<% if $ProfileImage.exists %>
-																	<img class="image" id="image"
+																	<img class="image " id="image" width="60" height="60 !important"  style="object-fit:cover;"
 																		src="$ProfileImage.getURL()"
 																		alt="$Name's profile image">
 																	<% else %>
-																		<img class="image" id="image"
+																		<img class="image" id="image" width="60" height="60"  
 																			src="$resourceURL('themes/simple/images/blog/unknown.png')"
 																			alt="Default image">
 																		<% end_if %>
@@ -457,7 +457,7 @@
 													<div class="d-flex">
 														<% with $Member %>
 															<% if $ProfileImage.exists %>
-																<img class="image" id="image" src="$ProfileImage.getURL()" alt="$Name's profile image">
+																<img class="image" id="image" src="$ProfileImage.getURL()" alt="$Name's profile image" width="60" height="60"  style="object-fit:cover;">
 															<% else %>
 																<img class="image" id="image" src="$SiteConfig.Unknown.getURL()" alt="Default image">
 															<% end_if %>

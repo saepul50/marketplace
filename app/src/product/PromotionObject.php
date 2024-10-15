@@ -60,9 +60,9 @@ use SilverStripe\Security\Security;
                     ->setEmptyString('--Select a product--')
                     ->setDescription('Choose the product for this promotion')
                     ->setValue($this->Product->ProductID),
-                TextField::create('PromoText1', 'Text 1'),
-                TextField::create('PromoText2', 'Text 2'),
-                TextareaField::create('PromoText3', 'Text 3'),
+                TextField::create('PromoText1', 'Promotion Text'),
+                TextField::create('PromoText2', 'Title'),
+                TextareaField::create('PromoText3', 'Description'),
                 NumericField::create('PromoPrice', 'Promo Price (%)')
                     ->setDescription('Enter a percentage value (0-100)   e.g., 10 for 10%'),
                 UploadField::create('ProductImagesInput', 'Upload Promo Image (Optional)')
@@ -81,20 +81,13 @@ use SilverStripe\Security\Security;
                     ->setEmptyString('--Select a product--')
                     ->setDescription('Choose the product for this promotion')
                     ->setValue($this->Product->ProductID),
-                TextField::create('PromoText1', 'Text 1'),
-                TextField::create('PromoText2', 'Text 2'),
-                TextareaField::create('PromoText3', 'Text 3'),
-                NumericField::create('PromoPrice', 'Promo Price (%)')
+                    NumericField::create('PromoPrice', 'Promo Price (%)')
                     ->setDescription('Enter a percentage value (0-100)   e.g., 10 for 10%'),
-                UploadField::create('ProductImagesInput', 'Upload Promo Image (Optional)')
+                    UploadField::create('ProductImagesInput', 'Upload Promo Image (Optional)')
                     ->setAllowedFileCategories('image/supported')
                     ->setDescription('Size Recommendation For Main Promotion (1920x720 px)')
                     ->setIsMultiUpload(false),
-                CheckboxField::create('ShowPromotion1', 'Main Promotion'),
-                CheckboxField::create('ShowPromotion2', 'Limited Weekly Deals'),
-                CheckboxField::create('ShowPromotion3', 'Featured Item Bottom 1'),
-                CheckboxField::create('ShowPromotion4', 'Featured Item Bottom 2'),
-                CheckboxField::create('ExclusiveSlider', 'Exclusive Products Slider '),
+
             ); 
         }
             if ($this->ProductImagesInputID) {

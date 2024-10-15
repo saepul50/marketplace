@@ -173,6 +173,7 @@ Change it, enhance it and most importantly enjoy it!
 					$('#see').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
 					var datelabels = [];
 					var currentdate = start.clone();
+					
 					while (currentdate.isSameOrBefore(end)) {
 						datelabels.push(currentdate.format('DD/MM/YYYY'));
 						currentdate.add(1, 'days');
@@ -190,6 +191,7 @@ Change it, enhance it and most importantly enjoy it!
 				$('#reportrange').daterangepicker({
 					startDate: start,
 					endDate: end,
+					showCustomRangeLabel : false,
 					ranges: {
 						'Today': [moment(), moment()],
 						'Last 7 Days': [moment().subtract(6, 'days'), moment()],

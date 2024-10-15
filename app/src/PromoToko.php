@@ -33,9 +33,11 @@ class PromoToko extends DataObject{
     public function onBeforeWrite()
     {
         parent::onBeforeWrite();
-
-        $s = substr(str_shuffle(str_repeat("0123456789ABCDEFGHIJKLMNOPGRSTUFWXYZ", 5)), 0, 5);
-        $this->Code = $s;
+        if(!isset($_SESSION['first_run'])){
+            $_SESSION['first_run'] = 1;
+            $s = substr(str_shuffle(str_repeat("0123456789ABCDEFGHIJKLMNOPGRSTUFWXYZ", 5)), 0, 5);
+            $this->Code = $s;
+        }
         $member = Security::getCurrentUser();
         $vendor = Vendor::get()->filter('OwnerID', $member->ID)->first();
         // Debug::show($vendor);
@@ -87,7 +89,7 @@ class PromoToko extends DataObject{
         $fields = parent::getCMSFields();
     
         $fields->addFieldToTab('Root.Main', HiddenField::create('Code', 'Code'));
-        $fields->addFieldToTab('Root.Main', TextField::create('Diskon', 'Diskon %'));
+        $fields->addFieldToTab('Root.Main', TextField::create('Diskon', 'Diskon (Just Input Number)'));
         $fields->addFieldToTab('Root.Main', TextField::create('MaximumUse', 'Maximum Use'));
         $fields->addFieldToTab('Root.Main', HiddenField::create('VendorID', 'VendorID'));
         return $fields;

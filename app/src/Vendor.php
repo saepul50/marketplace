@@ -7,6 +7,7 @@ use SilverStripe\Forms\ReadonlyField;
 use SilverStripe\Forms\TextField;
 use SilverStripe\ORM\DataObject;
 use SilverStripe\Security\Member;
+use SilverStripe\Security\Security;
 
     class Vendor extends DataObject{
         private static $db = [
@@ -46,6 +47,10 @@ use SilverStripe\Security\Member;
 
         public function canCreate($member = null, $context = [])
         {
+            $member = Security::getCurrentUser();
+            if($member->ID !== 1){
+                return false;
+            }
             return true; // Cek apakah izin disini tidak membatasi akses
         }
         public function canView($member = null)
@@ -58,6 +63,10 @@ use SilverStripe\Security\Member;
         }
         public function canDelete($member = null)
         {
+            $member = Security::getCurrentUser();
+            if($member->ID !== 1){
+                return false;
+            }
             return true;
         }
 

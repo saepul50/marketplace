@@ -115,7 +115,7 @@ class BlogPageController extends PageController
         } else {
             $k = $request->param('ID');
             $contents = BlogAdd::get()->byID($k);
-            $categori = BlogCategory::get();
+            $categori = BlogCategory::get()->sort('Count', 'DESC');
             $comments = BlogComment::get()->filter('BlogAddID', $k);
             $countcomment = $comments->count();
             $countreply = CommentReply::get()->filter('BlogAddID', $k)->count();
@@ -173,6 +173,7 @@ class BlogPageController extends PageController
         } else {
             $data = $request->postVars();
             // Debug::show($data);
+            date_default_timezone_set('Asia/Jakarta');
             $comment = BlogComment::create();
             $comment->MemberID = $member->ID;
             $comment->BlogAddID = $data['ID'];
@@ -198,6 +199,7 @@ class BlogPageController extends PageController
             $title = $request->postVar('Send');
             // $member = Member::get()->filter('Surname', $title);
             // Debug::show($data);
+            date_default_timezone_set('Asia/Jakarta');
             $comment = CommentReply::create();
             $comment->MemberID = $member->ID;
             $comment->BlogAddID = $data['ID'];

@@ -5710,9 +5710,7 @@ label {
     -moz-transition: all 0.3s ease 0s;
     -o-transition: all 0.3s ease 0s;
     transition: all 0.3s ease 0s; }
-    .comments-area .btn-reply:hover {
-      background-color: #c5322d;
-      color: #fff; }
+
 
 .comment-form {
   background: #fafaff;
