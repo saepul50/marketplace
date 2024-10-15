@@ -53,19 +53,25 @@ class ProductCheckoutPageController extends PageController{
     }
 
     public function coupon(HTTPRequest $request){
-        $coupon = PromoToko::get()->column('Code');
         $data = $request->postVar('Coupon'); 
         $promo = PromoToko::get()->filter('Code', $data)->first();
         date_default_timezone_set('Asia/Jakarta');  
 
         if ($promo) {
             $diskon = $promo->Diskon;
+            $max = $promo->MaximumUse;
             $time = strtotime($promo->ExpDate);
             // Debug::show($promo->ExpDate);
             // Debug::show($time >= time());
 
-            if ($time >= time()) { 
+            if ($time >= time() && $max !== 0 ) { 
+                if ($promo->MaximumUse > 0) {
+                    $promo->MaximumUse -= 1;
+                    $promo->write();
+                }
+                
                 $request->getSession()->set('Coupon', $data);
+
                 return json_encode([
                     'success' => true,
                     'message' => "Success! You get a discount of {$diskon}%."
@@ -73,7 +79,7 @@ class ProductCheckoutPageController extends PageController{
             } else {
                 return json_encode([
                     'success' => false,
-                    'message' => 'Coupon has expired.'
+                    'message' => 'Coupon has expired or reaches the usage limit.'
                 ]);
             }
         } else {

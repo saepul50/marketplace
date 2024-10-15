@@ -95,7 +95,7 @@
 								<h5 class="text-muted m-0 py-2 pt-0 pl-4 pb-4">Notifikasi Baru Diterima</h5>
 								<% if $Notification %>
 									<% loop $Notification.Limit(8) %>
-												<a href="{$BaseHref}/confirm/order/$Notification.HeaderCheckout.OrderID?detailOrder=true" style="color: #000;">
+												<a href="{$BaseHref}/confirm/order/$HeaderCheckout.OrderID?detailOrder=true" style="color: #000;">
 													<div class="notifs d-flex align-items-center justify-content-between p-2"  style="border-bottom: 1px solid #ddd; background-color: rgba(255, 165, 0, 0.04);">
 														<div class="d-flex align-items-center">
 															<div class="col-3">

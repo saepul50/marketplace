@@ -1,4 +1,5 @@
 <?php 
+use SilverShop\HasOneField\HasOneAddExistingAutoCompleter;
 use SilverStripe\Dev\Debug;
 use SilverStripe\AssetAdmin\Forms\UploadField;
 use SilverStripe\Forms\CheckboxField;
@@ -38,13 +39,16 @@ class BannerPromo extends DataObject {
     ];
     
     public function getCMSFields() {
+        $property = HasOneButtonField::create(
+            $this,
+            "BannerPlaces"
+        );
+
+        $property->getConfig()->removeComponentsByType(HasOneAddExistingAutoCompleter::class);
         $fields = parent::getCMSFields();
         $fields->addFieldToTab('Root.Main', HiddenField::create('BannerPlacesID'));
         $fields->addFieldToTab('Root.Main', HiddenField::create('VendorID'));
-        $fields->addFieldToTab("Root.Main", HasOneButtonField::create(
-            $this,
-            "BannerPlaces"
-        ));
+        $fields->addFieldToTab("Root.Main", $property);
         return $fields;
     }
     

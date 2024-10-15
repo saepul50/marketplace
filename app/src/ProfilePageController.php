@@ -22,11 +22,11 @@ class ProfilePageController extends PageController{
         $member = Security::getCurrentUser();
         if($member){
             return [
-                'Member' => $member
+                'Account' => $member
             ];
         }
         return [
-            'Member' => null
+            'Account' => null
         ];
         // return $this->redirect('profile');
     }

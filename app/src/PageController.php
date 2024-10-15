@@ -37,6 +37,7 @@ use SilverStripe\Dev\Debug;
         protected function init()
         {
             parent::init();
+            date_default_timezone_set('Asia/Jakarta');
             // You can include any CSS or JS required by your project here.
             // See: https://docs.silverstripe.org/en/developer_guides/templates/requirements/
         }
@@ -92,8 +93,7 @@ use SilverStripe\Dev\Debug;
         }
 
         public function ProductListSearch(HTTPRequest $request) {
-            $member = Security::getCurrentUser();
-            if ($member) {
+
                 $product = ProductObject::get();
                 $productTitle = $product->column('Title');
 
@@ -108,8 +108,6 @@ use SilverStripe\Dev\Debug;
 
                 $allTitle = array_merge($productTitle, $subCategoryTitle, $categoryTitle, $brandsTitle);
                 return json_encode($allTitle);
-            }
-            return json_encode([]);
         }
 
         public function PromotionObjects() {

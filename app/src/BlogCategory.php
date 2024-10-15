@@ -38,19 +38,14 @@ class BlogCategory extends DataObject {
         foreach ($results as $result) {
             $counts[$result['BlogCategoryID']] = $result['OccurrenceCount'];
         }
-    
-        // Check if there are any counts, if not return an empty DataList
         if (empty($counts)) {
-            return BlogCategory::get()->filter('ID', 0); // Return empty set
+            return BlogCategory::get()->filter('ID', 0); 
         }
-    
-        // Filter categories based on the BlogCategoryID that has counts
         $categories = BlogCategory::get()->filter('ID', array_keys($counts));
     
-        // Update the Sample field with the count values
         foreach ($categories as $category) {
             $category->Count = $counts[$category->ID];
-            $category->write();  // Save the updated Sample field to the database
+            $category->write();  
         }
     
         return $categories;

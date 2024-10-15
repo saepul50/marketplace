@@ -148,7 +148,9 @@
                 <div class="col-4 d-flex p-3" style="background-color: #f5f5f5; gap:1.2rem; border-radius: 10px;">
                     <div class="col-5">
                         <% with $Vendor.ProfilImage %>
-                            <img alt="Profile img" src="$URL" class="img-fluid" style="border-radius: 50%;">
+                            <img alt="Profile img" src="$URL" class="img-fluid" style="border-radius: 50%;width: 115px;
+    height: 115px;
+    object-fit: cover;">
                         <% end_with %>
                     </div>
                     <h5 class="mt-2">$Vendor.Name</h5> 
@@ -191,7 +193,7 @@
                                         <section class="ticketHolder noFloat">
                                         <div class="coupon">
                                             <div class="inner">
-                                            <div class="savings">Save $Diskon %</div>
+                                            <div class="savings">Save $Diskon%</div>
                                             <div class="reveal">
                                                 <div>Coupon Code:</div>
                                                 <div class="couponCode">$Code</div>
@@ -254,14 +256,9 @@
                                         </a>
                                     <% end_loop %>
                                     <% else %>
-                                        <div class="container mt-5" >
-                                            <div class="d-flex justify-content-between mb-2">
-                                                <h6>KAMU MUNGKIN SUKA</h6>
-                                            <a href="#" style="color:#777777;">Lihat Semua ></a>
-                                            </div>
-                                            <div class="row " style="justify-content:center;">
-                                            <div class="col-lg-3 col-md-4 col-sm-6  ">
-                                            <p>Product Kosong</P>
+                                        <div class="container mt-5"  style="text-align: -webkit-center;">
+                                            <div class="col-lg-3 col-md-4 col-sm-6 text-center">
+                                                <p>Toko ini masih belum ada product yang ditampilkan</P>
                                             </div>
                                         </div>
                             <% end_if %>
@@ -277,7 +274,8 @@
                                 <% end_with %>
                     
                                 <!-- Promo Products -->
-                                <div class="row mt-3">
+                                <h6 class="mt-3" style="font-weight:bold;">$Title</h6>
+                                <div class="row ">
                                     <% loop $Products.Limit(4) %>
                                         <a href="{$BaseHref}/productdetails/view/$ID">
                                             <div class="col-lg-3 col-md-4 col-sm-6">
@@ -588,8 +586,10 @@
                         <% end_if %>
                     </div>
                 </div>
+                
                 <%-- Product --%>
                 <div class="container Akhir py-3" id="akhir">
+                
                     <div class="row">
                         <div class="col-xl-3 col-lg-4 col-md-5">
                             <div class="sidebar-categories">
@@ -605,8 +605,18 @@
                                                     <ul class="collapse" id="collapseExample-$ID" data-toggle="collapse" aria-expanded="false" aria-controls="category-$ID">
                                                         <% if $ProductSubCategory %>
                                                             <% loop $ProductSubCategory %>
+                                                                <% if $Up.User %>
+                                                                <p>User exists, Vendor ID: $User.VendorID</p>
+                                                                <% else %>
+                                                                    <p>No user found, or user does not have a Vendor ID.</p>
+                                                                <% end_if %>
+                                                            
                                                                 <li class="main-nav-list child">
-                                                                    <a href="#" data-id="$ID" class="subcategory-link">$Title <span class="number">($ProductObject.Count)</span></a>
+                                                                    <% if $Up.User %>
+                                                                        <% with $getproduct($User.VendorID) %>
+                                                                            <a href="#" data-id="$Up.ID" class="subcategory-link">$Up.Title <span class="number">($Count)</span></a>
+                                                                        <% end_with %>
+                                                                    <% end_if %>
                                                                 </li>
                                                             <% end_loop %>
                                                         <% else %>
@@ -791,7 +801,7 @@
         }
     }
 
-    return "just now";
+    return "Just Now";
     }
 
     const event = document.querySelector('#since');

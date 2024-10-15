@@ -22,13 +22,8 @@ class VendorRegistrationController extends PageController{
         if($member){
             $vendor = Vendor::get()->filter('MemberID', $member->ID);
             $VendorData = $request->getSession()->get('VendorData');
-            $data = $this->nepo();
 
             return  [
-                'Notif' => $data['Notif'],
-                'Product' => $data['Product'],
-                'Count' => $data['Count'],
-
                 'Vendor' => $vendor,
                 'VendorData' => $VendorData
             ];

@@ -119,6 +119,7 @@ class ProductDetailsController extends PageController
         } else {
             $data = $request->postVars();
             // Debug::show($data);
+            date_default_timezone_set('Asia/Jakarta');
             $comment = ProductComment::create();
             $comment->MemberID = $member->ID;
             $comment->ProductObjectID = $data['ID'];
@@ -141,8 +142,9 @@ class ProductDetailsController extends PageController
             return $this->redirect(Director::absoluteBaseURL() . '/login');
         } else {
         $data = $request->postVars();
-        Debug::show($data);
+        // Debug::show($data);
         $comment = ProductReply::create();
+        date_default_timezone_set('Asia/Jakarta');
         $comment->MemberID = $member->ID;
         $comment->SendTo = $data['Send'];
         $comment->Comment= $data['Message'];
@@ -165,6 +167,7 @@ class ProductDetailsController extends PageController
         // Debug::show(s$data);
 
         $comment = ProductRating::create();
+        date_default_timezone_set('Asia/Jakarta');
         $comment->MemberID = $member->ID;
         $comment->Rating = $data['Rating'];
         $comment->ProductObjectID = $data['ID'];

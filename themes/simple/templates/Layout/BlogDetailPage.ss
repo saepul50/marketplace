@@ -136,7 +136,7 @@
                                     <div class="thumb image-comment">
                                         <% with $Member %>
                                             <% if $ProfileImage.exists %>
-                                                <img class="image" id="image" src="$ProfileImage.getURL()" alt="$Name's profile image">
+                                                <img class="image" id="image" width="60" height="60" style="object-fit:cover;" src="$ProfileImage.getURL()" alt="$Name's profile image">
                                             <% else %>
                                                 <img class="image" id="image" src="$SiteConfig.Unknown.getURL()" alt="Default image">
                                             <% end_if %>
@@ -145,7 +145,7 @@
                                     <div class="desc">
                                         <h5><a href="#">$Member.FirstName</a></h5>
                                         <p class="date">$Created</p>
-                                        <p class="comment">
+                                        <p class="comment" style="inline-size: 370px;overflow-wrap: break-word;">
                                             $Comment
                                         </p>
                                     </div>
@@ -163,7 +163,7 @@
                                             <div class="thumb">
                                                 <% with $Member %>
                                                     <% if $ProfileImage.exists %>
-                                                        <img class="image" id="image" src="$ProfileImage.getURL()" alt="$Name's profile image" width="60" height="60">
+                                                        <img class="image" id="image" width="60" height="60" style="object-fit:cover;" src="$ProfileImage.getURL()" alt="$Name's profile image" width="60" height="60">
                                                     <% else %>
                                                         <img class="image" id="image" src="$resourceURL('themes/simple/images/blog/unknown.png')" alt="Default image">
                                                     <% end_if %>
@@ -173,12 +173,12 @@
                                                 <h5><a href="#" id="takename">$Member.FirstName</a></h5>
                                                 <p class="date">$Created </p>
                                                 <p class="comment">
-                                                <b id="sendto">$SendTo</b> $Comment
+                                                <p class="" style="inline-size: 370px;overflow-wrap: break-word;"><b id="sendto" >$SendTo</b> $Comment</p>
                                                 </p>
                                             </div>
                                         </div>
                                         <div class="reply-btn">
-                                            <a href="" class="btn-reply text-uppercase" data-toggle="modal" data-target="#exampleModal" data-commentid="$Up.ID" data-takename='#takename' data-name="$Member.FirstName">reply</a>
+                                            <a href="" class="btn-reply text-uppercase" style="cursor:pointer;"data-toggle="modal" data-target="#exampleModal" data-commentid="$Up.ID" data-takename='#takename' data-name="$Member.FirstName">reply</a>
                                         </div>
                                     </div>
                                 </div>

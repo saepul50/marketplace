@@ -173,8 +173,8 @@
 				</div>
 				<div class="row">
 					<!-- single product -->
-					<% loop $ProductObjects.Limit(8) %>
-						<% if $ProductCategoryID = 1 %>
+					<% loop $ProductObjects.Sort('Created','DESC').Limit(8) %>
+						<% if $ProductCategoryID %>
 							<a href="{$BaseHref}/productdetails/view/$ID">
 								<div class="col-lg-3 col-md-6">
 									<div class="single-product">
@@ -225,7 +225,7 @@
 				<div class="row justify-content-center">
 					<div class="col-lg-6 text-center">
 						<div class="section-title">
-							<h1>Coming Products</h1>
+							<h1>Oldest Products</h1>
 							<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
 								dolore
 								magna aliqua.</p>
@@ -233,8 +233,8 @@
 					</div>
 				</div>
 				<div class="row">
-					<% loop $ProductObjects.Limit(8) %>
-					<% if $ProductCategoryID = 2 %>
+					<% loop $ProductObjects.Sort('Created','ASC').Limit(8) %>
+					<% if $ProductCategoryID %>
 						<a href="{$BaseHref}/productdetails/view/$ID">
 							<div class="col-lg-3 col-md-6">
 								<div class="single-product">

@@ -7,6 +7,7 @@ use SilverStripe\Forms\GridField\GridField;
 use SilverStripe\Forms\GridField\GridFieldConfig_RecordEditor;
 use SilverStripe\Forms\TextField;
 use SilverStripe\ORM\DataObject;
+use SilverStripe\Security\Security;
 
     class ShopSubCategoryObject extends DataObject{
         private static $db = [
@@ -42,8 +43,17 @@ use SilverStripe\ORM\DataObject;
     {
         return true;
     }
+    public function getproductobject($VendorID){
+        return $this->ProductObject()->filter('VendorID', $VendorID);
+    }
         public function getCMSFields() {
+            $member = Security::getCurrentUser();
+            $vendor = Vendor::get()->filter('OwnerID', $member->ID)->first();
+            $product = $this->getproduct($vendor->ID);
+            // $this->Test = $product;
+            // Debug::show($this->Test);
             $categories = ShopCategoryObject::get()->map('ID', 'Title')->toArray();
+            if($member->ID !== 1){
             $fields = new FieldList(
                 TextField::create('Title'),
                 DropdownField::create('ProductCategoryID', 'Category', $categories)
@@ -51,10 +61,25 @@ use SilverStripe\ORM\DataObject;
                 GridField::create(
                     'ProductObject',
                     'Product',
-                    $this->ProductObject(),
+                    $product,
                     GridFieldConfig_RecordEditor::create()
                 )
             );
+            } else {
+                $fields = new FieldList(
+                    TextField::create('Title'),
+                    DropdownField::create('ProductCategoryID', 'Category', $categories)
+                        ->setEmptyString('Select a Category'),
+                    GridField::create(
+                        'ProductObject',
+                        'Product',
+                        $this->ProductObject(),
+                        GridFieldConfig_RecordEditor::create()
+                    )
+                );
+            }
             return $fields;
         }
+
+       
     }
