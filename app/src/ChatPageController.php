@@ -85,10 +85,26 @@ class ChatPageController extends PageController {
                 if (!isset($groupedChats[$key])) {
                     $groupedChats[$key] = $chat;
                 }
-
+                
                 $lastMessage = $chat->LastMessage();
                 if ($lastMessage) {
                     $chat->LastMessage = $lastMessage;
+
+                    $listChatDate = strtotime($lastMessage->Date);
+                    $currentDate = strtotime('today');
+                    $yesterdayDate = strtotime('yesterday');
+                    $lastWeek = strtotime('-7 days');
+
+                    if ($listChatDate >= $currentDate) {
+                        $chat->DateLabel = 'Hari ini';
+                    } elseif ($listChatDate >= $yesterdayDate) {
+                        $chat->DateLabel = 'Kemarin';
+                    } elseif ($listChatDate >= $lastWeek)  {
+                        $formatter = new IntlDateFormatter('id_ID', IntlDateFormatter::FULL, IntlDateFormatter::NONE, null, null, 'EEEE');
+                        $chat->DateLabel = $formatter->format($listChatDate);
+                    } else {
+                        $chat->DateLabel = date('d-m-Y', $listChatDate);
+                    }
                 }
 
                 $chat->UnreadCount = $chat->countUnreadMessages();
@@ -130,13 +146,50 @@ class ChatPageController extends PageController {
             $messages = ChatObject::get()->filter([
                 'unichat' => [$unichat1, $unichat2]
             ])->sort('LastEdited', 'DESC');
+
+            $lastDate = null;
+            $messagesGrouped = [];
+
             foreach ($messages as $message) {
                 if ($message->NotificationStatus == 'Unread' && $message->ReceiverID == $currentMember->ID) {
-                    // die();
                     $message->NotificationStatus = 'Read';
                     $message->write();
                 }
+
+                $messageDate = strtotime($message->Date);
+                $currentDate = strtotime('today');
+                $yesterdayDate = strtotime('yesterday');
+                $lastWeek = strtotime('-7 days');
+
+                if ($messageDate >= $currentDate) {
+                    $dateLabel = 'Hari ini';
+                } elseif ($messageDate >= $yesterdayDate) {
+                    $dateLabel = 'Kemarin';
+                } elseif ($messageDate >= $lastWeek)  {
+                    $formatter = new IntlDateFormatter('id_ID', IntlDateFormatter::FULL, IntlDateFormatter::NONE, null, null, 'EEEE');
+                    $dateLabel = $formatter->format($messageDate);
+                } else {
+                    $dateLabel = date('d-m-Y', $messageDate);
+                }
+
+                if (!isset($messagesGrouped[$dateLabel])) {
+                    $messagesGrouped[$dateLabel] = [];
+                }
+                
+                $message->DateLabel = $dateLabel;
+                $messagesGrouped[$dateLabel][] = $message;
             }
+
+            $messages = [];
+            foreach ($messagesGrouped as $date => $msgs) {
+                $messages[] = [
+                    'DateLabel' => $date,
+                    'Messages' => new ArrayList($msgs)
+                ];
+            }
+            $messages = new ArrayList($messages);
+            // Debug::show($messages);
+            // die();
 
             if($receiver == $currentMember->ID){
                 $senderVendor = Vendor::get()->filter('OwnerID', $user)->exists();

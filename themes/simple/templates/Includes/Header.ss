@@ -23,6 +23,9 @@
 			font-size: 14px;
 			font-weight: bold;
 		}
+		#history_list li{
+			padding : 1rem 5rem;
+		}
 		#history_list li.selected{
 			background-color: #f5f5f5 !important;
 		}
@@ -146,7 +149,7 @@
 			</div>
 		</div>
 		<div id="search_history" class="search_input pt-5" style="position: fixed; padding-bottom: .01rem; background-color: #fff; text-align: left; box-shadow: 0px 0px 5px #fff; width: 100%; max-width: 1200px; left: 50%; transform: translateX(-50%);">
-			<div class="container">
+			<div class="">
 				<ul id="history_list">
 					<% loop $ProductObjects %>
 						

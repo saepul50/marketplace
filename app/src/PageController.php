@@ -93,21 +93,20 @@ use SilverStripe\Dev\Debug;
         }
 
         public function ProductListSearch(HTTPRequest $request) {
+            $product = ProductObject::get();
+            $productTitle = $product->column('Title');
 
-                $product = ProductObject::get();
-                $productTitle = $product->column('Title');
+            $categories = ShopCategoryObject::get();
+            $categoryTitle = $categories->column('Title');
 
-                $categories = ShopCategoryObject::get();
-                $categoryTitle = $categories->column('Title');
+            $subCategories = ShopSubCategoryObject::get();
+            $subCategoryTitle = $subCategories->column('Title');
 
-                $subCategories = ShopSubCategoryObject::get();
-                $subCategoryTitle = $subCategories->column('Title');
+            $brands = ProductBrandObject::get();
+            $brandsTitle = $brands->column('Title');
 
-                $brands = ProductBrandObject::get();
-                $brandsTitle = $brands->column('Title');
-
-                $allTitle = array_merge($productTitle, $subCategoryTitle, $categoryTitle, $brandsTitle);
-                return json_encode($allTitle);
+            $allTitle = array_merge($productTitle, $subCategoryTitle, $categoryTitle, $brandsTitle);
+            return json_encode($allTitle);
         }
 
         public function PromotionObjects() {

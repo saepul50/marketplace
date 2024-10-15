@@ -1,57 +1,3 @@
-const stars = document.querySelectorAll(".star");
-const rating = document.getElementById("rating");
-const ratingDisplay = document.getElementById('rating');
-const ratingValueInput = document.getElementById('ratingValue');
-stars.forEach((star) => {
-  star.addEventListener("click", () => {
-    const value = parseInt(star.getAttribute("data-value"));
-    rating.innerText = value;
-
-    // Remove all existing classes from stars
-    stars.forEach((s) => s.classList.remove("one",
-      "two",
-      "three",
-      "four",
-      "five"));
-    stars.forEach((s, index) => {
-      if (index < value) {
-        s.classList.add(getStarColorClass(value));
-      }
-    });
-    stars.forEach((s) => s.classList.remove("selected"));
-    star.classList.add("selected");
-  });
-});
-stars.forEach(star => {
-  star.addEventListener('click', function () {
-    const rating = this.getAttribute('data-value');
-    ratingDisplay.textContent = rating; 
-    ratingValueInput.value = rating; 
-    stars.forEach(s => {
-      s.classList.remove('selected');
-    });
-    for (let i = 0; i < rating; i++) {
-      stars[i].classList.add('selected');
-    }
-  });
-});
-function getStarColorClass(value) {
-  switch (value) {
-    case 1:
-      return "one";
-    case 2:
-      return "two";
-    case 3:
-      return "three";
-    case 4:
-      return "four";
-    case 5:
-      return "five";
-    default:
-      return "";
-  }
-}
-
 
 $(document).ready(function () {
   "use strict";
@@ -86,6 +32,33 @@ $(document).ready(function () {
         });
       });
   })
+
+  $("#emailform").submit(function (event) {
+    event.preventDefault();
+    $.ajax({
+        url: "/marketplace/contact/mail",
+        type: "POST",
+        data: {
+            name: $("#name").val(),
+            email: $("#email").val(),
+            subject: $("#subject").val(),
+            message: $("#message").val()
+        },
+        success: function (response) {
+            Swal.fire({
+                title: "Succes",
+                text: "Your Message Sending",
+                icon: "success",
+                showConfirmButton: false,
+                timer: 1500
+            });
+        },
+        error: function (xhr, status, error) {
+            alert("Failed to send message: " + error); // Add error message
+        }
+    });
+    return false;
+});
   var currentParams = new URLSearchParams(window.location.search);
   var selectedBrand = currentParams.get('filter');
   var selectedSubCategory = currentParams.get('subcategory');
@@ -145,7 +118,7 @@ $(document).ready(function () {
         iziToast.warning({ position: "bottomRight", title: 'Caution', message: 'Isi alasan pembatalan' });
       }
     }
-    $.post("/marketplace/confirm/service", {
+    $.post("/marketplace/history/service", {
       Request: request,
       OrderID: orderid
     })
@@ -173,6 +146,66 @@ $(document).ready(function () {
 
     return false;
   });
+  $('#receivedBtn').on('click', function (e) {
+    e.preventDefault();
+    var orderid = $(this).data('orderid');
+    var request = 'diterima';
+    iziToast.show({
+      color: 'dark',
+      icon: 'bx bxs-archive-in',
+      timeout: 5000,
+      title: 'Apakah pesanan telah sampai dan sesuai',
+      position: 'bottomRight',
+      progressBarColor: 'rgb(0, 255, 184)',
+      buttons: [
+        [
+          '<button>Pesanan Diterima</button>',
+          function (instance, toast) {
+            $(this).prop('disabled', true);
+            $.post("/marketplace/history/service", {
+              Request: request,
+              OrderID: orderid
+            })
+            .done(function (data) {
+              try {
+                var response = JSON.parse(data);
+                if (response.success) {
+                  $('#cancelbtn').modal('hide');
+                  iziToast.success({
+                    icon: 'fa fa-check',
+                    timeout: 2000,
+                    title: 'Sukses',
+                    message: 'Pesanan telah diterima',
+                    position: 'bottomRight',
+                    onClosed: function () {
+                      window.location.href = '/marketplace/confirm/';
+                    }
+                  });
+                } else {
+                  iziToast.warning({ position: "bottomRight", title: 'Caution', message: response.message || 'Failed' });
+                }
+              } catch (e) {
+                iziToast.error({ position: "bottomRight", title: 'Error', message: 'Invalid response from server' });
+              }
+            }).fail(function (xhr) {
+              iziToast.error({ position: "bottomRight", title: 'Error', message: xhr.responseText || 'An error occurred' });
+            }).always(function() {
+              $(this).prop('disabled', false); // Re-enable button after processing
+            });
+          }
+        ],
+        [
+          '<button>Close</button>',
+          function (instance, toast) {
+              instance.hide({
+                  transitionOut: 'fadeOutUp'
+              }, toast);
+          }
+        ]
+      ]
+    });
+  });
+
   $('.subcategory-link').on('click', function (e) {
     e.preventDefault();
     $('.subcategory-link').removeClass('active');
@@ -635,7 +668,91 @@ $(document).ready(function () {
   })
 
   //product
+  $('#Nilai').on('click', function(event) {
+    event.preventDefault();
+    var button = $(this); 
+    var title = button.data('title');
+    var image = button.data('image');
+    var variant = button.data('variant');
+    var get = button.data('get');
+    var id = button.data('id');
+    var button = $('.showModalButton').data('id');
+    var Filter =  $("#ID").val();
+    $('#ProductID').val(id);
+    $('#title').html(title);
+    $('#variants').html(variant);
+    $('#image').attr('src', image);
+    $('#OrderID').val(get);
+    $('#exampleModalCenter').modal('show');
+    });
   
+    $("#reviewform").submit(function (event) {
+      event.preventDefault();
+      const rating = document.getElementById("ratingValue");
+      // console.log(button);
+      let angka = rating.getAttribute('value');
+      console.log(angka);
+      if(parseInt(angka) === 0 ){
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Input Rating First",
+          showConfirmButton: false,
+        });
+      } else {
+            $.post("/marketplace/productdetails/review", {
+                Review: $("#reviewmsg").val(),  
+                Rating: $("#ratingValue").val(),
+                ID: $("#ProductID").val(),
+              })
+              .done(function (data) {
+                var response = JSON.parse(data);
+                var Filter =  $("#ID").val();
+                var OrderID =  $("#OrderID").val();
+                
+                if (response.success) {
+                  $('.showModalButton[data-get="' + OrderID + '"][data-id="' + Filter+'"]').prop('disabled', true).text('Submitted'); 
+                  localStorage.setItem('reviewsubmit' + OrderID + Filter, true);
+                  Swal.fire({
+                        title: "SUCCESS",
+                        text: "Review submitted successfully!",
+                        icon: "success",
+                        timer: 1000,
+                      });
+                      $('#exampleModalCenter').removeClass('show').attr("aria-hidden", "true");
+                      $('.modal-backdrop').removeClass('show');
+                      document.getElementById('reviewmsg').value=null;
+                      stars.forEach((s) => s.classList.remove("one", 
+                        "two", 
+                        "three", 
+                        "four", 
+                        "five", 
+                        "selected"));
+                        setInterval(href, 1500);
+  
+                      function href() {
+                        location.reload();
+                      }
+                } else {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Oops...",
+                        text: response.message,
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                }
+            })
+            .fail(function () {
+                Swal.fire({
+                    icon: "error",
+                    title: "Error",
+                    text: "There was an issue submitting the review. Please try again later.",
+                    confirmButtonColor: "#d33"
+                });
+            });
+          }
+        });
   // PRODUCT
   $("#kkls").submit(function (event) {
     event.preventDefault();
@@ -1553,96 +1670,10 @@ $('#searchForm').submit(function(e) {
       });
   });
 
-  $("#blogcomment").submit(function (event) {
-    event.preventDefault(); // Prevents the form from doing a default refresh
-
-    $.post("/blog/handelComment", {
-      Name: $("#name").val(),
-      Message: $("#message").val(),
-      ID: $("#BlogAddID").val(),
-    })
-      .done(function (data) {
-        var response = JSON.parse(data);
-        if (response.success) {
-          Swal.fire({
-            title: "SUCCESS",
-            text: "Success",
-            icon: "success",
-            timer: 1000
-          })
-          setInterval(href, 1500);
-
-          function href() {
-            location.reload();
-          }
-        } else {
-          Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text: response.message,
-            showConfirmButton: false,
-            timer: 1500
-          });
-        }
-
-      }).fail(function () {
-        Swal.fire({
-          icon: "error",
-          title: "Error",
-          text: "There was an issue  Please try again later.",
-          confirmButtonColor: "#d33",
-        });
-      });
-
-    return false; // Ensure no form submission (and thus no refresh)
-  });
+ 
 
 
-  $("#replycomment").submit(function (event) {
-    event.preventDefault(); // Prevents the form from doing a default refresh
-
-    $.post("/marketplace/blog/handelreply", {
-      Name: $("#name-reply").val(),
-      Send: $("#nama-reply").val(),
-      Message: $("#message-reply").val(),
-      CommentID: $("#commentID-reply").val(),
-      ID: $("#BlogAddID").val(),
-    })
-      .done(function (data) {
-        var response = JSON.parse(data);
-        if (response.success) {
-          Swal.fire({
-            title: "SUCCESS",
-            text: "Success",
-            icon: "success",
-            timer: 1000
-          })
-          setInterval(href, 1500);
-
-          function href() {
-            location.reload();
-          }
-        } else {
-          Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text: response.message,
-            showConfirmButton: false,
-            timer: 1500
-          });
-        }
-
-      }).fail(function () {
-        Swal.fire({
-          icon: "error",
-          title: "Error",
-          text: "There was an issue  Please try again later.",
-          confirmButtonColor: "#d33",
-        });
-      });
-
-    return false; // Ensure no form submission (and thus no refresh)
-  });
+  
 
   $('.btn-reply').on('click', function () {
     var CommentID = $(this).data('commentid');
@@ -2266,7 +2297,7 @@ $('#searchForm').submit(function(e) {
     var weight = $('#fulldata .weight').text();
     // console.log(idRegency)
     $.ajax({
-      url: '/marketplace/productcheckout/rajoCot',
+      url: '/marketplace/productcheckout/rajoCost',
       type: 'POST',
       data: {
         Courir: courir,
@@ -2532,6 +2563,7 @@ $('#searchForm').submit(function(e) {
     $('.payment_box .list li').removeClass('active');
     $(this).addClass('active');
   });
+  
   $('.nav-linked').on('click', function (e) {
     e.preventDefault();
 
@@ -2837,6 +2869,9 @@ $('#searchForm').submit(function(e) {
   const urlParams = new URLSearchParams(window.location.search);
   const urlPath = window.location.pathname.split('/');
   const urlOrder = urlPath[3];
+  // console.log(urlParams);
+  // console.log(urlPath);
+  // console.log(urlOrder);
   if(urlOrder == 'order'){
     const urlHistory = urlPath[4]
     if(urlHistory){
@@ -2870,7 +2905,7 @@ $('#searchForm').submit(function(e) {
   if(urlParams.has('account')){
     toggleSwitchProfile(true);
   } else {
-      toggleSwitchProfile(false);
+    toggleSwitchProfile(false);
   }
   function toggleSwitchProfile(stts) {
     if (stts) {
@@ -2892,10 +2927,12 @@ $('#searchForm').submit(function(e) {
     return email;
   }
   const textareachat = document.querySelector('textarea[name="MessageChat"]');
-  textareachat.addEventListener('input', function () {
-      this.style.height = 'auto';
-      this.style.height = (this.scrollHeight) + 'px';
-  });
+  if(textareachat){
+    textareachat.addEventListener('input', function () {
+        this.style.height = 'auto';
+        this.style.height = (this.scrollHeight) + 'px';
+    });
+  }
   function formatNumber(number) {
     let parts = number.toString().split('.');
     let integerPart = parts[0];

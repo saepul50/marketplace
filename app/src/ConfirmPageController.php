@@ -7,7 +7,7 @@ use SilverStripe\Versioned\ChangeSetItem;
 
 class ConfirmPageController extends PageController{
     private static $allowed_actions = [
-        'order' => true,
+        'order',
         'service'
     ];
 
@@ -58,6 +58,11 @@ class ConfirmPageController extends PageController{
         // die();
         if ($Request === 'batal'){
             $checkoutHeader->Status = 'Dibatalkan';
+            $checkoutHeader->write();
+            return json_encode(['success' => true, 'message' => 'Success']);
+        }
+        if ($Request === 'diterima'){
+            $checkoutHeader->Status = 'Selesai';
             $checkoutHeader->write();
             return json_encode(['success' => true, 'message' => 'Success']);
         }

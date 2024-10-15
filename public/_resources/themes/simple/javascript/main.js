@@ -118,7 +118,7 @@ $(document).ready(function () {
         iziToast.warning({ position: "bottomRight", title: 'Caution', message: 'Isi alasan pembatalan' });
       }
     }
-    $.post("/marketplace/confirm/service", {
+    $.post("/marketplace/history/service", {
       Request: request,
       OrderID: orderid
     })
@@ -146,6 +146,66 @@ $(document).ready(function () {
 
     return false;
   });
+  $('#receivedBtn').on('click', function (e) {
+    e.preventDefault();
+    var orderid = $(this).data('orderid');
+    var request = 'diterima';
+    iziToast.show({
+      color: 'dark',
+      icon: 'bx bxs-archive-in',
+      timeout: 5000,
+      title: 'Apakah pesanan telah sampai dan sesuai',
+      position: 'bottomRight',
+      progressBarColor: 'rgb(0, 255, 184)',
+      buttons: [
+        [
+          '<button>Pesanan Diterima</button>',
+          function (instance, toast) {
+            $(this).prop('disabled', true);
+            $.post("/marketplace/history/service", {
+              Request: request,
+              OrderID: orderid
+            })
+            .done(function (data) {
+              try {
+                var response = JSON.parse(data);
+                if (response.success) {
+                  $('#cancelbtn').modal('hide');
+                  iziToast.success({
+                    icon: 'fa fa-check',
+                    timeout: 2000,
+                    title: 'Sukses',
+                    message: 'Pesanan telah diterima',
+                    position: 'bottomRight',
+                    onClosed: function () {
+                      window.location.href = '/marketplace/confirm/';
+                    }
+                  });
+                } else {
+                  iziToast.warning({ position: "bottomRight", title: 'Caution', message: response.message || 'Failed' });
+                }
+              } catch (e) {
+                iziToast.error({ position: "bottomRight", title: 'Error', message: 'Invalid response from server' });
+              }
+            }).fail(function (xhr) {
+              iziToast.error({ position: "bottomRight", title: 'Error', message: xhr.responseText || 'An error occurred' });
+            }).always(function() {
+              $(this).prop('disabled', false); // Re-enable button after processing
+            });
+          }
+        ],
+        [
+          '<button>Close</button>',
+          function (instance, toast) {
+              instance.hide({
+                  transitionOut: 'fadeOutUp'
+              }, toast);
+          }
+        ]
+      ]
+    });
+  });
+
   $('.subcategory-link').on('click', function (e) {
     e.preventDefault();
     $('.subcategory-link').removeClass('active');
@@ -2573,7 +2633,7 @@ $('#searchForm').submit(function(e) {
   $('#logoutBtn').on('click', function (e) {
     e.preventDefault();
     $.post("/marketplace/profile/logout", {})
-    window.location.href = '/marketplace/login';
+    window.location.href = '/marketplace/';
   });
   $('#closeProductChat').on('click', function (e) {
     e.preventDefault();
@@ -2845,7 +2905,7 @@ $('#searchForm').submit(function(e) {
   if(urlParams.has('account')){
     toggleSwitchProfile(true);
   } else {
-      toggleSwitchProfile(false);
+    toggleSwitchProfile(false);
   }
   function toggleSwitchProfile(stts) {
     if (stts) {

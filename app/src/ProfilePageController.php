@@ -20,6 +20,8 @@ class ProfilePageController extends PageController{
     ];
     public function index() {
         $member = Security::getCurrentUser();
+        // Debug::show($member);
+        // die();
         if($member){
             return [
                 'Account' => $member

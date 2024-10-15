@@ -91,15 +91,15 @@
     </div>
 </section>
 <div class="container d-flex my-5" style="background-color: #f5f5f5; border-radius: 20px; height: 700px;">
-    <div class="SideBar col-4 p-0" style="margin-left: -1rem; border-radius: 25px; background-color: #f2f2f2; z-index: 2;">
+    <div class="SideBar col-4 p-0" style="margin-left: -1rem; border-radius: 25px; background-color: #e5e5e5; z-index: 2;">
         <div class="header pl-5 py-4">
             <h4 class="m-0" style="color: #000">Chat</h4>
-            <div class="input-group pt-3 pr-5">
+            <%-- <div class="input-group pt-3 pr-5">
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="inputGroup-sizing-default"><i class='bx bx-search' ></i></span>
                 </div>
                 <input type="text" class="form-control" placeholder="Cari Pengguna" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" style="box-shadow: none;">
-            </div>
+            </div> --%>
         </div>
         <% if $ChatList %>
             <div class="ChatListSort">
@@ -149,13 +149,11 @@
                                         <p class="m-0" style="font-size: 13px; font-weight: 500; color: darkorange; background-color: #ffa5004a; padding: .2rem .4rem; border-radius: 10px;">penjual</p>
                                     <% end_if %>
                                     
-                                    <% if $Date %>
-                                        <p class="m-0" style="font-size: 12px;">$Date.Format('d/M')</p>
-                                    <% end_if %>
+                                    <p class="m-0" style="font-size: 12px;">$DateLabel</p>
                                 </div>
                                 <% if $LastMessage %>
                                     <div class="d-flex justify-content-between">
-                                        <p class="m-0" style="color: #707070; overflow: hidden; text-overflow: ellipsis;">$LastMessage.Message</p>
+                                        <p class="m-0" style="color: #707070; white-space: nowrap; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; text-overflow: ellipsis;">$LastMessage.Message</p>
                                         <% if $ReceiverID == $Up.CurrentUser %>
                                             <% if $UnreadCount %>
                                                 <p class="m-0 notifouter"><span class="notif">$UnreadCount</span></p>
@@ -223,51 +221,60 @@
             <div class="chat-content px-3 py-2 flex-grow-1 overflow-auto d-flex flex-column-reverse" style="max-height: calc(100vh - 150px); overflow-y: auto;">
                 <% if $Messages %>
                     <% loop $Messages %>
-                        <% if $Sender.ID == $CurrentMember.ID %>
-                            <div class="d-flex align-items-end justify-content-end mb-3">
-                                <div class="bubble-right" style="background-color: #d1ecf1; padding: 10px 15px; border-radius: 20px; max-width: 70%; word-break: break-word;">
-                                    <p class="m-0" style="color: #000;">$Message</p>
-                                    <small class="d-flex justify-content-end">$Time.Format('HH.mm')</small>
-                                </div>
-                            </div>
-                            <% if $Product %>
+                        <% loop $Messages %>
+                            <% if $Sender.ID == $CurrentMember.ID %>
                                 <div class="d-flex align-items-end justify-content-end mb-3">
-                                    <% with $Product %>
-                                        <div class="chat-bubble d-flex align-items-center p-3" style="background-color: #fff; border-radius: 10px; position: relative; max-width: 300px;">
-                                            <img src="$ProductImages.First.URL" class="img-fluid" style="aspect-ratio: 1/1; object-fit: cover; height: 50px; width: auto; border-radius: 50%;">
-                                            <h6 class="m-0 pl-2" style="margin-left: 10px;">$Title</h6>
-                                            <div class="arrow" style="position: absolute; top: 100%; right: 15px; border-width: 10px; border-style: solid; border-color: #fff transparent transparent transparent;"></div>
-                                        </div>
-                                    <% end_with %>
+                                    <div class="bubble-right" style="background-color: #d1ecf1; padding: 8px 12px; border-radius: 20px; max-width: 80%; word-break: break-word; position: relative; margin-bottom: 10px;">
+                                        <p class="m-0" style="color: #000; font-size: 14px;">$Message</p>
+                                        <small class="d-flex justify-content-end" style="color: #888; font-size: 12px;">$Time.Format('HH.mm')</small>
+                                        <div style="position: absolute; top: 0px; right: -15px; width: 0; height: 0; border-top: 8px solid transparent; border-left: 30px solid #d1ecf1; border-bottom: 8px solid transparent;"></div>
+                                    </div>
                                 </div>
-                            <% end_if %>
-                        <% else %>
-                            <div class="d-flex align-items-center mb-3">
-                                <% if $IsVendor %>
-                                    <% with $Up.Vendor.ProfilImage %>
-                                        <img src="$URL" class=" mr-3" style="border-radius: 50%; width: 40px; height:40px; object-fit:cover;">
-                                    <% end_with %>
-                                <% else %>
-                                    <% with $Sender.ProfileImage %>
-                                        <img src="$URL" class=" mr-3" style="border-radius: 50%; width: 40px;  height:40px; object-fit:cover;">
-                                    <% end_with %>
+                                <% if $Product %>
+                                    <div class="d-flex align-items-end justify-content-end mb-3">
+                                        <% with $Product %>
+                                            <div class="chat-bubble d-flex align-items-center p-3" style="background-color: #fff; border-radius: 10px; position: relative; max-width: 300px;">
+                                                <img src="$ProductImages.First.URL" class="img-fluid" style="aspect-ratio: 1/1; object-fit: cover; height: 50px; width: auto; border-radius: 50%;">
+                                                <h6 class="m-0 pl-2" style="margin-left: 10px;">$Title</h6>
+                                                <div class="arrow" style="position: absolute; top: 100%; right: 15px; border-width: 10px; border-style: solid; border-color: #fff transparent transparent transparent;"></div>
+                                            </div>
+                                        <% end_with %>
+                                    </div>
                                 <% end_if %>
-                                <div class="bubble-left" style="background-color: #fff; padding: 10px 15px; border-radius: 20px; max-width: 70%; word-break: break-word;">
-                                    <p class="m-0" style="color: #000;">$Message</p>
-                                    <small class="d-flex justify-content-end">$Time.Format('HH.mm')</small>
+                            <% else %>
+                                <div class="d-flex align-items-center mb-3">
+                                    <% if $IsVendor %>
+                                        <% with $Up.Vendor.ProfilImage %>
+                                            <img src="$URL" class="img-fluid mr-3" style="border-radius: 50%; width: 40px;">
+                                        <% end_with %>
+                                    <% else %>
+                                        <% with $Sender.ProfileImage %>
+                                            <img src="$URL" class="img-fluid mr-3" style="border-radius: 50%; width: 40px;">
+                                        <% end_with %>
+                                    <% end_if %>
+                                    <div class="bubble-left" style="background-color: #fff; padding: 8px 12px; border-radius: 20px; max-width: 80%; word-break: break-word; position: relative; margin-bottom: 10px;">
+                                        <p class="m-0" style="color: #000; font-size: 14px;">$Message</p>
+                                        <small class="d-flex justify-content-end" style="color: #888; font-size: 12px;">$Time.Format('HH.mm')</small>
+                                        <div style="position: absolute; top: 0px; left: -15px; width: 0; height: 0; border-top: 8px solid transparent; border-right: 30px solid #fff; border-bottom: 8px solid transparent;"></div>
+                                    </div>
                                 </div>
-                            </div>
-                            <% if $Product %>
-                                <div class="d-flex align-items-end mb-3">
-                                    <% with $Product %>
-                                        <div class="chat-bubble d-flex align-items-center p-3" style="background-color: #fff; border-radius: 10px; position: relative; max-width: 300px;">
-                                            <img src="$ProductImages.First.URL" class="img-fluid" style="aspect-ratio: 1/1; object-fit: cover; height: 50px; width: auto; border-radius: 50%;">
-                                            <h6 class="m-0 pl-2" style="margin-left: 10px;">$Title</h6>
-                                            <div class="arrow" style="position: absolute; top: 100%; left: 15px; border-width: 10px; border-style: solid; border-color: #fff transparent transparent transparent;"></div>
-                                        </div>
-                                    <% end_with %>
-                                </div>
+                                <% if $Product %>
+                                    <div class="d-flex align-items-end mb-3 pl-5">
+                                        <% with $Product %>
+                                            <div class="chat-bubble d-flex align-items-center p-3" style="background-color: #fff; border-radius: 10px; position: relative; max-width: 300px;">
+                                                <img src="$ProductImages.First.URL" class="img-fluid" style="aspect-ratio: 1/1; object-fit: cover; height: 50px; width: auto; border-radius: 50%;">
+                                                <h6 class="m-0 pl-2" style="margin-left: 10px;">$Title</h6>
+                                                <div class="arrow" style="position: absolute; top: 100%; left: 15px; border-width: 10px; border-style: solid; border-color: #fff transparent transparent transparent;"></div>
+                                            </div>
+                                        <% end_with %>
+                                    </div>
+                                <% end_if %>
                             <% end_if %>
+                        <% end_loop %>
+                        <% if $DateLabel %>
+                            <div class="date-label" style="text-align: center; margin: 15px 0; font-weight: bold;">
+                                <small class="px-2 py-1" style="background-color: #d3d3d3; border-radius: 10px; font-weight: 400; font-size: 12px;">$DateLabel</small>
+                            </div>
                         <% end_if %>
                     <% end_loop %>
                 <% end_if %>

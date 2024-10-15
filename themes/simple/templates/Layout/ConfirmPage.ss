@@ -823,6 +823,10 @@
                               <p class="m-0">$PaymentMethod</p>
                            </div>
                         </div>
+                        <div class="d-flex justify-content-end pt-4">
+                           <button type="button" class="genric-btn primary-border" id="receivedBtn"
+                              data-orderid="$OrderID">Pesanan Diterima</button>
+                        </div>
                      </div>
                   </div>
                </div>

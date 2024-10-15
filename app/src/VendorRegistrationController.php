@@ -20,11 +20,13 @@ class VendorRegistrationController extends PageController{
     public function index(HTTPRequest $request){
         $member = Security::getCurrentUser();
         if($member){
-            $vendor = Vendor::get()->filter('MemberID', $member->ID);
-            
-            return  [
-                'Vendor' => $vendor,
-            ];
+            $vendor = Vendor::get()->filter('OwnerID', $member->ID)->first();
+            // Debug::show($vendor);
+            // die();
+            if($vendor){
+                return $this->redirect('venn/' . $vendor->Pathname);
+            }
+            return $this    ;
         }
         return $this->redirect('login');
     }
