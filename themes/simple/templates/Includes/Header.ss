@@ -65,14 +65,10 @@
 							</ul>
 						</li>
 						<li class="nav-item" id="blog"><a class="nav-link" href="{$BaseHref}/blog">Blog</a></li>
-						<li class="nav-item submenu dropdown" id="pages">
-							<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-							 aria-expanded="false">Pages</a>
-							<ul class="dropdown-menu">
-								<li class="nav-item"><a class="nav-link" href="{$BaseHref}/login">Login</a></li>
-								<li class="nav-item"><a class="nav-link" href="{$BaseHref}/tracking">Tracking</a></li>
-							</ul>
-						</li>
+						<% if $Member %>
+						<% else %>
+							<li class="nav-item" id="login"><a class="nav-link" href="{$BaseHref}/login">Login</a></li>
+						<% end_if %>
 						<li class="nav-item" id="contact"><a class="nav-link" href="{$BaseHref}/contact">Contact</a></li>
 						<li class="nav-item" id="profile"><a class="nav-link" href="{$BaseHref}/profile">Profile</a></li>
 					</ul>

@@ -103,5 +103,5 @@
         document.getElementById('registerpageId').style.display = 'none';
         document.getElementById('loginpageId').style.display = 'block';
     });
-    $('.nav-item#pages').addClass('active');
+    $('.nav-item#login').addClass('active');
 </script>

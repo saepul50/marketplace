@@ -38,14 +38,15 @@
                     <% loop $Cart %>
                         <tr class="cartProduct">
                             <td class="col-6">
+                                <%-- <p>$ProductID</p> --%>
                                 <div class="media d-flex align-items-center">
                                     <input type="checkbox" class="productCheckbox" data-id="$ID">
                                     <div class="d-flex col-10 col-md-4">
-                                        <img id="productCheckoutImage" src="$ProductImage" alt="" class="img-fluid">
+                                        <img id="productCheckoutImage" src="$Product.ProductImages.First.URL" alt="" class="img-fluid">
                                     </div>
                                     <div class="media-body">
-                                        <p id="productCheckoutID" class="d-none">$ProductID</p>
-                                        <p id="productCheckoutTitle">$ProductTitle</p>
+                                        <p id="productCheckoutID" class="d-none">$Product.ID</p>
+                                        <p id="productCheckoutTitle">$Product.Title</p>
                                         <% if $ProductCategoryId = 1 %>
                                             <p id="productCheckoutVariant" data-id="$ProductVariantID" data-weight="$ProductVariantWeight">size: $ProductVariant</p>
                                         <% else %>
@@ -55,11 +56,11 @@
                                 </div>
                             </td>
                             <td>
-                                <h5 id="itemPrice">$ProductPrice</h5>
+                                <h5 id="itemPrice">$Variant.Price</h5>  
                             </td>
-                            <td>
+                            <td style="position: relative;">
                                 <div class="product_count">
-                                    <input type="text" name="qty" inputmode="numeric" id="quantityInput" class="input-text qty" value="$ProductQuantity" min="1">
+                                    <input type="text" name="qty" inputmode="numeric" id="quantityInput" class="input-text qty" value="$ProductQuantity" min="1" data-stock="$Variant.Stock">
                                     <button class="increase items-count m-0" type="button" id="incrementButton">
                                         <i class="lnr lnr-chevron-up"></i>
                                     </button>
@@ -67,6 +68,7 @@
                                         <i class="lnr lnr-chevron-down"></i>
                                     </button>
                                 </div>
+                                <span class="pt-1" id="stockWarning" style="position: absolute; display:none; color:red; font-size: 9px; left: -8px;">Sudah mencapai maks stock produk</span>
                             </td>
                             <td>
                                 <h5 id="totalPriceCheckout"></h5>
@@ -211,6 +213,7 @@
         </div>
     </div>
 </section>
+
 <!--================End Cart Area =================-->
 <script>
     $('.nav-item#shop').addClass('active');

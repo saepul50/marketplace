@@ -61,8 +61,6 @@ use SilverStripe\View\Requirements;
         'CommentReply' =>ProductReply::class,
     ];
     private static $default_sort = 'Created DESC';
-
-
     
     public function onBeforeWrite()
     {

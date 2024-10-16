@@ -2,6 +2,7 @@
 
 use SilverStripe\Control\HTTPRequest;
 use SilverStripe\Dev\Debug;
+use SilverStripe\ORM\ArrayList;
 use SilverStripe\ORM\ValidationException;
 use SilverStripe\Security\Security;
 
@@ -21,9 +22,24 @@ class CartPageController extends PageController{
     ];
 
     public function getCart(){
+        // die();
         $member = Security::getCurrentUser();
         if ($member) {
-            return CartObject::get()->filter('MemberID', $member->ID);
+            $cart = CartObject::get()->filter('MemberID', $member->ID);
+            $cartProducts = [];
+            foreach($cart as $cartProduct){
+                $product = ProductObject::get()->byID($cartProduct->ProductID);
+                $variant = ProductVariantObject::get()->byID($cartProduct->ProductVariantID);
+                if ($product) {
+                    $cartProduct->Product = $product;
+                    $cartProduct->Variant = $variant;
+                    $cartProducts[] = $cartProduct;
+                }
+            }
+            // Debug::show($cart);
+            // die();
+            $cartProducts = new ArrayList($cartProducts);
+            return $cartProducts;
         }
         return null;
     }

@@ -18,6 +18,7 @@ class ProductCheckoutPageController extends PageController{
         'address',
         'paymentmethod',
         'transaction',
+        'manualpayment',
         'manualTF',
         'cash',
         'coupon',
@@ -662,6 +663,42 @@ class ProductCheckoutPageController extends PageController{
             }
         }
     }
+    public function manualpayment(HTTPRequest $request) {
+        $id = $request->param('ID');
+        $member = Security::getCurrentUser();
+    
+        if ($member) {
+            if ($request->isPOST() && isset($_FILES['ProofImageManual'])) {
+                $id = $request->postVar('ID');
+                $checkoutHeader = ProductCheckoutHeaderObject::get()->filter('OrderID', $id)->first();
+                
+                $upload = new Upload();
+                $img = new Image();
+                $upload->loadIntoFile($_FILES['ProofImageManual'], $img);
+
+                if (!$upload->isError()) {
+                    $checkoutHeader->ProofImage = $img->ID;
+                    $checkoutHeader->write();
+                    return json_encode(['success' => true, 'message' => 'Sukses']);
+                } else {
+                    return json_encode(['success' => false, 'message' => 'Gagal menulis file']);
+                }
+            }
+
+            $checkoutHeader = ProductCheckoutHeaderObject::get()->filter('OrderID', $id)->first();
+            
+            if ($checkoutHeader) {
+    
+                $isDetail = $request->getVar('invoice');
+                return $this->customise([
+                    'CheckoutHeader' => $checkoutHeader,
+                    'Invoice' => $isDetail,
+                ])->renderWith(['ProductCheckoutPage', 'Page']);
+            }
+        }        
+        return $this->httpError(404, 'Page not found');
+    }
+    
     public function manualTF(HTTPRequest $request){
         if ($request->isPOST()) {
             // Debug::show($request);
@@ -769,15 +806,7 @@ class ProductCheckoutPageController extends PageController{
                                 $checkoutHeader->PaymentMethod = $PaymentMethode;
                                 $checkoutHeader->write();
                                 $firstItemProcessed = true;
-                                if(isset($_FILES['ProofImage'])){
-                                    $upload = new Upload();
-                                    $img = new Image();
-                                    $upload->loadIntoFile($_FILES['ProofImage'], $img);
-                                    
-                                    if (!$upload->isError()) {
-                                        $checkoutHeader->ProofImage = $img->ID;
-                                    }
-                                }
+
                                 $checkoutHeader->write();
                                 $firstItemProcessed = true;
                             }

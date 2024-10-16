@@ -73,9 +73,9 @@
 									<% if $Product.Promotion %>
 										<h2 class="mb-1 ppprice">$Product.rangePriceDiscounted</h2>
 										<h6 class="l-through my-1 nnprice">$Product.rangePrice</h6>
-										<% else %>
-											<h2 class="ppprice" id="productPrice">$Product.rangePrice</h2>
-											<% end_if %>
+									<% else %>
+										<h2 class="ppprice" id="productPrice">$Product.rangePrice</h2>
+									<% end_if %>
 												<ul class="list">
 													<% if $Product.ProductCategory && $Product.totalStock> 0 %>
 														<li><a class="active" href="#"><span>Category</span> :
@@ -84,9 +84,8 @@
 														<% else_if $Product.totalStock < 1 %>
 															<li><a class="active" href="#"><span>Category</span> :
 																	$Product.ProductCategory.Title</a></li>
-															<li><a href="#"><span>Availibility</span> : Out Of Stock</a>
-															</li>
-															<% end_if %>
+															<li><a href="#"><span>Availibility</span> : Out Of Stock</a></li>
+													<% end_if %>
 												</ul>
 												<p class="m-0 p-0 py-3">$Product.Features</p>
 												<div class="product_count mb-3">
@@ -119,15 +118,15 @@
 															</div>
 														<% end_loop %>
 													</div>
-													<% end_if %>
-														<div class="card_area d-flex align-items-center">
-															<button class="primary-btn" id="addCart"
-																style="border:none;">Add to Cart</button>
-															<a class="icon_btn" href="#"><i
-																	class="lnr lnr lnr-diamond"></i></a>
-															<a class="icon_btn" href="#"><i
-																	class="lnr lnr lnr-heart"></i></a>
-														</div>
+												<% end_if %>
+													<div class="card_area d-flex align-items-center">
+														<button class="primary-btn" id="addCart"
+															style="border:none;">Add to Cart</button>
+														<a class="icon_btn" href="#"><i
+																class="lnr lnr lnr-diamond"></i></a>
+														<a class="icon_btn" href="#"><i
+																class="lnr lnr lnr-heart"></i></a>
+													</div>
 								</div>
 							</div>
 				</div>

@@ -15,7 +15,7 @@
 <!-- End Banner Area -->
 
 <!--================Checkout Area =================-->
-<section class="checkout_area section_gap">
+<section class="checkout_area section_gap" id="checkout_area">
     <div class="container">
         <% if $CheckoutProductData %>
             <%-- <div class="returning_customer">
@@ -204,7 +204,6 @@
                                 </div>
                                 <p class="nooption nooptionmanualtf">Pay via manual transfer with bank.</p>
                                 <p class="optiondisplay optiondisplaymanualtf py-1">
-                                    <span id="norek"></span>
                                     <span class="d-grid paymentOptionDisplayManual">
                                     </span>
                                 </p>
@@ -246,6 +245,174 @@
             <h5 class="m-0 d-flex justify-content-center ">Lakukan Checkout Product!</h5>
         <% end_if %>
     </div>
+</section>
+<section class="invoice_payment" id="invoice_payment" style="max-width: 600px; margin: 40px auto; background-color: #f7f7f7; border: 1px solid #e0e0e0; border-radius: 12px; padding: 25px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+    <% with $CheckoutHeader %>
+        <% if $ProofImage.exists %>
+            <h2 style="text-align: center; color: #333; font-size: 24px; font-weight: bold; margin-bottom: 20px;">Pembayaran</h2>
+            <% if $Bank == 'BCA' %>
+                <div class="d-flex justify-content-between">
+                    <div class="d-flex">
+                        <div class="col-2 p-2" style="background-color: #fff; border-radius: 20px;">
+                            <img src="public/_resources/themes/simple/images/banner/Logo-BCA-PNG.png" class="img-fluid">
+                        </div>
+                        <div class="pl-3 d-flex flex-column justify-content-center">
+                            <h6 class="m-0" style="margin: 5px 0; color: #333;">$Bank</h6>
+                            <h6 class="m-0 py-1" style="margin: 5px 0; color: #333;">$SiteConfig.Title</h6>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <i class='bx bxs-check-circle' style="color: darkorange; font-size: 40px;"></i>
+                    </div>
+                </div>
+                <label class="mt-3 py-2 px-3" style="position: relative; background-color: #fff; border-radius: 20px; width: 100%;"><h6 class="m-0" style="color: #000;">12345678</h6><i class='bx bx-copy' style="position: absolute; top: 10px; right: 15px; font-size: 20px; cursor: pointer;"></i></label>
+            <% else_if $Bank == 'BRI' %>
+                <div class="d-flex justify-content-between">
+                    <div class="d-flex">
+                        <div class="col-2 p-2" style="background-color: #fff; border-radius: 20px;">
+                            <img src="public/_resources/themes/simple/images/banner/Logo-BCA-PNG.png" class="img-fluid">
+                        </div>
+                        <div class="pl-3 d-flex flex-column justify-content-center">
+                            <h6 class="m-0" style="margin: 5px 0; color: #333;">$Bank</h6>
+                            <h6 class="m-0 py-1" style="margin: 5px 0; color: #333;">$SiteConfig.Title</h6>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <i class='bx bxs-check-circle' style="color: darkorange; font-size: 40px;"></i>
+                    </div>
+                </div>
+                <label class="mt-3 py-2 px-3" style="position: relative; background-color: #fff; border-radius: 20px; width: 100%;"><h6 class="m-0" style="color: #000;">123456789</h6><i class='bx bx-copy' style="position: absolute; top: 10px; right: 15px; font-size: 20px; cursor: pointer;"></i></label>
+            <% else_if $Bank == 'Mandiri' %>
+                <div class="d-flex justify-content-between">
+                    <div class="d-flex">
+                        <div class="col-2 p-2" style="background-color: #fff; border-radius: 20px;">
+                            <img src="public/_resources/themes/simple/images/banner/Logo-BCA-PNG.png" class="img-fluid">
+                        </div>
+                        <div class="pl-3 d-flex flex-column justify-content-center">
+                            <h6 class="m-0" style="margin: 5px 0; color: #333;">$Bank</h6>
+                            <h6 class="m-0 py-1" style="margin: 5px 0; color: #333;">$SiteConfig.Title</h6>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <i class='bx bxs-check-circle' style="color: darkorange; font-size: 40px;"></i>
+                    </div>
+                </div>
+                <label class="mt-3 py-2 px-3" style="position: relative; background-color: #fff; border-radius: 20px; width: 100%;"><h6 class="m-0" style="color: #000;">12345678910</h6><i class='bx bx-copy' style="position: absolute; top: 10px; right: 15px; font-size: 20px; cursor: pointer;"></i></label>
+            <% end_if %>
+
+            <div class="pt-3" style="margin-bottom: 30px;">
+                <h3 style="color: #666; font-size: 18px; border-bottom: 1px solid #ddd; padding-bottom: 10px; margin-bottom: 15px;">Detail Pembayaran</h3>
+                <p style="margin: 8px 0; color: #333;"><strong>Invoice:</strong></p>
+                <label class="mt-1 py-2 px-3" style="position: relative; background-color: #fff; border-radius: 20px; width: 100%;"><h6 class="m-0" style="color: #404040;">$OrderID</h6><i class='bx bx-copy' style="position: absolute; top: 10px; right: 15px; font-size: 20px; cursor: pointer;"></i></label>
+                <p style="margin: 8px 0; color: #333;"><strong>Nama:</strong></p>
+                <label class="mt-1 py-2 px-3" style="position: relative; background-color: #fff; border-radius: 20px; width: 100%;"><h6 class="m-0" style="color: #404040;">$CustomerName</h6></label>
+                <p style="margin: 8px 0; color: #333;"><strong>Total Pembayaran:</strong></p>
+                <label class="mt-1 py-2 px-3" style="position: relative; background-color: #fff; border-radius: 20px; width: 100%;"><h6 class="m-0" style="color: #404040;">$FinalPrice</h6></label>
+            </div>
+
+            <div style="margin-bottom: 30px;">
+                <h3 style="color: #666; font-size: 18px; border-bottom: 1px solid #ddd; padding-bottom: 10px; margin-bottom: 15px;">Bukti Pembayaran</h3>
+                <a class="d-flex justify-content-center" data-toggle="modal" data-target="#imageModal" style="cursor: pointer;">
+                    <div class="col-5 p-0">
+                        <img src="$ProofImage.URL" class="img-fluid">
+                    </div>
+                </a>
+                <div class="modal fade" id="imageModal" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                        <div class="modal-content" style="background: none; border: none;">
+                            <div class="modal-header" style="border-bottom: none;">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body" style="background: none;">
+                                <img id="modal-image" src="$ProofImage.URL" class="img-fluid" style="width: 100%; height: auto;"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <% else %>
+            <h2 style="text-align: center; color: #333; font-size: 24px; font-weight: bold; margin-bottom: 20px;">Pembayaran</h2>
+            
+            <% if $Bank == 'BCA' %>
+                <div class="d-flex">
+                    <div class="col-2 p-2" style="background-color: #fff; border-radius: 20px;">
+                        <img src="public/_resources/themes/simple/images/banner/Logo-BCA-PNG.png" class="img-fluid">
+                    </div>
+                    <div class="pl-3 d-flex flex-column justify-content-center">
+                        <h6 class="m-0" style="margin: 5px 0; color: #333;">$Bank</h6>
+                        <h6 class="m-0 py-1" style="margin: 5px 0; color: #333;">$SiteConfig.Title</h6>
+                    </div>
+                </div>
+                <label class="mt-3 py-2 px-3" style="position: relative; background-color: #fff; border-radius: 20px; width: 100%;"><h6 class="m-0" style="color: #000;">12345678</h6><i class='bx bx-copy' style="position: absolute; top: 10px; right: 15px; font-size: 20px; cursor: pointer;"></i></label>
+            <% else_if $Bank == 'BRI' %>
+                <div class="d-flex">
+                    <div class="col-2 p-2" style="background-color: #fff; border-radius: 20px;">
+                        <img src="public/_resources/themes/simple/images/banner/Logo-BCA-PNG.png" class="img-fluid">
+                    </div>
+                    <div class="pl-3 d-flex flex-column justify-content-center">
+                        <h6 class="m-0" style="margin: 5px 0; color: #333;">$Bank</h6>
+                        <h6 class="m-0" style="margin: 5px 0; color: #333;">123456789</h6>
+                        <h6 class="m-0 py-1" style="margin: 5px 0; color: #333;">$SiteConfig.Title</h6>
+                    </div>
+                </div>
+                <label class="mt-3 py-2 px-3" style="position: relative; background-color: #fff; border-radius: 20px; width: 100%;"><h6 class="m-0" style="color: #000;">123456789</h6><i class='bx bx-copy' style="position: absolute; top: 10px; right: 15px; font-size: 20px; cursor: pointer;"></i></label>
+            <% else_if $Bank == 'Mandiri' %>
+                <div class="d-flex">
+                    <div class="col-2 p-2" style="background-color: #fff; border-radius: 20px;">
+                        <img src="public/_resources/themes/simple/images/banner/Logo-BCA-PNG.png" class="img-fluid">
+                    </div>
+                    <div class="pl-3 d-flex flex-column justify-content-center">
+                        <h6 class="m-0" style="margin: 5px 0; color: #333;">$Bank</h6>
+                        <h6 class="m-0 py-1" style="margin: 5px 0; color: #333;">$SiteConfig.Title</h6>
+                    </div>
+                </div>
+                <label class="mt-3 py-2 px-3" style="position: relative; background-color: #fff; border-radius: 20px; width: 100%;"><h6 class="m-0" style="color: #000;">12345678910</h6><i class='bx bx-copy' style="position: absolute; top: 10px; right: 15px; font-size: 20px; cursor: pointer;"></i></label>
+            <% end_if %>
+
+            <div class="pt-3" style="margin-bottom: 30px;">
+                <h3 style="color: #666; font-size: 18px; border-bottom: 1px solid #ddd; padding-bottom: 10px; margin-bottom: 15px;">Detail Pembayaran</h3>
+                <p style="margin: 8px 0; color: #333;"><strong>Invoice:</strong></p>
+                <label class="mt-1 py-2 px-3" style="position: relative; background-color: #fff; border-radius: 20px; width: 100%;"><h6 class="m-0" style="color: #404040;"></h6>$OrderID<i class='bx bx-copy' style="position: absolute; top: 10px; right: 15px; font-size: 20px; cursor: pointer;"></i></label>
+                <p style="margin: 8px 0; color: #333;"><strong>Nama:</strong></p>
+                <label class="mt-1 py-2 px-3" style="position: relative; background-color: #fff; border-radius: 20px; width: 100%;"><h6 class="m-0" style="color: #404040;">$CustomerName</h6></label>
+                <p style="margin: 8px 0; color: #333;"><strong>Total Pembayaran:</strong></p>
+                <label class="mt-1 py-2 px-3" style="position: relative; background-color: #fff; border-radius: 20px; width: 100%;"><h6 class="m-0" style="color: #404040;">$FinalPrice</h6></label>
+            </div>
+
+            <div style="margin-bottom: 30px;">
+                <h3 style="color: #666; font-size: 18px; border-bottom: 1px solid #ddd; padding-bottom: 10px; margin-bottom: 15px;">Upload Bukti Pembayaran</h3>
+                <a data-toggle="modal" data-target="#imageModal">
+                    <img id="image-preview" style="display:none; width: 200px; cursor:pointer;"/>
+                </a>
+                <form id="payment_form" class="form-group d-grid py-2">
+                    <div class="">
+                        <label class="text-center genric-btn primary-border px-3 py-0" style="line-height: 30px;" for="transfer-image">Unggah</label>
+                        <input class="d-none" type="file" id="transfer-image" name="transferImage" accept="image/*" required style="border:none;">
+                    </div>
+                </form>
+                <div class="modal fade" id="imageModal" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                        <div class="modal-content" style="background: none; border: none;">
+                            <div class="modal-header" style="border-bottom: none;">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body" style="background: none;">
+                                <img id="modal-image" src="" class="img-fluid" style="width: 100%; height: auto;"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="text-align: center;">
+                <button class="primary-btn" style="border: none; border-radius: 0;" id="manualtfpaymentbtn" data-id="$OrderID">Kirim</button>
+            </div>
+        <% end_if %>
+    <% end_with %>
 </section>
 <script>
     $('.nav-item#shop').addClass('active');
