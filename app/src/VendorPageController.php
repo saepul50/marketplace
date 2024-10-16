@@ -1,3 +1,4 @@
+
 <?php 
 
 use SilverStripe\Control\HTTPRequest;
@@ -18,11 +19,10 @@ class VendorPageController extends PageController {
     private function getBannerPromos($bannerPlaces) {
         $promos = new ArrayList();
         
-        // Loop through each BannerPlace and get related BannerPromo
         foreach ($bannerPlaces as $bannerPlace) {
             $relatedPromo = $bannerPlace->BannerPromo();
             if ($relatedPromo->exists()) {
-                $promos->merge($relatedPromo); // Merge all promos into one list
+                $promos->merge($relatedPromo); 
             }
         }
     
@@ -31,9 +31,19 @@ class VendorPageController extends PageController {
 
     public function index(HTTPRequest $request) {
         $member = Security::getCurrentUser();
+        $pathname = $this->getRequest()->param('ID');
+        $vendor = Vendor::get()->filter(['Pathname' => $pathname])->first();
+        $logview = LogView::create();
         if($member){
+            $logview->MemberID = $member->ID;
+        } else {
+            $logview->MemberID = -1;
+        }
+        $logview->VendorID = $vendor->ID;
+        $logview->write();
+        $vendor->TotalView++;
+        $vendor->write();
             $pathname = $this->getRequest()->param('ID');
-                
             date_default_timezone_set('Asia/Jakarta'); 
             if($pathname){
                 $vendor = Vendor::get()->filter(['Pathname' => $pathname])->first();
@@ -185,8 +195,6 @@ class VendorPageController extends PageController {
             } else{
                 return null;
             }
-        }
-        return $this->redirect('login');
     }
     public function filter(HTTPRequest $request){
         $data = $request->postVars();

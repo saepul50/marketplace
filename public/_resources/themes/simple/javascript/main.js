@@ -607,6 +607,68 @@ $(document).ready(function () {
     return false;
   });
 
+  $("#forgetpass").on("submit", function(event) {
+    event.preventDefault(); 
+
+    var email = $("#inputEmail4").val(); 
+
+    $.post("/marketplace/login/sendlink", { 
+        Email: email 
+    })
+    .done(function (data) {
+      var response = JSON.parse(data);
+      console.log(response);
+      if (response.success) {
+        iziToast.success({
+          title: response.message,
+          position: 'bottomRight',
+        });
+      } else {
+        iziToast.error({ title: 'Gagal Mengirim', message: response.message, position: 'bottomRight' });
+      }
+    }).fail(function () {
+      iziToast.error({ title: 'Error', message: 'Terjadi Kesalahan', position: 'bottomRight' });
+    });
+  });
+
+
+  $("#forgetpassword").submit(function(event) {
+    event.preventDefault();
+
+    var Password = $("#inputPassword4").val(); 
+    var Password2 = $("#inputPassword5").val(); 
+    var uniqe = $("#uniqe").val();  
+    if(Password === Password2){
+      $.post("/marketplace/forgetpassword/changepass", { 
+          Pw : Password,
+          Pw2 : Password2,
+          ID: uniqe
+      })
+      .done(function (data) {
+        var response = JSON.parse(data);
+        console.log(response);
+        if (response.success) {
+          iziToast.success({
+            title: 'Password Anda Berhasil Diganti Silahkan Kembali Ke hal.Login',
+            position: 'bottomRight',
+          });
+          setInterval(href, 2000);
+          
+          function href() {
+            window.location.href = "/marketplace/login"
+          }
+          
+        } else {
+          iziToast.error({ title: 'Gagal Mengirim', message: response.message, position: 'bottomRight' });
+        }
+      }).fail(function () {
+        iziToast.error({ title: 'Error', message: 'Terjadi Kesalahan', position: 'bottomRight' });
+      });
+    } else {
+      iziToast.error({ title: 'Error', message: 'Password Dan Confirm Password Harus Sama', position: 'bottomRight' });
+    }
+  });
+
   $("#replycomment").off(function (event) {
     event.preventDefault();
 

@@ -46,7 +46,7 @@
                         </div>
                         <div class="col-md-12 form-group">
                             <button id="loginn" class="primary-btn">Log In</button>
-                            <a href="#">Forgot Password?</a>
+                            <a style="cursor:pointer;" data-toggle="modal" data-target="#exampleModalCenter">Forgot Password?</a>
                         </div>
                     </form>
                 </div>
@@ -93,6 +93,44 @@
         </div>
     </div>
 </section>
+
+<%-- Modal Forget PassWord --%>
+
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog " role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalCenterTitle">Forget Password</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form method="post" id="forgetpass">
+            <div class="modal-body">
+                <label for="inputEmail4">Email</label>
+                <input type="email" class="form-control" id="inputEmail4" placeholder="Email">
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary" id="forget">Send Link Change Password</button>
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <script>
     document.getElementById('showRegister').addEventListener('click', function() {
         document.getElementById('loginpageId').style.display = 'none';

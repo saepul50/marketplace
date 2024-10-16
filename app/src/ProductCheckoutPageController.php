@@ -31,7 +31,7 @@ class ProductCheckoutPageController extends PageController{
             $AddressData = $request->getSession()->get('AddressData');
             $Coupon = $request->getSession()->get('Coupon');
             $diskon = PromoToko::get()->filter('Code', $Coupon);
-    
+            Debug::show($diskon);
             $listDataCheckout = new ArrayList();
             
             if ($checkoutData && is_array($checkoutData)) {

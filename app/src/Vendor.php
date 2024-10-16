@@ -31,6 +31,7 @@ use SilverStripe\Security\Security;
             'PromoToko' => PromoToko::class,
             'Chat' => ChatObject::class,
             'BannerPlaces' => BannerPlace::class, 
+            'LogView' => LogView::class
         ];
 
 

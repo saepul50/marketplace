@@ -3,7 +3,7 @@
         'name' => 'silverstripe/installer',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '1ef82246405edc1585c8cd6c076e185a8a6be629',
+        'reference' => 'b715b8520f0eb0b646646b19c16f2a1dc5256b9d',
         'type' => 'silverstripe-recipe',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -688,7 +688,7 @@
         'silverstripe/installer' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '1ef82246405edc1585c8cd6c076e185a8a6be629',
+            'reference' => 'b715b8520f0eb0b646646b19c16f2a1dc5256b9d',
             'type' => 'silverstripe-recipe',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
