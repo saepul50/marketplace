@@ -620,7 +620,7 @@ $(document).ready(function () {
       console.log(response);
       if (response.success) {
         iziToast.success({
-          title: response.message,
+          title: 'Link Sudah Diberikan Ke Alamat Email Anda',
           position: 'bottomRight',
         });
       } else {

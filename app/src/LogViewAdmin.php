@@ -63,6 +63,7 @@ class LogViewAdmin extends LeftAndMain implements PermissionProvider{
         
         return $this->customise([
             'LogView' => $paginatedlog,
+            'Member' => $member
         ])->renderWith('LogView');
     }
 }

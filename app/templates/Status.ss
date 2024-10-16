@@ -84,7 +84,16 @@ Change it, enhance it and most importantly enjoy it!
 			</div>
 			<p class="" id="days">$Days</p>
 			<div class="mt-2 d-flex" style="height: 350px;">
-				<div class="col-8 p-0">
+				<div class="col-4 p-0">
+					<h4 class="fw-bold">Pengunjung</h4>
+					<div id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%">
+						<i class="fa fa-calendar"></i>&nbsp;
+						<span id="daterange"></span> <i class="fa fa-caret-down"></i>
+						<input type="hidden" onchange="myFunction()" id="see">
+					</div>
+					<canvas id="myChart1"></canvas>
+				</div>
+				<div class="col-5 p-0">
 					<h4 class="fw-bold">Penjualan</h4>
 					<div id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%">
 						<i class="fa fa-calendar"></i>&nbsp;
@@ -93,12 +102,14 @@ Change it, enhance it and most importantly enjoy it!
 					</div>
 					<canvas id="myChart"></canvas>
 				</div>
-				<div class="col-4 p-0">
+				<div class="col-3 p-0">
 					<h4 class="fw-bold">Produk Kategori</h4>
 					<canvas id="CategoryChart"></canvas>
 				</div>
+				
 			</div>
 		</div>
+
 	</div>
 	<script>
 		document.addEventListener("DOMContentLoaded", function() {

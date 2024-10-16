@@ -59,7 +59,11 @@ Change it, enhance it and most importantly enjoy it!
 			</div>
 		</div>
         <div class="d-flex justify-content-around text-center mt-3">
-            <h1 class="">Total Pengunjung</h1>
+            <% if $Member.ID = 1 %>
+                <h1 class="">Total Pengunjung Semua Toko</h1>
+            <% else %>
+                <h1 class="">Total Pengunjung Toko</h2>
+            <% end_if %> 
             <h1 class="">$LogView.Count</h1>
         </div>
         <div class="container-fluid">
