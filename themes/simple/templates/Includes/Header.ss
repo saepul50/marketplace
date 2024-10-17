@@ -53,17 +53,17 @@
 				<div class="collapse navbar-collapse offset" id="navbarSupportedContent">
 					<ul class="nav navbar-nav menu_nav ml-auto">
 						<li class="nav-item" id="home"><a class="nav-link" href="">Home</a></li>
-						<li class="nav-item submenu dropdown" id="shop">
+						<li class="nav-item shopcategory productdetails productcheckout cart confirm" id="shop"><a class="nav-link" href="{$BaseHref}/shopcategory">Shop</a></li>
+						<%-- <li class="nav-item submenu dropdown" id="shop">
 							<a href="" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
 							 aria-expanded="false">Shop</a>
 							<ul class="dropdown-menu">
-								<li class="nav-item shopcategory productdetails productcheckout cart confirm" id=""><a class="nav-link" href="{$BaseHref}/shopcategory">Shop Category</a></li>
 								<li class="nav-item"><a class="nav-link" href="{$BaseHref}/productdetails">Product Details</a></li>
 								<li class="nav-item"><a class="nav-link" href="{$BaseHref}/productcheckout">Product Checkout</a></li>
 								<li class="nav-item"><a class="nav-link" href="{$BaseHref}/cart">Shopping Cart</a></li>
 								<li class="nav-item"><a class="nav-link" href="{$BaseHref}/confirm">Shopping History</a></li>
 							</ul>
-						</li>
+						</li> --%>
 						<li class="nav-item" id="blog"><a class="nav-link" href="{$BaseHref}/blog">Blog</a></li>
 						<% if $Member %>
 						<% else %>
@@ -118,7 +118,7 @@
 												</a>
 									<% end_loop %>
 								<% end_if %>
-								<a href="{$BaseHref}/usernotif" class="text-center " style="color:black;">
+								<a href="{$BaseHref}/notification" class="text-center " style="color:black;">
 									<div class="text-center" style="border-top: 1px solid rgba(0, 0, 0, .09);border-bottom: 1px solid rgba(0, 0, 0, .09);padding: 5px;">
 										Tampilkan Semua
 									</div>

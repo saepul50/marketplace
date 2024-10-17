@@ -2,7 +2,7 @@
 $(document).ready(function () {
   "use strict";
   $("#filtera").change(function (event) {
-    event.preventDefault(); // Prevents the form from doing a default refresh
+    event.preventDefault();
     var selected = $("#filtera").val();
     if (selected == '') {
       return;
@@ -1735,7 +1735,7 @@ $('#searchForm').submit(function(e) {
     var ProductItem = [];
     var activeSubvariant = $('.variantItem.active');
     var stock = activeSubvariant.data('stock');
-    var buy = $("#sst").val();
+    var buy = $("#quantityInputDetails").val();
     // console.log(stock);
     // return false;
     var categoryId = document.querySelector('#productCategoriID').textContent;
@@ -1786,15 +1786,40 @@ $('#searchForm').submit(function(e) {
         })
           .done(function (data) {
             var response = JSON.parse(data);
-            console.log(response)
+            // console.log(response.message)
             if (response.success) {
               iziToast.success({
                 timeout: 2000,
                 title: 'Product berhasil dimasukkan ke keranjang',
                 position: 'bottomRight',
               });
+            } else if (response.message = 'Login terlebih dahulu') {
+              iziToast.show({
+                color: 'dark',
+                icon: 'fa fa-user',
+                title: 'Login terlebih dahulu',
+                position: 'bottomRight',
+                progressBarColor: 'rgb(0, 255, 184)',
+                buttons: [
+                  [
+                    '<button>Login</button>',
+                    function (instance, toast) {
+                      window.location.href = '/marketplace/login'
+                    }
+                  ],
+                  [
+                    '<button>Close</button>',
+                    function (instance, toast) {
+                        instance.hide({
+                            transitionOut: 'fadeOutUp'
+                        }, toast);
+                    }
+                  ]
+                ]
+              });
+              // iziToast.warning({ position: "bottomRight", title: 'Caution', message: response.message });
             } else {
-              iziToast.warning({ position: "bottomRight", title: 'Caution', message: 'Pilih Product Sebelum Checkout' });
+              iziToast.warning({ position: "bottomRight", title: 'Caution', message: response.message });
             }
           })
           .fail(function () {
@@ -1810,6 +1835,77 @@ $('#searchForm').submit(function(e) {
       iziToast.warning({ title: 'Stok produk kurang dari pesanan!', position: 'bottomRight' });
       return;
     }
+  });
+  $("#variantChoose").on('click', function () {
+    var productid = $(this).data('id');
+    var productvariantid = $(this).data('variant');
+
+    $.post("/marketplace/cart/variantShow", {
+        ProductID: productid
+    })
+    .done(function (data) {
+        var response = JSON.parse(data);
+        // console.log(response.productImage);
+        // return false;
+        if (response.success) {
+            var modalHeader = `
+                <div class="modal-header">
+                    <div class="col-3 p-0 position-relative">
+                        <img src="${response.productImage}" class="img-fluid" style="aspect-ratio: 1/1; object-fit: contain;">
+                        <i class='bx bx-expand-horizontal p-1' style="position: absolute; right: 0; color: #fff; background-color: #9e9e9e; border-radius: 50%; transform: rotate(-45deg);  cursor:pointer"></i>
+                    </div>
+                    <div class="col-9 pl-3 p-0 d-flex flex-column">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <div class="pt-4">
+                            <h6 class="m-0" style="font-size: 18px; color: darkorange"></h6>
+                            <p class="m-0" style="font-size: 15px; color: #707070; font-weight: 400;">Stok: </p>
+                        </div>
+                    </div>
+                </div>`;
+
+            var modalBody = `<div class="modal-body">
+                          <div class="d-flex flex-wrap cardVariant" style="gap: 1rem;">`;
+
+            response.variants.forEach(function(variant) {
+                modalBody += `
+                            <div class="py-1 px-2 variantItem" data-variant-id="${variant.ID}">
+                                <p class="m-0">${variant.VariantName}</p>
+                            </div>`;
+            });
+
+            modalBody += `</div>
+                      </div>`;
+
+            var modalFooter = `
+                <div class="modal-footer">
+                    <button type="submit" class="genric-btn primary-border" style="width: 100%;">Konfirmasi</button>
+                </div>`;
+
+            $('#VariantShow .modal-content').empty().append(modalHeader + modalBody + modalFooter);
+
+            $('#VariantShow').modal('show');
+
+            $('.variantItem').on('click', function() {
+                var variantID = $(this).data('variant-id');
+                $('.variantItem').removeClass('active');
+                $(this).addClass('active')
+
+                var selectedVariant = response.variants.find(v => v.ID == variantID);
+                // console.log(selectedVariant)
+                if (selectedVariant) {
+                    $('.modal-header h6').text(`Rp. ${formatNumber(selectedVariant.Price)}`);
+                    $('.modal-header p').text(`Stok: ${selectedVariant.Stock}`);
+                }
+            });
+
+        } else {
+            alert('Gagal memuat varian.');
+        }
+    }).fail(function () {
+        alert('Terjadi kesalahan.');
+    });
   });
   $("#proceedCheckout").on('click', function (e) {
     // console.log("ha");
@@ -1879,7 +1975,7 @@ $('#searchForm').submit(function(e) {
     })
       .done(function (data) {
         var response = JSON.parse(data);
-        console.log(data)
+        // console.log(data)
         if (response.success) {
           $(".productCheckbox:checked").each(function () {
             $(this).closest('.items').remove();
@@ -2179,7 +2275,7 @@ $('#searchForm').submit(function(e) {
         processData: false,
         contentType: false,
         success: function (results) {
-          console.log(results)
+          // console.log(results)
           var response = JSON.parse(results);
           if (response.success) {
             iziToast.success({
@@ -2299,34 +2395,33 @@ $('#searchForm').submit(function(e) {
   //   });
   $('#saveData').on('click', function (e) {
     e.preventDefault();
+    var firstName = $('#first').val();
+    var lastName = $('#last').val();
     var numberInput = $("#numberinput").val();
     var address = $('.regency_select .list .selected').html() + ', ' + $('.province_select .list .selected').html();
     var province = parseInt($('.province_select .list .selected').data('value'));
     var regency = parseInt($('.regency_select .list .selected').data('value'));
+    var street = $('#add1').val();
+    var postal =  $('#zip').val();
     // console.log(address)
     // console.log(regency)
     if (numberInput.length < 12 || numberInput.length > 14) {
       iziToast.warning({ position: "bottomRight", title: 'Caution', message: 'Nomor harus antara 12 hingga 14 digit.' });
       return;
     }
-    var data = {
-      Number: $('#numberinput').val(),
-      FName: $('#first').val(),
-      LName: $('#last').val(),
-      Address: address,
-      AddressDetail: $('#add1').val(),
-      Regency: regency,
-      Postal: $('#zip').val()
-    };
+    if (!firstName || !lastName || !province || !regency || !street || !postal) {
+      iziToast.warning({ position: "bottomRight", title: 'Caution', message: 'Lengkapi data pengiriman.' });
+      return;
+    }
     $.post("/marketplace/productcheckout/address", {
-      Number: $('#numberinput').val(),
-      FName: $('#first').val(),
-      LName: $('#last').val(),
+      Number: numberInput,
+      FName: firstName,
+      LName: lastName,
       Address: address,
-      AddressDetail: $('#add1').val(),
+      AddressDetail: street,
       Province: province,
       Regency: regency,
-      Postal: $('#zip').val()
+      Postal: postal
     })
       .done(function (data) {
         var response = JSON.parse(data);
@@ -2556,6 +2651,8 @@ $('#searchForm').submit(function(e) {
       }
     });
   });
+  const quantityInputDetails = $('#quantityInputDetails');
+  quantityInputDetails.val(1);
   $('.variantItem').on('click', function (e) {
     e.preventDefault();
     $('.variantItem').removeClass('active');
@@ -2570,6 +2667,44 @@ $('#searchForm').submit(function(e) {
     }
     $('.ppprice').text(variantDiscountedPrice);
     $('.nnprice').text(variantPrice);
+    
+    const decrementButtonDetails = $('#decrementButtonDetails');
+    const incrementButtonDetails = $('#incrementButtonDetails');
+    const variantSelect = $('.variantItem.active');
+    let maxStok = parseInt(variantSelect.data('stock'), 10);
+    let currentQuantity = parseInt(quantityInputDetails.val(), 10);
+    if(currentQuantity > maxStok){
+      quantityInputDetails.val(maxStok);
+    }
+    decrementButtonDetails.off('click');
+    incrementButtonDetails.off('click');
+    quantityInputDetails.off('input');
+
+    $('#monostok').text(maxStok);
+    decrementButtonDetails.on('click', function() {
+      let currentQuantity = parseInt(quantityInputDetails.val(), 10);
+      if (currentQuantity > 1) {
+        quantityInputDetails.val(currentQuantity - 1);
+      }
+    });
+    
+    incrementButtonDetails.on('click', function() {
+      let currentQuantity = parseInt(quantityInputDetails.val(), 10);
+      console.log(maxStok)
+      if (currentQuantity < maxStok) {
+        quantityInputDetails.val(currentQuantity + 1);
+      }
+    });
+
+    quantityInputDetails.on('input', function() {
+      quantityInputDetails.val(quantityInputDetails.val().replace(/[^0-9]/g, ''));
+      let currentQuantity = parseInt(quantityInputDetails.val(), 10);
+      if (!currentQuantity || currentQuantity < 1) {
+        quantityInputDetails.val(1);
+      } else if (currentQuantity > maxStok) {
+        quantityInputDetails.val(maxStok);
+      }
+    });
   });
   $('.navbar-nav .nav-item').click(function () {
     $('.navbar-nav .nav-item.active').removeClass('active');
@@ -2649,7 +2784,17 @@ $('#searchForm').submit(function(e) {
   $('#logoutBtn').on('click', function (e) {
     e.preventDefault();
     $.post("/marketplace/profile/logout", {})
-    window.location.href = '/marketplace/';
+    .done(function (data) {
+      var response = JSON.parse(data);
+      if (response.success) {
+        window.location.href = '/marketplace/';
+      } else {
+        alert('Fail');
+      }
+
+    }).fail(function () {
+      alert('error');
+    });
   });
   $('#closeProductChat').on('click', function (e) {
     e.preventDefault();

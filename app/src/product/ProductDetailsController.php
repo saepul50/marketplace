@@ -46,6 +46,8 @@ class ProductDetailsController extends PageController
     
     
         $product = ProductObject::get()->byID($id);
+        // Debug::show($product);
+        // die();
         $vendor = $product->Vendor;
         $variant = ProductVariantObject::get()->filter('ProductID', $product->ID);
         $comments = ProductComment::get()->filter('ProductObjectID', $id);

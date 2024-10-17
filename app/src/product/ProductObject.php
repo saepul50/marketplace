@@ -109,6 +109,13 @@ use SilverStripe\View\Requirements;
         }
         return null;
     }
+    public function getFirstProductImageModal() {
+        if ($this->ProductImages()->exists()) {
+            $image = $this->ProductImages()->first();
+            return $image;
+        }
+        return null;
+    }
     public function getVariants(){
         return $this->ProductVariants();
     }
@@ -188,6 +195,7 @@ use SilverStripe\View\Requirements;
         $variants = $this->ProductVariants();
         if ($variants->exists()) {
             $totalStock = $variants->sum('Stock');
+            // Debug::show($totalStock);
             return $totalStock;
         }
         return 'Out of Stock';

@@ -1,5 +1,15 @@
-  <!-- Start Banner Area -->
-  <section class="banner-area organic-breadcrumb" style ="background: url($SiteConfig.Background.getURL()) center no-repeat;background-size: cover; position: relative ">
+<!-- Start Banner Area -->
+    <style>
+        .cardVariant .variantItem {
+            cursor: pointer !important;
+            transition: 0.4s ease-in-out !important;
+        }
+        .cardVariant .active {
+            border: 1px solid orange;
+            background-color: #e9e9e9;
+        }  
+    </style>
+<section class="banner-area organic-breadcrumb" style ="background: url($SiteConfig.Background.getURL()) center no-repeat;background-size: cover; position: relative ">
     <div class="container">
         <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
             <div class="col-first">
@@ -48,7 +58,12 @@
                                         <p id="productCheckoutID" class="d-none">$Product.ID</p>
                                         <p id="productCheckoutTitle">$Product.Title</p>
                                         <% if $ProductCategoryId = 1 %>
-                                            <p id="productCheckoutVariant" data-id="$ProductVariantID" data-weight="$ProductVariantWeight">size: $ProductVariant</p>
+                                            <div class="d-flex align-items-center" id="variantChoose" data-id="$ProductID" data-variant="$ProductVariantID" style="cursor: pointer;">
+                                                <p class="deskripsi m-0">size: </p>
+                                                <p class="pl-1" id="productCheckoutVariant" data-id="$ProductVariantID" data-weight="$ProductVariantWeight">$ProductVariant</p>
+                                                <i class='bx bx-chevron-down' style="font-size: 25px;"></i>
+                                            </div>
+                                            <%-- <p id="productCheckoutVariant" data-id="$ProductVariantID" data-weight="$ProductVariantWeight">size: $ProductVariant</p> --%>
                                         <% else %>
                                             <p id="productCheckoutVariant" data-id="$ProductVariantID" data-weight="$ProductVariantWeight">$ProductVariant</p>
                                         <% end_if %>
@@ -213,6 +228,13 @@
         </div>
     </div>
 </section>
+</div>
+<div id="VariantShow" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+        </div>
+    </div>
+</div>
 
 <!--================End Cart Area =================-->
 <script>
