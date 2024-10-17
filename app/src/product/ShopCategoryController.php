@@ -19,7 +19,8 @@ use SilverStripe\View\ArrayData;
             $sortOption = $request->getVar('sort');
             $brandFilter = $request->getVar('filter');
             $subCategoryFilter = $request->getVar('subcategory');
-            $pagelength = $request->getSession()->get('PageLength');
+            $pagelength = $request->getSession()->get('PageLength') ?? 12;
+            // Debug::show($pagelength);
             $mainsearch = ProductObject::get();
             $categories = ShopCategoryObject::get();
             $subCategoryList = ShopSubCategoryObject::get();
@@ -81,7 +82,6 @@ use SilverStripe\View\ArrayData;
             $data = $request->postVars();
             $page = $data['select'];
             // Debug::show(val: $page);
-
             $request->getSession()->set('PageLength', $page);
             return json_encode([
                 'success' => true,

@@ -57,42 +57,6 @@
             <h5 id="navCanceled" class="navi-item" style="cursor: pointer;">Dibatalkan</h5>
          </nav>
       <div class="container Semua" id="semua">
-         <%-- <h3 class="title_confirmation">Thank you. Your order has been received.</h3> --%>
-            <%-- <div class="row order_d_inner">
-               <div class="col-lg-4">
-                  <div class="details_item">
-                     <h4>Order Info</h4>
-                     <ul class="list">
-                        <li><a href="#"><span>Order number</span> : 60235</a></li>
-                        <li><a href="#"><span>Date</span> : Los Angeles</a></li>
-                        <li><a href="#"><span>Total</span> : USD 2210</a></li>
-                        <li><a href="#"><span>Payment method</span> : Check payments</a></li>
-                     </ul>
-                  </div>
-               </div>
-               <div class="col-lg-4">
-                  <div class="details_item">
-                     <h4>Billing Address</h4>
-                     <ul class="list">
-                        <li><a href="#"><span>Street</span> : 56/8</a></li>
-                        <li><a href="#"><span>City</span> : Los Angeles</a></li>
-                        <li><a href="#"><span>Country</span> : United States</a></li>
-                        <li><a href="#"><span>Postcode </span> : 36952</a></li>
-                     </ul>
-                  </div>
-               </div>
-               <div class="col-lg-4">
-                  <div class="details_item">
-                     <h4>Shipping Address</h4>
-                     <ul class="list">
-                        <li><a href="#"><span>Street</span> : 56/8</a></li>
-                        <li><a href="#"><span>City</span> : Los Angeles</a></li>
-                        <li><a href="#"><span>Country</span> : United States</a></li>
-                        <li><a href="#"><span>Postcode </span> : 36952</a></li>
-                     </ul>
-                  </div>
-               </div>
-         </div> --%>
          <% loop $HistoryData %>
             <% if $Status=='Selesai' %>
                   <div class="order_details_table">
@@ -443,6 +407,134 @@
       </div>
       <% loop $CheckoutHeader %>
          <% if $Status=='Selesai' %>
+            <% if $PaymentMethod == 'manualtf' %>
+               <div class="detailOrder order_details_table w-100" id="detailOrder">
+                  <div class="detailContain">
+                     <div class="navtop d-flex justify-content-between px-3 py-2">
+                        <a href="{$BaseHref}/confirm" style="text-decoration: none; color: inherit;">
+                           <div class="textleft d-flex align-items-center" style="cursor: pointer">
+                              <span class="fs-4">﹤</span>
+                              <p class="m-0">Kembali</p>
+                           </div>
+                        </a>
+                        <div class="textright d-flex align-items-center">
+                           <p class="m-0 pr-4">No. Pesanan &nbsp; <span style="font-weight: 600;">$OrderID</span></p>
+                           <p class="m-0" style="color: darkorange; font-weight: 500; text-transform: uppercase;">Pesanan
+                              $Status</p>
+                        </div>
+                     </div>
+                     <div class="text1" style="margin-top: .1rem;">
+                        <div class="d-flex justify-content-between align-items-center py-3 px-3">
+                           <h5 class="m-0">Terimakasih telah berbelanja di SS!</h5>
+                           <a href="/marketplace/productcheckout/manualpayment/$OrderID?invoice=true" class="m-0" style="font-weight: 600;">Lihat Bukti Pembayaran</a>
+                        </div>
+                     </div>
+                     <div class="Orders">
+                        <div class="delivery d-flex flex-column py-3 px-3">
+                           <div class="col-8 col-md-6">
+                              <h6>Alamat Pengiriman</h6>
+                              <p class="m-0 py-1">$CustomerName</p>
+                              <p class="m-0">$CustomerHandphone</p>
+                              <p class="m-0">$CustomerAddress</p>
+                           </div>
+                        </div>
+                        <div class="allproduct d-flex flex-column py-3 px-3">
+                           <div class="table-responsive">
+                              <table class="table">
+                                 <thead>
+                                    <tr>
+                                       <th scope="col">Product</th>
+                                       <th></th>
+                                       <th></th>
+                                       <th scope="col">Quantity</th>
+                                       <th scope="col">Total</th>
+                                    </tr>
+                                 </thead>
+                                 <tbody>
+                                    <% loop $items %>
+                                       <tr>
+                                          <td class="col-1">
+                                             <img src="$ProductImage" class="img-fluid">
+                                          </td>
+                                          <td>
+                                             <p>$ProductTitle ($ProductVariant)</p>
+                                          </td>
+                                          <td>
+                                             <p>$ProductPrice</p>
+                                          </td>
+                                          <td>
+                                             <h5>x $ProductQuantity</h5>
+                                          </td>
+                                          <td>
+                                             <p>$ProductTotalPrice</p>
+                                          </td>
+                                       </tr>
+                                    <% end_loop %>
+                                       <tr>
+                                          <td></td>
+                                          <td></td>
+                                          <td>
+                                             <h5></h5>
+                                          </td>
+                                          <td>
+                                             <h4>Subtotal</h4>
+                                          </td>
+                                          <td>
+                                             <p>
+                                                <% loop $Items.First %>$ProductSubTotalPrice<% end_loop %>
+                                             </p>
+                                          </td>
+                                       </tr>
+                                       <tr>
+                                          <td></td>
+                                          <td></td>
+                                          <td>
+                                             <h5></h5>
+                                          </td>
+                                          <td>
+                                             <h4>Shipping</h4>
+                                          </td>
+                                          <td>
+                                             <p><% loop $Items.First %>$ProductCostShipping<% end_loop %>
+                                             </p>
+                                          </td>
+                                       </tr>
+                                       <tr>
+                                          <td></td>
+                                          <td></td>
+                                          <td>
+                                             <h5></h5>
+                                          </td>
+                                          <td>
+                                             <h4>Total</h4>
+                                          </td>
+                                          <td>
+                                             <p>$FinalPrice</p>
+                                          </td>
+                                       </tr>
+                                 </tbody>
+                              </table>
+                           </div>
+                           <div class="d-flex paymentinfo py-2" style="border-top: 1px solid #cdcdcd;">
+                              <div class="d-flex align-items-center py-2 px-3 w-100"
+                                 style="background-color: #FFFEFB; border: 1px solid #F3DB97;">
+                                 <i class='bx bx-bell pr-3'></i>
+                                 <p class="m-0 ps-3 d-flex">Terimakasih telah berbelanja di ShoeStore</p>
+                              </div>
+                           </div>
+                           <div class="d-flex payment py-2" style="border-top: 1px solid #cdcdcd;">
+                              <div class="col-8 d-flex flex-column align-items-end">
+                                 <p class="m-0">Metode Pembayaran</p>
+                              </div>
+                              <div class="col-4 d-flex flex-column align-items-end">
+                                 <p class="m-0">$PaymentMethod</p>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            <% end_if %>
             <div class="detailOrder order_details_table w-100" id="detailOrder">
                <div class="detailContain">
                   <div class="navtop d-flex justify-content-between px-3 py-2">
@@ -569,6 +661,141 @@
                </div>
             </div>
          <% else_if $Status=='Dikemas' %>
+            <% if $PaymentMethod == 'manualtf' %>
+               <div class="detailOrder order_details_table w-100" id="detailOrder">
+                  <div class="detailContain">
+                     <div class="navtop d-flex justify-content-between px-3 py-2">
+                        <a href="{$BaseHref}/confirm" style="text-decoration: none; color: inherit;">
+                           <div class="textleft d-flex align-items-center" style="cursor: pointer">
+                              <span class="fs-4">﹤</span>
+                              <p class="m-0">Kembali</p>
+                           </div>
+                        </a>
+                        <div class="textright d-flex align-items-center">
+                           <p class="m-0 pr-4">No. Pesanan &nbsp; <span style="font-weight: 600;">$OrderID</span></p>
+                           <p class="m-0" style="color: darkorange; font-weight: 500; text-transform: uppercase;">
+                              Pesanan $Status</p>
+                        </div>
+                     </div>
+                     <div class="text1" style="margin-top: .1rem;">
+                        <div class="d-flex justify-content-between align-items-center py-3 px-3">
+                           <h5 class="m-0">Terimakasih telah berbelanja di SS!</h5>
+                           <a href="/marketplace/productcheckout/manualpayment/$OrderID?invoice=true" class="m-0" style="font-weight: 600;">Lihat Bukti Pembayaran</a>
+                        </div>
+                     </div>
+                     <div class="Orders">
+                        <div class="delivery d-flex flex-column py-3 px-3">
+                           <div class="col-8 col-md-6">
+                              <h6>Alamat Pengiriman</h6>
+                              <p class="m-0 py-1">$CustomerName</p>
+                              <p class="m-0">$CustomerHandphone</p>
+                              <p class="m-0">$CustomerAddress</p>
+                           </div>
+                        </div>
+                        <div class="allproduct d-flex flex-column py-3 px-3">
+                           <div class="table-responsive">
+                              <table class="table">
+                                 <thead>
+                                    <tr>
+                                       <th scope="col">Product</th>
+                                       <th></th>
+                                       <th></th>
+                                       <th scope="col">Quantity</th>
+                                       <th scope="col">Total</th>
+                                    </tr>
+                                 </thead>
+                                 <tbody>
+                                    <% loop $items %>
+                                       <tr>
+                                          <td class="col-1">
+                                             <img src="$ProductImage" class="img-fluid">
+                                          </td>
+                                          <td>
+                                             <p>$ProductTitle ($ProductVariant)</p>
+                                          </td>
+                                          <td>
+                                             <p>$ProductPrice</p>
+                                          </td>
+                                          <td>
+                                             <h5>x $ProductQuantity</h5>
+                                          </td>
+                                          <td>
+                                             <p>$ProductTotalPrice</p>
+                                          </td>
+                                       </tr>
+                                    <% end_loop %>
+                                       <tr>
+                                          <td></td>
+                                          <td></td>
+                                          <td>
+                                             <h5></h5>
+                                          </td>
+                                          <td>
+                                             <h4>Subtotal</h4>
+                                          </td>
+                                          <td>
+                                             <p>
+                                                <% loop $Items.First %>$ProductSubTotalPrice<% end_loop %>
+                                             </p>
+                                          </td>
+                                       </tr>
+                                       <tr>
+                                          <td></td>
+                                          <td></td>
+                                          <td>
+                                             <h5></h5>
+                                          </td>
+                                          <td>
+                                             <h4>Shipping</h4>
+                                          </td>
+                                          <td>
+                                             <p><% loop $Items.First %>$ProductCostShipping<% end_loop %>
+                                             </p>
+                                          </td>
+                                       </tr>
+                                       <tr>
+                                          <td></td>
+                                          <td></td>
+                                          <td>
+                                             <h5></h5>
+                                          </td>
+                                          <td>
+                                             <h4>Total</h4>
+                                          </td>
+                                          <td>
+                                             <p>$FinalPrice</p>
+                                          </td>
+                                       </tr>
+                                 </tbody>
+                              </table>
+                           </div>
+                           <div class="d-flex paymentinfo py-2" style="border-top: 1px solid #cdcdcd;">
+                              <div class="d-flex align-items-center py-2 px-3 w-100"
+                                 style="background-color: #FFFEFB; border: 1px solid #F3DB97;">
+                                 <i class='bx bx-bell pr-3'></i>
+                                 <p class="m-0 ps-3 d-flex">Barang sedang dikemas oleh penjual dan akan dikirim secepatnya</p>
+                              </div>
+                           </div>
+                           <div class="d-flex payment py-2" style="border-top: 1px solid #cdcdcd;">
+                              <div class="col-8 d-flex flex-column align-items-end">
+                                 <p class="m-0">Metode Pembayaran</p>
+                              </div>
+                              <div class="col-4 d-flex flex-column align-items-end">
+                                 <p class="m-0">$PaymentMethod</p>
+                              </div>
+                           </div>
+                           <div class="d-flex justify-content-end pt-4">
+                              <button type="button" class="genric-btn danger-border showModalButton" style=""
+                                 data-toggle="modal" data-target="#cancelbtn"
+                                 data-title="$ProductTitle" data-get="$Up.OrderID" data-image="$ProductImage"
+                                 data-variant="$ProductVariant" data-id="$ProductID"
+                                 data-quantity="$ProductQuantity">Batalkan Pesanan</button>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            <% end_if %>
             <div class="detailOrder order_details_table w-100" id="detailOrder">
                <div class="detailContain">
                   <div class="navtop d-flex justify-content-between px-3 py-2">
@@ -702,6 +929,138 @@
                </div>
             </div>
          <% else_if $Status=='Dikirim' %>
+            <% if $PaymentMethod == 'manualtf' %>
+               <div class="detailOrder order_details_table w-100" id="detailOrder">
+                  <div class="detailContain">
+                     <div class="navtop d-flex justify-content-between px-3 py-2">
+                        <a href="{$BaseHref}/confirm" style="text-decoration: none; color: inherit;">
+                           <div class="textleft d-flex align-items-center" style="cursor: pointer">
+                              <span class="fs-4">﹤</span>
+                              <p class="m-0">Kembali</p>
+                           </div>
+                        </a>
+                        <div class="textright d-flex align-items-center">
+                           <p class="m-0 pr-4">No. Pesanan &nbsp; <span style="font-weight: 600;">$OrderID</span></p>
+                           <p class="m-0" style="color: darkorange; font-weight: 500; text-transform: uppercase;">
+                              Pesanan $Status</p>
+                        </div>
+                     </div>
+                     <div class="text1" style="margin-top: .1rem;">
+                        <div class="d-flex justify-content-between align-items-center py-3 px-3">
+                           <h5 class="m-0">Terimakasih telah berbelanja di SS!</h5>
+                           <a href="/marketplace/productcheckout/manualpayment/$OrderID?invoice=true" class="m-0" style="font-weight: 600;">Lihat Bukti Pembayaran</a>
+                        </div>
+                     </div>
+                     <div class="Orders">
+                        <div class="delivery d-flex flex-column py-3 px-3">
+                           <div class="col-8 col-md-6">
+                              <h6>Alamat Pengiriman</h6>
+                              <p class="m-0 py-1">$CustomerName</p>
+                              <p class="m-0">$CustomerHandphone</p>
+                              <p class="m-0">$CustomerAddress</p>
+                           </div>
+                        </div>
+                        <div class="allproduct d-flex flex-column py-3 px-3">
+                           <div class="table-responsive">
+                              <table class="table">
+                                 <thead>
+                                    <tr>
+                                       <th scope="col">Product</th>
+                                       <th></th>
+                                       <th></th>
+                                       <th scope="col">Quantity</th>
+                                       <th scope="col">Total</th>
+                                    </tr>
+                                 </thead>
+                                 <tbody>
+                                    <% loop $items %>
+                                       <tr>
+                                          <td class="col-1">
+                                             <img src="$ProductImage" class="img-fluid">
+                                          </td>
+                                          <td>
+                                             <p>$ProductTitle ($ProductVariant)</p>
+                                          </td>
+                                          <td>
+                                             <p>$ProductPrice</p>
+                                          </td>
+                                          <td>
+                                             <h5>x $ProductQuantity</h5>
+                                          </td>
+                                          <td>
+                                             <p>$ProductTotalPrice</p>
+                                          </td>
+                                       </tr>
+                                    <% end_loop %>
+                                       <tr>
+                                          <td></td>
+                                          <td></td>
+                                          <td>
+                                             <h5></h5>
+                                          </td>
+                                          <td>
+                                             <h4>Subtotal</h4>
+                                          </td>
+                                          <td>
+                                             <p>
+                                                <% loop $Items.First %>$ProductSubTotalPrice<% end_loop %>
+                                             </p>
+                                          </td>
+                                       </tr>
+                                       <tr>
+                                          <td></td>
+                                          <td></td>
+                                          <td>
+                                             <h5></h5>
+                                          </td>
+                                          <td>
+                                             <h4>Shipping</h4>
+                                          </td>
+                                          <td>
+                                             <p><% loop $Items.First %>$ProductCostShipping<% end_loop %>
+                                             </p>
+                                          </td>
+                                       </tr>
+                                       <tr>
+                                          <td></td>
+                                          <td></td>
+                                          <td>
+                                             <h5></h5>
+                                          </td>
+                                          <td>
+                                             <h4>Total</h4>
+                                          </td>
+                                          <td>
+                                             <p>$FinalPrice</p>
+                                          </td>
+                                       </tr>
+                                 </tbody>
+                              </table>
+                           </div>
+                           <div class="d-flex paymentinfo py-2" style="border-top: 1px solid #cdcdcd;">
+                              <div class="d-flex align-items-center py-2 px-3 w-100"
+                                 style="background-color: #FFFEFB; border: 1px solid #F3DB97;">
+                                 <i class='bx bx-bell pr-3'></i>
+                                 <p class="m-0 ps-3 d-flex">Produk telah dikirim, tunggu produk yang anda pesan sampai ke tujuan</p>
+                              </div>
+                           </div>
+                           <div class="d-flex payment py-2" style="border-top: 1px solid #cdcdcd;">
+                              <div class="col-8 d-flex flex-column align-items-end">
+                                 <p class="m-0">Metode Pembayaran</p>
+                              </div>
+                              <div class="col-4 d-flex flex-column align-items-end">
+                                 <p class="m-0">$PaymentMethod</p>
+                              </div>
+                           </div>
+                           <div class="d-flex justify-content-end pt-4">
+                              <button type="button" class="genric-btn primary-border" id="receivedBtn"
+                                 data-orderid="$OrderID">Pesanan Diterima</button>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            <% end_if %>
             <div class="detailOrder order_details_table w-100" id="detailOrder">
                <div class="detailContain">
                   <div class="navtop d-flex justify-content-between px-3 py-2">
@@ -832,6 +1191,137 @@
                </div>
             </div>
          <% else_if $Status=='Dibatalkan' %>
+            <% if $PaymentMethod == 'manualtf' %>
+               <div class="detailOrder order_details_table w-100" id="detailOrder">
+                  <div class="detailContain">
+                     <div class="navtop d-flex justify-content-between px-3 py-2">
+                        <a href="{$BaseHref}/confirm" style="text-decoration: none; color: inherit;">
+                           <div class="textleft d-flex align-items-center" style="cursor: pointer">
+                              <span class="fs-4">﹤</span>
+                              <p class="m-0">Kembali</p>
+                           </div>
+                        </a>
+                        <div class="textright d-flex align-items-center">
+                           <p class="m-0 pr-4">No. Pesanan &nbsp; <span style="font-weight: 600;">$OrderID</span></p>
+                           <p class="m-0" style="color: darkorange; font-weight: 500; text-transform: uppercase;">
+                              Pesanan $Status</p>
+                        </div>
+                     </div>
+                     <div class="text1" style="margin-top: .1rem;">
+                        <div class="d-flex justify-content-between align-items-center py-3 px-3">
+                           <h5 class="m-0">Terimakasih telah berbelanja di SS!</h5>
+                           <a href="/marketplace/productcheckout/manualpayment/$OrderID?invoice=true" class="m-0" style="font-weight: 600;">Lihat Bukti Pembayaran</a>
+                        </div>
+                     </div>
+                     <div class="Orders">
+                        <div class="delivery d-flex flex-column py-3 px-3">
+                           <div class="col-8 col-md-6">
+                              <h6>Alamat Pengiriman</h6>
+                              <p class="m-0 py-1">$CustomerName</p>
+                              <p class="m-0">$CustomerHandphone</p>
+                              <p class="m-0">$CustomerAddress</p>
+                           </div>
+                        </div>
+                        <div class="allproduct d-flex flex-column py-3 px-3">
+                           <div class="table-responsive">
+                              <table class="table">
+                                 <thead>
+                                    <tr>
+                                       <th scope="col">Product</th>
+                                       <th></th>
+                                       <th></th>
+                                       <th scope="col">Quantity</th>
+                                       <th scope="col">Total</th>
+                                    </tr>
+                                 </thead>
+                                 <tbody>
+                                    <% loop $items %>
+                                       <tr>
+                                          <td class="col-1">
+                                             <img src="$ProductImage" class="img-fluid">
+                                          </td>
+                                          <td>
+                                             <p>$ProductTitle ($ProductVariant)</p>
+                                          </td>
+                                          <td>
+                                             <p>$ProductPrice</p>
+                                          </td>
+                                          <td>
+                                             <h5>x $ProductQuantity</h5>
+                                          </td>
+                                          <td>
+                                             <p>$ProductTotalPrice</p>
+                                          </td>
+                                       </tr>
+                                    <% end_loop %>
+                                       <tr>
+                                          <td></td>
+                                          <td></td>
+                                          <td>
+                                             <h5></h5>
+                                          </td>
+                                          <td>
+                                             <h4>Subtotal</h4>
+                                          </td>
+                                          <td>
+                                             <p>
+                                                <% loop $Items.First %>$ProductSubTotalPrice<% end_loop %>
+                                             </p>
+                                          </td>
+                                       </tr>
+                                       <tr>
+                                          <td></td>
+                                          <td></td>
+                                          <td>
+                                             <h5></h5>
+                                          </td>
+                                          <td>
+                                             <h4>Shipping</h4>
+                                          </td>
+                                          <td>
+                                             <p><% loop $Items.First %>$ProductCostShipping<% end_loop %>
+                                             </p>
+                                          </td>
+                                       </tr>
+                                       <tr>
+                                          <td></td>
+                                          <td></td>
+                                          <td>
+                                             <h5></h5>
+                                          </td>
+                                          <td>
+                                             <h4>Total</h4>
+                                          </td>
+                                          <td>
+                                             <p>$FinalPrice</p>
+                                          </td>
+                                       </tr>
+                                 </tbody>
+                              </table>
+                           </div>
+                           <div class="d-flex paymentinfo py-2" style="border-top: 1px solid #cdcdcd;">
+                              <div class="d-flex align-items-center py-2 px-3 w-100"
+                                 style="background-color: #FFFEFB; border: 1px solid #F3DB97;">
+                                 <i class='bx bx-bell pr-3'></i>
+                                 <p class="m-0 ps-3 d-flex">Pesanan telah Dibatalkan, anda dapat memesan kembali produk ini</p>
+                              </div>
+                           </div>
+                           <div class="d-flex payment py-2" style="border-top: 1px solid #cdcdcd;">
+                              <div class="col-8 d-flex flex-column align-items-end">
+                                 <p class="m-0">Metode Pembayaran</p>
+                              </div>
+                              <div class="col-4 d-flex flex-column align-items-end">
+                                 <p class="m-0">$PaymentMethod</p>
+                              </div>
+                           </div>
+                           <div class="d-flex justify-content-end pt-4">
+                              <button class="genric-btn primary-border" id="buybtn" data-toggle="modal" data-target="#belilagi" style="">Beli Lagi</button>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            <% end_if %>
             <div class="detailOrder order_details_table w-100" id="detailOrder">
                <div class="detailContain">
                   <div class="navtop d-flex justify-content-between px-3 py-2">

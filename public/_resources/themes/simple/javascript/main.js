@@ -2,7 +2,7 @@
 $(document).ready(function () {
   "use strict";
   $("#filtera").change(function (event) {
-    event.preventDefault(); // Prevents the form from doing a default refresh
+    event.preventDefault();
     var selected = $("#filtera").val();
 
     if (selected == '') {
@@ -274,7 +274,7 @@ $(document).ready(function () {
     })
       .done(function (data) {
         var response = JSON.parse(data);
-        console.log(response);
+        // console.log(response);
         if (response.success) {
           Swal.fire({
             title: "SUCCESS",
@@ -755,7 +755,7 @@ $(document).ready(function () {
       const rating = document.getElementById("ratingValue");
       // console.log(button);
       let angka = rating.getAttribute('value');
-      console.log(angka);
+      // console.log(angka);
       if(parseInt(angka) === 0 ){
         Swal.fire({
           icon: "error",
@@ -1046,7 +1046,7 @@ $(document).ready(function () {
       let value = activeTab.getAttribute('value');
       localStorage.setItem('SelectedTabs', value);
     } else {
-      console.log("No active tab found.");
+      // console.log("No active tab found.");
     }
 
     const contenttab = document.querySelector('div.tab-pane.active');
@@ -1054,7 +1054,7 @@ $(document).ready(function () {
       var sam = contenttab.getAttribute('id');
       localStorage.setItem('SelectedContent', sam);
     } else {
-      console.log("No active tab found.");
+      // console.log("No active tab found.");
     }
   });
 
@@ -1798,74 +1798,178 @@ $('#searchForm').submit(function(e) {
     var formData = new FormData();
     var ProductItem = [];
     var activeSubvariant = $('.variantItem.active');
-    // console.log(activeSubvariant)
-    var categoryId = document.querySelector('#productCategoriID').textContent;
-    // console.log(categoryId)
+    var stock = activeSubvariant.data('stock');
+    var buy = $("#quantityInputDetails").val();
+    // console.log(stock);
     // return false;
-    if (categoryId == 2) {
-      // alert("2");
-      // return false
-      $.post("/marketplace/cart/addcart", {
-        ProductID: $("#productId").text(),
-        ProductTitle: $("#productTitle").text(),
-        ProductImage: $("#productImage").attr("src"),
-        ProductCategoryID: $("#productCategoriID").text(),
-        ProductVariant: activeSubvariant.find('#variantName').text(),
-        ProductVariantID: activeSubvariant.data('id'),
-        ProductVariantWeight: activeSubvariant.data('weight'),
-        ProductPrice: $(".ppprice").text(),
-        ProductQuantity: $("#sst").val(),
-      })
-        .done(function (data) {
-          var response = JSON.parse(data);
-          // console.log(response)
-          if (response.success) {
-            iziToast.success({
-              timeout: 2000,
-              title: 'Product berhasil dimasukkan ke keranjang',
-              position: 'bottomRight'
-            });
-          } else {
-            iziToast.warning({ position: "bottomRight", title: 'Caution', message: 'Pilih Product Sebelum Checkout' });
-          }
+    var categoryId = document.querySelector('#productCategoriID').textContent;
+    if(stock >= buy){
+      // alert("in");
+      // return false;
+      if (categoryId == 2) {
+        $.post("/marketplace/cart/addcart", {
+          ProductID: $("#productId").text(),
+          ProductTitle: $("#productTitle").text(),
+          ProductImage: $("#productImage").attr("src"),
+          ProductCategoryID: $("#productCategoriID").text(),
+          ProductPrice: $(".ppprice").text(),
+          ProductVariant: activeSubvariant.find('#variantName').text(),
+          ProductVariantID: activeSubvariant.data('id'),
+          ProductQuantity: $("#sst").val(),
+          ProductVariantWeight: activeSubvariant.data('weight'),
         })
-        .fail(function () {
-          iziToast.error({ title: 'Error', position: 'bottomRight' });
-        });
-    } else if (activeSubvariant.length > 0) {
-      // alert("1");
-      // return false
-      $.post("/marketplace/cart/addcart", {
-        ProductID: $("#productId").text(),
-        ProductTitle: $("#productTitle").text(),
-        ProductImage: $("#productImage").attr("src"),
-        ProductCategoryID: $("#productCategoriID").text(),
-        ProductVariant: activeSubvariant.find('#variantName').text(),
-        ProductVariantID: activeSubvariant.data('id'),
-        ProductVariantWeight: activeSubvariant.data('weight'),
-        ProductPrice: $(".ppprice").text(),
-        ProductQuantity: $("#sst").val(),
-      })
-        .done(function (data) {
-          var response = JSON.parse(data);
-          console.log(response)
-          if (response.success) {
-            iziToast.success({
-              timeout: 2000,
-              title: 'Product berhasil dimasukkan ke keranjang',
-              position: 'bottomRight',
-            });
-          } else {
-            iziToast.warning({ position: "bottomRight", title: 'Caution', message: 'Pilih Product Sebelum Checkout' });
-          }
+          .done(function (data) {
+            var response = JSON.parse(data);
+            // console.log(response)
+            if (response.success) {
+              iziToast.success({
+                timeout: 2000,
+                title: 'Product berhasil dimasukkan ke keranjang',
+                position: 'bottomRight'
+              });
+            } else {
+              iziToast.warning({ position: "bottomRight", title: 'Caution', message: 'Pilih Product Sebelum Checkout' });
+            }
+          })
+          .fail(function () {
+            iziToast.error({ title: 'Error', position: 'bottomRight' });
+          });
+      } else if (activeSubvariant.length > 0) {
+        // alert("1");
+        // return false
+        $.post("/marketplace/cart/addcart", {
+          ProductID: $("#productId").text(),
+          ProductTitle: $("#productTitle").text(),
+          ProductImage: $("#productImage").attr("src"),
+          ProductCategoryID: $("#productCategoriID").text(),
+          ProductVariant: activeSubvariant.find('#variantName').text(),
+          ProductVariantID: activeSubvariant.data('id'),
+          ProductVariantWeight: activeSubvariant.data('weight'),
+          ProductPrice: $(".ppprice").text(),
+          ProductQuantity: $("#sst").val(),
         })
-        .fail(function () {
-          iziToast.error({ title: 'Error', position: 'bottomRight' });
-        });
-    } else {
-      iziToast.warning({ title: 'Choose Variant!', position: 'bottomRight' });
+          .done(function (data) {
+            var response = JSON.parse(data);
+            // console.log(response.message)
+            if (response.success) {
+              iziToast.success({
+                timeout: 2000,
+                title: 'Product berhasil dimasukkan ke keranjang',
+                position: 'bottomRight',
+              });
+            } else if (response.message = 'Login terlebih dahulu') {
+              iziToast.show({
+                color: 'dark',
+                icon: 'fa fa-user',
+                title: 'Login terlebih dahulu',
+                position: 'bottomRight',
+                progressBarColor: 'rgb(0, 255, 184)',
+                buttons: [
+                  [
+                    '<button>Login</button>',
+                    function (instance, toast) {
+                      window.location.href = '/marketplace/login'
+                    }
+                  ],
+                  [
+                    '<button>Close</button>',
+                    function (instance, toast) {
+                        instance.hide({
+                            transitionOut: 'fadeOutUp'
+                        }, toast);
+                    }
+                  ]
+                ]
+              });
+              // iziToast.warning({ position: "bottomRight", title: 'Caution', message: response.message });
+            } else {
+              iziToast.warning({ position: "bottomRight", title: 'Caution', message: response.message });
+            }
+          })
+          .fail(function () {
+            iziToast.error({ title: 'Error', position: 'bottomRight' });
+          });
+      } else {
+        iziToast.warning({ title: 'Choose Variant!', position: 'bottomRight' });
+        return;
+      }
+    } else{
+      // alert("out");
+      // return false;
+      iziToast.warning({ title: 'Stok produk kurang dari pesanan!', position: 'bottomRight' });
       return;
     }
+  });
+  $("#variantChoose").on('click', function () {
+    var productid = $(this).data('id');
+    var productvariantid = $(this).data('variant');
+
+    $.post("/marketplace/cart/variantShow", {
+        ProductID: productid
+    })
+    .done(function (data) {
+        var response = JSON.parse(data);
+        // console.log(response.productImage);
+        // return false;
+        if (response.success) {
+            var modalHeader = `
+                <div class="modal-header">
+                    <div class="col-3 p-0 position-relative">
+                        <img src="${response.productImage}" class="img-fluid" style="aspect-ratio: 1/1; object-fit: contain;">
+                        <i class='bx bx-expand-horizontal p-1' style="position: absolute; right: 0; color: #fff; background-color: #9e9e9e; border-radius: 50%; transform: rotate(-45deg);  cursor:pointer"></i>
+                    </div>
+                    <div class="col-9 pl-3 p-0 d-flex flex-column">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <div class="pt-4">
+                            <h6 class="m-0" style="font-size: 18px; color: darkorange"></h6>
+                            <p class="m-0" style="font-size: 15px; color: #707070; font-weight: 400;">Stok: </p>
+                        </div>
+                    </div>
+                </div>`;
+
+            var modalBody = `<div class="modal-body">
+                          <div class="d-flex flex-wrap cardVariant" style="gap: 1rem;">`;
+
+            response.variants.forEach(function(variant) {
+                modalBody += `
+                            <div class="py-1 px-2 variantItem" data-variant-id="${variant.ID}">
+                                <p class="m-0">${variant.VariantName}</p>
+                            </div>`;
+            });
+
+            modalBody += `</div>
+                      </div>`;
+
+            var modalFooter = `
+                <div class="modal-footer">
+                    <button type="submit" class="genric-btn primary-border" style="width: 100%;">Konfirmasi</button>
+                </div>`;
+
+            $('#VariantShow .modal-content').empty().append(modalHeader + modalBody + modalFooter);
+
+            $('#VariantShow').modal('show');
+
+            $('.variantItem').on('click', function() {
+                var variantID = $(this).data('variant-id');
+                $('.variantItem').removeClass('active');
+                $(this).addClass('active')
+
+                var selectedVariant = response.variants.find(v => v.ID == variantID);
+                // console.log(selectedVariant)
+                if (selectedVariant) {
+                    $('.modal-header h6').text(`Rp. ${formatNumber(selectedVariant.Price)}`);
+                    $('.modal-header p').text(`Stok: ${selectedVariant.Stock}`);
+                }
+            });
+
+        } else {
+            alert('Gagal memuat varian.');
+        }
+    }).fail(function () {
+        alert('Terjadi kesalahan.');
+    });
   });
   $("#proceedCheckout").on('click', function (e) {
     // console.log("ha");
@@ -1935,7 +2039,7 @@ $('#searchForm').submit(function(e) {
     })
       .done(function (data) {
         var response = JSON.parse(data);
-        console.log(data)
+        // console.log(data)
         if (response.success) {
           $(".productCheckbox:checked").each(function () {
             $(this).closest('.items').remove();
@@ -2019,7 +2123,6 @@ $('#searchForm').submit(function(e) {
       var paymentMethod = $("input[name='selectorpayment']:checked").val();
       if (paymentMethod === "manualtf") {
         var formData = new FormData();
-        var fileInput = $('#transfer-image')[0].files[0];
         // console.log(formData)
         var paymentGate = $("input[name='selectorpaymentgate']:checked").val();
         var timeCheckout = $(".list_2").find('#time').text();
@@ -2059,33 +2162,28 @@ $('#searchForm').submit(function(e) {
           // console.log(selectedProductss)
           formData.append('paymentDatas', JSON.stringify(selectedProductss));
         }
-        if (fileInput) {
-          formData.append('ProofImage', fileInput);
-          $.ajax({
-            url: '/marketplace/productcheckout/manualTF',
-            type: 'POST',
-            data: formData,
-            processData: false,
-            contentType: false,
-            success: function (results) {
-              iziToast.success({
-                icon: 'fa fa-shipping-fast',
-                timeout: 3500,
-                title: 'Pesanan Telah Dibuat dan Akan dikirim Secepatnya',
-                position: 'bottomRight',
-                onClosed: function () {
-                  return false;
-                  window.location.href = "/marketplace/";
-                }
-              });
-            },
-            error: function (xhr, status, error) {
-              iziToast.error({ title: 'Error', message: error, position: 'bottomRight' });
-            }
-          });
-        } else {
-          iziToast.warning({ position: "bottomRight", title: 'Caution', message: 'Inputkan Bukti Pembayaran!' });
-        }
+        $.ajax({
+          url: '/marketplace/productcheckout/manualTF',
+          type: 'POST',
+          data: formData,
+          processData: false,
+          contentType: false,
+          success: function (results) {
+            iziToast.success({
+              icon: 'fas fa-shipping-fast',
+              timeout: 1500,
+              title: 'Tunggu sebentar, ',
+              message: 'sedang membuka laman pembayaran',
+              position: 'bottomRight',
+              onClosed: function () {
+                window.location.href = "/marketplace/productcheckout/manualpayment/" + orderID + '?invoice=true';
+              }
+            });
+          },
+          error: function (xhr, status, error) {
+            iziToast.error({ title: 'Error', message: error, position: 'bottomRight' });
+          }
+        });
       } else if (paymentMethod === "duitku") {
         var formData = new FormData();
         var paymentGate = $("input[name='selectorpaymentgate']:checked").val();
@@ -2194,14 +2292,13 @@ $('#searchForm').submit(function(e) {
           contentType: false,
           success: function (results) {
             iziToast.success({
-              icon: 'fa fa-shipping-fast',
+              icon: 'fas fa-shipping-fast',
               timeout: 3500,
               title: 'Pesanan Telah Dibuat',
               message: 'Pesananmu Akan dikirim Secepatnya',
               position: 'bottomRight',
               onClosed: function () {
-                return false;
-                window.location.href = "/marketplace/";
+                window.location.href = "/marketplace/history";
               }
             });
           },
@@ -2210,6 +2307,61 @@ $('#searchForm').submit(function(e) {
           }
         });
       }
+    }
+  });
+  $('.bx-copy').click(function() {
+    var textToCopy = $(this).siblings('h6').text();
+    
+    var tempInput = $('<input>');
+    $('body').append(tempInput);
+    tempInput.val(textToCopy).select();
+    document.execCommand('copy');
+    tempInput.remove();
+    iziToast.success({ timeout: 1500, icon: 'bx bx-copy', position: "bottomRight", message: 'OK' });
+  });
+  $('#manualtfpaymentbtn').on('click', function (e) {
+    e.preventDefault();
+    var formData = new FormData();
+    var fileInput = $('#transfer-image')[0].files[0];
+    var orderId = $(this).data('id');
+    
+    if(orderId) {
+        formData.append('ID', orderId);
+    }
+    // console.log(fileInput);
+    // return false;
+    if(fileInput){
+      formData.append('ProofImageManual', fileInput);
+      $.ajax({
+        url: '/marketplace/productcheckout/manualpayment',
+        type: 'POST',
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function (results) {
+          // console.log(results)
+          var response = JSON.parse(results);
+          if (response.success) {
+            iziToast.success({
+              icon: 'fas fa-shipping-fast',
+              timeout: 3500,
+              title: 'Pesanan Telah Dibuat dan Akan dikirim Secepatnya',
+              position: 'bottomRight',
+              onClosed: function () {
+                // return false;
+                window.location.href = "/marketplace/history";
+              }
+            });
+          }else{
+            iziToast.error({ title: 'Error', message: response.message, position: 'bottomRight' });
+          }
+        },
+        error: function (xhr, status, error) {
+          iziToast.error({ title: 'Error', message: 'error', position: 'bottomRight' });
+        }
+      });
+    } else {
+      iziToast.warning({ position: "bottomRight", title: 'Caution', message: 'Inputkan Bukti Pembayaran!' });
     }
   });
   $('.province_select').on('click', function () {
@@ -2307,34 +2459,33 @@ $('#searchForm').submit(function(e) {
   //   });
   $('#saveData').on('click', function (e) {
     e.preventDefault();
+    var firstName = $('#first').val();
+    var lastName = $('#last').val();
     var numberInput = $("#numberinput").val();
     var address = $('.regency_select .list .selected').html() + ', ' + $('.province_select .list .selected').html();
     var province = parseInt($('.province_select .list .selected').data('value'));
     var regency = parseInt($('.regency_select .list .selected').data('value'));
+    var street = $('#add1').val();
+    var postal =  $('#zip').val();
     // console.log(address)
     // console.log(regency)
     if (numberInput.length < 12 || numberInput.length > 14) {
       iziToast.warning({ position: "bottomRight", title: 'Caution', message: 'Nomor harus antara 12 hingga 14 digit.' });
       return;
     }
-    var data = {
-      Number: $('#numberinput').val(),
-      FName: $('#first').val(),
-      LName: $('#last').val(),
-      Address: address,
-      AddressDetail: $('#add1').val(),
-      Regency: regency,
-      Postal: $('#zip').val()
-    };
+    if (!firstName || !lastName || !province || !regency || !street || !postal) {
+      iziToast.warning({ position: "bottomRight", title: 'Caution', message: 'Lengkapi data pengiriman.' });
+      return;
+    }
     $.post("/marketplace/productcheckout/address", {
-      Number: $('#numberinput').val(),
-      FName: $('#first').val(),
-      LName: $('#last').val(),
+      Number: numberInput,
+      FName: firstName,
+      LName: lastName,
       Address: address,
-      AddressDetail: $('#add1').val(),
+      AddressDetail: street,
       Province: province,
       Regency: regency,
-      Postal: $('#zip').val()
+      Postal: postal
     })
       .done(function (data) {
         var response = JSON.parse(data);
@@ -2394,27 +2545,12 @@ $('#searchForm').submit(function(e) {
     });
   }
   SelectorPayment();
-  SelectorPaymentGate();
   $("input[name='selectorpayment']").on('change', function () {
     SelectorPayment();
   });
-  $("input[name='selectorpaymentgate']").on('change', function () {
-    SelectorPaymentGate();
-  });
   $(document).on('change', "input[name='selectorCost']", function () {
-    // alert("ds");
     fetchcost();
   });
-  function SelectorPaymentGate() {
-    var selectedPayment = $("input[name='selectorpaymentgate']:checked").val();
-    if (selectedPayment === "bca") {
-      $('#norek').html('No. rekening:  12345678')
-    } else if (selectedPayment === "bri") {
-      $('#norek').html('No. rekening:  123456789')
-    } else if (selectedPayment === "mandiri") {
-      $('#norek').html('No. rekening:  12345678910')
-    }
-  }
   function SelectorPayment() {
     var selectedPayment = $("input[name='selectorpayment']:checked").val();
     var options = '';
@@ -2424,7 +2560,7 @@ $('#searchForm').submit(function(e) {
     if (selectedPayment === "manualtf") {
       options += `<div class="payment_item active">
                         <div class="radion_btn">
-                            <input type="radio" id="f-option12" value="bca" name="selectorpaymentgate">
+                            <input type="radio" id="f-option12" value="BCA" name="selectorpaymentgate">
                             <label for="f-option12">BCA </label>
                             <img src="https://imgur.com/5pLj8C1.jpg" alt="" class="col-2">
                             <div class="check"></div>
@@ -2432,7 +2568,7 @@ $('#searchForm').submit(function(e) {
                     </div>
                     <div class="payment_item">
                         <div class="radion_btn">
-                            <input type="radio" id="f-option13" value="bri" name="selectorpaymentgate">
+                            <input type="radio" id="f-option13" value="BRI" name="selectorpaymentgate">
                             <label for="f-option13">BRI </label>
                             <img src="https://imgur.com/5ssXSBr.jpg" alt="" class="col-2">
                             <div class="check"></div>
@@ -2440,35 +2576,10 @@ $('#searchForm').submit(function(e) {
                     </div>
                     <div class="payment_item">
                         <div class="radion_btn">
-                            <input type="radio" id="f-option14" value="mandiri" name="selectorpaymentgate">
-                            <label for="f-option14">mandiri </label>
+                            <input type="radio" id="f-option14" value="Mandiri" name="selectorpaymentgate">
+                            <label for="f-option14">Mandiri </label>
                             <img src="https://imgur.com/r8FVNV6.jpg" alt="" class="col-2">
                             <div class="check"></div>
-                        </div>
-                    </div>
-                    <div class="form-group d-grid">
-                      <div class="">
-                          <label class="" for="transfer-image">Unggah Bukti Transfer:</label>
-                      </div>
-                      <div class="">
-                          <input type="file" id="transfer-image" name="transferImage" accept="image/*" required style="border:none;">
-                      </div>
-                    </div>
-                    <a data-toggle="modal" data-target="#imageModal">
-                        <img id="image-preview" style="display:none; width: 100px; cursor:pointer;"/>
-                    </a>
-                    <div class="modal fade" id="imageModal" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-                            <div class="modal-content" style="background: none; border: none;">
-                                <div class="modal-header" style="border-bottom: none;">
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body" style="background: none;">
-                                    <img id="modal-image" src="" class="img-fluid" style="width: 100%; height: auto;"/>
-                                </div>
-                            </div>
                         </div>
                     </div>`;
       $(".nooptionmanualtf").hide();
@@ -2604,6 +2715,8 @@ $('#searchForm').submit(function(e) {
       }
     });
   });
+  const quantityInputDetails = $('#quantityInputDetails');
+  quantityInputDetails.val(1);
   $('.variantItem').on('click', function (e) {
     e.preventDefault();
     $('.variantItem').removeClass('active');
@@ -2618,6 +2731,44 @@ $('#searchForm').submit(function(e) {
     }
     $('.ppprice').text(variantDiscountedPrice);
     $('.nnprice').text(variantPrice);
+    
+    const decrementButtonDetails = $('#decrementButtonDetails');
+    const incrementButtonDetails = $('#incrementButtonDetails');
+    const variantSelect = $('.variantItem.active');
+    let maxStok = parseInt(variantSelect.data('stock'), 10);
+    let currentQuantity = parseInt(quantityInputDetails.val(), 10);
+    if(currentQuantity > maxStok){
+      quantityInputDetails.val(maxStok);
+    }
+    decrementButtonDetails.off('click');
+    incrementButtonDetails.off('click');
+    quantityInputDetails.off('input');
+
+    $('#monostok').text(maxStok);
+    decrementButtonDetails.on('click', function() {
+      let currentQuantity = parseInt(quantityInputDetails.val(), 10);
+      if (currentQuantity > 1) {
+        quantityInputDetails.val(currentQuantity - 1);
+      }
+    });
+    
+    incrementButtonDetails.on('click', function() {
+      let currentQuantity = parseInt(quantityInputDetails.val(), 10);
+      console.log(maxStok)
+      if (currentQuantity < maxStok) {
+        quantityInputDetails.val(currentQuantity + 1);
+      }
+    });
+
+    quantityInputDetails.on('input', function() {
+      quantityInputDetails.val(quantityInputDetails.val().replace(/[^0-9]/g, ''));
+      let currentQuantity = parseInt(quantityInputDetails.val(), 10);
+      if (!currentQuantity || currentQuantity < 1) {
+        quantityInputDetails.val(1);
+      } else if (currentQuantity > maxStok) {
+        quantityInputDetails.val(maxStok);
+      }
+    });
   });
   $('.navbar-nav .nav-item').click(function () {
     $('.navbar-nav .nav-item.active').removeClass('active');
@@ -2697,7 +2848,17 @@ $('#searchForm').submit(function(e) {
   $('#logoutBtn').on('click', function (e) {
     e.preventDefault();
     $.post("/marketplace/profile/logout", {})
-    window.location.href = '/marketplace/';
+    .done(function (data) {
+      var response = JSON.parse(data);
+      if (response.success) {
+        window.location.href = '/marketplace/';
+      } else {
+        alert('Fail');
+      }
+
+    }).fail(function () {
+      alert('error');
+    });
   });
   $('#closeProductChat').on('click', function (e) {
     e.preventDefault();
@@ -2903,7 +3064,7 @@ $('#searchForm').submit(function(e) {
     })
     .done(function (data) {
       var response = JSON.parse(data);
-      console.log(response)
+      // console.log(response)
       if (response.success) {
         iziToast.success({
           icon: 'fa fa-check',
@@ -2982,6 +3143,22 @@ $('#searchForm').submit(function(e) {
       $('#ProfileAccountSec').hide();
     }
   }
+  if(urlParams.has('invoice')){
+    manualPayment(true);
+  } else {
+    manualPayment(false);
+  }
+  function manualPayment(showPayment) {
+    if (showPayment) {
+      // alert('yo');
+      $('#checkout_area').hide();
+      $('#invoice_payment').show();
+    } else {
+      $('#checkout_area').show();
+      $('#invoice_payment').hide();
+    }
+  }
+
   function hashEmail(email) {
     var emailParts = email.split('@');
     var namePart = emailParts[0];
@@ -3021,6 +3198,7 @@ $('#searchForm').submit(function(e) {
     if (isNaN(quantity) || quantity < 1) quantity = 1;
 
     const totalPrice = (priceNumber * quantity).toFixed(0);
+    priceElement.textContent = `Rp. ${formatNumber(priceNumber)}`;
     totalPriceElement.textContent = `Rp. ${formatNumber(totalPrice)}`;
     totalPriceElementNF.textContent = totalPrice;
   }
@@ -3047,33 +3225,56 @@ $('#searchForm').submit(function(e) {
     const decrementButton = item.querySelector('#decrementButton');
     const incrementButton = item.querySelector('#incrementButton');
     const quantityInput = item.querySelector('#quantityInput');
+    const quantitymax = item.querySelector('#quantityInput').getAttribute('data-stock');
+    // console.log(quantitymax);
     const priceElement = item.querySelector('#itemPrice');
     const totalPriceElement = item.querySelector('#totalPriceCheckout');
     const totalPriceElementNF = item.querySelector('#totalPriceNFCheckout');
     const checkboxhCheck = item.querySelector('.productCheckbox');
+    const stockWarning = item.querySelector('#stockWarning');
+
+    function StockWarning(quantity) {
+      const maxQuantity = parseInt(quantitymax, 10);
+      const currentQuantity = parseInt(quantity, 10);
+      // console.log(quantity)
+      if (currentQuantity >= maxQuantity) {
+          stockWarning.style.display = 'flex';
+      } else {
+          stockWarning.style.display = 'none';
+      }
+    }
+
     decrementButton.addEventListener('click', function () {
       if (quantityInput.value > 1) {
         quantityInput.value = parseInt(quantityInput.value, 10) - 1;
         updateTotalPrice(quantityInput, priceElement, totalPriceElement, totalPriceElementNF);
         updateSubtotal();
+        StockWarning(quantityInput.value);
       }
     });
 
     incrementButton.addEventListener('click', function () {
-      quantityInput.value = parseInt(quantityInput.value, 10) + 1;
-      updateTotalPrice(quantityInput, priceElement, totalPriceElement, totalPriceElementNF);
-      updateSubtotal();
+      let currentQuantity = parseInt(quantityInput.value, 10);
+      if (currentQuantity < quantitymax) {
+        quantityInput.value = currentQuantity + 1;
+        updateTotalPrice(quantityInput, priceElement, totalPriceElement, totalPriceElementNF);
+        updateSubtotal();
+      }
+      StockWarning(quantityInput.value);
     });
 
-  quantityInput.addEventListener('input', function () {
-    quantityInput.value = quantityInput.value.replace(/[^0-9]/g, '');
-    if (!quantityInput.value || quantityInput.value < 1) {
-      quantityInput.value = 1;
-      // console.log(quantityInput.value)
-    }
-    updateTotalPrice(quantityInput, priceElement, totalPriceElement, totalPriceElementNF);
-    updateSubtotal();
-  });
+    quantityInput.addEventListener('input', function () {
+      quantityInput.value = quantityInput.value.replace(/[^0-9]/g, '');
+      let currentQuantity = parseInt(quantityInput.value, 10);
+      if (!currentQuantity || currentQuantity < 1) {
+        quantityInput.value = 1;
+      } else if (currentQuantity > quantitymax) {
+        quantityInput.value = quantitymax;
+      }
+      updateTotalPrice(quantityInput, priceElement, totalPriceElement, totalPriceElementNF);
+      updateSubtotal();
+      StockWarning(quantityInput.value);
+    });
   updateTotalPrice(quantityInput, priceElement, totalPriceElement, totalPriceElementNF);
 });
 function updateFinalPrice() {

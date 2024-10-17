@@ -41,6 +41,12 @@ use SilverStripe\Dev\Debug;
             // You can include any CSS or JS required by your project here.
             // See: https://docs.silverstripe.org/en/developer_guides/templates/requirements/
         }
+        public function getMember(){
+            $member = Security::getCurrentUser();
+            if ($member) {
+                return $member;
+            }
+        }
         public function CartData() {
             $member = Security::getCurrentUser();
             // Debug::show($member);

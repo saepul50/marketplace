@@ -62,8 +62,6 @@ use SilverStripe\View\Requirements;
         'CommentReply' =>ProductReply::class,
     ];
     private static $default_sort = 'Created DESC';
-
-
     
     public function onBeforeWrite()
     {
@@ -109,6 +107,13 @@ use SilverStripe\View\Requirements;
         if ($this->ProductImages()->exists()) {
             $image = $this->ProductImages()->first();
             return $image->Thumbnail(100, 100);
+        }
+        return null;
+    }
+    public function getFirstProductImageModal() {
+        if ($this->ProductImages()->exists()) {
+            $image = $this->ProductImages()->first();
+            return $image;
         }
         return null;
     }
@@ -191,6 +196,7 @@ use SilverStripe\View\Requirements;
         $variants = $this->ProductVariants();
         if ($variants->exists()) {
             $totalStock = $variants->sum('Stock');
+            // Debug::show($totalStock);
             return $totalStock;
         }
         return 'Out of Stock';

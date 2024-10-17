@@ -167,7 +167,7 @@
                                             <span class="lnr lnr-sync"></span>
                                             <p class="hover-text">compare</p>
                                         </a> --%>
-                                        <a href="{$BaseHref}/productdetails/view/$Up.ID" class="social-info">
+                                        <a href="{$BaseHref}/productdetails/view/$ID" class="social-info">
                                             <span class="lnr lnr-move"></span>
                                             <p class="hover-text">view more</p>
                                         </a>

@@ -73,40 +73,36 @@
 									<% if $Product.Promotion %>
 										<h2 class="mb-1 ppprice">$Product.rangePriceDiscounted</h2>
 										<h6 class="l-through my-1 nnprice">$Product.rangePrice</h6>
-										<% else %>
-											<h2 class="ppprice" id="productPrice">$Product.rangePrice</h2>
-											<% end_if %>
+									<% else %>
+										<h2 class="ppprice" id="productPrice">$Product.rangePrice</h2>
+									<% end_if %>
 												<ul class="list">
 													<% if $Product.ProductCategory && $Product.totalStock> 0 %>
 														<li><a class="active" href="#"><span>Category</span> :
 																$Product.ProductCategory.Title</a></li>
-														<li><a href="#"><span>Availibility</span> : In Stock</a></li>
+														<li><span>Availibility</span> : In Stock</li>
+														<li>Stok : <span id="monostok"></span></li>
 														<% else_if $Product.totalStock < 1 %>
 															<li><a class="active" href="#"><span>Category</span> :
 																	$Product.ProductCategory.Title</a></li>
-															<li><a href="#"><span>Availibility</span> : Out Of Stock</a>
-															</li>
-															<% end_if %>
+															<li><a href="#"><span>Availibility</span> : Out Of Stock</a></li>
+															<li>Stok : <span id="monostok"></span></li>
+													<% end_if %>
 												</ul>
 												<p class="m-0 p-0 py-3">$Product.Features</p>
-												<div class="product_count mb-3">
+												<div class="product_count mb-3 d-flex">
 													<label for="qty">Quantity:</label>
-													<input type="text" name="qty" id="sst" maxlength="12" value="1"
-														title="Quantity:" class="input-text qty"
-														onkeypress="return event.charCode >= 48 && event.charCode <= 57"
-														oninput="var sst = parseInt(this.value); if (isNaN(sst) || sst < 1) this.value = 1;">
-
-													<button
-														onclick="var result = document.getElementById('sst'); var sst = parseInt(result.value); if (!isNaN(sst)) result.value = sst + 1; return false;"
-														class="increase items-count" type="button">
-														<i class="lnr lnr-chevron-up"></i>
-													</button>
-
-													<button
-														onclick="var result = document.getElementById('sst'); var sst = parseInt(result.value); if (!isNaN(sst) && sst > 1) result.value = sst - 1; return false;"
-														class="reduced items-count" type="button" style="bottom: 0;">
-														<i class="lnr lnr-chevron-down"></i>
-													</button>
+													<div style="position: relative;">
+														<div class="product_count">
+															<input type="text" name="qty" inputmode="numeric" id="quantityInputDetails" class="input-text qty" value="$ProductQuantity" min="1">
+															<button class="increase items-count m-0" type="button" id="incrementButtonDetails">
+																<i class="lnr lnr-chevron-up"></i>
+															</button>
+															<button class="reduced items-count m-0" style="bottom: -5px;" type="button" id="decrementButtonDetails">
+																<i class="lnr lnr-chevron-down"></i>
+															</button>
+														</div>
+													</div>
 												</div>
 												<% if $Product.ProductCategory %>
 													<div class="cardVariant pb-2 d-flex align-items-center">
@@ -119,15 +115,15 @@
 															</div>
 														<% end_loop %>
 													</div>
-													<% end_if %>
-														<div class="card_area d-flex align-items-center">
-															<button class="primary-btn" id="addCart"
-																style="border:none;">Add to Cart</button>
-															<a class="icon_btn" href="#"><i
-																	class="lnr lnr lnr-diamond"></i></a>
-															<a class="icon_btn" href="#"><i
-																	class="lnr lnr lnr-heart"></i></a>
-														</div>
+												<% end_if %>
+													<div class="card_area d-flex align-items-center">
+														<button class="primary-btn" id="addCart"
+															style="border:none;">Add to Cart</button>
+														<a class="icon_btn" href="#"><i
+																class="lnr lnr lnr-diamond"></i></a>
+														<a class="icon_btn" href="#"><i
+																class="lnr lnr lnr-heart"></i></a>
+													</div>
 								</div>
 							</div>
 				</div>
@@ -164,12 +160,12 @@
 							<div class="col-3 p-0">
 								<div class="d-flex flex-column justify-content-between">
 									<div class="d-flex align-items-center py-2 justify-content-between">
-										<p class="m-0">Chat Dibalas</p>
+										<p class="m-0">Respon Penjual</p>
 										<p class="m-0 pl-2" style="color: darkorange; font-weight: 500;">$Up.Ave</p>
 									</div>
 									<div class="d-flex align-items-center py-2 justify-content-between">
-										<p class="m-0">Respon Penjual</p>
-										<p class="m-0 pl-2" style="color: darkorange; font-weight: 500;">$Up.Ave</p>
+										<p class="m-0">Stok Produk</p>
+										<p class="m-0 pl-2" style="color: darkorange; font-weight: 500;">$Up.Product.totalStock</p>
 									</div>
 								</div>
 							</div>

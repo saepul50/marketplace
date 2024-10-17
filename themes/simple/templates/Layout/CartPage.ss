@@ -1,5 +1,15 @@
-  <!-- Start Banner Area -->
-  <section class="banner-area organic-breadcrumb" style ="background: url($SiteConfig.Background.getURL()) center no-repeat;background-size: cover; position: relative ">
+<!-- Start Banner Area -->
+    <style>
+        .cardVariant .variantItem {
+            cursor: pointer !important;
+            transition: 0.4s ease-in-out !important;
+        }
+        .cardVariant .active {
+            border: 1px solid orange;
+            background-color: #e9e9e9;
+        }  
+    </style>
+<section class="banner-area organic-breadcrumb" style ="background: url($SiteConfig.Background.getURL()) center no-repeat;background-size: cover; position: relative ">
     <div class="container">
         <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
             <div class="col-first">
@@ -38,16 +48,22 @@
                     <% loop $Cart %>
                         <tr class="cartProduct">
                             <td class="col-6">
+                                <%-- <p>$ProductID</p> --%>
                                 <div class="media d-flex align-items-center">
                                     <input type="checkbox" class="productCheckbox" data-id="$ID">
                                     <div class="d-flex col-10 col-md-4">
-                                        <img id="productCheckoutImage" src="$ProductImage" alt="" class="img-fluid">
+                                        <img id="productCheckoutImage" src="$Product.ProductImages.First.URL" alt="" class="img-fluid">
                                     </div>
                                     <div class="media-body">
-                                        <p id="productCheckoutID" class="d-none">$ProductID</p>
-                                        <p id="productCheckoutTitle">$ProductTitle</p>
+                                        <p id="productCheckoutID" class="d-none">$Product.ID</p>
+                                        <p id="productCheckoutTitle">$Product.Title</p>
                                         <% if $ProductCategoryId = 1 %>
-                                            <p id="productCheckoutVariant" data-id="$ProductVariantID" data-weight="$ProductVariantWeight">size: $ProductVariant</p>
+                                            <div class="d-flex align-items-center" id="variantChoose" data-id="$ProductID" data-variant="$ProductVariantID" style="cursor: pointer;">
+                                                <p class="deskripsi m-0">size: </p>
+                                                <p class="pl-1" id="productCheckoutVariant" data-id="$ProductVariantID" data-weight="$ProductVariantWeight">$ProductVariant</p>
+                                                <i class='bx bx-chevron-down' style="font-size: 25px;"></i>
+                                            </div>
+                                            <%-- <p id="productCheckoutVariant" data-id="$ProductVariantID" data-weight="$ProductVariantWeight">size: $ProductVariant</p> --%>
                                         <% else %>
                                             <p id="productCheckoutVariant" data-id="$ProductVariantID" data-weight="$ProductVariantWeight">$ProductVariant</p>
                                         <% end_if %>
@@ -55,11 +71,11 @@
                                 </div>
                             </td>
                             <td>
-                                <h5 id="itemPrice">$ProductPrice</h5>
+                                <h5 id="itemPrice">$Variant.Price</h5>  
                             </td>
-                            <td>
+                            <td style="position: relative;">
                                 <div class="product_count">
-                                    <input type="text" name="qty" inputmode="numeric" id="quantityInput" class="input-text qty" value="$ProductQuantity" min="1">
+                                    <input type="text" name="qty" inputmode="numeric" id="quantityInput" class="input-text qty" value="$ProductQuantity" min="1" data-stock="$Variant.Stock">
                                     <button class="increase items-count m-0" type="button" id="incrementButton">
                                         <i class="lnr lnr-chevron-up"></i>
                                     </button>
@@ -67,6 +83,7 @@
                                         <i class="lnr lnr-chevron-down"></i>
                                     </button>
                                 </div>
+                                <span class="pt-1" id="stockWarning" style="position: absolute; display:none; color:red; font-size: 9px; left: -8px;">Sudah mencapai maks stock produk</span>
                             </td>
                             <td>
                                 <h5 id="totalPriceCheckout"></h5>
@@ -211,6 +228,14 @@
         </div>
     </div>
 </section>
+</div>
+<div id="VariantShow" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+        </div>
+    </div>
+</div>
+
 <!--================End Cart Area =================-->
 <script>
     $('.nav-item#shop').addClass('active');

@@ -36,9 +36,6 @@
 		</div>
 	</section>
 	<!-- End banner Area -->
-	 <% with $Member %>
-	 <p>$Title</p>
-	 <% end_with %>
 	<!-- start features Area -->
 	<section class="features-area section_gap">
 		<div class="container">
