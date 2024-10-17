@@ -1815,7 +1815,7 @@ $('#searchForm').submit(function(e) {
           ProductPrice: $(".ppprice").text(),
           ProductVariant: activeSubvariant.find('#variantName').text(),
           ProductVariantID: activeSubvariant.data('id'),
-          ProductQuantity: $("#sst").val(),
+          ProductQuantity: $("#quantityInputDetails").val(),
           ProductVariantWeight: activeSubvariant.data('weight'),
         })
           .done(function (data) {
