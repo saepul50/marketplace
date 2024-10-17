@@ -84,16 +84,16 @@ Change it, enhance it and most importantly enjoy it!
 			</div>
 			<p class="" id="days">$Days</p>
 			<div class="mt-2 d-flex" style="height: 350px;">
-				<div class="col-4 p-0">
+				<div class="col-5 px-1">
 					<h4 class="fw-bold">Pengunjung</h4>
-					<div id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%">
+					<div id="reportrange1" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%">
 						<i class="fa fa-calendar"></i>&nbsp;
-						<span id="daterange"></span> <i class="fa fa-caret-down"></i>
+						<span id="daterange1"></span> <i class="fa fa-caret-down"></i>
 						<input type="hidden" onchange="myFunction()" id="see">
 					</div>
 					<canvas id="myChart1"></canvas>
 				</div>
-				<div class="col-5 p-0">
+				<div class="col-5 px-1">
 					<h4 class="fw-bold">Penjualan</h4>
 					<div id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%">
 						<i class="fa fa-calendar"></i>&nbsp;
@@ -102,7 +102,7 @@ Change it, enhance it and most importantly enjoy it!
 					</div>
 					<canvas id="myChart"></canvas>
 				</div>
-				<div class="col-3 p-0">
+				<div class="col-2 px-1">
 					<h4 class="fw-bold">Produk Kategori</h4>
 					<canvas id="CategoryChart"></canvas>
 				</div>
@@ -113,6 +113,7 @@ Change it, enhance it and most importantly enjoy it!
 	</div>
 	<script>
 		document.addEventListener("DOMContentLoaded", function() {
+			
 			var transactionsctx = document.getElementById('myChart').getContext('2d');
 			var categoriesctx = document.getElementById('CategoryChart').getContext('2d');
 			var transactions = {$Transactions.Raw}; // Transactions from backend
@@ -173,55 +174,152 @@ Change it, enhance it and most importantly enjoy it!
 				}
 			});
 		
-
-			// Date range picker logic
-			$(function() {
-				var start = moment().subtract(29, 'days');
-				var end = moment();
-
-				function cb(start, end) {
-					$('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
-					$('#see').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
-					var datelabels = [];
-					var currentdate = start.clone();
-					
-					while (currentdate.isSameOrBefore(end)) {
-						datelabels.push(currentdate.format('DD/MM/YYYY'));
-						currentdate.add(1, 'days');
+				
+				$(function() {
+					let storedRange = localStorage.getItem('selectedRange');
+					let start = moment().subtract(29, 'days'); 
+					let end = moment(); 
+				
+					if(storedRange) {
+						let dates = storedRange.split(' - ');
+						start = moment(dates[0]);
+						end = moment(dates[1]);
 					}
-		
-					var length = datelabels.length;
-					
-
-					$.post("/marketplace/admin/status/dashboard", { length: length }, function(data, status) {
-						console.log("Length posted: " + length);
+					function cb(start, end) {
+						$('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+						$('#see').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+						var datelabels = [];
+						var currentdate = start.clone();
 						
-					});
-				}
-		
-				$('#reportrange').daterangepicker({
-					startDate: start,
-					endDate: end,
-					showCustomRangeLabel : false,
-					ranges: {
-						'Today': [moment(), moment()],
-						'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-						'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-					}
-				}, cb);
-				$('#reportrange').on('apply.daterangepicker', function(ev, picker) {
-					
-					$('#see').val(picker.startDate.format('YYYY-MM-DD') + ' - ' + picker.endDate.format('YYYY-MM-DD'));
+						while (currentdate.isSameOrBefore(end)) {
+							datelabels.push(currentdate.format('DD/MM/YYYY'));
+							currentdate.add(1, 'days');
+						}
 			
-					setTimeout(function() {
-						location.reload();
-					}, 500); 
+						var length = datelabels.length;
+						
+
+						$.post("/marketplace/admin/status/dashboard", { length: length }, function(data, status) {
+							console.log("Length posted: " + length);
+							
+						});
+					}
+			
+					$('#reportrange').daterangepicker({
+						startDate: start,
+						endDate: end,
+						showCustomRangeLabel : false,
+						ranges: {
+							'Today': [moment(), moment()],
+							'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+							'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+						}
+					}, cb);
+					$('#reportrange').on('apply.daterangepicker', function(ev, picker) {
+						let selectedRange = picker.startDate.format('YYYY-MM-DD') + ' - ' + picker.endDate.format('YYYY-MM-DD');
+						localStorage.setItem('selectedRange', selectedRange);
+				
+						$('#see').val(selectedRange);
+						setTimeout(function() {
+							location.reload();
+						}, 500);
+					});
+					cb(start, end);
+					
+					
 				});
-				cb(start, end);
+
+
+				//pengunjung
+				var transactionsctx = document.getElementById('myChart1').getContext('2d');
+				var dataview = {$DataView.Raw}; // View from backend
+				var labelview = {$LabelView.raw}; // Labels from backend
 				
-				
-			});
-				
+				var myLineChart = new Chart(transactionsctx, {
+					data: {
+						datasets: [{
+							type: 'line',
+							label: 'Grafik Pengunjung',
+							data: dataview,
+							fill: false,
+							borderColor: 'rgb(75, 192, 192)',
+							tension: 0.1
+						}],
+						labels: labelview,
+					},
+					options: {
+						responsive: true,
+						scales: {
+							x: {
+								display: true,
+								title: {
+									display: true,
+									text: 'Tanggal'
+								}
+							},
+							y: {
+								display: true,
+								title: {
+									display: true,
+									text: 'Pengunjung'
+								}
+							}
+						}
+					}
+				});
+
+				let storedRange = localStorage.getItem('selectedRange1');
+				let start = moment().subtract(29, 'days'); 
+				let end = moment(); 
+			
+				if(storedRange) {
+					let dates = storedRange.split(' - ');
+					start = moment(dates[0]);
+					end = moment(dates[1]);
+				}
+				$(function() {
+
+					function cb(start, end) {
+						$('#reportrange1 span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+						$('#see').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+						var datelabels = [];
+						var currentdate = start.clone();
+						
+						while (currentdate.isSameOrBefore(end)) {
+							datelabels.push(currentdate.format('DD/MM/YYYY'));
+							currentdate.add(1, 'days');
+						}
+			
+						var length = datelabels.length;
+						
+
+						$.post("/marketplace/admin/status/dashboard", { lengthview: length }, function(data, status) {
+							console.log("Length posted: " + length);
+							
+						});
+					}
+			
+					$('#reportrange1').daterangepicker({
+						startDate: start,
+						endDate: end,
+						showCustomRangeLabel : false,
+						ranges: {
+							'Today': [moment(), moment()],
+							'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+							'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+						}
+					}, cb);
+					$('#reportrange1').on('apply.daterangepicker', function(ev, picker) {
+						   let selectedRange = picker.startDate.format('YYYY-MM-DD') + ' - ' + picker.endDate.format('YYYY-MM-DD');
+						   localStorage.setItem('selectedRange1', selectedRange);
+				   
+						   $('#see').val(selectedRange);
+						   setTimeout(function() {
+							   location.reload();
+						   }, 500); 
+					});
+					cb(start, end);
+				});
 			});
 			
 			

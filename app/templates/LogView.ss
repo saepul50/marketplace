@@ -68,26 +68,52 @@ Change it, enhance it and most importantly enjoy it!
         </div>
         <div class="container-fluid">
             <table class="table table-borderless text-center ">
+                <% if $Member.ID = 1 %>
                 <thead>
                   <tr class="">
                     <th scope="col">User</th> 
+                    <th scope="col">VendorID</th> 
                     <th scope="col">Since</th>
                   </tr>
                 </thead>
                 <tbody>
-                    <% loop $LogView %>
-                        <% if $MemberID != -1 %> 
-                            <tr>
-                                <td>$Member.Title</td> 
-                                <td data-date="$Created" class="since"></td>
+                        <% loop $LogView %>
+                            <% if $MemberID != -1 %> 
+                                <tr>
+                                    <td>$Member.Title</td> 
+                                    <td>$VendorID</td>
+                                    <td data-date="$Created" class="since"></td>
+                                </tr>
+                            <% else %> 
+                                <tr>
+                                    <td>Anon</td>
+                                    <td>$VendorID</td>
+                                    <td data-date="$Created" class="since"></td>
+                                </tr>
+                            <% end_if %>
+                        <% end_loop %>
+                    <% else %>
+                        <thead>
+                            <tr class="">
+                              <th scope="col">User</th> 
+                              <th scope="col">Since</th>
                             </tr>
-                        <% else %> 
-                            <tr>
-                                <td>Anon</td> 
-                                <td data-date="$Created" class="since"></td>
-                            </tr>
-                        <% end_if %>
-                    <% end_loop %>
+                          </thead>
+                          <tbody>
+                        <% loop $LogView %>
+                            <% if $MemberID != -1 %> 
+                                <tr>
+                                    <td>$Member.Title</td> 
+                                    <td data-date="$Created" class="since"></td>
+                                </tr>
+                            <% else %> 
+                                <tr>
+                                    <td>Anon</td> 
+                                    <td data-date="$Created" class="since"></td>
+                                </tr>
+                            <% end_if %>
+                        <% end_loop %>
+                    <% end_if %>
                     
                 </tbody>
             </table>
