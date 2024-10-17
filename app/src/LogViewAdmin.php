@@ -15,7 +15,7 @@ use SilverStripe\Security\Security;
 class LogViewAdmin extends LeftAndMain implements PermissionProvider{
     private static $menu_title = 'Log View';
     private static $url_segment = 'Logview'; 
-    private static $menu_icon_class = ' fa-eye';
+    private static $menu_icon_class = 'fas fa-eye';
     private static $required_permission_codes = ['CMS_ACCESS_LogViewAdmin'];
     public function providePermissions()
     {

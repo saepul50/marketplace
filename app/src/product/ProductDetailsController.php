@@ -61,6 +61,7 @@ class ProductDetailsController extends PageController
         $product->write();
         $formatave = number_format($ave, 2);
         $sortOption = $request->getVar('sort');
+        // Debug::show($sortOption);
         $ratings = ProductRating::get()->filter('ProductObjectID', $id);
         if ($sortOption == 'Highest Rating') {
             $ratings = $ratings->sort('Rating', 'DESC');

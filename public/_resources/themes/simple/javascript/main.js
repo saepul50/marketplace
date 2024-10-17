@@ -2943,6 +2943,8 @@ $('#searchForm').submit(function(e) {
     }
   }
 
+
+
   if (urlParams.has('detailOrder')) {
     toggleOrderDetail(true);
   } else {
@@ -3105,4 +3107,9 @@ updateFinalPrice();
 });
 const events = document.querySelector('.event');
 
+function saveSelectionAndSubmit() {
+  const ratingFilter = document.getElementById('rating-filter');
+  localStorage.setItem('selectedSort', ratingFilter.value);
 
+  ratingFilter.form.submit();
+}

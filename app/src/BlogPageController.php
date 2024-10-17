@@ -82,7 +82,7 @@ class BlogPageController extends PageController
             'Result' => $paginated,
             'Latestpost' => BlogAdd::get()->sort('Created', 'DESC'),
             'ActiveFilter' => $activeFilters ?? null,
-            'Categori' => $categori->sort('Count', 'DESC')->filter('Count:GreaterThan', 0),
+            'Categori' => $categori->sort('Count', 'DESC')->filter('Count:GreaterThan', 0) ?? null,
             'Popularpost' => BlogAdd::get()->sort('ViewCount', 'DESC'),
             'Content' => $contents
         ];
