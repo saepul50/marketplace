@@ -30,7 +30,7 @@
                     <div class="sorting mr-auto">
                         <form method="post" id="myForm" action="{$BaseHref}/shopresult">
                             <select id="filtera" class="selectpicker filter-class" name="filter">
-                                <option value="">Show $CurrentLength</option>
+                                <option value="1000">Show All</option>
                                 <option value="12">Show 12</option>
                                 <option value="9">Show 9</option>
                                 <option value="6">Show 6</option>
@@ -139,4 +139,8 @@
     
         <script>
             $('.nav-item#shop').addClass('active');
+            var savedValue = localStorage.getItem("filteraValue");
+            if (savedValue) {
+                $("#filtera").val(savedValue);
+            }
         </script>

@@ -4,9 +4,11 @@ $(document).ready(function () {
   $("#filtera").change(function (event) {
     event.preventDefault(); // Prevents the form from doing a default refresh
     var selected = $("#filtera").val();
+
     if (selected == '') {
       return;
     }
+    localStorage.setItem("filteraValue", selected);
     $.post("/marketplace/shopcategory/filter", {
       select: $("#filtera").val(),
     })

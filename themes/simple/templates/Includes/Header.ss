@@ -76,8 +76,8 @@
 						<li class="nav-item" id="contact"><a class="nav-link" href="{$BaseHref}/contact">Contact</a></li>
 						<li class="nav-item" id="profile"><a class="nav-link" href="{$BaseHref}/profile">Profile</a></li>
 					</ul>
-					<ul class="nav navbar-nav navbar-right">
-						<li class="nav-item">
+					<ul class="nav navbar-nav navbar-right" style="flex-direction:row !important;">
+						<li class="nav-item" style="display:block !important; margin-left: !important;">
 							<a href="{$BaseHref}/cart" class="cart" style="color: #000;">
 								<span class="cart" style=" outline: none !important; box-shadow: none;"></span>
 								<i class='bx bx-shopping-bag' style="font-size: 18px;"><% if $CartData %><span class="cart-count">$CartData</span><% end_if %></i>

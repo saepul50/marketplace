@@ -59,6 +59,7 @@ Change it, enhance it and most importantly enjoy it!
 	<% require themedCSS('nouislider.min') %>
 	<% require themedCSS('ion.rangeSlider.skinFlat') %>
 	<% require themedCSS('magnific-popup') %>
+	
 </head>
 <body class="$ClassName.ShortName<% if not $Menu(2) %> no-sidebar<% end_if %>" <% if $i18nScriptDirection %>dir="$i18nScriptDirection"<% end_if %>>
 <% include Header %>
