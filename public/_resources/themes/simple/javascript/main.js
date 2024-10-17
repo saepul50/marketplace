@@ -1903,20 +1903,20 @@ $('#searchForm').submit(function(e) {
   $("#variantChoose").on('click', function () {
     var productid = $(this).data('id');
     var productvariantid = $(this).data('variant');
+    // console.log(productvariantid);
 
     $.post("/marketplace/cart/variantShow", {
         ProductID: productid
     })
     .done(function (data) {
         var response = JSON.parse(data);
-        // console.log(response.productImage);
         // return false;
         if (response.success) {
             var modalHeader = `
                 <div class="modal-header">
                     <div class="col-3 p-0 position-relative">
                         <img src="${response.productImage}" class="img-fluid" style="aspect-ratio: 1/1; object-fit: contain;">
-                        <i class='bx bx-expand-horizontal p-1' style="position: absolute; right: 0; color: #fff; background-color: #9e9e9e; border-radius: 50%; transform: rotate(-45deg);  cursor:pointer"></i>
+                        <i class='bx bx-expand-horizontal p-1' style="position: absolute; right: 0; color: #fff; background-color: #9e9e9e; border-radius: 50%; transform: rotate(-45deg);  cursor: pointer;"></i>
                     </div>
                     <div class="col-9 pl-3 p-0 d-flex flex-column">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -1950,6 +1950,17 @@ $('#searchForm').submit(function(e) {
             $('#VariantShow .modal-content').empty().append(modalHeader + modalBody + modalFooter);
 
             $('#VariantShow').modal('show');
+
+            var defaultVariant = $(`.variantItem[data-variant-id="${productvariantid}"]`);
+            if (defaultVariant.length) {
+                defaultVariant.addClass('active');
+                
+                var selectedVariant = response.variants.find(v => v.ID == productvariantid);
+                if (selectedVariant) {
+                    $('.modal-header h6').text(`Rp. ${formatNumber(selectedVariant.Price)}`);
+                    $('.modal-header p').text(`Stok: ${selectedVariant.Stock}`);
+                }
+            }
 
             $('.variantItem').on('click', function() {
                 var variantID = $(this).data('variant-id');
