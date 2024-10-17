@@ -1751,7 +1751,7 @@ $('#searchForm').submit(function(e) {
           ProductPrice: $(".ppprice").text(),
           ProductVariant: activeSubvariant.find('#variantName').text(),
           ProductVariantID: activeSubvariant.data('id'),
-          ProductQuantity: $("#sst").val(),
+          ProductQuantity: $("#quantityInputDetails").val(),
           ProductVariantWeight: activeSubvariant.data('weight'),
         })
           .done(function (data) {
@@ -1782,7 +1782,7 @@ $('#searchForm').submit(function(e) {
           ProductVariantID: activeSubvariant.data('id'),
           ProductVariantWeight: activeSubvariant.data('weight'),
           ProductPrice: $(".ppprice").text(),
-          ProductQuantity: $("#sst").val(),
+          ProductQuantity: $("#quantityInputDetails").val(),
         })
           .done(function (data) {
             var response = JSON.parse(data);
@@ -1836,86 +1836,89 @@ $('#searchForm').submit(function(e) {
       return;
     }
   });
-  $("#variantChoose").on('click', function () {
-    var productid = $(this).data('id');
-    var productvariantid = $(this).data('variant');
-    // console.log(productvariantid);
+  document.querySelectorAll('#variantChoose').forEach(item => {
+    item.addEventListener('click', function () {
+      // alert('sd');
+      var productid = $(this).data('id');
+      var productvariantid = $(this).data('variant');
+      // console.log(productvariantid);
 
-    $.post("/marketplace/cart/variantShow", {
-        ProductID: productid
-    })
-    .done(function (data) {
-        var response = JSON.parse(data);
-        // return false;
-        if (response.success) {
-            var modalHeader = `
-                <div class="modal-header">
-                    <div class="col-3 p-0 position-relative">
-                        <img src="${response.productImage}" class="img-fluid" style="aspect-ratio: 1/1; object-fit: contain;">
-                        <i class='bx bx-expand-horizontal p-1' style="position: absolute; right: 0; color: #fff; background-color: #9e9e9e; border-radius: 50%; transform: rotate(-45deg);  cursor: pointer;"></i>
-                    </div>
-                    <div class="col-9 pl-3 p-0 d-flex flex-column">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                        <div class="pt-4">
-                            <h6 class="m-0" style="font-size: 18px; color: darkorange"></h6>
-                            <p class="m-0" style="font-size: 15px; color: #707070; font-weight: 400;">Stok: </p>
-                        </div>
-                    </div>
-                </div>`;
+      $.post("/marketplace/cart/variantShow", {
+          ProductID: productid
+      })
+      .done(function (data) {
+          var response = JSON.parse(data);
+          // return false;
+          if (response.success) {
+              var modalHeader = `
+                  <div class="modal-header">
+                      <div class="col-3 p-0 position-relative">
+                          <img src="${response.productImage}" class="img-fluid" style="aspect-ratio: 1/1; object-fit: contain;">
+                          <i class='bx bx-expand-horizontal p-1' style="position: absolute; right: 0; color: #fff; background-color: #9e9e9e; border-radius: 50%; transform: rotate(-45deg);  cursor: pointer;"></i>
+                      </div>
+                      <div class="col-9 pl-3 p-0 d-flex flex-column">
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                          </button>
+                          <div class="pt-4">
+                              <h6 class="m-0" style="font-size: 18px; color: darkorange"></h6>
+                              <p class="m-0" style="font-size: 15px; color: #707070; font-weight: 400;">Stok: </p>
+                          </div>
+                      </div>
+                  </div>`;
 
-            var modalBody = `<div class="modal-body">
-                          <div class="d-flex flex-wrap cardVariant" style="gap: 1rem;">`;
+              var modalBody = `<div class="modal-body">
+                            <div class="d-flex flex-wrap cardVariant" style="gap: 1rem;">`;
 
-            response.variants.forEach(function(variant) {
-                modalBody += `
-                            <div class="py-1 px-2 variantItem" data-variant-id="${variant.ID}">
-                                <p class="m-0">${variant.VariantName}</p>
-                            </div>`;
-            });
+              response.variants.forEach(function(variant) {
+                  modalBody += `
+                              <div class="py-1 px-2 variantItem" data-variant-id="${variant.ID}">
+                                  <p class="m-0">${variant.VariantName}</p>
+                              </div>`;
+              });
 
-            modalBody += `</div>
-                      </div>`;
+              modalBody += `</div>
+                        </div>`;
 
-            var modalFooter = `
-                <div class="modal-footer">
-                    <button type="submit" class="genric-btn primary-border" style="width: 100%;">Konfirmasi</button>
-                </div>`;
+              var modalFooter = `
+                  <div class="modal-footer">
+                      <button type="submit" class="genric-btn primary-border" style="width: 100%;">Konfirmasi</button>
+                  </div>`;
 
-            $('#VariantShow .modal-content').empty().append(modalHeader + modalBody + modalFooter);
+              $('#VariantShow .modal-content').empty().append(modalHeader + modalBody + modalFooter);
 
-            $('#VariantShow').modal('show');
+              $('#VariantShow').modal('show');
 
-            var defaultVariant = $(`.variantItem[data-variant-id="${productvariantid}"]`);
-            if (defaultVariant.length) {
-                defaultVariant.addClass('active');
-                
-                var selectedVariant = response.variants.find(v => v.ID == productvariantid);
-                if (selectedVariant) {
-                    $('.modal-header h6').text(`Rp. ${formatNumber(selectedVariant.Price)}`);
-                    $('.modal-header p').text(`Stok: ${selectedVariant.Stock}`);
-                }
-            }
+              var defaultVariant = $(`.variantItem[data-variant-id="${productvariantid}"]`);
+              if (defaultVariant.length) {
+                  defaultVariant.addClass('active');
+                  
+                  var selectedVariant = response.variants.find(v => v.ID == productvariantid);
+                  if (selectedVariant) {
+                      $('.modal-header h6').text(`Rp. ${formatNumber(selectedVariant.Price)}`);
+                      $('.modal-header p').text(`Stok: ${selectedVariant.Stock}`);
+                  }
+              }
 
-            $('.variantItem').on('click', function() {
-                var variantID = $(this).data('variant-id');
-                $('.variantItem').removeClass('active');
-                $(this).addClass('active')
+              $('.variantItem').on('click', function() {
+                  var variantID = $(this).data('variant-id');
+                  $('.variantItem').removeClass('active');
+                  $(this).addClass('active')
 
-                var selectedVariant = response.variants.find(v => v.ID == variantID);
-                // console.log(selectedVariant)
-                if (selectedVariant) {
-                    $('.modal-header h6').text(`Rp. ${formatNumber(selectedVariant.Price)}`);
-                    $('.modal-header p').text(`Stok: ${selectedVariant.Stock}`);
-                }
-            });
+                  var selectedVariant = response.variants.find(v => v.ID == variantID);
+                  // console.log(selectedVariant)
+                  if (selectedVariant) {
+                      $('.modal-header h6').text(`Rp. ${formatNumber(selectedVariant.Price)}`);
+                      $('.modal-header p').text(`Stok: ${selectedVariant.Stock}`);
+                  }
+              });
 
-        } else {
-            alert('Gagal memuat varian.');
-        }
-    }).fail(function () {
-        alert('Terjadi kesalahan.');
+          } else {
+              alert('Gagal memuat varian.');
+          }
+      }).fail(function () {
+          alert('Terjadi kesalahan.');
+      });
     });
   });
   $("#proceedCheckout").on('click', function (e) {
