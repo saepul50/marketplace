@@ -207,7 +207,7 @@ class BlogPageController extends PageController
             $comment->BlogCommentID = $data['CommentID'];
             $comment->Comment = $data['Message'];
             $comment->write();
-
+            // Debug::show($comment);
 
             return json_encode([
                 'success' => true,

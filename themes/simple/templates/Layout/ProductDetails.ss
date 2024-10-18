@@ -580,10 +580,8 @@
 								</div>
 							</div>
 							<div class="modal-footer">
-								<button type="button" class="btn btn-secondary "
-									style="position: relative;overflow: hidden;color: #fff;padding: 0 30px;line-height: 50px;border-radius: 50px;display: inline-block;text-transform: uppercase;font-weight: 500;cursor: pointer;"
-									data-dismiss="modal">Close</button>
-								<button type="submit" class="primary-btn">Send message</button>
+								<button type="button" class="genric-btn default-border" data-dismiss="modal">Close</button>
+								<button type="submit" class="genric-btn primary-border">Sent</button>
 							</div>
 						</form>
 					</div>

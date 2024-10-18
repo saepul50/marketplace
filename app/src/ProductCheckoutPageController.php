@@ -31,6 +31,7 @@ class ProductCheckoutPageController extends PageController{
             // Debug::show($checkoutData);
             $AddressData = $request->getSession()->get('AddressData');
             $Coupon = $request->getSession()->get('Coupon');
+        
             $diskon = PromoToko::get()->filter('Code', $Coupon);
             // Debug::show($diskon);
             $listDataCheckout = new ArrayList();
@@ -47,7 +48,7 @@ class ProductCheckoutPageController extends PageController{
                 'CheckoutProductData' => $listDataCheckout,
                 'AddressData' => $AddressData,
                 'Diskon' => $diskon,
-                'Code' => $Coupon
+               
             ])->renderWith(['ProductCheckoutPage', 'Page']);
         }
         return $this->redirect('login');

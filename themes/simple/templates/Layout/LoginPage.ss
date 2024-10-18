@@ -69,10 +69,10 @@
                             <input type="text" class="form-control" id="emailregister" placeholder="Email" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Email'">
                         </div>
                         <div class="col-md-12 form-group">
-                            <input type="text" class="form-control" id="passwordregister" placeholder="Password" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Password'">
+                            <input type="password" class="form-control" id="passwordregister" placeholder="Password" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Password'">
                         </div>
                         <div class="col-md-12 form-group">
-                            <input type="text" class="form-control" id="confirmpassword" placeholder="Confirm Password" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Confirm Password'">
+                            <input type="password" class="form-control" id="confirmpassword" placeholder="Confirm Password" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Confirm Password'">
                         </div>
                         <div class="col-md-12 form-group">
                             <button id="register" class="primary-btn">register</button>

@@ -456,7 +456,7 @@ $(document).ready(function () {
             icon: 'fa fa-check',
             timeout: 3500,
             title: 'Sukses',
-            message: 'Wait for Second, OTP will Expired for 30 second!',
+            message: 'Wait for Second, OTP will Expired for 5 Minutes!',
             position: 'bottomRight',
             onClosed: function () {
               $('#otpcode').modal('show');
@@ -537,7 +537,7 @@ $(document).ready(function () {
             position: 'bottomRight',
             onClosed: function () {
               return false;
-              // window.location.href = "/marketplace/";
+              // window.location.href = "/marketplace/ ";
             }
           });
         } else {
@@ -671,9 +671,9 @@ $(document).ready(function () {
     }
   });
 
-  $("#replycomment").off(function (event) {
+  $("#replycomment").submit(function (event) {
     event.preventDefault();
-
+    console.log('kdkaskd');
     $.post("/marketplace/blog/handelreply", {
       Send: $("#nama-reply").val(),
       Message: $("#message-reply").val(),
@@ -3237,10 +3237,11 @@ $('#searchForm').submit(function(e) {
   }
   document.querySelectorAll('.cartProduct').forEach(item => {
     const decrementButton = item.querySelector('#decrementButton');
+    
     const incrementButton = item.querySelector('#incrementButton');
     const quantityInput = item.querySelector('#quantityInput');
     const quantitymax = item.querySelector('#quantityInput').getAttribute('data-stock');
-    // console.log(quantitymax);
+    console.log(quantitymax);
     const priceElement = item.querySelector('#itemPrice');
     const totalPriceElement = item.querySelector('#totalPriceCheckout');
     const totalPriceElementNF = item.querySelector('#totalPriceNFCheckout');
@@ -3269,7 +3270,9 @@ $('#searchForm').submit(function(e) {
 
     incrementButton.addEventListener('click', function () {
       let currentQuantity = parseInt(quantityInput.value, 10);
+
       if (currentQuantity < quantitymax) {
+        console.log(quantitymax);
         quantityInput.value = currentQuantity + 1;
         updateTotalPrice(quantityInput, priceElement, totalPriceElement, totalPriceElementNF);
         updateSubtotal();
@@ -3289,40 +3292,41 @@ $('#searchForm').submit(function(e) {
       updateSubtotal();
       StockWarning(quantityInput.value);
     });
-  updateTotalPrice(quantityInput, priceElement, totalPriceElement, totalPriceElementNF);
-});
-function updateFinalPrice() {
-  const subTotal = document.querySelector('#subTotalPriceProduct').textContent;
-  const subShipping = document.querySelector('#shippingProduct').textContent;
-  const  Diskon = document.querySelector('#Diskon').textContent;
-  const subTotalInt = parseFloat(subTotal.replace('Rp. ', '').replace(/\./g, ''));
-  const subShippingInt = parseFloat(subShipping.replace('Rp. ', '').replace(/\./g, ''));
-  // console.log(subTotalInt)
-  // console.log(subShipping)
-  const TotalPrice = subTotalInt + subShippingInt ;
-  
-  let FinalPrice;
+    updateTotalPrice(quantityInput, priceElement, totalPriceElement, totalPriceElementNF);
+  });
+  function updateFinalPrice() {
+    const subTotal = document.querySelector('#subTotalPriceProduct').textContent;
+    const subShipping = document.querySelector('#shippingProduct').textContent;
+    const  Diskon = document.querySelector('#Diskon').textContent;
+    console.log(Diskon);
+    const subTotalInt = parseFloat(subTotal.replace('Rp. ', '').replace(/\./g, ''));
+    const subShippingInt = parseFloat(subShipping.replace('Rp. ', '').replace(/\./g, ''));
+    // console.log(subTotalInt)
+    // console.log(subShipping)
+    const TotalPrice = subTotalInt + subShippingInt ;
+    
+    let FinalPrice;
 
-  if(Diskon){
-    const DiskonInt = parseFloat(Diskon.replace('%', '').trim());
-    if(!isNaN(DiskonInt) && DiskonInt > 0){
-        const Discountamount = (DiskonInt / 100) * TotalPrice;
-        FinalPrice = TotalPrice - Discountamount;
-      } else {
+    if(Diskon){
+      const DiskonInt = parseFloat(Diskon.replace('%', '').trim());
+      if(!isNaN(DiskonInt) && DiskonInt > 0){
+          const Discountamount = (DiskonInt / 100) * TotalPrice;
+          FinalPrice = TotalPrice - Discountamount;
+        } else {
+        FinalPrice = TotalPrice;
+        };
+    } else{
       FinalPrice = TotalPrice;
-      };
-  } else{
-    FinalPrice = TotalPrice;
+    }
+    const FinalElement = document.querySelector('#finalPriceProduct');
+    const FinalNFElement = document.querySelector('#finalPriceNFProduct');
+    FinalElement.textContent = `Rp. ${formatNumber(FinalPrice)}`;
+    FinalNFElement.textContent = FinalPrice;
   }
-  const FinalElement = document.querySelector('#finalPriceProduct');
-  const FinalNFElement = document.querySelector('#finalPriceNFProduct');
-  FinalElement.textContent = `Rp. ${formatNumber(FinalPrice)}`;
-  FinalNFElement.textContent = FinalPrice;
-}
-updateSubtotal();
-updateFinalPrice();
-});
-const events = document.querySelector('.event');
+  updateSubtotal();
+  updateFinalPrice();
+  });
+  const events = document.querySelector('.event');
 
 function saveSelectionAndSubmit() {
   const ratingFilter = document.getElementById('rating-filter');

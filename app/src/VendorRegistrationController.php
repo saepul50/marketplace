@@ -129,7 +129,7 @@ class VendorRegistrationController extends PageController{
         // Debug::show($data);
         // die();
         $otp = $data['CodeOTP'];
-        $expiryTime = date('Y-m-d H:i:s', strtotime('+30 seconds'));
+        $expiryTime = date('Y-m-d H:i:s', strtotime('+5 Minutes'));
         $siteconfig = SiteConfig::current_site_config();
         $send = $siteconfig->Email;
         // Debug::show($send);

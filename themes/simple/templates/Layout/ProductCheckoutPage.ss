@@ -145,7 +145,15 @@
                                 <label id="time" class="d-none"></label>
                                 <label id="orderID" class="d-none"></label>
                                 <li><a>Subtotal <span id="subTotalPriceProduct"><% loop $CheckoutProductData %><% if $Pos == 1 %>$ProductSubTotalPrice<% end_if %><% end_loop %></span></a></li>
-                                <li><a>Diskon <span id="Diskon"><% loop $Diskon %>$Diskon%<% end_loop %></span></a></li>
+                                <li><a>Diskon <span id="Diskon">
+                                    <% if $Diskon %>
+                                        <% loop $Diskon %> 
+                                            $Diskon %
+                                        <% end_loop %>
+                                    <% else %>
+                                        0%
+                                    <% end_if %>   
+                                </span></a></li>
                                 <%-- <li><a>Subtotal <span><% loop $CheckoutProductData %><% if $Pos == 1 %>$ProductSubTotalNFPrice<% end_if %><% end_loop %></span></a></li> --%>
                                 <li><a>Shipping <span id="shippingProduct"></span></a></li>
                                 <li class="d-none"><a><span id="shippingNFProduct"></span></a></li>
