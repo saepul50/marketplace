@@ -57,16 +57,12 @@
                                     <div class="media-body">
                                         <p id="productCheckoutID" class="d-none">$Product.ID</p>
                                         <p id="productCheckoutTitle">$Product.Title</p>
-                                        <% if $ProductCategoryId = 1 %>
                                             <div class="d-flex align-items-center" id="variantChoose" data-cart="$ID" data-id="$ProductID" data-variant="$ProductVariantID" style="cursor: pointer;">
-                                                <p class="deskripsi m-0">size: </p>
                                                 <p class="pl-1" id="productCheckoutVariant" data-id="$ProductVariantID" data-weight="$ProductVariantWeight">$ProductVariant</p>
                                                 <i class='bx bx-chevron-down' style="font-size: 25px;"></i>
                                             </div>
                                             <%-- <p id="productCheckoutVariant" data-id="$ProductVariantID" data-weight="$ProductVariantWeight">size: $ProductVariant</p> --%>
-                                        <% else %>
-                                            <p id="productCheckoutVariant" data-id="$ProductVariantID" data-weight="$ProductVariantWeight">$ProductVariant</p>
-                                        <% end_if %>
+
                                     </div>
                                 </div>
                             </td>

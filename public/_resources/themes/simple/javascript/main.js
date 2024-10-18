@@ -2010,7 +2010,7 @@ $('#searchForm').submit(function(e) {
                     var response = JSON.parse(data);
                     // console.log(data)
                     if (response.success) {
-                      iziToast.success({ title: 'Ok', message: response.message, position: 'bottomRight' });
+                      location.reload();
                     } else {
                       iziToast.error({ title: 'Gagal Menghapus Product Yang dipilih:', message: response.message, position: 'bottomRight' });
                     }
@@ -2579,6 +2579,7 @@ $('#searchForm').submit(function(e) {
         // console.log(data.rajaongkir.results[0].costs)
         var options = '';
         var dataCost = data.rajaongkir.results[0].costs;
+        // console.log(dataCost);
         dataCost.forEach((element, index) => {
           let formattedCost = formatNumber(element.cost[0].value);
           options += `<div class="payment_item active">
@@ -3337,7 +3338,7 @@ $('#searchForm').submit(function(e) {
     const subTotal = document.querySelector('#subTotalPriceProduct').textContent;
     const subShipping = document.querySelector('#shippingProduct').textContent;
     const  Diskon = document.querySelector('#Diskon').textContent;
-    console.log(Diskon);
+    // console.log(Diskon);
     const subTotalInt = parseFloat(subTotal.replace('Rp. ', '').replace(/\./g, ''));
     const subShippingInt = parseFloat(subShipping.replace('Rp. ', '').replace(/\./g, ''));
     // console.log(subTotalInt)
