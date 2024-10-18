@@ -59,11 +59,13 @@ class NotificationController extends PageController{
     }
     public function NotificationRead(HTTPRequest $request){
         $OrderID = $request->postVar('OrderID');
+        Debug::show($OrderID);
         if($OrderID){
             // Debug::show($OrderID);
             // die();
             $HeaderCheckout = ProductCheckoutHeaderObject::get()->filter('OrderID', $OrderID)->first();
-            $Notification = NotificationObject::get()->filter('HeaderCheckoutID', $HeaderCheckout->ID)->first();
+            $Notification = NotificationObject::get()->filter(['HeaderCheckoutID'=> $HeaderCheckout->ID , 'Read' => 'Unread'])->first();
+            Debug::show($Notification);
             if ($Notification && $Notification->Read == 'Unread') {
                 $Notification->Read = 'Read';
                 $Notification->write();

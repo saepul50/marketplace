@@ -59,16 +59,51 @@ Change it, enhance it and most importantly enjoy it!
 	<% require themedCSS('nouislider.min') %>
 	<% require themedCSS('ion.rangeSlider.skinFlat') %>
 	<% require themedCSS('magnific-popup') %>
-	
 </head>
 <body class="$ClassName.ShortName<% if not $Menu(2) %> no-sidebar<% end_if %>" <% if $i18nScriptDirection %>dir="$i18nScriptDirection"<% end_if %>>
-<% include Header %>
+
 <div class="main " role="main">
 	<div class="inner typography line">
-		$Layout
+		<section class="login_box_area section_gap">
+            <div class="container login" id="loginpageId">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="login_box_img">
+                            <img class="img-fluid" src="$SiteConfig.LoginImage.getURL()" alt="">
+                            <div class="hover">
+                                <h4>Change Password?</h4>
+                                <p>There are advances being made in science and technology everyday, and a good example of this is the</p>
+                                <%-- <button class="primary-btn" id="showRegister" style="border: none;">Create an Account</button> --%>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="login_form_inner" style="padding-top: 110px !important;">
+                            <h3>Change Password</h3>
+                            <form class="row login_form"  method="post" id="forgetpassword" >
+                                <div class="col-md-12 form-group">
+                                    <input type="password" class="form-control" id="inputPassword4" placeholder="Password" required>
+                                </div>
+                                <div class="col-md-12 form-group">
+                                    <input type="password" class="form-control" id="inputPassword5" placeholder="ConfirmPassword" required>
+                                    <input type="hidden" id="uniqe"  value="$ForgetPassword">
+                                </div>
+                                <div class="col-md-12 form-group mt-4">
+                                    <button type="submit" class="primary-btn">Change</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
 	</div>
 </div>
-<% include Footer %>
+
+
+
+
+
 <% require themedJavascript('jquery.ajaxchimp.min') %>
 <% require themedJavascript('jquery.nice-select.min') %>
 <% require themedJavascript('jquery.sticky') %>

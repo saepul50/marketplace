@@ -31,8 +31,9 @@ class ProductCheckoutPageController extends PageController{
             // Debug::show($checkoutData);
             $AddressData = $request->getSession()->get('AddressData');
             $Coupon = $request->getSession()->get('Coupon');
+        
             $diskon = PromoToko::get()->filter('Code', $Coupon);
-    
+            // Debug::show($diskon);
             $listDataCheckout = new ArrayList();
             
             if ($checkoutData && is_array($checkoutData)) {
@@ -42,12 +43,12 @@ class ProductCheckoutPageController extends PageController{
             }
             // Debug::show($listDataCheckout);
             // die();
-    
+            
             return $this->customise([
                 'CheckoutProductData' => $listDataCheckout,
                 'AddressData' => $AddressData,
                 'Diskon' => $diskon,
-                'Code' => $Coupon
+               
             ])->renderWith(['ProductCheckoutPage', 'Page']);
         }
         return $this->redirect('login');
@@ -72,7 +73,7 @@ class ProductCheckoutPageController extends PageController{
                 }
                 
                 $request->getSession()->set('Coupon', $data);
-
+                // Debug::show($data);
                 return json_encode([
                     'success' => true,
                     'message' => "Success! You get a discount of {$diskon}%."

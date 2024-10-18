@@ -232,20 +232,7 @@
                                                             <% end_if %>
                                                         </div>
                                                         <div class="prd-bottom">
-                
-                                                            <a  class="social-info">
-                                                                <span class="ti-bag"></span>
-                                                                <p class="hover-text">add to bag</p>
-                                                            </a>
-                                                            <a  class="social-info">
-                                                                <span class="lnr lnr-heart"></span>
-                                                                <p class="hover-text">Wishlist</p>
-                                                            </a>
-                                                            <a  class="social-info">
-                                                                <span class="lnr lnr-sync"></span>
-                                                                <p class="hover-text">compare</p>
-                                                            </a>
-                                                            <a  class="social-info">
+                                                            <a href="{$BaseHref}/productdetails/view/$ID" class="social-info">
                                                                 <span class="lnr lnr-move"></span>
                                                                 <p class="hover-text">view more</p>
                                                             </a>
@@ -294,19 +281,7 @@
                                                             <% end_if %>
                                                         </div>
                                                         <div class="prd-bottom">
-                                                            <a class="social-info">
-                                                                <span class="ti-bag"></span>
-                                                                <p class="hover-text">add to bag</p>
-                                                            </a>
-                                                            <a class="social-info">
-                                                                <span class="lnr lnr-heart"></span>
-                                                                <p class="hover-text">Wishlist</p>
-                                                            </a>
-                                                            <a class="social-info">
-                                                                <span class="lnr lnr-sync"></span>
-                                                                <p class="hover-text">compare</p>
-                                                            </a>
-                                                            <a class="social-info">
+                                                            <a href="{$BaseHref}/productdetails/view/$ID" class="social-info">
                                                                 <span class="lnr lnr-move"></span>
                                                                 <p class="hover-text">view more</p>
                                                             </a>
@@ -346,20 +321,7 @@
                                                             <% end_if %>
                                                         </div>
                                                         <div class="prd-bottom">
-                
-                                                            <a  class="social-info">
-                                                                <span class="ti-bag"></span>
-                                                                <p class="hover-text">add to bag</p>
-                                                            </a>
-                                                            <a  class="social-info">
-                                                                <span class="lnr lnr-heart"></span>
-                                                                <p class="hover-text">Wishlist</p>
-                                                            </a>
-                                                            <a  class="social-info">
-                                                                <span class="lnr lnr-sync"></span>
-                                                                <p class="hover-text">compare</p>
-                                                            </a>
-                                                            <a  class="social-info">
+                                                            <a href="{$BaseHref}/productdetails/view/$ID" class="social-info">
                                                                 <span class="lnr lnr-move"></span>
                                                                 <p class="hover-text">view more</p>
                                                             </a>
@@ -400,19 +362,7 @@
                                                             <% end_if %>
                                                         </div>
                                                         <div class="prd-bottom">
-                                                            <a class="social-info">
-                                                                <span class="ti-bag"></span>
-                                                                <p class="hover-text">add to bag</p>
-                                                            </a>
-                                                            <a class="social-info">
-                                                                <span class="lnr lnr-heart"></span>
-                                                                <p class="hover-text">Wishlist</p>
-                                                            </a>
-                                                            <a class="social-info">
-                                                                <span class="lnr lnr-sync"></span>
-                                                                <p class="hover-text">compare</p>
-                                                            </a>
-                                                            <a class="social-info">
+                                                            <a href="{$BaseHref}/productdetails/view/$ID" class="social-info">
                                                                 <span class="lnr lnr-move"></span>
                                                                 <p class="hover-text">view more</p>
                                                             </a>
@@ -453,19 +403,7 @@
                                                             <% end_if %>
                                                         </div>
                                                         <div class="prd-bottom">
-                                                            <a class="social-info">
-                                                                <span class="ti-bag"></span>
-                                                                <p class="hover-text">add to bag</p>
-                                                            </a>
-                                                            <a class="social-info">
-                                                                <span class="lnr lnr-heart"></span>
-                                                                <p class="hover-text">Wishlist</p>
-                                                            </a>
-                                                            <a class="social-info">
-                                                                <span class="lnr lnr-sync"></span>
-                                                                <p class="hover-text">compare</p>
-                                                            </a>
-                                                            <a class="social-info">
+                                                            <a href="{$BaseHref}/productdetails/view/$ID" class="social-info">
                                                                 <span class="lnr lnr-move"></span>
                                                                 <p class="hover-text">view more</p>
                                                             </a>
@@ -506,19 +444,7 @@
                                                             <% end_if %>
                                                         </div>
                                                         <div class="prd-bottom">
-                                                            <a class="social-info">
-                                                                <span class="ti-bag"></span>
-                                                                <p class="hover-text">add to bag</p>
-                                                            </a>
-                                                            <a class="social-info">
-                                                                <span class="lnr lnr-heart"></span>
-                                                                <p class="hover-text">Wishlist</p>
-                                                            </a>
-                                                            <a class="social-info">
-                                                                <span class="lnr lnr-sync"></span>
-                                                                <p class="hover-text">compare</p>
-                                                            </a>
-                                                            <a class="social-info">
+                                                            <a href="{$BaseHref}/productdetails/view/$ID" class="social-info">
                                                                 <span class="lnr lnr-move"></span>
                                                                 <p class="hover-text">view more</p>
                                                             </a>
@@ -559,20 +485,7 @@
                                                             <% end_if %>
                                                         </div>
                                                         <div class="prd-bottom">
-                
-                                                            <a  class="social-info">
-                                                                <span class="ti-bag"></span>
-                                                                <p class="hover-text">add to bag</p>
-                                                            </a>
-                                                            <a  class="social-info">
-                                                                <span class="lnr lnr-heart"></span>
-                                                                <p class="hover-text">Wishlist</p>
-                                                            </a>
-                                                            <a  class="social-info">
-                                                                <span class="lnr lnr-sync"></span>
-                                                                <p class="hover-text">compare</p>
-                                                            </a>
-                                                            <a  class="social-info">
+                                                            <a href="{$BaseHref}/productdetails/view/$ID" class="social-info">
                                                                 <span class="lnr lnr-move"></span>
                                                                 <p class="hover-text">view more</p>
                                                             </a>
@@ -719,23 +632,10 @@
                                                            <% end_if %>
                                                        </div>
                                                        <div class="prd-bottom">
-                       
-                                                           <a  class="social-info">
-                                                               <span class="ti-bag"></span>
-                                                               <p class="hover-text">add to bag</p>
-                                                           </a>
-                                                           <a  class="social-info">
-                                                               <span class="lnr lnr-heart"></span>
-                                                               <p class="hover-text">Wishlist</p>
-                                                           </a>
-                                                           <a class="social-info">
-                                                               <span class="lnr lnr-sync"></span>
-                                                               <p class="hover-text">compare</p>
-                                                           </a>
-                                                           <a  class="social-info">
-                                                               <span class="lnr lnr-move"></span>
-                                                               <p class="hover-text">view more</p>
-                                                           </a>
+                                                        <a href="{$BaseHref}/productdetails/view/$ID" class="social-info">
+                                                            <span class="lnr lnr-move"></span>
+                                                            <p class="hover-text">view more</p>
+                                                        </a>
                                                        </div>
                                                    </div>
                                                </div>

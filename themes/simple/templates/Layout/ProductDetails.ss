@@ -378,15 +378,16 @@
 						<div class="row">
 							<div class="col-lg-12">
 								<div class="row total_rate">
-									<div class="col-6">
+									<div class="col-12 col-md-6">
 										<div class="box_total">
 											<h5>Overall</h5>
 											<h4>$Ave</h4>
 											<h6>($Count Reviews)</h6>
 										</div>
+										
 									</div>
 									
-									<div class="col-6">
+									<div class="col-12 col-md-6">
 										<div class="rating_list">
 											<h3>Based on $Count Reviews</h3>
 											<ul class="list">
@@ -432,17 +433,17 @@
 												</li>
 											</ul>
 										</div>
+										<div class="d-flex pb-3 " style="gap:10px;">
+										<label for="filter" class="mt-2">Urutkan</label>
+										<form id="rating-filter-form" action="" method="get">
+											<select name="sort" id="rating-filter" class="selectpicker" onchange="saveSelectionAndSubmit()" style="display:block !important;">
+												<option value="Latest">Latest</option>
+												<option value="Highest Rating">Highest Rating</option>
+												<option value="Lowest Rating">Lowest Rating</option>
+											</select>
+										</form>
+									</div>
 										
-										<div class="d-flex " style="gap:10px;">
-											<label for="filter" class="mt-2">Urutkan</label>
-											<form id="rating-filter-form" action="" method="get">
-												<select name="" id="rating-filter" class="selectpicker" onchange="saveSelectionAndSubmit()" style="display:block !important;">
-													<option value="Latest">Latest</option>
-													<option value="Highest Rating">Highest Rating</option>
-													<option value="Lowest Rating">Lowest Rating</option>
-												</select>
-											</form>
-										</div>
 									</div>
 								</div>
 								<div class="review_list" id="filtered">
@@ -579,10 +580,8 @@
 								</div>
 							</div>
 							<div class="modal-footer">
-								<button type="button" class="btn btn-secondary "
-									style="position: relative;overflow: hidden;color: #fff;padding: 0 30px;line-height: 50px;border-radius: 50px;display: inline-block;text-transform: uppercase;font-weight: 500;cursor: pointer;"
-									data-dismiss="modal">Close</button>
-								<button type="submit" class="primary-btn">Send message</button>
+								<button type="button" class="genric-btn default-border" data-dismiss="modal">Close</button>
+								<button type="submit" class="genric-btn primary-border">Sent</button>
 							</div>
 						</form>
 					</div>

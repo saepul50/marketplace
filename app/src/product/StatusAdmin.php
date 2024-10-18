@@ -52,11 +52,15 @@ class StatusAdmin extends LeftAndMain implements PermissionProvider{
     public function dashboard(HTTPRequest $request)
     {
         $data = $request->postVars();
+        // Debug::show($data);
         if (isset($data['length'])) {
             $request->getSession()->set('Length', $data['length']);
         }
-    
+        if (isset($data['lengthview'])) {
+            $request->getSession()->set('Lengthview', $data['lengthview']);
+        }
         $length = $request->getSession()->get('Length') ?? 31;
+        $lengthview = $request->getSession()->get('Lengthview') ?? 31;
         $member = Security::getCurrentUser();
         $startOfWeek = date('Y-m-d H:i:s', strtotime('-7 days'));
         if($member->ID == 1){
@@ -65,10 +69,13 @@ class StatusAdmin extends LeftAndMain implements PermissionProvider{
             $order = ProductCheckoutObject::get();
             $data = ProductCheckoutHeaderObject::get();
             $datatime = ProductCheckoutHeaderObject::get()->filter('TimeCheckout:GreaterThanOrEqual', $startOfWeek);
+            $view = LogView::get();
+
         
         } else {
             $vendor = Vendor::get()->filter('OwnerID', $member->ID)->first();
-            $list = ProductObject::get()->filter('VendorID', $vendor->ID) ;
+            $list = ProductObject::get()->filter('VendorID', $vendor->ID);
+            $view = LogView::get()->filter('VendorID', $vendor->ID);
             // Debug::show($list);
             // die();
             if($list && $list->exists()){
@@ -82,15 +89,17 @@ class StatusAdmin extends LeftAndMain implements PermissionProvider{
                     $data = null;
                 }
 
-            } else {
+            } else {    
                 $data = null;
             } 
         }
-        // Debug::show($data);
+        // Debug::show($view);
         $transactionsPerDate = [];
         $transactionsPerDateCan = [];
         $labelTransactions = [];
         $labelCategory = [];
+        
+        // Debug::show($data);
         if($data && $data->exists()){
             $count = $data->count();
             $pending = $data->filter('Status', 'Dikemas')->count();  
@@ -103,7 +112,10 @@ class StatusAdmin extends LeftAndMain implements PermissionProvider{
                 $transactionsPerDateCan[$date] = 0;
                 $labelTransactions[] = $date;
             }
-            
+            // Debug::show($date);
+            // Debug::show($transactionsPerDate);
+            // Debug::show($transactionsPerDateCan);
+            // Debug::show($labelTransactions);
             foreach ($list as $product) {
                 $category = ShopCategoryObject::get()->Filter('ID', $product->ProductCategoryID);
                 if ($category && $category->exists()) {
@@ -118,10 +130,10 @@ class StatusAdmin extends LeftAndMain implements PermissionProvider{
                     // Debug::show("No category found for Product ID: " . $product->ID);
                 }
             }
-            
             foreach ($data as $checkout) {
                 if($checkout->Status != 'Dibatalkan'){
                     $checkoutDate = DateTime::createFromFormat('d/m/Y H:i:s', $checkout->TimeCheckout);
+                    // Debug::show($checkoutDate);
                     if ($checkoutDate) {
                         $dateString = $checkoutDate->format('d/m/Y');
                         if (isset($transactionsPerDate[$dateString])) {
@@ -138,7 +150,27 @@ class StatusAdmin extends LeftAndMain implements PermissionProvider{
                     }
                 }
             }
+        } 
+        $labelview = [];
+        $viewperdate = [];
+        if($view && $view->exists()){
+            for($i = 0 ; $i < $lengthview; $i++){
+                $date = date('d/m/Y', strtotime("-$i days"));
+                $labelview[] = $date;
+                $viewperdate[$date] = 0;
+            }
+            foreach($view as $views){
+                $viewDate = DateTime::createFromFormat('Y-m-d H:i:s', $views->Created); 
+                if($viewDate){
+                    $dateString = $viewDate->format('d/m/Y');
+                    if(isset($viewperdate[$dateString])){
+                        $viewperdate[$dateString]++;
+                    }
+                }
+            }
         }
+        // Debug::show($labelview);
+        // Debug::show($viewperdate);
         // Debug::show($transactionsPerDate);
         //     Debug::show($transactionsPerDateCan);
         //     Debug::show($labelTransactions);
@@ -150,6 +182,8 @@ class StatusAdmin extends LeftAndMain implements PermissionProvider{
             'Dibatalkan' => $Cancelled ?? 0,
             'Data' => $count ?? 0,
             'Vendor' => $vendor ?? null,
+            'DataView' => json_encode(array_reverse($viewperdate)) ?? null,
+            'LabelView' => json_encode(array_reverse($labelview)) ?? null,
             'Transactions' => json_encode(array_reverse($transactionsPerDate)) ?? null,
             'TransactionsCancel' => json_encode(array_reverse($transactionsPerDateCan)) ?? null,
             'Labels' => json_encode(array_reverse($labelTransactions)) ?? null,

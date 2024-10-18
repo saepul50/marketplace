@@ -245,11 +245,11 @@
                                 <div class="d-flex align-items-center mb-3">
                                     <% if $IsVendor %>
                                         <% with $Up.Vendor.ProfilImage %>
-                                            <img src="$URL" class="img-fluid mr-3" style="border-radius: 50%; width: 40px;">
+                                            <img src="$URL" class="img-fluid mr-3" style="border-radius: 50%; width: 40px;    height: 40px;object-fit: cover;">
                                         <% end_with %>
                                     <% else %>
                                         <% with $Sender.ProfileImage %>
-                                            <img src="$URL" class="img-fluid mr-3" style="border-radius: 50%; width: 40px;">
+                                            <img src="$URL" class="img-fluid mr-3" style="border-radius: 50%; width: 40px;    height: 40px;object-fit: cover;">
                                         <% end_with %>
                                     <% end_if %>
                                     <div class="bubble-left" style="background-color: #fff; padding: 8px 12px; border-radius: 20px; max-width: 80%; word-break: break-word; position: relative; margin-bottom: 10px;">

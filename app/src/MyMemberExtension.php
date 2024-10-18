@@ -14,12 +14,16 @@ class MyMemberExtension extends DataExtension
     
     private static $has_one = [
         'ProfileImage' => Image::class,
-        'Vendor' => Vendor::class
+        'Vendor' => Vendor::class,
+        
     ];
-
+    
     private static $has_many =[
         'SentMessages' => ChatObject::class . '.Sender',
-        'ReceivedMessages' => ChatObject::class . '.Receiver'
+        'ReceivedMessages' => ChatObject::class . '.Receiver',
+        'LogView' => LogView::class,
+        'ForgetPassword' => ForgetPassword::class
+
     ];
     private static $owns = [
         'ProfileImage'

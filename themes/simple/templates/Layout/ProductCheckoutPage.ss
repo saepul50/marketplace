@@ -48,7 +48,7 @@
                 </div>
                 <form method="post" id="Couponform">
 
-                    <input type="text" placeholder="Enter coupon code" id="Couponin" name="Coupon" value="$Code">
+                    <input type="text" placeholder="Enter coupon code" id="Couponin" name="Coupon" value="">
                 <button  type="submit" class="tp_btn"  >Apply Coupon</button>
                 </form>
             </div>
@@ -145,7 +145,13 @@
                                 <label id="time" class="d-none"></label>
                                 <label id="orderID" class="d-none"></label>
                                 <li><a>Subtotal <span id="subTotalPriceProduct"><% loop $CheckoutProductData %><% if $Pos == 1 %>$ProductSubTotalPrice<% end_if %><% end_loop %></span></a></li>
-                                <li><a>Diskon <span id="Diskon"><% loop $Diskon %><% if $Diskon %> $Diskon%<% end_if %><% end_loop %></span></a></li>
+                                <% if $Diskon %>
+                                <li><a>Diskon <span id="Diskon">
+                                        <% loop $Diskon %> 
+                                            $Diskon %
+                                        <% end_loop %>
+                                    </span></a></li>
+                                <% end_if %>   
                                 <%-- <li><a>Subtotal <span><% loop $CheckoutProductData %><% if $Pos == 1 %>$ProductSubTotalNFPrice<% end_if %><% end_loop %></span></a></li> --%>
                                 <li><a>Shipping <span id="shippingProduct"></span></a></li>
                                 <li class="d-none"><a><span id="shippingNFProduct"></span></a></li>

@@ -40,13 +40,13 @@
                         </div>
                         <div class="col-md-12 form-group">
                             <div class="creat_account">
-                                <input type="checkbox" id="f-option2" name="selector" required>
+                                <input type="checkbox" id="f-option2" name="selector" required >
                                 <label for="f-option2">Keep me logged in</label>
                             </div>
                         </div>
                         <div class="col-md-12 form-group">
                             <button id="loginn" class="primary-btn">Log In</button>
-                            <a href="#">Forgot Password?</a>
+                            <a style="cursor:pointer;" data-toggle="modal" data-target="#exampleModalCenter">Forgot Password?</a>
                         </div>
                     </form>
                 </div>
@@ -69,10 +69,10 @@
                             <input type="text" class="form-control" id="emailregister" placeholder="Email" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Email'">
                         </div>
                         <div class="col-md-12 form-group">
-                            <input type="text" class="form-control" id="passwordregister" placeholder="Password" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Password'">
+                            <input type="password" class="form-control" id="passwordregister" placeholder="Password" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Password'">
                         </div>
                         <div class="col-md-12 form-group">
-                            <input type="text" class="form-control" id="confirmpassword" placeholder="Confirm Password" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Confirm Password'">
+                            <input type="password" class="form-control" id="confirmpassword" placeholder="Confirm Password" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Confirm Password'">
                         </div>
                         <div class="col-md-12 form-group">
                             <button id="register" class="primary-btn">register</button>
@@ -93,6 +93,47 @@
         </div>
     </div>
 </section>
+
+<%-- Modal Forget PassWord --%>
+
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <form  method="post" id="forgetpass">
+                <div class="modal-header">
+                    <h5 class="modal-title text-center">Masukkan Password Baru</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group d-flex align-items-center" style="gap: 1rem;">
+                        <label class="m-0 labell" style="width: 12rem;">Email</label>
+                        <input type="email" class="form-control" id="inputEmail4" placeholder="Email">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="genric-btn default-border" data-dismiss="modal">Close</button>
+                    <button type="submit" class="genric-btn primary-border">Sent</button>
+                </div>
+            </form>
+        </div>
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <script>
     document.getElementById('showRegister').addEventListener('click', function() {
         document.getElementById('loginpageId').style.display = 'none';

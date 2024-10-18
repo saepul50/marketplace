@@ -534,7 +534,8 @@
                      </div>
                   </div>
                </div>
-            <% end_if %>
+           <% else %>
+            
             <div class="detailOrder order_details_table w-100" id="detailOrder">
                <div class="detailContain">
                   <div class="navtop d-flex justify-content-between px-3 py-2">
@@ -660,6 +661,7 @@
                   </div>
                </div>
             </div>
+         <% end_if %>
          <% else_if $Status=='Dikemas' %>
             <% if $PaymentMethod == 'manualtf' %>
                <div class="detailOrder order_details_table w-100" id="detailOrder">
@@ -795,7 +797,8 @@
                      </div>
                   </div>
                </div>
-            <% end_if %>
+               <% else %>
+                  
             <div class="detailOrder order_details_table w-100" id="detailOrder">
                <div class="detailContain">
                   <div class="navtop d-flex justify-content-between px-3 py-2">
@@ -928,6 +931,7 @@
                   </div>
                </div>
             </div>
+         <% end_if %>
          <% else_if $Status=='Dikirim' %>
             <% if $PaymentMethod == 'manualtf' %>
                <div class="detailOrder order_details_table w-100" id="detailOrder">
@@ -1060,7 +1064,7 @@
                      </div>
                   </div>
                </div>
-            <% end_if %>
+            <% else %>
             <div class="detailOrder order_details_table w-100" id="detailOrder">
                <div class="detailContain">
                   <div class="navtop d-flex justify-content-between px-3 py-2">
@@ -1190,6 +1194,7 @@
                   </div>
                </div>
             </div>
+         <% end_if %>
          <% else_if $Status=='Dibatalkan' %>
             <% if $PaymentMethod == 'manualtf' %>
                <div class="detailOrder order_details_table w-100" id="detailOrder">
@@ -1321,7 +1326,8 @@
                      </div>
                   </div>
                </div>
-            <% end_if %>
+            <% else %>
+               
             <div class="detailOrder order_details_table w-100" id="detailOrder">
                <div class="detailContain">
                   <div class="navtop d-flex justify-content-between px-3 py-2">
@@ -1450,6 +1456,7 @@
                   </div>
                </div>
             </div>
+         <% end_if %>
          <% end_if %>
       <% end_loop %>
 

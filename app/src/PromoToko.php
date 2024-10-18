@@ -2,6 +2,7 @@
 use SilverStripe\Dev\Debug;
 use SilverStripe\Forms\DateField;
 use SilverStripe\Forms\HiddenField;
+use SilverStripe\Forms\NumericField;
 use SilverStripe\Forms\ReadonlyField;
 use SilverStripe\Forms\TextField;
 use SilverStripe\ORM\DataObject;
@@ -33,22 +34,25 @@ class PromoToko extends DataObject{
     public function onBeforeWrite()
     {
         parent::onBeforeWrite();
-        if(!isset($_SESSION['first_run'])){
-            $_SESSION['first_run'] = 1;
-            $s = substr(str_shuffle(str_repeat("0123456789ABCDEFGHIJKLMNOPGRSTUFWXYZ", 5)), 0, 5);
-            $this->Code = $s;
-        }
-        $member = Security::getCurrentUser();
-        $vendor = Vendor::get()->filter('OwnerID', $member->ID)->first();
-        // Debug::show($vendor);
-        if (!$this->ID) {
-            if ($member = Security::getCurrentUser()) {
-                $this->VendorID = $vendor->ID;
+        if(!$this->isInDB()){
+            // if(!isset($_SESSION['first_run'])){
+                $_SESSION['first_run'] = 1;
+                $s = substr(str_shuffle(str_repeat("0123456789ABCDEFGHIJKLMNOPGRSTUFWXYZ", 5)), 0, 5);
+                // Debug::show($s);
+                $this->Code = $s;
+            // }
+            $member = Security::getCurrentUser();
+            $vendor = Vendor::get()->filter('OwnerID', $member->ID)->first();
+            // Debug::show($vendor);
+            if (!$this->ID) {
+                if ($member = Security::getCurrentUser()) {
+                    $this->VendorID = $vendor->ID;
 
-            }else{
-                user_error('No vendor found for this member', E_USER_WARNING); 
+                }else{
+                    user_error('No vendor found for this member', E_USER_WARNING); 
+                }
+                
             }
-            
         }
        
     }
@@ -89,7 +93,7 @@ class PromoToko extends DataObject{
         $fields = parent::getCMSFields();
     
         $fields->addFieldToTab('Root.Main', HiddenField::create('Code', 'Code'));
-        $fields->addFieldToTab('Root.Main', TextField::create('Diskon', 'Diskon (Just Input Number)'));
+        $fields->addFieldToTab('Root.Main', NumericField::create('Diskon', 'Diskon (Just Input Number)')->setScale(0));
         $fields->addFieldToTab('Root.Main', TextField::create('MaximumUse', 'Maximum Use'));
         $fields->addFieldToTab('Root.Main', HiddenField::create('VendorID', 'VendorID'));
         return $fields;

@@ -1,4 +1,5 @@
 <?php 
+use SilverStripe\Dev\Debug;
 use SilverStripe\Control\HTTPRequest;
 use SilverStripe\ORM\ArrayList;
 use SilverStripe\ORM\PaginatedList;
@@ -46,17 +47,23 @@ class ShopResultController extends PageController{
                 'Label' => "$search"
             ]));
         }
-    
+        $productList = $productQuery->toArray(); 
+        // Debug::show($productList);
         if ($sortOption == 2) {
-            $productQuery = $productQuery->sort('minPriceDiscountedSort', 'ASC');
+            usort($productList, function ($a, $b) {
+                return $a->minPriceDiscountedSort() <=> $b->minPriceDiscountedSort();
+            });
         } elseif ($sortOption == 3) {
-            $productQuery = $productQuery->sort('minPriceDiscountedSort', 'DESC');
+            usort($productList, function ($a, $b) {
+                return $b->minPriceDiscountedSort() <=> $a->minPriceDiscountedSort();
+            });
         }
+
+        $productList = ArrayList::create($productList);
     
-        $paginatedProduct = PaginatedList::create($productQuery, $request)
+        $paginatedProduct = PaginatedList::create($productList, $request)
             ->setPageLength($pagelength)
             ->setPaginationGetVar('s');
-    
         return [
             'SubCategory' => $subCategoryList,
             'Brand' => $brandList,

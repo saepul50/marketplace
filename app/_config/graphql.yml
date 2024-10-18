@@ -1,0 +1,3 @@
+SilverStripe\GraphQL\Controller:
+  schema: 'admin'
+  url: 'admin/graphql'

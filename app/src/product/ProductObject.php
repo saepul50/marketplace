@@ -38,6 +38,7 @@ use SilverStripe\View\Requirements;
         'ProductVideo' => File::class,
         'ProductCategory' => ShopCategoryObject::class,
         'ProductBrands' => ProductBrandObject::class,
+        'LogView' => LogView::class
     ];
     
     private static $many_many = [
@@ -184,7 +185,7 @@ use SilverStripe\View\Requirements;
             $prices = $variants->column('Price');
             $minPrice = min($prices);
             
-            if ($promotion) {
+            if ($promotion && $promotion->PromoPrice) {
                 return $minPrice * (1 - $promotion->PromoPrice / 100);
             }
             return $minPrice;

@@ -1,5 +1,6 @@
 <?php 
 
+use SilverStripe\Control\Email\Email;
 use SilverStripe\Control\HTTPRequest;
 use SilverStripe\Control\Session;
 use SilverStripe\Dev\Debug;
@@ -7,11 +8,13 @@ use SilverStripe\Security\Member;
 use SilverStripe\Security\MemberAuthenticator\LoginHandler;
 use SilverStripe\Security\MemberAuthenticator\MemberAuthenticator;
 use SilverStripe\Security\Security;
+use SilverStripe\SiteConfig\SiteConfig;
 
 class  LoginPageController extends PageController{
     private static $allowed_actions = [
         'proseslogin',
         'prosesregistrasi',
+        'sendlink'
     ];
     public function getMember() {
         $member = Security::getCurrentUser();
@@ -68,6 +71,34 @@ class  LoginPageController extends PageController{
         return json_encode([
             'success' => true,
             'message' => 'Account Registered'
+        ]);
+    }
+    public function sendlink(HTTPRequest $request){
+        $emails = $request->postVar('Email');
+        $member = Member::get()->filter('Email', $emails)->first();
+        // Debug::show($member);
+        if($member){
+        $emails = $request->postVar('Email');
+            $forgetpassword = ForgetPassword::create();
+            $forgetpassword->MemberID = $member->ID;
+            $forgetpassword->Unique =  $s = substr(str_shuffle(str_repeat("0123456789ABCDEFGHIJKLMNOPGRSTUFWXYZ", 10)), 0, 10);
+            $forgetpassword->write();
+            $siteconfig = SiteConfig::current_site_config();
+            // Debug::show($forgetpassword);
+            $email = new Email();
+            $email->setTo($emails);
+            $email->setFrom($siteconfig->Email);
+            $email->setSubject('Your Link Forget Password');
+            $email->setBody('http://localhost/marketplace/forgetpassword/for/'. $forgetpassword->Unique  );
+            $email->send();
+            return json_encode([
+                'success' => true,
+                'message' => 'Link sudah diberikan Ke alamat email anda'
+            ]);
+        } 
+        return json_encode([
+            'success' => false,
+            'message' => 'Email Tidak Ditemukan'
         ]);
     }
 }
