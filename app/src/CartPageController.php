@@ -20,6 +20,7 @@ class CartPageController extends PageController{
         'addcart',
         'remove',
         'variantShow',
+        'variantChange',
     ];
     
     public function getCart(){
@@ -166,4 +167,23 @@ class CartPageController extends PageController{
         }
         return json_encode(['success' => false]);
     }    
+    public function variantChange(HTTPRequest $request){
+        $VariantProductID = $request->postVar('ProductVariantID');
+        $CartID = $request->postVar('CartID');
+        if($VariantProductID && $CartID){
+            $Cart = CartObject::get()->byID($CartID);
+            $Variant = ProductVariantObject::get()->byID($VariantProductID);
+
+            $Cart->ProductVariant = $Variant->VariantName;
+            $Cart->ProductVariantID = $Variant->ID;
+            $Cart->ProductVariantWeight = $Variant->Weight;
+            $Cart->ProductPrice = $Variant->Price;
+            $Cart->write();
+
+            return json_encode(['success' => true]);
+            // Debug::show($Cart);
+            // Debug::show($Variant);
+            // die();
+        }
+    }
 }
