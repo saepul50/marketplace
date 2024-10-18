@@ -357,7 +357,7 @@
             <% else_if $Bank == 'BRI' %>
                 <div class="d-flex">
                     <div class="col-2 p-2" style="background-color: #fff; border-radius: 20px;">
-                        <img src="public/_resources/themes/simple/images/banner/Logo-BCA-PNG.png" class="img-fluid">
+                        <img src="public/_resources/themes/simple/images/banner/logo-bri-png-transparan-jasalogocepat-01.png" class="img-fluid">
                     </div>
                     <div class="pl-3 d-flex flex-column justify-content-center">
                         <h6 class="m-0" style="margin: 5px 0; color: #333;">$Bank</h6>
@@ -369,7 +369,7 @@
             <% else_if $Bank == 'Mandiri' %>
                 <div class="d-flex">
                     <div class="col-2 p-2" style="background-color: #fff; border-radius: 20px;">
-                        <img src="public/_resources/themes/simple/images/banner/Logo-BCA-PNG.png" class="img-fluid">
+                        <img src="public/_resources/themes/simple/images/banner/png-clipart-logo-bank-mandiri-credit-card-bank-text-logo.png" class="img-fluid">
                     </div>
                     <div class="pl-3 d-flex flex-column justify-content-center">
                         <h6 class="m-0" style="margin: 5px 0; color: #333;">$Bank</h6>

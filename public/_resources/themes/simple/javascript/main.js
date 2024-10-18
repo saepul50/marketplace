@@ -1900,13 +1900,16 @@ $('#searchForm').submit(function(e) {
       return;
     }
   });
+
+  
   document.querySelectorAll('#variantChoose').forEach(item => {
     item.addEventListener('click', function () {
       // alert('sd');
       var productid = $(this).data('id');
       var productvariantid = $(this).data('variant');
+      var cartid = $(this).data('cart');
       // console.log(productvariantid);
-
+      
       $.post("/marketplace/cart/variantShow", {
           ProductID: productid
       })
@@ -1917,8 +1920,8 @@ $('#searchForm').submit(function(e) {
               var modalHeader = `
                   <div class="modal-header">
                       <div class="col-3 p-0 position-relative">
-                          <img src="${response.productImage}" class="img-fluid" style="aspect-ratio: 1/1; object-fit: contain;">
-                          <i class='bx bx-expand-horizontal p-1' style="position: absolute; right: 0; color: #fff; background-color: #9e9e9e; border-radius: 50%; transform: rotate(-45deg);  cursor: pointer;"></i>
+                          <img src="${response.productImage}" class="img-fluid img-productcart" style="aspect-ratio: 1/1; object-fit: contain; cursor: pointer;">
+                          <i class='bx bx-expand-horizontal p-1' data-toggle="modal" data-target="#imageVariantModal" style="position: absolute; right: 0; color: #fff; background-color: #9e9e9e; border-radius: 50%; transform: rotate(-45deg);  cursor: pointer;"></i>
                       </div>
                       <div class="col-9 pl-3 p-0 d-flex flex-column">
                           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -1931,7 +1934,7 @@ $('#searchForm').submit(function(e) {
                       </div>
                   </div>`;
 
-              var modalBody = `<div class="modal-body">
+                  var modalBody = `<div class="modal-body">
                             <div class="d-flex flex-wrap cardVariant" style="gap: 1rem;">`;
 
               response.variants.forEach(function(variant) {
@@ -1946,12 +1949,32 @@ $('#searchForm').submit(function(e) {
 
               var modalFooter = `
                   <div class="modal-footer">
-                      <button type="submit" class="genric-btn primary-border" style="width: 100%;">Konfirmasi</button>
+                      <button id="variantChange" class="genric-btn primary-border" style="width: 100%;">Konfirmasi</button>
+                  </div>
+              `;
+              var modalImagePreview = `
+                  <div class="modal fade" id="imageVariantModal" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel" aria-hidden="true">
+                      <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                          <div class="modal-content" style="background: none; border: none;">
+                              <div class="modal-header" style="border-bottom: none;">
+                                  <button type="button" class="close"
+                                      <span>&times;</span>
+                                  </button>
+                              </div>
+                              <div class="modal-body" style="background: none;">
+                                  <img id="modal-image" src="${response.productImage}" class="img-fluid" style="width: 100%; height: auto;"/>
+                              </div>
+                          </div>
+                      </div>
                   </div>`;
 
               $('#VariantShow .modal-content').empty().append(modalHeader + modalBody + modalFooter);
+              $('#VariantShow').append(modalImagePreview);
 
               $('#VariantShow').modal('show');
+              $('#imageVariantModal').find('.close').on('click', function () {
+                $('#imageVariantModal').modal('hide');
+              });
 
               var defaultVariant = $(`.variantItem[data-variant-id="${productvariantid}"]`);
               if (defaultVariant.length) {
@@ -1965,18 +1988,37 @@ $('#searchForm').submit(function(e) {
               }
 
               $('.variantItem').on('click', function() {
-                  var variantID = $(this).data('variant-id');
-                  $('.variantItem').removeClass('active');
+                var variantID = $(this).data('variant-id');
+                $('.variantItem').removeClass('active');
                   $(this).addClass('active')
 
                   var selectedVariant = response.variants.find(v => v.ID == variantID);
-                  // console.log(selectedVariant)
+                  console.log(selectedVariant)
                   if (selectedVariant) {
                       $('.modal-header h6').text(`Rp. ${formatNumber(selectedVariant.Price)}`);
                       $('.modal-header p').text(`Stok: ${selectedVariant.Stock}`);
                   }
               });
-
+              
+              $('#variantChange').on('click', function() {
+                var variantChangeID = $('.variantItem.active').data('variant-id');
+                $.post("/marketplace/cart/variantChange", {
+                  ProductVariantID: variantChangeID,
+                  CartID : cartid
+                })
+                  .done(function (data) {
+                    var response = JSON.parse(data);
+                    // console.log(data)
+                    if (response.success) {
+                      iziToast.success({ title: 'Ok', message: response.message, position: 'bottomRight' });
+                    } else {
+                      iziToast.error({ title: 'Gagal Menghapus Product Yang dipilih:', message: response.message, position: 'bottomRight' });
+                    }
+                  })
+                  .fail(function () {
+                    iziToast.error({ title: 'Error', message: 'Terjadi Kesalahan', position: 'bottomRight' });
+                  });
+              });
           } else {
               alert('Gagal memuat varian.');
           }
@@ -2063,18 +2105,15 @@ $('#searchForm').submit(function(e) {
               title: 'Product Telah Dihapus',
               position: 'bottomRight',
               onClosed: function () {
-                $(".spinnerout").hide();
                 window.location.reload();
               }
             });
           });
         } else {
-          $(".spinnerout").hide();
           iziToast.error({ title: 'Gagal Menghapus Product Yang dipilih:', message: response.message, position: 'bottomRight' });
         }
       })
       .fail(function () {
-        $(".spinnerout").hide();
         iziToast.error({ title: 'Error', message: 'Terjadi Kesalahan', position: 'bottomRight' });
       });
   });

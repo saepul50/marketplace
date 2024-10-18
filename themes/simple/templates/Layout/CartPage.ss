@@ -58,7 +58,7 @@
                                         <p id="productCheckoutID" class="d-none">$Product.ID</p>
                                         <p id="productCheckoutTitle">$Product.Title</p>
                                         <% if $ProductCategoryId = 1 %>
-                                            <div class="d-flex align-items-center" id="variantChoose" data-id="$ProductID" data-variant="$ProductVariantID" style="cursor: pointer;">
+                                            <div class="d-flex align-items-center" id="variantChoose" data-cart="$ID" data-id="$ProductID" data-variant="$ProductVariantID" style="cursor: pointer;">
                                                 <p class="deskripsi m-0">size: </p>
                                                 <p class="pl-1" id="productCheckoutVariant" data-id="$ProductVariantID" data-weight="$ProductVariantWeight">$ProductVariant</p>
                                                 <i class='bx bx-chevron-down' style="font-size: 25px;"></i>
