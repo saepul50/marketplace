@@ -54,11 +54,11 @@
                                     <div class="d-flex col-10 col-md-4">
                                         <img id="productCheckoutImage" src="$Product.ProductImages.First.URL" alt="" class="img-fluid">
                                     </div>
-                                    <div class="media-body">
+                                    <div class="media-body d-flex flex-column" style="gap: 1rem;">
                                         <p id="productCheckoutID" class="d-none">$Product.ID</p>
-                                        <p id="productCheckoutTitle">$Product.Title</p>
+                                        <p id="productCheckoutTitle" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap">$Product.Title</p>
                                         <% if $ProductCategoryId = 1 %>
-                                            <div class="d-flex align-items-center" id="variantChoose" data-cart="$ID" data-id="$ProductID" data-variant="$ProductVariantID" style="cursor: pointer;">
+                                            <div class="d-flex align-items-center py-1 pl-3 pr-2" id="variantChoose" data-cart="$ID" data-id="$ProductID" data-variant="$ProductVariantID" style="background-color: #f5f5f5; border-radius: 3px; cursor: pointer; width: max-content;">
                                                 <p class="deskripsi m-0">size: </p>
                                                 <p class="pl-1" id="productCheckoutVariant" data-id="$ProductVariantID" data-weight="$ProductVariantWeight">$ProductVariant</p>
                                                 <i class='bx bx-chevron-down' style="font-size: 25px;"></i>
