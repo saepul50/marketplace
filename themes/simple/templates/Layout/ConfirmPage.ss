@@ -451,24 +451,32 @@
                                     </tr>
                                  </thead>
                                  <tbody>
-                                    <% loop $items %>
-                                       <tr>
-                                          <td class="col-1">
-                                             <img src="$ProductImage" class="img-fluid">
-                                          </td>
-                                          <td>
-                                             <p>$ProductTitle ($ProductVariant)</p>
-                                          </td>
-                                          <td>
-                                             <p>$ProductPrice</p>
-                                          </td>
-                                          <td>
-                                             <h5>x $ProductQuantity</h5>
-                                          </td>
-                                          <td>
-                                             <p>$ProductTotalPrice</p>
-                                          </td>
-                                       </tr>
+                                    <% loop $Up.ItemsByVendor %>
+                                          <tr>
+                                             <th></th>
+                                          </tr>
+                                          <tr style="background-color: #fff;">
+                                             <th colspan="5" style="border-top: none; border-bottom: 1px solid #dee2e6; border-radius: 10px 10px 0 0;"><i class='bx bx-store'></i> $Vendor.Name</th>
+                                          </tr>
+                                       <% loop $Items %>
+                                          <tr style="background-color: #fff;">
+                                                <td class="col-1" style="border-top: none; border-radius: 0 0 0 10px;">
+                                                   <img src="$ProductImage" class="img-fluid">
+                                                </td>
+                                                <td style="border-top: none;">
+                                                   <p>$ProductTitle ($ProductVariant)</p>
+                                                </td>
+                                                <td style="border-top: none;">
+                                                   <p>$ProductPrice</p>
+                                                </td>
+                                                <td style="border-top: none;">
+                                                   <h5>x $ProductQuantity</h5>
+                                                </td>
+                                                <td style="border-top: none; border-radius: 0 0 10px 0;">
+                                                   <p>$ProductTotalPrice</p>
+                                                </td>
+                                          </tr>
+                                       <% end_loop %>
                                     <% end_loop %>
                                        <tr>
                                           <td></td>
@@ -535,7 +543,6 @@
                   </div>
                </div>
            <% else %>
-            
             <div class="detailOrder order_details_table w-100" id="detailOrder">
                <div class="detailContain">
                   <div class="navtop d-flex justify-content-between px-3 py-2">

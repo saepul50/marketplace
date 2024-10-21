@@ -1800,7 +1800,8 @@ $('#searchForm').submit(function(e) {
     var activeSubvariant = $('.variantItem.active');
     var stock = activeSubvariant.data('stock');
     var buy = $("#quantityInputDetails").val();
-    // console.log(stock);
+    var vendorID =  $("#VendorID").text();
+    // console.log(vendorID);
     // return false;
     var categoryId = document.querySelector('#productCategoriID').textContent;
     if(stock >= buy){
@@ -1817,8 +1818,9 @@ $('#searchForm').submit(function(e) {
           ProductVariantID: activeSubvariant.data('id'),
           ProductQuantity: $("#quantityInputDetails").val(),
           ProductVariantWeight: activeSubvariant.data('weight'),
+          VendorID: $("#VendorID").text(),
         })
-          .done(function (data) {
+        .done(function (data) {
             var response = JSON.parse(data);
             // console.log(response)
             if (response.success) {
@@ -1847,6 +1849,7 @@ $('#searchForm').submit(function(e) {
           ProductVariantWeight: activeSubvariant.data('weight'),
           ProductPrice: $(".ppprice").text(),
           ProductQuantity: $("#quantityInputDetails").val(),
+          VendorID: $("#VendorID").text(),
         })
           .done(function (data) {
             var response = JSON.parse(data);
@@ -1993,7 +1996,7 @@ $('#searchForm').submit(function(e) {
                   $(this).addClass('active')
 
                   var selectedVariant = response.variants.find(v => v.ID == variantID);
-                  console.log(selectedVariant)
+                  // console.log(selectedVariant)
                   if (selectedVariant) {
                       $('.modal-header h6').text(`Rp. ${formatNumber(selectedVariant.Price)}`);
                       $('.modal-header p').text(`Stok: ${selectedVariant.Stock}`);
@@ -2036,6 +2039,7 @@ $('#searchForm').submit(function(e) {
       var productData = {
         ProductCartID: $(this).data("id"),
         ProductID: $(this).closest('.cartProduct').find('#productCheckoutID').text(),
+        productCheckoutVendorID: $(this).closest('.cartProduct').find('#productCheckoutVendorID').text(),
         ProductTitle: $(this).closest('.cartProduct').find('#productCheckoutTitle').text(),
         ProductImage: $(this).closest('.cartProduct').find('#productCheckoutImage').attr("src"),
         ProductVariant: $(this).closest('.cartProduct').find('#productCheckoutVariant').text(),
@@ -2186,6 +2190,7 @@ $('#searchForm').submit(function(e) {
         for (const item of $(".listDataProduct")) {
           var productData = {
             ProductID: $(item).find('#productID').text(),
+            VendorID: $(item).find('#vendorID').text(),
             ProductTitle: $(item).find('#productTitle').text(),
             ProductCartID: $(item).find('#productCartID').text(),
             ProductImage: $(item).find('#productImage').text(),
@@ -2244,6 +2249,7 @@ $('#searchForm').submit(function(e) {
         for (const item of $(".listDataProduct")) {
           var productData = {
             ProductID: $(item).find('#productID').text(),
+            VendorID: $(item).find('#vendorID').text(),
             ProductTitle: $(item).find('#productTitle').text(),
             ProductCartID: $(item).find('#productCartID').text(),
             ProductImage: $(item).find('#productImage').text(),
@@ -2309,6 +2315,7 @@ $('#searchForm').submit(function(e) {
         for (const item of $(".listDataProduct")) {
           var productData = {
             ProductID: $(item).find('#productID').text(),
+            VendorID: $(item).find('#vendorID').text(),
             ProductTitle: $(item).find('#productTitle').text(),
             ProductCartID: $(item).find('#productCartID').text(),
             ProductImage: $(item).find('#productImage').text(),
@@ -2712,25 +2719,6 @@ $('#searchForm').submit(function(e) {
     fetchcourir();
   });
   fetchcourir();
-  function fetchcost() {
-    var cost = $('input[name="selectorCost"]:checked').next('label').data('opt');
-    function formatNumber(number) {
-      let parts = number.toString().split('.');
-      let integerPart = parts[0];
-      let decimalPart = parts.length > 1 ? '.' + parts[1] : '';
-
-      let formattedIntegerPart = '';
-      while (integerPart.length > 0) {
-        formattedIntegerPart = '.' + integerPart.slice(-3) + formattedIntegerPart;
-        integerPart = integerPart.slice(0, -3);
-      }
-
-      return formattedIntegerPart.slice(1) + decimalPart;
-    }
-    $('#shippingProduct').html(`Rp. ${formatNumber(cost)}`);
-    $('#shippingNFProduct').html(cost);
-    updateFinalPrice();
-  };
   function TimeCheckout() {
     var now = new Date();
     var day = now.getDate().toString().padStart(2, '0');
@@ -3160,8 +3148,6 @@ $('#searchForm').submit(function(e) {
     }
   }
 
-
-
   if (urlParams.has('detailOrder')) {
     toggleOrderDetail(true);
   } else {
@@ -3204,7 +3190,6 @@ $('#searchForm').submit(function(e) {
   }
   function manualPayment(showPayment) {
     if (showPayment) {
-      // alert('yo');
       $('#checkout_area').hide();
       $('#invoice_payment').show();
     } else {
@@ -3230,6 +3215,37 @@ $('#searchForm').submit(function(e) {
         this.style.height = (this.scrollHeight) + 'px';
     });
   }
+  document.querySelectorAll('.singlecheckoutpervendor').forEach(vendor => {
+    let totalPerVendor = 0;
+    vendor.querySelectorAll('.listDataProduct').forEach(product => {
+      let priceElement = product.querySelector('.last[data-price]');
+      let quantityElement = product.querySelector('.last[data-quantity]');
+      let price = parseInt(priceElement ? priceElement.getAttribute('data-price').replace('Rp. ', '').replace(/\./g, '') : 0) || 0;
+      let quantity = parseInt(quantityElement ? quantityElement.getAttribute('data-quantity') : 1) || 1;
+      
+      totalPerVendor += (price * quantity);
+      // console.log(totalPerVendor)
+    });
+    
+    const totalPerVendorElement = vendor.querySelector('#TotalPerVendor');
+    if (totalPerVendorElement) {
+      totalPerVendorElement.textContent = `Rp. ${totalPerVendor.toLocaleString('id-ID')}`; 
+    }
+  });
+  let subtotalproduct = 0;
+  let subtotalshipping = 0;
+  document.querySelectorAll('.singlecheckoutpervendor').forEach(vendor => {
+    
+    let pricePerVendorElement = vendor.querySelector('#TotalPerVendor').textContent;
+    let pricePerVendor = parseInt(pricePerVendorElement.replace('Rp. ', '').replace(/\./g, ''), 10);
+    subtotalproduct  += pricePerVendor;
+
+    let pricePerVendorShippingElement = vendor.querySelector('#TotalShippingPerVendorNF').textContent;
+    let pricePerVendorShipping = parseInt(pricePerVendorShippingElement.replace('Rp. ', '').replace(/\./g, ''), 10);
+    subtotalshipping += pricePerVendorShipping;
+  });
+  $('#subTotalPriceProduct').text(`Rp. ${subtotal.toLocaleString('id-ID')}`);
+
   function formatNumber(number) {
     let parts = number.toString().split('.');
     let integerPart = parts[0];
@@ -3281,7 +3297,7 @@ $('#searchForm').submit(function(e) {
     const incrementButton = item.querySelector('#incrementButton');
     const quantityInput = item.querySelector('#quantityInput');
     const quantitymax = item.querySelector('#quantityInput').getAttribute('data-stock');
-    console.log(quantitymax);
+    // console.log(quantitymax);
     const priceElement = item.querySelector('#itemPrice');
     const totalPriceElement = item.querySelector('#totalPriceCheckout');
     const totalPriceElementNF = item.querySelector('#totalPriceNFCheckout');
@@ -3334,6 +3350,25 @@ $('#searchForm').submit(function(e) {
     });
     updateTotalPrice(quantityInput, priceElement, totalPriceElement, totalPriceElementNF);
   });
+  function fetchcost() {
+    var cost = $('input[name="selectorCost"]:checked').next('label').data('opt');
+    function formatNumber(number) {
+      let parts = number.toString().split('.');
+      let integerPart = parts[0];
+      let decimalPart = parts.length > 1 ? '.' + parts[1] : '';
+
+      let formattedIntegerPart = '';
+      while (integerPart.length > 0) {
+        formattedIntegerPart = '.' + integerPart.slice(-3) + formattedIntegerPart;
+        integerPart = integerPart.slice(0, -3);
+      }
+
+      return formattedIntegerPart.slice(1) + decimalPart;
+    }
+    $('#TotalShippingPerVendor').html(`Rp. ${formatNumber(cost)}`);
+    $('#TotalShippingPerVendorNF').html(cost);
+    updateFinalPrice();
+  };
   function updateFinalPrice() {
     const subTotal = document.querySelector('#subTotalPriceProduct').textContent;
     const subShipping = document.querySelector('#shippingProduct').textContent;
@@ -3367,7 +3402,6 @@ $('#searchForm').submit(function(e) {
   updateFinalPrice();
   });
   const events = document.querySelector('.event');
-
 function saveSelectionAndSubmit() {
   const ratingFilter = document.getElementById('rating-filter');
   localStorage.setItem('selectedSort', ratingFilter.value);

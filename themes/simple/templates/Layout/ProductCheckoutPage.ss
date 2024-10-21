@@ -58,10 +58,10 @@
                         <h3>Billing Details</h3>
                         <form class="row contact_form" action="#" method="post" novalidate="novalidate" id="checkout-form">
                             <div class="col-md-6 form-group p_star">
-                                <input type="text" class="form-control" id="first" name="name" placeholder="First Name" <% if $CheckoutProductData %>value=<% loop $CheckoutProductData %>"$MemberFirstname"<% end_loop %><% end_if %>>
+                                <input type="text" class="form-control" id="first" name="name" placeholder="First Name" <% if $CheckoutProductData %>value=$Member.FirstName<% end_if %>>
                             </div>
                             <div class="col-md-6 form-group p_star">
-                                <input type="text" class="form-control" id="last" name="name"  placeholder="Last Name" <% if $CheckoutProductData %>value=<% loop $CheckoutProductData %>"$MemberLastname"<% end_loop %><% end_if %>>
+                                <input type="text" class="form-control" id="last" name="name"  placeholder="Last Name" <% if $CheckoutProductData %>value=$Member.Surname<% end_if %>>
                             </div>
                             <%-- <div class="col-md-12 form-group">
                                 <input type="text" class="form-control" id="company" name="company" placeholder="Company name">
@@ -70,7 +70,7 @@
                                 <input type="text" class="form-control" id="numberinput" name="numberinput" placeholder="Phone" required maxlength="14" minlength="12" value="<% if $AddressData %><% loop $AddressData %>$Number<% end_loop %><% end_if %>">
                             </div>
                             <div class="col-md-6 form-group p_star">
-                                <input type="text" class="form-control" id="email" name="compemailany"  placeholder="Email" <% if $CheckoutProductData %>value=<% loop $CheckoutProductData %>"$MemberEmail"<% end_loop %><% end_if %>>
+                                <input type="text" class="form-control" id="email" name="compemailany"  placeholder="Email" <% if $CheckoutProductData %>value=$Member.Email<% end_if %>>
                             </div>
                             <div class="col-md-12 form-group p_star">
                                 <select class="country_select province_select">
@@ -123,35 +123,56 @@
                             <ul class="list">
                                 <li><a>Product <span>Total</span></a></li>
                                 <% loop $CheckoutProductData %>
-                                    <li class="listDataProduct">
-                                        <a>$ProductTitle <% if $ProductVariant %>($ProductVariant)<% end_if %> 
-                                            <span class="last" id="variantP" data-weight="$ProductVariantWeight">x $ProductQuantity &nbsp;&nbsp; $ProductPrice</span>
-                                        </a>
-                                        <p class="d-none" id="productID">$ProductID</p>
-                                        <p class="d-none" id="productTitle">$ProductTitle</p>
-                                        <p class="d-none" id="productCartID">$ProductCartID</p>
-                                        <p class="d-none" id="productImage">$ProductImage</p>
-                                        <p class="d-none" id="productVariant">$ProductVariant</p>
-                                        <p class="d-none" id="productVariantID">$ProductVariantID</p>
-                                        <p class="d-none" id="productPrice">$ProductPrice</p>
-                                        <p class="d-none" id="productQuantity">$ProductQuantity</p>
-                                        <p class="d-none" id="productTotalPrice">$ProductTotalPrice</p>
-                                        <p class="d-none" id="productSubTotalPrice">$ProductSubTotalPrice</p>
-                                        <p class="d-none" id="productSubTotalPriceNF">$ProductSubTotalNFPrice</p>
-                                    </li>
+                                    <div class="singlecheckoutpervendor px-4 py-3 mt-2"style="background-color: #fff; border-radius: 10px;">
+                                        <li style="font-weight: 500;"><i class='bx bx-store'></i> $Vendor.Name</li>
+                                        <% loop $Products %>
+                                            <li class="listDataProduct">
+                                                <a>$ProductTitle <% if $ProductVariant %>($ProductVariant)<% end_if %> 
+                                                    <span class="last" id="variantP" data-weight="$ProductVariantWeight" data-price="$ProductPrice">x $ProductQuantity &nbsp;&nbsp; $ProductPrice</span>
+                                                </a>
+                                                <p class="d-none" id="productID">$ProductID</p>
+                                                <p class="d-none" id="vendorID">$VendorID</p>
+                                                <p class="d-none" id="productTitle">$ProductTitle</p>
+                                                <p class="d-none" id="productCartID">$ProductCartID</p>
+                                                <p class="d-none" id="productImage">$ProductImage</p>
+                                                <p class="d-none" id="productVariant">$ProductVariant</p>
+                                                <p class="d-none" id="productVariantID">$ProductVariantID</p>
+                                                <p class="d-none" id="productPrice">$ProductPrice</p>
+                                                <p class="d-none" id="productQuantity">$ProductQuantity</p>
+                                                <p class="d-none" id="productTotalPrice">$ProductTotalPrice</p>
+                                                <p class="d-none" id="productSubTotalPrice">$ProductSubTotalPrice</p>
+                                                <p class="d-none" id="productSubTotalPriceNF">$ProductSubTotalNFPrice</p>
+                                            </li>
+                                        <% end_loop %>
+                                        <li class="listDataProduct">
+                                            <a>Pengiriman
+                                                <span class="last" id="TotalShippingPerVendor" data-weight="$ProductVariantWeight">&nbsp;&nbsp; $ProductPrice</span>
+                                                <span class="d-none" id="TotalShippingPerVendorNF" data-weight="$ProductVariantWeight">&nbsp;&nbsp; $ProductPrice</span>
+                                            </a>
+                                            <a style="border-bottom: none;">Total Pesanan
+                                                <span class="last" id="TotalPerVendor" data-weight="$ProductVariantWeight">&nbsp;&nbsp; $ProductPrice</span>
+                                            </a>
+                                        </li>
+                                    </div>
                                 <% end_loop %>
                             </ul>
-                            <ul class="list list_2">
+                            <ul class="list list_2 pt-3">
                                 <label id="time" class="d-none"></label>
                                 <label id="orderID" class="d-none"></label>
-                                <li><a>Subtotal <span id="subTotalPriceProduct"><% loop $CheckoutProductData %><% if $Pos == 1 %>$ProductSubTotalPrice<% end_if %><% end_loop %></span></a></li>
-                                <% if $Diskon %>
-                                <li><a>Diskon <span id="Diskon">
+                                <li><a>Subtotal <span id="subTotalPriceProduct"></span></a></li>
+                                <li>
+                                    <a>Diskon 
+                                        <span id="Diskon">
+                                    <% if $Diskon %>
                                         <% loop $Diskon %> 
                                             $Diskon %
                                         <% end_loop %>
-                                    </span></a></li>
-                                <% end_if %>   
+                                    <% end_if %>
+                                        0%
+                                    <% end_if %>
+                                        </span>
+                                    </a>
+                                </li>
                                 <%-- <li><a>Subtotal <span><% loop $CheckoutProductData %><% if $Pos == 1 %>$ProductSubTotalNFPrice<% end_if %><% end_loop %></span></a></li> --%>
                                 <li><a>Shipping <span id="shippingProduct"></span></a></li>
                                 <li class="d-none"><a><span id="shippingNFProduct"></span></a></li>
@@ -253,6 +274,7 @@
     </div>
 </section>
 <section class="invoice_payment" id="invoice_payment" style="max-width: 600px; margin: 40px auto; background-color: #f7f7f7; border: 1px solid #e0e0e0; border-radius: 12px; padding: 25px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+    <p>sdsdfsdfsdfss</p>
     <% with $CheckoutHeader %>
         <% if $ProofImage.exists %>
             <h2 style="text-align: center; color: #333; font-size: 24px; font-weight: bold; margin-bottom: 20px;">Pembayaran</h2>
