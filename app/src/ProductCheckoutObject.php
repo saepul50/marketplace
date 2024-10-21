@@ -21,6 +21,7 @@ use SilverStripe\Security\Member;
             'ProductSubTotalPrice' => 'Text',
             'ProductCostShipping' => 'Text',
             'ProductFinalPrice' => 'Text',
+            'VendorID' => 'Int',
         ];
         private static $has_one = [
             'Member' => Member::class,

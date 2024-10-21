@@ -66,6 +66,7 @@ class CartPageController extends PageController{
                 $ProductVariantWeight= $request->postVar('ProductVariantWeight');
                 $ProductPrice = $request->postVar('ProductPrice');
                 $ProductQuantity = $request->postVar('ProductQuantity');
+                $VendorID = $request->postVar('VendorID');
                 $data = [
                     'ProductID' => $ProductID,
                     'ProductTitle' => $ProductTitle,
@@ -109,6 +110,7 @@ class CartPageController extends PageController{
                         $cartItem->ProductVariantWeight = $ProductVariantWeight;
                         $cartItem->ProductPrice = $ProductPrice;
                         $cartItem->ProductQuantity = $ProductQuantity;
+                        $cartItem->VendorID = $VendorID;
                         $member = Security::getCurrentUser();
                         if ($member) {
                             $cartItem->MemberID = $member->ID;

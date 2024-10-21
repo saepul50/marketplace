@@ -12,7 +12,8 @@ use SilverStripe\Security\Member;
             'ProductVariantID' => 'Int',
             'ProductVariantWeight' => 'Float',
             'ProductPrice' => 'Text',
-            'ProductQuantity' => 'Int'
+            'ProductQuantity' => 'Int',
+            'VendorID' => 'Int'
         ];
         private static $has_one = [
             'Member' => Member::class

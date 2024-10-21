@@ -20,18 +20,7 @@ class OrderAdmin extends ModelAdmin {
     private static $managed_models = [
         ProductCheckoutHeaderObject::class,
     ];
-
-
-
-
-
-
-
-
-
-
     
-
     public function getEditForm($id = null, $fields = null) {
         $form = parent::getEditForm($id, $fields);
         $form->setFormMethod('POST');

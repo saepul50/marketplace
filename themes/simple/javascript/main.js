@@ -4,9 +4,11 @@ $(document).ready(function () {
   $("#filtera").change(function (event) {
     event.preventDefault();
     var selected = $("#filtera").val();
+
     if (selected == '') {
       return;
     }
+    localStorage.setItem("filteraValue", selected);
     $.post("/marketplace/shopcategory/filter", {
       select: $("#filtera").val(),
     })
@@ -280,11 +282,11 @@ $(document).ready(function () {
             icon: "success",
             timer: 1700
           })
-          // setInterval(href, 1800);
+          setInterval(href, 1800);
 
-          // function href() {
-          //   location.reload();
-          // }
+          function href() {
+            location.reload();
+          }
         } else {
           Swal.fire({
             icon: "error",
@@ -454,7 +456,7 @@ $(document).ready(function () {
             icon: 'fa fa-check',
             timeout: 3500,
             title: 'Sukses',
-            message: 'Wait for Second, OTP will Expired for 30 second!',
+            message: 'Wait for Second, OTP will Expired for 5 Minutes!',
             position: 'bottomRight',
             onClosed: function () {
               $('#otpcode').modal('show');
@@ -535,7 +537,7 @@ $(document).ready(function () {
             position: 'bottomRight',
             onClosed: function () {
               return false;
-              // window.location.href = "/marketplace/";
+              // window.location.href = "/marketplace/ ";
             }
           });
         } else {
@@ -607,9 +609,71 @@ $(document).ready(function () {
     return false;
   });
 
-  $("#replycomment").off(function (event) {
+  $("#forgetpass").on("submit", function(event) {
+    event.preventDefault(); 
+
+    var email = $("#inputEmail4").val(); 
+
+    $.post("/marketplace/login/sendlink", { 
+        Email: email 
+    })
+    .done(function (data) {
+      var response = JSON.parse(data);
+      console.log(response);
+      if (response.success) {
+        iziToast.success({
+          title: 'Link Sudah Diberikan Ke Alamat Email Anda',
+          position: 'bottomRight',
+        });
+      } else {
+        iziToast.error({ title: 'Gagal Mengirim', message: response.message, position: 'bottomRight' });
+      }
+    }).fail(function () {
+      iziToast.error({ title: 'Error', message: 'Terjadi Kesalahan', position: 'bottomRight' });
+    });
+  });
+
+
+  $("#forgetpassword").submit(function(event) {
     event.preventDefault();
 
+    var Password = $("#inputPassword4").val(); 
+    var Password2 = $("#inputPassword5").val(); 
+    var uniqe = $("#uniqe").val();  
+    if(Password === Password2){
+      $.post("/marketplace/forgetpassword/changepass", { 
+          Pw : Password,
+          Pw2 : Password2,
+          ID: uniqe
+      })
+      .done(function (data) {
+        var response = JSON.parse(data);
+        console.log(response);
+        if (response.success) {
+          iziToast.success({
+            title: 'Password Anda Berhasil Diganti Silahkan Kembali Ke hal.Login',
+            position: 'bottomRight',
+          });
+          setInterval(href, 2000);
+          
+          function href() {
+            window.location.href = "/marketplace/login"
+          }
+          
+        } else {
+          iziToast.error({ title: 'Gagal Mengirim', message: response.message, position: 'bottomRight' });
+        }
+      }).fail(function () {
+        iziToast.error({ title: 'Error', message: 'Terjadi Kesalahan', position: 'bottomRight' });
+      });
+    } else {
+      iziToast.error({ title: 'Error', message: 'Password Dan Confirm Password Harus Sama', position: 'bottomRight' });
+    }
+  });
+
+  $("#replycomment").submit(function (event) {
+    event.preventDefault();
+    console.log('kdkaskd');
     $.post("/marketplace/blog/handelreply", {
       Send: $("#nama-reply").val(),
       Message: $("#message-reply").val(),
@@ -1736,7 +1800,8 @@ $('#searchForm').submit(function(e) {
     var activeSubvariant = $('.variantItem.active');
     var stock = activeSubvariant.data('stock');
     var buy = $("#quantityInputDetails").val();
-    // console.log(stock);
+    var vendorID =  $("#VendorID").text();
+    // console.log(vendorID);
     // return false;
     var categoryId = document.querySelector('#productCategoriID').textContent;
     if(stock >= buy){
@@ -1753,8 +1818,9 @@ $('#searchForm').submit(function(e) {
           ProductVariantID: activeSubvariant.data('id'),
           ProductQuantity: $("#quantityInputDetails").val(),
           ProductVariantWeight: activeSubvariant.data('weight'),
+          VendorID: $("#VendorID").text(),
         })
-          .done(function (data) {
+        .done(function (data) {
             var response = JSON.parse(data);
             // console.log(response)
             if (response.success) {
@@ -1783,6 +1849,7 @@ $('#searchForm').submit(function(e) {
           ProductVariantWeight: activeSubvariant.data('weight'),
           ProductPrice: $(".ppprice").text(),
           ProductQuantity: $("#quantityInputDetails").val(),
+          VendorID: $("#VendorID").text(),
         })
           .done(function (data) {
             var response = JSON.parse(data);
@@ -1929,7 +1996,7 @@ $('#searchForm').submit(function(e) {
                   $(this).addClass('active')
 
                   var selectedVariant = response.variants.find(v => v.ID == variantID);
-                  console.log(selectedVariant)
+                  // console.log(selectedVariant)
                   if (selectedVariant) {
                       $('.modal-header h6').text(`Rp. ${formatNumber(selectedVariant.Price)}`);
                       $('.modal-header p').text(`Stok: ${selectedVariant.Stock}`);
@@ -1946,7 +2013,7 @@ $('#searchForm').submit(function(e) {
                     var response = JSON.parse(data);
                     // console.log(data)
                     if (response.success) {
-                      iziToast.success({ title: 'Ok', message: response.message, position: 'bottomRight' });
+                      location.reload();
                     } else {
                       iziToast.error({ title: 'Gagal Menghapus Product Yang dipilih:', message: response.message, position: 'bottomRight' });
                     }
@@ -1972,6 +2039,7 @@ $('#searchForm').submit(function(e) {
       var productData = {
         ProductCartID: $(this).data("id"),
         ProductID: $(this).closest('.cartProduct').find('#productCheckoutID').text(),
+        productCheckoutVendorID: $(this).closest('.cartProduct').find('#productCheckoutVendorID').text(),
         ProductTitle: $(this).closest('.cartProduct').find('#productCheckoutTitle').text(),
         ProductImage: $(this).closest('.cartProduct').find('#productCheckoutImage').attr("src"),
         ProductVariant: $(this).closest('.cartProduct').find('#productCheckoutVariant').text(),
@@ -2124,6 +2192,7 @@ $('#searchForm').submit(function(e) {
         for (const item of $(".listDataProduct")) {
           var productData = {
             ProductID: $(item).find('#productID').text(),
+            VendorID: $(item).find('#vendorID').text(),
             ProductTitle: $(item).find('#productTitle').text(),
             ProductCartID: $(item).find('#productCartID').text(),
             ProductImage: $(item).find('#productImage').text(),
@@ -2183,6 +2252,7 @@ $('#searchForm').submit(function(e) {
         for (const item of $(".listDataProduct")) {
           var productData = {
             ProductID: $(item).find('#productID').text(),
+            VendorID: $(item).find('#vendorID').text(),
             ProductTitle: $(item).find('#productTitle').text(),
             ProductCartID: $(item).find('#productCartID').text(),
             ProductImage: $(item).find('#productImage').text(),
@@ -2248,6 +2318,7 @@ $('#searchForm').submit(function(e) {
         for (const item of $(".listDataProduct")) {
           var productData = {
             ProductID: $(item).find('#productID').text(),
+            VendorID: $(item).find('#vendorID').text(),
             ProductTitle: $(item).find('#productTitle').text(),
             ProductCartID: $(item).find('#productCartID').text(),
             ProductImage: $(item).find('#productImage').text(),
@@ -2518,6 +2589,7 @@ $('#searchForm').submit(function(e) {
         // console.log(data.rajaongkir.results[0].costs)
         var options = '';
         var dataCost = data.rajaongkir.results[0].costs;
+        // console.log(dataCost);
         dataCost.forEach((element, index) => {
           let formattedCost = formatNumber(element.cost[0].value);
           options += `<div class="payment_item active">
@@ -2650,25 +2722,6 @@ $('#searchForm').submit(function(e) {
     fetchcourir();
   });
   fetchcourir();
-  function fetchcost() {
-    var cost = $('input[name="selectorCost"]:checked').next('label').data('opt');
-    function formatNumber(number) {
-      let parts = number.toString().split('.');
-      let integerPart = parts[0];
-      let decimalPart = parts.length > 1 ? '.' + parts[1] : '';
-
-      let formattedIntegerPart = '';
-      while (integerPart.length > 0) {
-        formattedIntegerPart = '.' + integerPart.slice(-3) + formattedIntegerPart;
-        integerPart = integerPart.slice(0, -3);
-      }
-
-      return formattedIntegerPart.slice(1) + decimalPart;
-    }
-    $('#shippingProduct').html(`Rp. ${formatNumber(cost)}`);
-    $('#shippingNFProduct').html(cost);
-    updateFinalPrice();
-  };
   function TimeCheckout() {
     var now = new Date();
     var day = now.getDate().toString().padStart(2, '0');
@@ -3140,7 +3193,6 @@ $('#searchForm').submit(function(e) {
   }
   function manualPayment(showPayment) {
     if (showPayment) {
-      // alert('yo');
       $('#checkout_area').hide();
       $('#invoice_payment').show();
     } else {
@@ -3166,6 +3218,37 @@ $('#searchForm').submit(function(e) {
         this.style.height = (this.scrollHeight) + 'px';
     });
   }
+  document.querySelectorAll('.singlecheckoutpervendor').forEach(vendor => {
+    let totalPerVendor = 0;
+    vendor.querySelectorAll('.listDataProduct').forEach(product => {
+      let priceElement = product.querySelector('.last[data-price]');
+      let quantityElement = product.querySelector('.last[data-quantity]');
+      let price = parseInt(priceElement ? priceElement.getAttribute('data-price').replace('Rp. ', '').replace(/\./g, '') : 0) || 0;
+      let quantity = parseInt(quantityElement ? quantityElement.getAttribute('data-quantity') : 1) || 1;
+      
+      totalPerVendor += (price * quantity);
+      // console.log(totalPerVendor)
+    });
+    
+    const totalPerVendorElement = vendor.querySelector('#TotalPerVendor');
+    if (totalPerVendorElement) {
+      totalPerVendorElement.textContent = `Rp. ${totalPerVendor.toLocaleString('id-ID')}`; 
+    }
+  });
+  let subtotalproduct = 0;
+  let subtotalshipping = 0;
+  document.querySelectorAll('.singlecheckoutpervendor').forEach(vendor => {
+    
+    let pricePerVendorElement = vendor.querySelector('#TotalPerVendor').textContent;
+    let pricePerVendor = parseInt(pricePerVendorElement.replace('Rp. ', '').replace(/\./g, ''), 10);
+    subtotalproduct  += pricePerVendor;
+
+    let pricePerVendorShippingElement = vendor.querySelector('#TotalShippingPerVendorNF').textContent;
+    let pricePerVendorShipping = parseInt(pricePerVendorShippingElement.replace('Rp. ', '').replace(/\./g, ''), 10);
+    subtotalshipping += pricePerVendorShipping;
+  });
+  $('#subTotalPriceProduct').text(`Rp. ${subtotal.toLocaleString('id-ID')}`);
+
   function formatNumber(number) {
     let parts = number.toString().split('.');
     let integerPart = parts[0];
@@ -3213,6 +3296,7 @@ $('#searchForm').submit(function(e) {
   }
   document.querySelectorAll('.cartProduct').forEach(item => {
     const decrementButton = item.querySelector('#decrementButton');
+    
     const incrementButton = item.querySelector('#incrementButton');
     const quantityInput = item.querySelector('#quantityInput');
     const quantitymax = item.querySelector('#quantityInput').getAttribute('data-stock');
@@ -3245,7 +3329,9 @@ $('#searchForm').submit(function(e) {
 
     incrementButton.addEventListener('click', function () {
       let currentQuantity = parseInt(quantityInput.value, 10);
+
       if (currentQuantity < quantitymax) {
+        console.log(quantitymax);
         quantityInput.value = currentQuantity + 1;
         updateTotalPrice(quantityInput, priceElement, totalPriceElement, totalPriceElementNF);
         updateSubtotal();
@@ -3265,37 +3351,63 @@ $('#searchForm').submit(function(e) {
       updateSubtotal();
       StockWarning(quantityInput.value);
     });
-  updateTotalPrice(quantityInput, priceElement, totalPriceElement, totalPriceElementNF);
-});
-function updateFinalPrice() {
-  const subTotal = document.querySelector('#subTotalPriceProduct').textContent;
-  const subShipping = document.querySelector('#shippingProduct').textContent;
-  const  Diskon = document.querySelector('#Diskon').textContent;
-  const subTotalInt = parseFloat(subTotal.replace('Rp. ', '').replace(/\./g, ''));
-  const subShippingInt = parseFloat(subShipping.replace('Rp. ', '').replace(/\./g, ''));
-  // console.log(subTotalInt)
-  // console.log(subShipping)
-  const TotalPrice = subTotalInt + subShippingInt ;
-  
-  let FinalPrice;
+    updateTotalPrice(quantityInput, priceElement, totalPriceElement, totalPriceElementNF);
+  });
+  function fetchcost() {
+    var cost = $('input[name="selectorCost"]:checked').next('label').data('opt');
+    function formatNumber(number) {
+      let parts = number.toString().split('.');
+      let integerPart = parts[0];
+      let decimalPart = parts.length > 1 ? '.' + parts[1] : '';
 
-  if(Diskon){
-    const DiskonInt = parseFloat(Diskon.replace('%', '').trim());
-    if(!isNaN(DiskonInt) && DiskonInt > 0){
-        const Discountamount = (DiskonInt / 100) * TotalPrice;
-        FinalPrice = TotalPrice - Discountamount;
-      } else {
+      let formattedIntegerPart = '';
+      while (integerPart.length > 0) {
+        formattedIntegerPart = '.' + integerPart.slice(-3) + formattedIntegerPart;
+        integerPart = integerPart.slice(0, -3);
+      }
+
+      return formattedIntegerPart.slice(1) + decimalPart;
+    }
+    $('#TotalShippingPerVendor').html(`Rp. ${formatNumber(cost)}`);
+    $('#TotalShippingPerVendorNF').html(cost);
+    updateFinalPrice();
+  };
+  function updateFinalPrice() {
+    const subTotal = document.querySelector('#subTotalPriceProduct').textContent;
+    const subShipping = document.querySelector('#shippingProduct').textContent;
+    const  Diskon = document.querySelector('#Diskon').textContent;
+    // console.log(Diskon);
+    const subTotalInt = parseFloat(subTotal.replace('Rp. ', '').replace(/\./g, ''));
+    const subShippingInt = parseFloat(subShipping.replace('Rp. ', '').replace(/\./g, ''));
+    // console.log(subTotalInt)
+    // console.log(subShipping)
+    const TotalPrice = subTotalInt + subShippingInt ;
+    
+    let FinalPrice;
+
+    if(Diskon){
+      const DiskonInt = parseFloat(Diskon.replace('%', '').trim());
+      if(!isNaN(DiskonInt) && DiskonInt > 0){
+          const Discountamount = (DiskonInt / 100) * TotalPrice;
+          FinalPrice = TotalPrice - Discountamount;
+        } else {
+        FinalPrice = TotalPrice;
+        };
+    } else{
       FinalPrice = TotalPrice;
-      };
-  } else{
-    FinalPrice = TotalPrice;
+    }
+    const FinalElement = document.querySelector('#finalPriceProduct');
+    const FinalNFElement = document.querySelector('#finalPriceNFProduct');
+    FinalElement.textContent = `Rp. ${formatNumber(FinalPrice)}`;
+    FinalNFElement.textContent = FinalPrice;
   }
-  const FinalElement = document.querySelector('#finalPriceProduct');
-  const FinalNFElement = document.querySelector('#finalPriceNFProduct');
-  FinalElement.textContent = `Rp. ${formatNumber(FinalPrice)}`;
-  FinalNFElement.textContent = FinalPrice;
+  updateSubtotal();
+  updateFinalPrice();
+  });
+  const events = document.querySelector('.event');
+function saveSelectionAndSubmit() {
+  const ratingFilter = document.getElementById('rating-filter');
+  localStorage.setItem('selectedSort', ratingFilter.value);
+
+  ratingFilter.form.submit();
 }
-updateSubtotal();
-updateFinalPrice();
-});
-const events = document.querySelector('.event');

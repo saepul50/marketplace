@@ -2,8 +2,10 @@
 
 use SilverStripe\Control\HTTPRequest;
 use SilverStripe\Dev\Debug;
+use SilverStripe\ORM\ArrayList;
 use SilverStripe\Security\Security;
 use SilverStripe\Versioned\ChangeSetItem;
+use SilverStripe\View\ArrayData;
 
 class ConfirmPageController extends PageController{
     private static $allowed_actions = [
@@ -27,29 +29,52 @@ class ConfirmPageController extends PageController{
         return null;
     }
     public function order(HTTPRequest $request) {
-        // die("da");
-        // die();      
         $id = $request->param('ID');
-
-        // Debug::show($Status);
-        // Debug::show($id);
         $member = Security::getCurrentUser();
+        
         if ($member) {
-            $checkoutObjects = ProductCheckoutObject::get()->filter('MemberID', $member->ID);
-            $headerCheckoutIDs = $checkoutObjects->column('HeaderCheckoutID');
-            $checkoutHeader = ProductCheckoutHeaderObject::get()->filter(['OrderID' => $id])->filter('ID', $headerCheckoutIDs);
-            // die();
-            // Debug::show($checkoutHeader);
-            if ($checkoutHeader->exists()) {
+            $checkoutHeader = ProductCheckoutHeaderObject::get()
+                ->filter('OrderID', $id)
+                ->filter('Items.MemberID', $member->ID)
+                ->first();
+    
+            if ($checkoutHeader && $checkoutHeader->exists()) {
+                $itemsByVendor = [];
+                
+                foreach ($checkoutHeader->Items() as $item) {
+                    $vendorID = $item->VendorID;
+                    
+                    if (!isset($itemsByVendor[$vendorID])) {
+                        $vendor = Vendor::get()->byID($vendorID);
+                        if ($vendor) {
+                             $itemsByVendor[$vendorID] = [
+                                'Vendor' => $vendor,
+                                'Items' => new ArrayList()
+                            ];
+                        }
+                    }
+                    if (isset($itemsByVendor[$vendorID])) {
+                        $itemsByVendor[$vendorID]['Items']->push($item);
+                    }
+                }
+                
+                $arrayVendors = new ArrayList();
+                foreach ($itemsByVendor as $vendorData) {
+                    $arrayVendors->push(new ArrayData($vendorData));
+                }
+                
                 $isDetail = $request->getVar('detailOrder');
-                return $this->customise([
+                // Debug::show($arrayVendors);
+                // die();
+                return [
                     'CheckoutHeader' => $checkoutHeader,
+                    'ItemsByVendor' => $arrayVendors,
                     'ShowDetailOrder' => $isDetail,
-                ])->renderWith(['ConfirmPage', 'Page']);
+                ];
             }
         }
-        
     }
+    
     public function service(HTTPRequest $request){
         $OrderID = $request->postVar('OrderID');
         $Request = $request->postVar('Request');

@@ -139,6 +139,7 @@
 						</div>
 						<div class="col-10 col-xl-auto p-0 pr-2 d-flex d-xl-inline justify-content-between justify-content-xl-start" style="border-right: 1px solid #ddd;">
 							<h5>$Name</h5>
+							<h5 class="d-none" id="VendorID">$ID</h5>
 							<% if $OwnerID != $Up.Member.ID %>
 								<button id="ChatBtn" data-product="$Up.Product.ID" data-owner="$OwnerID" data-user="$Up.Member.ID" class="genric-btn primary-border p-0 d-xl-inline-block pr-2 pr-xl-0" style="position: relative; padding: 0 2rem; font-size: 14px;"><i class='bx bxs-chat' style="position: absolute; bottom: 27%; left: 7%; font-size: 18px;"></i><p class="m-0" style="padding: 0 1rem 0 2rem;">Chat Sekarang</p></button>
 							<% end_if %>
