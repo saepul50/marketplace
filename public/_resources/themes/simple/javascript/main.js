@@ -2586,12 +2586,15 @@ $('#searchForm').submit(function(e) {
     });
     var idRegency = $('#fulldata .regency').text();
     var weight = $('#fulldata .weight').text();
-    var productids = [];
-    $('.listDataProduct').each(function() {
-        var productid = $(this).find('#productID').text();
-        productids.push(productid);
+    var vendorIDs = [];
+    $('.singlecheckoutpervendor').find('#vendorIDProductCheckout').each(function() {
+        var vendorID = $(this).data('vendor'); 
+        if($.inArray(vendorID, vendorIDs) === -1) {  
+            vendorIDs.push(vendorID); 
+        }
     });
-    console.log(productids);
+    // console.log(vendorIDs); 
+    
     $.ajax({
       url: '/marketplace/productcheckout/rajoCost',
       type: 'POST',
@@ -2599,13 +2602,15 @@ $('#searchForm').submit(function(e) {
         Courir: courir,
         RegencyID: idRegency,
         Weight: totalWeight,
-        ProductID:productids,
+        VendorID:vendorIDs,
       },
       dataType: 'json',
       success: function (data) {
-        // console.log(data)
+        // console.log("diadiadiai");
+        console.log(data[0].response.rajaongkir);
+        console.log(data[1].response.rajaongkir);
         // return false;
-        // console.log(data.rajaongkir.results[0].costs)
+        // console.log(data.rajaongkir)
         var options = '';
         var dataCost = data.rajaongkir.results[0].costs;
         // console.log(dataCost);
@@ -3265,7 +3270,7 @@ $('#searchForm').submit(function(e) {
     let pricePerVendorShipping = parseInt(pricePerVendorShippingElement.replace('Rp. ', '').replace(/\./g, ''), 10);
     subtotalshipping += pricePerVendorShipping;
   });
-  $('#subTotalPriceProduct').text(`Rp. ${subtotal.toLocaleString('id-ID')}`);
+  $('#subTotalPriceProduct').text(`Rp. ${subtotalshipping.toLocaleString('id-ID')}`);
 
   function formatNumber(number) {
     let parts = number.toString().split('.');
