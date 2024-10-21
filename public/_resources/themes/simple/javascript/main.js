@@ -2579,14 +2579,20 @@ $('#searchForm').submit(function(e) {
     });
     var idRegency = $('#fulldata .regency').text();
     var weight = $('#fulldata .weight').text();
-    // console.log(idRegency)
+    var productids = [];
+    $('.listDataProduct').each(function() {
+        var productid = $(this).find('#productID').text();
+        productids.push(productid);
+    });
+    console.log(productids);
     $.ajax({
       url: '/marketplace/productcheckout/rajoCost',
       type: 'POST',
       data: {
         Courir: courir,
         RegencyID: idRegency,
-        Weight: totalWeight
+        Weight: totalWeight,
+        ProductID:productids,
       },
       dataType: 'json',
       success: function (data) {

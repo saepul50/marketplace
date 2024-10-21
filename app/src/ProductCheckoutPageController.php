@@ -239,33 +239,39 @@ class ProductCheckoutPageController extends PageController{
         $regency = $request->postVar('RegencyID');
         $weight = $request->postVar('Weight');
         $courir = $request->postVar('Courir');
-        $surabaya = 444;
-        // Debug::show($weight);
-        // die();
-        curl_setopt_array($curl, array(
-        CURLOPT_URL => "https://api.rajaongkir.com/starter/cost",
-        CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_ENCODING => "",
-        CURLOPT_MAXREDIRS => 10,
-        CURLOPT_TIMEOUT => 30,
-        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-        CURLOPT_CUSTOMREQUEST => "POST",
-        CURLOPT_POSTFIELDS => "origin=$surabaya&destination=$regency&weight=$weight&courier=$courir",
-        CURLOPT_HTTPHEADER => array(
-            "content-type: application/x-www-form-urlencoded",
-            "key: 0edd73978f86309eaf0ce71a7b4bcb41"
-        ),
-        ));
-
-        $response = curl_exec($curl);
-        $err = curl_error($curl);
-
-        curl_close($curl);
-
-        if ($err) {
-        echo "cURL Error #:" . $err;
-        } else {
-        echo $response;
+        $ProductID = $request->postVar('ProductID');
+        foreach($ProductID as $ID){
+            $product = ProductObject::get()->filter('ID',$ID)->first();
+            $vendor = Vendor::get()->filter('ID', $product->VendorID)->first();
+            $surabaya = 444;
+            // Debug::show($ProductID);
+            // die();
+            curl_setopt_array($curl, array(
+            CURLOPT_URL => "https://api.rajaongkir.com/starter/cost",
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 30,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "POST",
+            CURLOPT_POSTFIELDS => "origin=$vendor->RegencyID&destination=$regency&weight=$weight&courier=$courir",
+            CURLOPT_HTTPHEADER => array(
+                "content-type: application/x-www-form-urlencoded",
+                "key: 0edd73978f86309eaf0ce71a7b4bcb41"
+            ),
+            ));
+    
+            $response = curl_exec($curl);
+            $err = curl_error($curl);
+    
+            curl_close($curl);
+    
+            if ($err) {
+            echo "cURL Error #:" . $err;
+            } else {
+            // echo $response;
+            Debug::show($response);
+            }
         }
     }
     // public function cash(HTTPRequest $request){
