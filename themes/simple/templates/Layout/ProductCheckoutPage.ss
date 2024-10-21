@@ -124,7 +124,7 @@
                                 <li><a>Product <span>Total</span></a></li>
                                 <% loop $CheckoutProductData %>
                                     <div class="singlecheckoutpervendor px-4 py-3 mt-2"style="background-color: #fff; border-radius: 10px;">
-                                        <li style="font-weight: 500;"><i class='bx bx-store'></i> $Vendor.Name</li>
+                                        <li style="font-weight: 500;" id="vendorIDProductCheckout" data-vendor="$Vendor.ID"><i class='bx bx-store'></i> $Vendor.Name</li>
                                         <% loop $Products %>
                                             <li class="listDataProduct">
                                                 <a>$ProductTitle <% if $ProductVariant %>($ProductVariant)<% end_if %> 
