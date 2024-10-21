@@ -2572,7 +2572,7 @@ $('#searchForm').submit(function(e) {
     var weight = $('#fulldata .weight').text();
     // console.log(idRegency)
     $.ajax({
-      url: '/marketplace/productcheckout/rajoCost',
+      url: '/marketplace/productcheckout/rajoCot',
       type: 'POST',
       data: {
         Courir: courir,

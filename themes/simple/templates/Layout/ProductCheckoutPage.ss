@@ -145,6 +145,11 @@
                                             </li>
                                         <% end_loop %>
                                         <li class="listDataProduct">
+                                            <a>Opsi Pengiriman
+                                                <span class="last m-0">JNE</span>
+                                            </a>
+                                        </li>
+                                        <li class="listDataProduct">
                                             <a>Pengiriman
                                                 <span class="last" id="TotalShippingPerVendor" data-weight="$ProductVariantWeight">&nbsp;&nbsp; $ProductPrice</span>
                                                 <span class="d-none" id="TotalShippingPerVendorNF" data-weight="$ProductVariantWeight">&nbsp;&nbsp; $ProductPrice</span>
@@ -153,6 +158,20 @@
                                                 <span class="last" id="TotalPerVendor" data-weight="$ProductVariantWeight">&nbsp;&nbsp; $ProductPrice</span>
                                             </a>
                                         </li>
+                                        <div class="modal fade" id="imageModal" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                                                <div class="modal-content" style="background: none; border: none;">
+                                                    <div class="modal-header" style="border-bottom: none;">
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body" style="background: none;">
+                                                        <img id="modal-image" src="$ProofImage.URL" class="img-fluid" style="width: 100%; height: auto;"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 <% end_loop %>
                             </ul>
