@@ -537,6 +537,7 @@ $(document).ready(function () {
             position: 'bottomRight',
             onClosed: function () {
               return false;
+
               // window.location.href = "/marketplace/ ";
             }
           });
@@ -661,13 +662,22 @@ $(document).ready(function () {
           }
           
         } else {
-          iziToast.error({ title: 'Gagal Mengirim', message: response.message, position: 'bottomRight' });
+          iziToast.error({ 
+            title: 'Gagal Mengirim', 
+            message: response.message, 
+            position: 'bottomRight' });
         }
       }).fail(function () {
-        iziToast.error({ title: 'Error', message: 'Terjadi Kesalahan', position: 'bottomRight' });
+        iziToast.error({ 
+          title: 'Error', 
+          message: response.message, 
+          position: 'bottomRight' });
       });
     } else {
-      iziToast.error({ title: 'Error', message: 'Password Dan Confirm Password Harus Sama', position: 'bottomRight' });
+      iziToast.error({ 
+        title: 'Error', 
+        message: 'Password dan Confirm Password tidak', 
+        position: 'bottomRight' });
     }
   });
 
@@ -2143,6 +2153,9 @@ $('#searchForm').submit(function(e) {
     var customerNotes = $('.form-group #message').val();
     var shippingCost = $('.list_2 #shippingProduct').text();
     var shippingCostNF = $('.list_2 #shippingNFProduct').text();
+    var Diskon = $('.list_2 #Diskon').text().trim();
+    var Diskons =  Diskon.replaceAll('%', '');
+    // console.log(Diskons);
     var finalPrice = $('.list_2 #finalPriceProduct').text();
     var finalPriceNF = $('.list_2 #finalPriceNFProduct').text();
     var finalprice = $("#finalPriceProduct").text().trim();
@@ -2202,6 +2215,7 @@ $('#searchForm').submit(function(e) {
             ProductTotalPrice: $(item).find('#productTotalPrice').text(),
             ProductSubTotalPrice: $(item).find('#productSubTotalPrice').text(),
             ProductSubTotalPriceNF: $(item).find('#productSubTotalPriceNF').text(),
+            ProductDiskon: Diskons,
             ProductCostShipping: shippingCost,
             ProductFinalPrice: finalPrice,
             ProductFinalPriceNF: finalPriceNF,
@@ -2261,6 +2275,7 @@ $('#searchForm').submit(function(e) {
             ProductTotalPrice: $(item).find('#productTotalPrice').text(),
             ProductSubTotalPrice: $(item).find('#productSubTotalPrice').text(),
             ProductSubTotalPriceNF: $(item).find('#productSubTotalPriceNF').text(),
+            Diskon: Diskons,
             ProductCostShipping: shippingCost,
             ProductFinalPrice: finalPrice,
             ProductFinalPriceNF: finalPriceNF,
@@ -2327,6 +2342,7 @@ $('#searchForm').submit(function(e) {
             ProductTotalPrice: $(item).find('#productTotalPrice').text(),
             ProductSubTotalPrice: $(item).find('#productSubTotalPrice').text(),
             ProductSubTotalPriceNF: $(item).find('#productSubTotalPriceNF').text(),
+            Diskon: Diskons,
             ProductCostShipping: shippingCost,
             ProductFinalPrice: finalPrice,
             ProductFinalPriceNF: finalPriceNF,
@@ -2570,20 +2586,31 @@ $('#searchForm').submit(function(e) {
     });
     var idRegency = $('#fulldata .regency').text();
     var weight = $('#fulldata .weight').text();
-    // console.log(idRegency)
+    var vendorIDs = [];
+    $('.singlecheckoutpervendor').find('#vendorIDProductCheckout').each(function() {
+        var vendorID = $(this).data('vendor'); 
+        if($.inArray(vendorID, vendorIDs) === -1) {  
+            vendorIDs.push(vendorID); 
+        }
+    });
+    // console.log(vendorIDs); 
+    
     $.ajax({
       url: '/marketplace/productcheckout/rajoCot',
       type: 'POST',
       data: {
         Courir: courir,
         RegencyID: idRegency,
-        Weight: totalWeight
+        Weight: totalWeight,
+        VendorID:vendorIDs,
       },
       dataType: 'json',
       success: function (data) {
-        // console.log(data)
+        // console.log("diadiadiai");
+        console.log(data[0].response.rajaongkir);
+        console.log(data[1].response.rajaongkir);
         // return false;
-        // console.log(data.rajaongkir.results[0].costs)
+        // console.log(data.rajaongkir)
         var options = '';
         var dataCost = data.rajaongkir.results[0].costs;
         // console.log(dataCost);
@@ -3106,7 +3133,6 @@ $('#searchForm').submit(function(e) {
     })
     .done(function (data) {
       var response = JSON.parse(data);
-      // console.log(response)
       if (response.success) {
         iziToast.success({
           icon: 'fa fa-check',
@@ -3244,7 +3270,7 @@ $('#searchForm').submit(function(e) {
     let pricePerVendorShipping = parseInt(pricePerVendorShippingElement.replace('Rp. ', '').replace(/\./g, ''), 10);
     subtotalshipping += pricePerVendorShipping;
   });
-  $('#subTotalPriceProduct').text(`Rp. ${subtotal.toLocaleString('id-ID')}`);
+  $('#subTotalPriceProduct').text(`Rp. ${subtotalshipping.toLocaleString('id-ID')}`);
 
   function formatNumber(number) {
     let parts = number.toString().split('.');
@@ -3379,14 +3405,15 @@ $('#searchForm').submit(function(e) {
     // console.log(subTotalInt)
     // console.log(subShipping)
     const TotalPrice = subTotalInt + subShippingInt ;
-    
+    console.log(TotalPrice);
     let FinalPrice;
 
     if(Diskon){
       const DiskonInt = parseFloat(Diskon.replace('%', '').trim());
       if(!isNaN(DiskonInt) && DiskonInt > 0){
           const Discountamount = (DiskonInt / 100) * TotalPrice;
-          FinalPrice = TotalPrice - Discountamount;
+          FinalPrice = Math.trunc(TotalPrice - Discountamount);
+          // console.log(FinalPrice = TotalPrice - Discountamount);
         } else {
         FinalPrice = TotalPrice;
         };

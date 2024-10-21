@@ -31,7 +31,7 @@ class ProductCheckoutPageController extends PageController{
             $checkoutData = $request->getSession()->get('CheckoutProductData');
             $AddressData = $request->getSession()->get('AddressData');
             $Coupon = $request->getSession()->get('Coupon');
-
+            // Debug::show($Coupon);
             $diskon = PromoToko::get()->filter('Code', $Coupon);
 
             $groupedData = [];
@@ -39,6 +39,7 @@ class ProductCheckoutPageController extends PageController{
             if ($checkoutData && is_array($checkoutData)) {
                 foreach ($checkoutData as $data) {
                     $vendorID = $data['VendorID'];
+                    // Debug::show($vendorID);
                     $vendor = Vendor::get()->byID($vendorID);
                     if (!isset($groupedData[$vendorID])) {
                         $groupedData[$vendorID] = [
@@ -147,6 +148,7 @@ class ProductCheckoutPageController extends PageController{
         if($request->isPOST()){
             $productCheckoutData = json_decode($request->postVar('ProductCheckoutDatas'), true);
             // Debug::show($productCheckoutData);
+            // Debug::show($productCheckoutData);
             // die();
             if (is_array($productCheckoutData)) {
                 $products = $productCheckoutData;
@@ -181,7 +183,7 @@ class ProductCheckoutPageController extends PageController{
                         
                         $checkoutData[] = $productData;
                     }
-
+                    // Debug::show($checkoutData);
                     $request->getSession()->set('CheckoutProductData', $checkoutData);
 
                     return json_encode(['success' => true]);
@@ -204,7 +206,7 @@ class ProductCheckoutPageController extends PageController{
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => "GET",
             CURLOPT_HTTPHEADER => array(
-                "key: 70e9ec6fdb4ddb38fb474b031054ae52"
+                "key: 0edd73978f86309eaf0ce71a7b4bcb41"
             ),
         ));
 
@@ -235,7 +237,7 @@ class ProductCheckoutPageController extends PageController{
         CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
         CURLOPT_CUSTOMREQUEST => "GET",
         CURLOPT_HTTPHEADER => array(
-            "key: 70e9ec6fdb4ddb38fb474b031054ae52"
+            "key: 0edd73978f86309eaf0ce71a7b4bcb41"
         ),
         ));
 
@@ -250,40 +252,60 @@ class ProductCheckoutPageController extends PageController{
         echo $response;
         }
     }
-    public function rajoCost(HTTPRequest $request){
+    public function rajoCost(HTTPRequest $request) {
         $curl = curl_init();
         $regency = $request->postVar('RegencyID');
         $weight = $request->postVar('Weight');
         $courir = $request->postVar('Courir');
-        $surabaya = 444;
-        // Debug::show($weight);
-        // die();
-        curl_setopt_array($curl, array(
-        CURLOPT_URL => "https://api.rajaongkir.com/starter/cost",
-        CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_ENCODING => "",
-        CURLOPT_MAXREDIRS => 10,
-        CURLOPT_TIMEOUT => 30,
-        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-        CURLOPT_CUSTOMREQUEST => "POST",
-        CURLOPT_POSTFIELDS => "origin=$surabaya&destination=$regency&weight=$weight&courier=$courir",
-        CURLOPT_HTTPHEADER => array(
-            "content-type: application/x-www-form-urlencoded",
-            "key: 70e9ec6fdb4ddb38fb474b031054ae52"
-        ),
-        ));
-
-        $response = curl_exec($curl);
-        $err = curl_error($curl);
-
-        curl_close($curl);
-
-        if ($err) {
-        echo "cURL Error #:" . $err;
-        } else {
-        echo $response;
+        $VendorID = $request->postVar('VendorID');
+    
+        $allResponses = [];
+    
+        foreach($VendorID as $ID) {
+            $vendor = Vendor::get()->filter('ID', $ID)->first();
+            if ($vendor) {
+                $regencys = $vendor->RegencyID;
+    
+                curl_setopt_array($curl, array(
+                    CURLOPT_URL => "https://api.rajaongkir.com/starter/cost",
+                    CURLOPT_RETURNTRANSFER => true,
+                    CURLOPT_ENCODING => "",
+                    CURLOPT_MAXREDIRS => 10,
+                    CURLOPT_TIMEOUT => 30,
+                    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                    CURLOPT_CUSTOMREQUEST => "POST",
+                    CURLOPT_POSTFIELDS => "origin=$regencys&destination=$regency&weight=$weight&courier=$courir",
+                    CURLOPT_HTTPHEADER => array(
+                        "content-type: application/x-www-form-urlencoded",
+                        "key: 0edd73978f86309eaf0ce71a7b4bcb41"
+                    ),
+                ));
+                $response = curl_exec($curl);
+                $err = curl_error($curl);
+    
+                if ($err) {
+                    $allResponses[] = [
+                        'vendorID' => $ID,
+                        'error' => "cURL Error: " . $err
+                    ];
+                } else {
+                    $allResponses[] = [
+                        'vendorID' => $ID,
+                        'response' => json_decode($response, true) 
+                    ];
+                }
+            } else {
+                $allResponses[] = [
+                    'vendorID' => $ID,
+                    'error' => "Vendor not found"
+                ];
+            }
         }
+        curl_close($curl);
+        return json_encode($allResponses);
     }
+    
+
     public function paymentmethod(HTTPRequest $request){
         // Set kode merchant anda 
         $merchantCode = "DS20031"; 
@@ -611,6 +633,7 @@ class ProductCheckoutPageController extends PageController{
             // Debug::show($request);
             // die();
             $postData = json_decode($request->postVar('paymentDatas'), true);
+            // Debug::show($postData);
             $finalPrice = $postData[0]['ProductFinalPriceNF'];
             $PaymentSelected = $postData[0]['Bank'];
             $PaymentMethode = $postData[0]['PaymentMethod'];
@@ -640,6 +663,7 @@ class ProductCheckoutPageController extends PageController{
                         $ProductVariantID = $product['ProductVariantID'];
                         $ProductVariantWeight = $product['ProductVariantWeight'];
                         $ProductPrice = $product['ProductPrice'];
+                        $Diskon = $product['ProductDiskon'];
                         $ProductQuantity = $product['ProductQuantity'];
                         $ProductTotalPrice = $product['ProductTotalPrice'];
                         $ProductSubTotalPrice = $product['ProductSubTotalPrice'];
@@ -684,6 +708,7 @@ class ProductCheckoutPageController extends PageController{
                             $checkoutItem->ProductID = $ProductID;
                             $checkoutItem->VendorID = $VendorID;
                             $checkoutItem->ProductCartID = $ProductCartID;
+                            $checkoutItem->Diskon = $Diskon;
                             $checkoutItem->ProductTitle = $ProductTitle;
                             $checkoutItem->ProductImage = $ProductImage;
                             $checkoutItem->ProductVariant = $ProductVariant;
@@ -721,7 +746,10 @@ class ProductCheckoutPageController extends PageController{
                             }
                             $checkoutItem->HeaderCheckoutID = $checkoutHeader->ID;
                             $checkoutItem->write();
-                            
+                            $session = $request->getSession();
+                            $session->clear('Coupon');
+                            // Debug::show($session);
+                            // Debug::show($checkoutItem);
                             $cartItem = CartObject::get()->byID($ProductCartID);
                             if ($cartItem) {
                                 $cartItem->delete();

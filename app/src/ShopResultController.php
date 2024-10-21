@@ -13,7 +13,7 @@ class ShopResultController extends PageController{
         $brandFilter = $request->getVar('filter');
         $subCategoryFilter = $request->getVar('subcategory');
         $search = $request->getVar('keywords');
-        $pagelength = $request->getSession()->get('PageLength') ?? 10;
+        $pagelength = $request->getSession()->get('PageLength') ?? 15;
     
         $categories = ShopCategoryObject::get();
         $subCategoryList = ShopSubCategoryObject::get();

@@ -81,15 +81,52 @@ class  LoginPageController extends PageController{
         $emails = $request->postVar('Email');
             $forgetpassword = ForgetPassword::create();
             $forgetpassword->MemberID = $member->ID;
-            $forgetpassword->Unique =  $s = substr(str_shuffle(str_repeat("0123456789ABCDEFGHIJKLMNOPGRSTUFWXYZ", 10)), 0, 10);
+            $forgetpassword->Unique = substr(str_shuffle(str_repeat("0123456789ABCDEFGHIJKLMNOPGRSTUFWXYZ", 10)), 0, 10);
+            $forgetpassword->ExpDate = date('Y-m-d H:i:s', strtotime('+24 hours'));
             $forgetpassword->write();
             $siteconfig = SiteConfig::current_site_config();
-            // Debug::show($forgetpassword);
             $email = new Email();
             $email->setTo($emails);
             $email->setFrom($siteconfig->Email);
-            $email->setSubject('Your Link Forget Password');
-            $email->setBody('http://localhost/marketplace/forgetpassword/for/'. $forgetpassword->Unique  );
+            $email->setSubject('Password Change Request');
+            $email->setBody('
+            <div style="color:black;">
+                <div>
+                    <h1>' . $siteconfig->Title . '</h1>
+                </div>
+                <h3> Change your password</h3>
+                <p>We Have Received a password change from you Karma account '.$emails. '.</p>
+                <p>if you not request change password,you can ignore this email and your password not change.This link active for 24 Hours.</p>
+                <p>This below is your link reset password</p>
+                <a  href="http://localhost/marketplace/forgetpassword/for/'. $forgetpassword->Unique .'">
+                    <button style="display: block;
+                        border-radius: 0px;
+                        line-height: 38px;
+                        width: 25%;
+                        text-transform: uppercase;
+                        border: none;
+                        osition: relative;
+                        overflow: hidden;
+                        color: #fff;
+                        padding: 0 30px;
+                        line-height: 35px;
+                        border-radius: 6px;
+                        display: inline-block;
+                        text-transform: uppercase;
+                        font-weight: 500;
+                        cursor: pointer;
+                        -webkit-transition: all 0.3s ease 0s;
+                        -moz-transition: all 0.3s ease 0s;
+                        -o-transition: all 0.3s ease 0s;
+                        transition: all 0.3s ease 0s;
+                            background: -webkit-linear-gradient(90deg, #ffba00 0%, #ff6c00 100%);
+                        background: -moz-linear-gradient(90deg, #ffba00 0%, #ff6c00 100%);
+                        background: -o-linear-gradient(90deg, #ffba00 0%, #ff6c00 100%);
+                        background: linear-gradient(90deg, #ffba00 0%, #ff6c00 100%);"
+                    >Click Here</button>
+                </a>
+            </div>
+            ' );
             $email->send();
             return json_encode([
                 'success' => true,
