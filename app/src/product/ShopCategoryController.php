@@ -19,7 +19,7 @@ use SilverStripe\View\ArrayData;
             $sortOption = $request->getVar('sort');
             $brandFilter = $request->getVar('filter');
             $subCategoryFilter = $request->getVar('subcategory');
-            $pagelength = $request->getSession()->get('PageLength') ?? 12;
+            $pagelength = $request->getSession()->get('PageLength') ?? 15;
             // Debug::show($pagelength);
             $mainsearch = ProductObject::get();
             $categories = ShopCategoryObject::get();

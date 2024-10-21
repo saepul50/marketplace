@@ -537,6 +537,7 @@ $(document).ready(function () {
             position: 'bottomRight',
             onClosed: function () {
               return false;
+
               // window.location.href = "/marketplace/ ";
             }
           });
@@ -661,13 +662,22 @@ $(document).ready(function () {
           }
           
         } else {
-          iziToast.error({ title: 'Gagal Mengirim', message: response.message, position: 'bottomRight' });
+          iziToast.error({ 
+            title: 'Gagal Mengirim', 
+            message: response.message, 
+            position: 'bottomRight' });
         }
       }).fail(function () {
-        iziToast.error({ title: 'Error', message: 'Terjadi Kesalahan', position: 'bottomRight' });
+        iziToast.error({ 
+          title: 'Error', 
+          message: response.message, 
+          position: 'bottomRight' });
       });
     } else {
-      iziToast.error({ title: 'Error', message: 'Password Dan Confirm Password Harus Sama', position: 'bottomRight' });
+      iziToast.error({ 
+        title: 'Error', 
+        message: 'Password dan Confirm Password tidak', 
+        position: 'bottomRight' });
     }
   });
 
@@ -2139,6 +2149,9 @@ $('#searchForm').submit(function(e) {
     var customerNotes = $('.form-group #message').val();
     var shippingCost = $('.list_2 #shippingProduct').text();
     var shippingCostNF = $('.list_2 #shippingNFProduct').text();
+    var Diskon = $('.list_2 #Diskon').text().trim();
+    var Diskons =  Diskon.replaceAll('%', '');
+    // console.log(Diskons);
     var finalPrice = $('.list_2 #finalPriceProduct').text();
     var finalPriceNF = $('.list_2 #finalPriceNFProduct').text();
     var finalprice = $("#finalPriceProduct").text().trim();
@@ -2197,6 +2210,7 @@ $('#searchForm').submit(function(e) {
             ProductTotalPrice: $(item).find('#productTotalPrice').text(),
             ProductSubTotalPrice: $(item).find('#productSubTotalPrice').text(),
             ProductSubTotalPriceNF: $(item).find('#productSubTotalPriceNF').text(),
+            ProductDiskon: Diskons,
             ProductCostShipping: shippingCost,
             ProductFinalPrice: finalPrice,
             ProductFinalPriceNF: finalPriceNF,
@@ -2255,6 +2269,7 @@ $('#searchForm').submit(function(e) {
             ProductTotalPrice: $(item).find('#productTotalPrice').text(),
             ProductSubTotalPrice: $(item).find('#productSubTotalPrice').text(),
             ProductSubTotalPriceNF: $(item).find('#productSubTotalPriceNF').text(),
+            Diskon: Diskons,
             ProductCostShipping: shippingCost,
             ProductFinalPrice: finalPrice,
             ProductFinalPriceNF: finalPriceNF,
@@ -2320,6 +2335,7 @@ $('#searchForm').submit(function(e) {
             ProductTotalPrice: $(item).find('#productTotalPrice').text(),
             ProductSubTotalPrice: $(item).find('#productSubTotalPrice').text(),
             ProductSubTotalPriceNF: $(item).find('#productSubTotalPriceNF').text(),
+            Diskon: Diskons,
             ProductCostShipping: shippingCost,
             ProductFinalPrice: finalPrice,
             ProductFinalPriceNF: finalPriceNF,
@@ -3118,7 +3134,6 @@ $('#searchForm').submit(function(e) {
     })
     .done(function (data) {
       var response = JSON.parse(data);
-      // console.log(response)
       if (response.success) {
         iziToast.success({
           icon: 'fa fa-check',
@@ -3344,14 +3359,15 @@ $('#searchForm').submit(function(e) {
     // console.log(subTotalInt)
     // console.log(subShipping)
     const TotalPrice = subTotalInt + subShippingInt ;
-    
+    console.log(TotalPrice);
     let FinalPrice;
 
     if(Diskon){
       const DiskonInt = parseFloat(Diskon.replace('%', '').trim());
       if(!isNaN(DiskonInt) && DiskonInt > 0){
           const Discountamount = (DiskonInt / 100) * TotalPrice;
-          FinalPrice = TotalPrice - Discountamount;
+          FinalPrice = Math.trunc(TotalPrice - Discountamount);
+          // console.log(FinalPrice = TotalPrice - Discountamount);
         } else {
         FinalPrice = TotalPrice;
         };

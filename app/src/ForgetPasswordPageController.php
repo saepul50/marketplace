@@ -14,19 +14,28 @@ class ForgetPasswordPageController extends PageController{
         $ID = $request->postVar('ID');
         $Pass = $request->postVar('Pw');
         $forgetpassword = ForgetPassword::get()->filter('Unique', $ID)->first();
-        if($forgetpassword){
-        $member = Member::get()->byID($forgetpassword->MemberID);
-        $member->changePassword($Pass);
-        $member->write();
-        
-        return json_encode([
-            'success' => true,
-            'messsage' => 'Password Anda Berhasil Diganti Silahkan Kembali ke Menu Login'
-        ]);    
+        $time = strtotime($forgetpassword->ExpDate);
+        if($time >= time()){
+            $member = Member::get()->byID($forgetpassword->MemberID);
+            if(password_verify($Pass, $member->Password)){
+                return json_encode([
+                    'success' => false,
+                    'message' => 'Password Tidak Boleh Sama Dengan Sebelumnya'
+                ]); 
+            } else {
+
+                $member->changePassword($Pass);
+                $member->write();
+                
+                return json_encode([
+                    'success' => true,
+                    'message' => 'Password Anda Berhasil Diganti Silahkan Kembali ke Menu Login'
+                ]);    
+            }
         } else {
             return json_encode([
                 'success' => false,
-                'messsage' => 'Terjadi Kesalahan'
+                'message' => 'Anda Tidak Bisa Mengganti Password Dikarenakan Link Sudah Expired'
             ]);  
         }
     }

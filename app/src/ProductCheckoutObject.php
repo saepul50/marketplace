@@ -8,6 +8,7 @@ use SilverStripe\Security\Member;
         private static $db = [
             'OrderID'=>'Varchar(255)',
             'ProductCartID' => 'Int',
+            'Diskon' => 'Int',
             'ProductID' => 'Int',
             'ProductTitle' => 'Text',
             'ProductImage' => 'Varchar(255)',

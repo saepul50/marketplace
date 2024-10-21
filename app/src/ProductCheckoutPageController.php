@@ -31,7 +31,7 @@ class ProductCheckoutPageController extends PageController{
             // Debug::show($checkoutData);
             $AddressData = $request->getSession()->get('AddressData');
             $Coupon = $request->getSession()->get('Coupon');
-        
+            // Debug::show($Coupon);
             $diskon = PromoToko::get()->filter('Code', $Coupon);
             // Debug::show($diskon);
             $listDataCheckout = new ArrayList();
@@ -132,6 +132,7 @@ class ProductCheckoutPageController extends PageController{
         if($request->isPOST()){
             $productCheckoutData = json_decode($request->postVar('ProductCheckoutDatas'), true);
             // Debug::show($productCheckoutData);
+            // Debug::show($productCheckoutData);
             // die();
             if (is_array($productCheckoutData)) {
                 $products = $productCheckoutData;
@@ -187,7 +188,7 @@ class ProductCheckoutPageController extends PageController{
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => "GET",
             CURLOPT_HTTPHEADER => array(
-                "key: c9ba6f9ee619e3eae6b2b65d64fac437"
+                "key: 0edd73978f86309eaf0ce71a7b4bcb41"
             ),
         ));
 
@@ -218,7 +219,7 @@ class ProductCheckoutPageController extends PageController{
         CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
         CURLOPT_CUSTOMREQUEST => "GET",
         CURLOPT_HTTPHEADER => array(
-            "key: c9ba6f9ee619e3eae6b2b65d64fac437"
+            "key: 0edd73978f86309eaf0ce71a7b4bcb41"
         ),
         ));
 
@@ -252,7 +253,7 @@ class ProductCheckoutPageController extends PageController{
         CURLOPT_POSTFIELDS => "origin=$surabaya&destination=$regency&weight=$weight&courier=$courir",
         CURLOPT_HTTPHEADER => array(
             "content-type: application/x-www-form-urlencoded",
-            "key: c9ba6f9ee619e3eae6b2b65d64fac437"
+            "key: 0edd73978f86309eaf0ce71a7b4bcb41"
         ),
         ));
 
@@ -667,7 +668,7 @@ class ProductCheckoutPageController extends PageController{
     public function manualpayment(HTTPRequest $request) {
         $id = $request->param('ID');
         $member = Security::getCurrentUser();
-    
+        
         if ($member) {
             if ($request->isPOST() && isset($_FILES['ProofImageManual'])) {
                 $id = $request->postVar('ID');
@@ -705,6 +706,7 @@ class ProductCheckoutPageController extends PageController{
             // Debug::show($request);
             // die();
             $postData = json_decode($request->postVar('paymentDatas'), true);
+            // Debug::show($postData);
             $finalPrice = $postData[0]['ProductFinalPriceNF'];
             $PaymentSelected = $postData[0]['Bank'];
             $PaymentMethode = $postData[0]['PaymentMethod'];
@@ -733,6 +735,7 @@ class ProductCheckoutPageController extends PageController{
                         $ProductVariantID = $product['ProductVariantID'];
                         $ProductVariantWeight = $product['ProductVariantWeight'];
                         $ProductPrice = $product['ProductPrice'];
+                        $Diskon = $product['ProductDiskon'];
                         $ProductQuantity = $product['ProductQuantity'];
                         $ProductTotalPrice = $product['ProductTotalPrice'];
                         $ProductSubTotalPrice = $product['ProductSubTotalPrice'];
@@ -776,6 +779,7 @@ class ProductCheckoutPageController extends PageController{
                             $checkoutItem = ProductCheckoutObject::create();
                             $checkoutItem->ProductID = $ProductID;
                             $checkoutItem->ProductCartID = $ProductCartID;
+                            $checkoutItem->Diskon = $Diskon;
                             $checkoutItem->ProductTitle = $ProductTitle;
                             $checkoutItem->ProductImage = $ProductImage;
                             $checkoutItem->ProductVariant = $ProductVariant;
@@ -813,7 +817,10 @@ class ProductCheckoutPageController extends PageController{
                             }
                             $checkoutItem->HeaderCheckoutID = $checkoutHeader->ID;
                             $checkoutItem->write();
-                            
+                            $session = $request->getSession();
+                            $session->clear('Coupon');
+                            // Debug::show($session);
+                            // Debug::show($checkoutItem);
                             $cartItem = CartObject::get()->byID($ProductCartID);
                             if ($cartItem) {
                                 $cartItem->delete();

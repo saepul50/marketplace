@@ -173,8 +173,8 @@ Change it, enhance it and most importantly enjoy it!
                 element.textContent = "Invalid date";
                 return;
             }
-            const timePassed = timeSince(inputDate);
-            element.textContent = timePassed;
+            const timePassed = timeSince(inputDate) ;
+            element.textContent = `${timePassed} (${element.dataset.date})` ;
         });
     }
     updateTimeSince();

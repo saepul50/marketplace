@@ -2076,6 +2076,8 @@ $('#searchForm').submit(function(e) {
     var shippingCost = $('.list_2 #shippingProduct').text();
     var shippingCostNF = $('.list_2 #shippingNFProduct').text();
     var finalPrice = $('.list_2 #finalPriceProduct').text();
+    var Diskon = $('.list_2 #Diskon').text();
+    console.log(Diskon);
     var finalPriceNF = $('.list_2 #finalPriceNFProduct').text();
     var finalprice = $("#finalPriceProduct").text().trim();
     var selectordata = $("input[name='selectordata']:checked").length > 0;
@@ -2133,6 +2135,7 @@ $('#searchForm').submit(function(e) {
             ProductTotalPrice: $(item).find('#productTotalPrice').text(),
             ProductSubTotalPrice: $(item).find('#productSubTotalPrice').text(),
             ProductSubTotalPriceNF: $(item).find('#productSubTotalPriceNF').text(),
+            Diskon: $(item).find('#Diskon').text(),
             ProductCostShipping: shippingCost,
             ProductFinalPrice: finalPrice,
             ProductFinalPriceNF: finalPriceNF,
