@@ -2560,60 +2560,9 @@ $('#searchForm').submit(function(e) {
         iziToast.warning({ position: "bottomRight", title: 'Caution', message: 'Gagal menyimpan data pengiriman' });
       });
   });
-  function fetchcourir() {
-    var courir = $('input[name="selectorcourir"]:checked').next('label').data('opt');
-    // console.log(idCourir)
-    let totalWeight = 0;
-    document.querySelectorAll('#variantP').forEach(item => {
-      const weight = parseFloat(item.getAttribute('data-weight'));
-
-      if (!isNaN(weight)) {
-        totalWeight += weight;
-      }
-    });
-    var idRegency = $('#fulldata .regency').text();
-    var weight = $('#fulldata .weight').text();
-    // console.log(idRegency)
-    $.ajax({
-      url: '/marketplace/productcheckout/rajoCot',
-      type: 'POST',
-      data: {
-        Courir: courir,
-        RegencyID: idRegency,
-        Weight: totalWeight
-      },
-      dataType: 'json',
-      success: function (data) {
-        // console.log(data)
-        // return false;
-        // console.log(data.rajaongkir.results[0].costs)
-        var options = '';
-        var dataCost = data.rajaongkir.results[0].costs;
-        // console.log(dataCost);
-        dataCost.forEach((element, index) => {
-          let formattedCost = formatNumber(element.cost[0].value);
-          options += `<div class="payment_item active">
-                          <div class="radion_btn">
-                              <input type="radio" id="${element.service}" name="selectorCost" ${index === 0 ? 'checked' : ''}>
-                              <label class="rajoCostOptionLabel" data-opt="${element.cost[0].value}" for="${element.service}">${element.description} (${formattedCost})</label>
-                              <div class="check"></div>
-                          </div>
-                      </div>`;
-        });
-        $('.rajoCostOption').html(options);
-        fetchcost();
-      },
-      error: function (jqXHR, textStatus, errorThrown) {
-        // console.error('Error fetching provinces:', textStatus, errorThrown);
-      }
-    });
-  }
   SelectorPayment();
   $("input[name='selectorpayment']").on('change', function () {
     SelectorPayment();
-  });
-  $(document).on('change', "input[name='selectorCost']", function () {
-    fetchcost();
   });
   function SelectorPayment() {
     var selectedPayment = $("input[name='selectorpayment']:checked").val();
@@ -2718,10 +2667,6 @@ $('#searchForm').submit(function(e) {
       $(this).find('#orderID').text(orderID);
     });
   }
-  $('input[name="selectorcourir"]').on('change', function () {
-    fetchcourir();
-  });
-  fetchcourir();
   function TimeCheckout() {
     var now = new Date();
     var day = now.getDate().toString().padStart(2, '0');
@@ -3238,7 +3183,6 @@ $('#searchForm').submit(function(e) {
   let subtotalproduct = 0;
   let subtotalshipping = 0;
   document.querySelectorAll('.singlecheckoutpervendor').forEach(vendor => {
-    
     let pricePerVendorElement = vendor.querySelector('#TotalPerVendor').textContent;
     let pricePerVendor = parseInt(pricePerVendorElement.replace('Rp. ', '').replace(/\./g, ''), 10);
     subtotalproduct  += pricePerVendor;
@@ -3246,6 +3190,81 @@ $('#searchForm').submit(function(e) {
     let pricePerVendorShippingElement = vendor.querySelector('#TotalShippingPerVendorNF').textContent;
     let pricePerVendorShipping = parseInt(pricePerVendorShippingElement.replace('Rp. ', '').replace(/\./g, ''), 10);
     subtotalshipping += pricePerVendorShipping;
+
+    $(document).on('change', "input[name='selectorCost']", function () {
+      fetchcost();
+    });
+    function fetchcost() {
+      var cost = $('input[name="selectorCost"]:checked').next('label').data('opt');
+      function formatNumber(number) {
+        let parts = number.toString().split('.');
+        let integerPart = parts[0];
+        let decimalPart = parts.length > 1 ? '.' + parts[1] : '';
+  
+        let formattedIntegerPart = '';
+        while (integerPart.length > 0) {
+          formattedIntegerPart = '.' + integerPart.slice(-3) + formattedIntegerPart;
+          integerPart = integerPart.slice(0, -3);
+        }
+  
+        return formattedIntegerPart.slice(1) + decimalPart;
+      }
+      $('#TotalShippingPerVendor').html(`Rp. ${formatNumber(cost)}`);
+      $('#TotalShippingPerVendorNF').html(cost);
+      updateFinalPrice();
+    };
+    $('input[name="selectorcourir"]').on('change', function () {
+      fetchcourir();
+    });
+    fetchcourir();
+    function fetchcourir() {
+      var courir = $('input[name="selectorcourir"]:checked').next('label').data('opt');
+      // console.log(idCourir)
+      let totalWeight = 0;
+      document.querySelectorAll('#variantP').forEach(item => {
+        const weight = parseFloat(item.getAttribute('data-weight'));
+  
+        if (!isNaN(weight)) {
+          totalWeight += weight;
+        }
+      });
+      var idRegency = $('#fulldata .regency').text();
+      var weight = $('#fulldata .weight').text();
+      // console.log(idRegency)
+      $.ajax({
+        url: '/marketplace/productcheckout/rajoCost',
+        type: 'POST',
+        data: {
+          Courir: courir,
+          RegencyID: idRegency,
+          Weight: totalWeight
+        },
+        dataType: 'json',
+        success: function (data) {
+          console.log(data)
+          return false;
+          // console.log(data.rajaongkir.results[0].costs)
+          var options = '';
+          var dataCost = data.rajaongkir.results[0].costs;
+          // console.log(dataCost);
+          dataCost.forEach((element, index) => {
+            let formattedCost = formatNumber(element.cost[0].value);
+            options += `<div class="payment_item active">
+                            <div class="radion_btn">
+                                <input type="radio" id="${element.service}" name="selectorCost" ${index === 0 ? 'checked' : ''}>
+                                <label class="rajoCostOptionLabel" data-opt="${element.cost[0].value}" for="${element.service}">${element.description} (${formattedCost})</label>
+                                <div class="check"></div>
+                            </div>
+                        </div>`;
+          });
+          $('.rajoCostOption').html(options);
+          fetchcost();
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+          // console.error('Error fetching provinces:', textStatus, errorThrown);
+        }
+      });
+    }
   });
   $('#subTotalPriceProduct').text(`Rp. ${subtotal.toLocaleString('id-ID')}`);
 
@@ -3353,25 +3372,6 @@ $('#searchForm').submit(function(e) {
     });
     updateTotalPrice(quantityInput, priceElement, totalPriceElement, totalPriceElementNF);
   });
-  function fetchcost() {
-    var cost = $('input[name="selectorCost"]:checked').next('label').data('opt');
-    function formatNumber(number) {
-      let parts = number.toString().split('.');
-      let integerPart = parts[0];
-      let decimalPart = parts.length > 1 ? '.' + parts[1] : '';
-
-      let formattedIntegerPart = '';
-      while (integerPart.length > 0) {
-        formattedIntegerPart = '.' + integerPart.slice(-3) + formattedIntegerPart;
-        integerPart = integerPart.slice(0, -3);
-      }
-
-      return formattedIntegerPart.slice(1) + decimalPart;
-    }
-    $('#TotalShippingPerVendor').html(`Rp. ${formatNumber(cost)}`);
-    $('#TotalShippingPerVendorNF').html(cost);
-    updateFinalPrice();
-  };
   function updateFinalPrice() {
     const subTotal = document.querySelector('#subTotalPriceProduct').textContent;
     const subShipping = document.querySelector('#shippingProduct').textContent;

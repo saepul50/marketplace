@@ -145,8 +145,8 @@
                                             </li>
                                         <% end_loop %>
                                         <li class="listDataProduct">
-                                            <a>Opsi Pengiriman
-                                                <span class="last m-0">JNE</span>
+                                            <a data-toggle="modal" data-target="#OpsiPengiriman" style="cursor: pointer; position: relative;" class="pl-3">Opsi Pengiriman<i class='bx bx-dots-vertical-rounded' style="position: absolute; top: 11px; left: 0px;"></i>
+                                                <span class="m-0" id="OpsiSelect">JNE&nbsp;</span>
                                             </a>
                                         </li>
                                         <li class="listDataProduct">
@@ -158,16 +158,42 @@
                                                 <span class="last" id="TotalPerVendor" data-weight="$ProductVariantWeight">&nbsp;&nbsp; $ProductPrice</span>
                                             </a>
                                         </li>
-                                        <div class="modal fade" id="imageModal" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel" aria-hidden="true">
+                                        <div class="modal fade" id="OpsiPengiriman" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel" aria-hidden="true">
                                             <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-                                                <div class="modal-content" style="background: none; border: none;">
+                                                <div class="modal-content">
                                                     <div class="modal-header" style="border-bottom: none;">
+                                                        <h5 class="modal-title">Opsi Pengiriman</h5>
                                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                             <span aria-hidden="true">&times;</span>
                                                         </button>
                                                     </div>
-                                                    <div class="modal-body" style="background: none;">
-                                                        <img id="modal-image" src="$ProofImage.URL" class="img-fluid" style="width: 100%; height: auto;"/>
+                                                    <div class="modal-body d-flex align-items-center">
+                                                        <div class="d-flex flex-column">
+                                                            <div class="payment_item active">
+                                                                <div class="radion_btn">
+                                                                    <input type="radio" id="f-option9" name="selectorcourir" checked>
+                                                                    <label for="f-option9" data-opt="jne">JNE </label>
+                                                                    <div class="check"></div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="payment_item">
+                                                                <div class="radion_btn">
+                                                                    <input type="radio" id="f-option10" name="selectorcourir">
+                                                                    <label for="f-option10" data-opt="pos">POS Indonesia </label>
+                                                                    <div class="check"></div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="payment_item active">
+                                                                <div class="radion_btn">
+                                                                    <input type="radio" id="f-option11" name="selectorcourir">
+                                                                    <label for="f-option11" data-opt="tiki">TIKI </label>
+                                                                    <div class="check"></div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="payment_item">
+                                                            <p class="m-0 p-0">Courir Option<span class="d-flex flex-wrap rajoCostOption p-0 m-0 pt-2"></span></p>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -213,34 +239,7 @@
                                     <p class="regency d-none"><% if $AddressData %><% loop $AddressData %>$Regency<% end_loop %><% end_if %></p>
                                     <p class="province d-none"><% if $AddressData %><% loop $AddressData %>$Province<% end_loop %><% end_if %></p>
                                 </div>
-                            </div>
-                            <div class="d-flex">
-                                <div class="payment_item active">
-                                    <div class="radion_btn">
-                                        <input type="radio" id="f-option9" name="selectorcourir" checked>
-                                        <label for="f-option9" data-opt="jne">JNE </label>
-                                        <div class="check"></div>
-                                    </div>
-                                </div>
-                                <div class="payment_item">
-                                    <div class="radion_btn">
-                                        <input type="radio" id="f-option10" name="selectorcourir">
-                                        <label for="f-option10" data-opt="pos">POS Indonesia </label>
-                                        <div class="check"></div>
-                                    </div>
-                                </div>
-                                <div class="payment_item active">
-                                    <div class="radion_btn">
-                                        <input type="radio" id="f-option11" name="selectorcourir">
-                                        <label for="f-option11" data-opt="tiki">TIKI </label>
-                                        <div class="check"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="payment_item">
-                                <p class="">Courir Option<span class="d-flex flex-wrap rajoCostOption p-0 m-0 pt-2"></span></p>
-                            </div>
-                                
+                            </div>                                
                             <div class="payment_item active">
                                 <div class="radion_btn">
                                     <input type="radio" id="f-option6" value="manualtf" name="selectorpayment" checked>
