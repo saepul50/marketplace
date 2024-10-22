@@ -2235,9 +2235,9 @@ $('#searchForm').submit(function(e) {
               title: 'Tunggu sebentar, ',
               message: 'sedang membuka laman pembayaran',
               position: 'bottomRight',
-              onClosed: function () {
-                window.location.href = "/marketplace/productcheckout/manualpayment/" + orderID + '?invoice=true';
-              }
+              // onClosed: function () {
+              //   window.location.href = "/marketplace/productcheckout/manualpayment/" + orderID + '?invoice=true';
+              // }
             });
           },
           error: function (xhr, status, error) {

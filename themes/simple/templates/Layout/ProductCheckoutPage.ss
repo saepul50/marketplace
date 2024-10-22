@@ -142,16 +142,18 @@
                                                 <p class="d-none" id="productTotalPrice">$ProductTotalPrice</p>
                                                 <p class="d-none" id="productSubTotalPrice">$ProductSubTotalPrice</p>
                                                 <p class="d-none" id="productSubTotalPriceNF">$ProductSubTotalNFPrice</p>
+                                                <a data-toggle="modal" data-target="#OpsiPengiriman-$Vendor.ID" style="cursor: pointer; position: relative;" class="pl-3">Opsi Pengiriman<i class='bx bx-dots-vertical-rounded' style="position: absolute; top: 11px; left: 0px;"></i>
+                                                    <span class="m-0" id="OpsiSelect-$Vendor.ID">&nbsp;</span>
+                                                </a>
                                                 <a>Pengiriman
-                                                    <span class="last" id="TotalShippingPerVendor" data-weight="$Up.ProductVariantWeight">&nbsp;&nbsp; $Up.ProductPrice</span>
-                                                    <span class="d-none" id="TotalShippingPerVendorNF" data-weight="$Up.ProductVariantWeight">&nbsp;&nbsp; $Up.ProductPrice</span>
+                                                <span class="last TotalShippingPerVendor TotalShippingPerVendor-$Vendor.ID" data-weight="$ProductVariantWeight">&nbsp;&nbsp; $ProductPrice</span>
                                                 </a>
                                                 <a style="border-bottom: none;">Total Pesanan
-                                                    <span class="last" id="TotalPerVendor" data-weight="$Up.ProductVariantWeight">&nbsp;&nbsp; $Up.ProductPrice</span>
+                                                    <span class="last TotalPerVendor TotalPerVendor-$Vendor.ID" data-weight="$ProductVariantWeight">&nbsp;&nbsp; $ProductPrice</span>
                                                 </a>
                                             </li>
                                         <% end_loop %>
-                                        <li class="listDataProduct">
+                                        <%-- <li class="listDataProduct">
                                             <a data-toggle="modal" data-target="#OpsiPengiriman-$Vendor.ID" style="cursor: pointer; position: relative;" class="pl-3">Opsi Pengiriman<i class='bx bx-dots-vertical-rounded' style="position: absolute; top: 11px; left: 0px;"></i>
                                                 <span class="m-0" id="OpsiSelect-$Vendor.ID">&nbsp;</span>
                                             </a>
@@ -163,7 +165,7 @@
                                             <a style="border-bottom: none;">Total Pesanan
                                                 <span class="last TotalPerVendor TotalPerVendor-$Vendor.ID" data-weight="$ProductVariantWeight">&nbsp;&nbsp; $ProductPrice</span>
                                             </a>
-                                        </li> 
+                                        </li>  --%>
                                         <div class="modal fade" id="OpsiPengiriman-$Vendor.ID" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel" aria-hidden="true">
                                             <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                                                 <div class="modal-content">
