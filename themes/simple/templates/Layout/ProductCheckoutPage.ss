@@ -124,11 +124,11 @@
                                 <li><a>Product <span>Total</span></a></li>
                                 <% loop $CheckoutProductData %>
                                     <div class="singlecheckoutpervendor px-4 py-3 mt-2"style="background-color: #fff; border-radius: 10px;">
-                                        <li style="font-weight: 500;" id="vendorIDProductCheckout" data-vendor="$Vendor.ID"><i class='bx bx-store'></i> $Vendor.Name</li>
+                                        <li style="font-weight: 500;" class="vendorIDProductCheckout" data-vendor="$Vendor.ID" data-origin="$Vendor.RegencyID"><i class='bx bx-store'></i> $Vendor.Name</li>
                                         <% loop $Products %>
                                             <li class="listDataProduct">
                                                 <a>$ProductTitle <% if $ProductVariant %>($ProductVariant)<% end_if %> 
-                                                    <span class="last" id="variantP" data-weight="$ProductVariantWeight" data-price="$ProductPrice">x $ProductQuantity &nbsp;&nbsp; $ProductPrice</span>
+                                                    <span class="last variantP-$Up.Vendor.ID" data-weight="$ProductVariantWeight" data-price="$ProductPrice">x $ProductQuantity &nbsp;&nbsp; $ProductPrice</span>
                                                 </a>
                                                 <p class="d-none" id="productID">$ProductID</p>
                                                 <p class="d-none" id="vendorID">$VendorID</p>
@@ -151,15 +151,66 @@
                                                 </a>
                                             </li>
                                         <% end_loop %>
-                                        <%-- <li class="listDataProduct">
-                                        </li> --%>
+                                        <li class="listDataProduct">
+                                            <a data-toggle="modal" data-target="#OpsiPengiriman-$Vendor.ID" style="cursor: pointer; position: relative;" class="pl-3">Opsi Pengiriman<i class='bx bx-dots-vertical-rounded' style="position: absolute; top: 11px; left: 0px;"></i>
+                                                <span class="m-0" id="OpsiSelect-$Vendor.ID">&nbsp;</span>
+                                            </a>
+                                        </li>
+                                        <li class="listDataProduct">
+                                            <a>Pengiriman
+                                                <span class="last TotalShippingPerVendor TotalShippingPerVendor-$Vendor.ID" data-weight="$ProductVariantWeight">&nbsp;&nbsp; $ProductPrice</span>
+                                            </a>
+                                            <a style="border-bottom: none;">Total Pesanan
+                                                <span class="last TotalPerVendor TotalPerVendor-$Vendor.ID" data-weight="$ProductVariantWeight">&nbsp;&nbsp; $ProductPrice</span>
+                                            </a>
+                                        </li> 
+                                        <div class="modal fade" id="OpsiPengiriman-$Vendor.ID" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header" style="border-bottom: none;">
+                                                        <h5 class="modal-title">Opsi Pengiriman</h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body d-flex">
+                                                        <div class="">
+                                                            <div class="payment_item active">
+                                                                <div class="radion_btn">
+                                                                    <input type="radio" id="f-option9-$Vendor.ID" name="selectorcourir-$Vendor.ID" checked>
+                                                                    <label for="f-option9-$Vendor.ID" data-opt="jne">JNE</label>
+                                                                    <div class="check"></div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="payment_item">
+                                                                <div class="radion_btn">
+                                                                    <input type="radio" id="f-option10-$Vendor.ID" name="selectorcourir-$Vendor.ID">
+                                                                    <label for="f-option10-$Vendor.ID" data-opt="pos">POS Indonesia</label>
+                                                                    <div class="check"></div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="payment_item">
+                                                                <div class="radion_btn">
+                                                                    <input type="radio" id="f-option11-$Vendor.ID" name="selectorcourir-$Vendor.ID">
+                                                                    <label for="f-option11-$Vendor.ID" data-opt="tiki">TIKI</label>
+                                                                    <div class="check"></div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="payment_item">
+                                                            <p class="m-0 p-0">Courir Option<span class="d-flex flex-wrap rajoCostOption-$Vendor.ID p-0 m-0 pt-2"></span></p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 <% end_loop %>
                             </ul>
                             <ul class="list list_2 pt-3">
                                 <label id="time" class="d-none"></label>
                                 <label id="orderID" class="d-none"></label>
-                                <li><a>Subtotal <span id="subTotalPriceProduct"></span></a></li>
+                                <li><a>Subtotal Produk <span id="subTotalPriceProduct"></span></a></li>
                                 <li>
                                     <a>Diskon 
                                         <span id="Diskon">
@@ -194,34 +245,7 @@
                                     <p class="regency d-none"><% if $AddressData %><% loop $AddressData %>$Regency<% end_loop %><% end_if %></p>
                                     <p class="province d-none"><% if $AddressData %><% loop $AddressData %>$Province<% end_loop %><% end_if %></p>
                                 </div>
-                            </div>
-                            <div class="d-flex">
-                                <div class="payment_item active">
-                                    <div class="radion_btn">
-                                        <input type="radio" id="f-option9" name="selectorcourir" checked>
-                                        <label for="f-option9" data-opt="jne">JNE </label>
-                                        <div class="check"></div>
-                                    </div>
-                                </div>
-                                <div class="payment_item">
-                                    <div class="radion_btn">
-                                        <input type="radio" id="f-option10" name="selectorcourir">
-                                        <label for="f-option10" data-opt="pos">POS Indonesia </label>
-                                        <div class="check"></div>
-                                    </div>
-                                </div>
-                                <div class="payment_item active">
-                                    <div class="radion_btn">
-                                        <input type="radio" id="f-option11" name="selectorcourir">
-                                        <label for="f-option11" data-opt="tiki">TIKI </label>
-                                        <div class="check"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="payment_item">
-                                <p class="">Courir Option<span class="d-flex flex-wrap rajoCostOption p-0 m-0 pt-2"></span></p>
-                            </div>
-                                
+                            </div>                                
                             <div class="payment_item active">
                                 <div class="radion_btn">
                                     <input type="radio" id="f-option6" value="manualtf" name="selectorpayment" checked>

@@ -31,7 +31,8 @@ class ProductCheckoutPageController extends PageController{
             $checkoutData = $request->getSession()->get('CheckoutProductData');
             $AddressData = $request->getSession()->get('AddressData');
             $Coupon = $request->getSession()->get('Coupon');
-            // Debug::show($Coupon);
+            // Debug::show($checkoutData);
+            // die($checkoutData);
             $diskon = PromoToko::get()->filter('Code', $Coupon);
 
             $groupedData = [];
@@ -184,6 +185,7 @@ class ProductCheckoutPageController extends PageController{
                         $checkoutData[] = $productData;
                     }
                     // Debug::show($checkoutData);
+                    // die();
                     $request->getSession()->set('CheckoutProductData', $checkoutData);
 
                     return json_encode(['success' => true]);
@@ -257,56 +259,39 @@ class ProductCheckoutPageController extends PageController{
         $regency = $request->postVar('RegencyID');
         $weight = $request->postVar('Weight');
         $courir = $request->postVar('Courir');
-        $VendorID = $request->postVar('VendorID') ?? null;
-    
-        $allResponses = [];
-        if($VendorID){
+        $origin = $request->postVar('Origin');
+        $surabaya = 444;
+        // Debug::show($regency);
+        // Debug::show($weight);
+        // Debug::show($courir);
+        // Debug::show($origin);
+        // die();
+        curl_setopt_array($curl, array(
+        CURLOPT_URL => "https://api.rajaongkir.com/starter/cost",
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => "",
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 30,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => "POST",
+        CURLOPT_POSTFIELDS => "origin=$origin&destination=$regency&weight=$weight&courier=$courir",
+        CURLOPT_HTTPHEADER => array(
+            "content-type: application/x-www-form-urlencoded",
+            "key: 0edd73978f86309eaf0ce71a7b4bcb41"
+        ),
+        ));
 
-            foreach($VendorID as $ID) {
-                $vendor = Vendor::get()->filter('ID', $ID)->first();
-                if ($vendor) {
-                    $regencys = $vendor->RegencyID;
-        
-                    curl_setopt_array($curl, array(
-                        CURLOPT_URL => "https://api.rajaongkir.com/starter/cost",
-                        CURLOPT_RETURNTRANSFER => true,
-                        CURLOPT_ENCODING => "",
-                        CURLOPT_MAXREDIRS => 10,
-                        CURLOPT_TIMEOUT => 30,
-                        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-                        CURLOPT_CUSTOMREQUEST => "POST",
-                        CURLOPT_POSTFIELDS => "origin=$regencys&destination=$regency&weight=$weight&courier=$courir",
-                        CURLOPT_HTTPHEADER => array(
-                            "content-type: application/x-www-form-urlencoded",
-                            "key: 0edd73978f86309eaf0ce71a7b4bcb41"
-                        ),
-                    ));
-                    $response = curl_exec($curl);
-                    $err = curl_error($curl);
-        
-                    if ($err) {
-                        $allResponses[] = [
-                            'vendorID' => $ID,
-                            'error' => "cURL Error: " . $err
-                        ];
-                    } else {
-                        $allResponses[] = [
-                            'vendorID' => $ID,
-                            'response' => json_decode($response, true) 
-                        ];
-                    }
-                } else {
-                    $allResponses[] = [
-                        'vendorID' => $ID,
-                        'error' => "Vendor not found"
-                    ];
-                }
-            }
-        }
+        $response = curl_exec($curl);
+        $err = curl_error($curl);
+
         curl_close($curl);
-        return json_encode($allResponses);
+
+        if ($err) {
+        echo "cURL Error #:" . $err;
+        } else {
+        echo $response;
+        }
     }
-    
 
     public function paymentmethod(HTTPRequest $request){
         // Set kode merchant anda 
