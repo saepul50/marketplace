@@ -159,14 +159,14 @@
                                         </li> 
                                         <div class="modal fade" id="OpsiPengiriman-$Vendor.ID" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel" aria-hidden="true">
                                             <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-                                                <div class="modal-content">
+                                                <div class="modal-content p-2">
                                                     <div class="modal-header" style="border-bottom: none;">
                                                         <h5 class="modal-title">Opsi Pengiriman</h5>
                                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                             <span aria-hidden="true">&times;</span>
                                                         </button>
                                                     </div>
-                                                    <div class="modal-body d-flex">
+                                                    <div class="modal-body d-flex" style="height: 20rem;">
                                                         <div class="">
                                                             <div class="payment_item active">
                                                                 <div class="radion_btn">
@@ -191,7 +191,7 @@
                                                             </div>
                                                         </div>
                                                         <div class="payment_item">
-                                                            <p class="m-0 p-0">Courir Option<span class="d-flex flex-wrap rajoCostOption-$Vendor.ID p-0 m-0 pt-2"></span></p>
+                                                            <p class="m-0 p-0">Courir Option<span class="rajoCostOption-$Vendor.ID p-0 m-0 pt-2"></span></p>
                                                         </div>
                                                     </div>
                                                 </div>

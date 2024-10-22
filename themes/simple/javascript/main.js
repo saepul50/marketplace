@@ -3165,7 +3165,7 @@ $('#searchForm').submit(function(e) {
   }
   document.querySelectorAll('.singlecheckoutpervendor').forEach(vendor => {
     let vendorID = vendor.querySelector('.vendorIDProductCheckout').getAttribute('data-vendor');
-    alert(vendorID);
+    // alert(vendorID);
     function updateTotals(vendorID) {
         let subtotalproduct = 0;
 
@@ -3291,7 +3291,7 @@ $('#searchForm').submit(function(e) {
     const finalShippingElementMinus = $('#shippingProduct').text();
     const subTotalProduct = $('#subTotalPriceProduct');
     let subTotalPriceProduct = parseInt(finalElementMinus.replace('Rp. ', '').replace(/\./g, ''), 10) - parseInt(finalShippingElementMinus.replace('Rp. ', '').replace(/\./g, ''), 10);
-    console.log(subTotalPriceProduct)
+    // console.log(subTotalPriceProduct)
     subTotalProduct.text(`Rp. ${formatNumber(subTotalPriceProduct)}`);
   }
   let subtotal = 0;
