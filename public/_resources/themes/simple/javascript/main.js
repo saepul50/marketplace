@@ -535,10 +535,8 @@ $(document).ready(function () {
             title: 'Sukses',
             message: 'Registrasi vendor berhasil!',
             position: 'bottomRight',
-            onClosed: function () {
-              return false;
-
-              // window.location.href = "/marketplace/ ";
+             onClosed: function () {
+              window.location.href = "/marketplace/venn/" + vendorName;
             }
           });
         } else {
@@ -2607,25 +2605,25 @@ $('#searchForm').submit(function(e) {
       dataType: 'json',
       success: function (data) {
         // console.log("diadiadiai");
-        console.log(data[0].response.rajaongkir);
-        console.log(data[1].response.rajaongkir);
-        // return false;
-        // console.log(data.rajaongkir)
-        var options = '';
-        var dataCost = data.rajaongkir.results[0].costs;
-        // console.log(dataCost);
-        dataCost.forEach((element, index) => {
-          let formattedCost = formatNumber(element.cost[0].value);
-          options += `<div class="payment_item active">
-                          <div class="radion_btn">
-                              <input type="radio" id="${element.service}" name="selectorCost" ${index === 0 ? 'checked' : ''}>
-                              <label class="rajoCostOptionLabel" data-opt="${element.cost[0].value}" for="${element.service}">${element.description} (${formattedCost})</label>
-                              <div class="check"></div>
-                          </div>
-                      </div>`;
-        });
-        $('.rajoCostOption').html(options);
-        fetchcost();
+      //   console.log(data[0].response.rajaongkir);
+      //   console.log(data[1].response.rajaongkir);
+      //   // return false;
+      //   // console.log(data.rajaongkir)
+      //   var options = '';
+      //   var dataCost = data.rajaongkir.results[0].costs;
+      //   // console.log(dataCost);
+      //   dataCost.forEach((element, index) => {
+      //     let formattedCost = formatNumber(element.cost[0].value);
+      //     options += `<div class="payment_item active">
+      //                     <div class="radion_btn">
+      //                         <input type="radio" id="${element.service}" name="selectorCost" ${index === 0 ? 'checked' : ''}>
+      //                         <label class="rajoCostOptionLabel" data-opt="${element.cost[0].value}" for="${element.service}">${element.description} (${formattedCost})</label>
+      //                         <div class="check"></div>
+      //                     </div>
+      //                 </div>`;
+      //   });
+      //   $('.rajoCostOption').html(options);
+      //   fetchcost();
       },
       error: function (jqXHR, textStatus, errorThrown) {
         // console.error('Error fetching provinces:', textStatus, errorThrown);

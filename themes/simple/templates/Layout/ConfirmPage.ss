@@ -405,6 +405,7 @@
          <% end_loop %>
       </div>
       </div>
+      
       <% loop $CheckoutHeader %>
          <% if $Status=='Selesai' %>
             <% if $PaymentMethod == 'manualtf' %>

@@ -46,7 +46,7 @@
 					<h6 class="mb-20">Instragram Feed</h6>
 					<ul class="instafeed d-flex flex-wrap">
 						<% loop $SiteConfig.InstagramImage %>
-						<li><img class="img-fluid d-block mx-auto" src="$getURL()" alt=""></li>
+						<li><img class="img-fluid d-block p-1" src="$getURL()" alt=""></li>
 						<% end_loop %>
 					</ul>
 				</div>

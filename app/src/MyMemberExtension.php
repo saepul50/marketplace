@@ -32,7 +32,7 @@ class MyMemberExtension extends DataExtension
     public function updateCMSFields(FieldList $fields)
         { 
             $fields->addFieldToTab('Root.Main', HiddenField::create('VendorID'));
-            $fields->removeByName(array('SentMessages','ReceivedMessages'));
+            $fields->removeByName(array('SentMessages','ReceivedMessages','LogView','ForgetPassword','Permissions'));
 
             
             return $fields;

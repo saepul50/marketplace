@@ -6,7 +6,7 @@
                 <h1>Checkout</h1>
                 <nav class="d-flex align-items-center">
                     <a href="{$BaseHref}">Home<span class="lnr lnr-arrow-right"></span></a>
-                    <a href="{$BaseHref}/productdetails">Checkout</a>
+                    <a href="{$BaseHref}/productcheckout">Checkout</a>
                 </nav>
             </div>
         </div>
@@ -142,17 +142,17 @@
                                                 <p class="d-none" id="productTotalPrice">$ProductTotalPrice</p>
                                                 <p class="d-none" id="productSubTotalPrice">$ProductSubTotalPrice</p>
                                                 <p class="d-none" id="productSubTotalPriceNF">$ProductSubTotalNFPrice</p>
+                                                <a>Pengiriman
+                                                    <span class="last" id="TotalShippingPerVendor" data-weight="$Up.ProductVariantWeight">&nbsp;&nbsp; $Up.ProductPrice</span>
+                                                    <span class="d-none" id="TotalShippingPerVendorNF" data-weight="$Up.ProductVariantWeight">&nbsp;&nbsp; $Up.ProductPrice</span>
+                                                </a>
+                                                <a style="border-bottom: none;">Total Pesanan
+                                                    <span class="last" id="TotalPerVendor" data-weight="$Up.ProductVariantWeight">&nbsp;&nbsp; $Up.ProductPrice</span>
+                                                </a>
                                             </li>
                                         <% end_loop %>
-                                        <li class="listDataProduct">
-                                            <a>Pengiriman
-                                                <span class="last" id="TotalShippingPerVendor" data-weight="$ProductVariantWeight">&nbsp;&nbsp; $ProductPrice</span>
-                                                <span class="d-none" id="TotalShippingPerVendorNF" data-weight="$ProductVariantWeight">&nbsp;&nbsp; $ProductPrice</span>
-                                            </a>
-                                            <a style="border-bottom: none;">Total Pesanan
-                                                <span class="last" id="TotalPerVendor" data-weight="$ProductVariantWeight">&nbsp;&nbsp; $ProductPrice</span>
-                                            </a>
-                                        </li>
+                                        <%-- <li class="listDataProduct">
+                                        </li> --%>
                                     </div>
                                 <% end_loop %>
                             </ul>

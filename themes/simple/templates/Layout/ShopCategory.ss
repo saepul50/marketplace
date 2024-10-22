@@ -7,8 +7,7 @@
                 <h1>Shop Category page</h1>
                 <nav class="d-flex align-items-center">
                     <a href="{$BaseHref}">Home<span class="lnr lnr-arrow-right"></span></a>
-                    <a href="{$BaseHref}/shopcategory">Shop<span class="lnr lnr-arrow-right"></span></a>
-                    <a href="#">Fashon Category</a>
+                    <a href="{$BaseHref}/shopcategory">Shop</a>
                 </nav>
             </div>
         </div>
@@ -175,7 +174,7 @@
                                 </div>
                             </div>
                         </div>
-                     <% end_loop %>
+                    <% end_loop %>
             </section>
             <!-- End Best Seller -->
             <!-- Start Filter Bar -->

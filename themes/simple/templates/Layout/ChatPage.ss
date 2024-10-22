@@ -52,7 +52,7 @@
 
         textarea::-webkit-scrollbar-track,
         .chat-content::-webkit-scrollbar-track,
-        .ChatListSort::-webkit-scrollbar-track {
+        .ChatList::-webkit-scrollbar-track {
             background: #f1f1f1;
             border-radius: 10px;
         }
@@ -102,7 +102,7 @@
             </div> --%>
         </div>
         <% if $ChatList %>
-            <div class="ChatListSort">
+            <div class="ChatList">
                 <% loop $ChatList %>
                     <% if $ReceiverID == CurrentMember.ID %>
                         <div class="sidechat px-2" data-receiver="$SenderID" data-sender="$CurrentMember.ID">

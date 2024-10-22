@@ -257,48 +257,50 @@ class ProductCheckoutPageController extends PageController{
         $regency = $request->postVar('RegencyID');
         $weight = $request->postVar('Weight');
         $courir = $request->postVar('Courir');
-        $VendorID = $request->postVar('VendorID');
+        $VendorID = $request->postVar('VendorID') ?? null;
     
         $allResponses = [];
-    
-        foreach($VendorID as $ID) {
-            $vendor = Vendor::get()->filter('ID', $ID)->first();
-            if ($vendor) {
-                $regencys = $vendor->RegencyID;
-    
-                curl_setopt_array($curl, array(
-                    CURLOPT_URL => "https://api.rajaongkir.com/starter/cost",
-                    CURLOPT_RETURNTRANSFER => true,
-                    CURLOPT_ENCODING => "",
-                    CURLOPT_MAXREDIRS => 10,
-                    CURLOPT_TIMEOUT => 30,
-                    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-                    CURLOPT_CUSTOMREQUEST => "POST",
-                    CURLOPT_POSTFIELDS => "origin=$regencys&destination=$regency&weight=$weight&courier=$courir",
-                    CURLOPT_HTTPHEADER => array(
-                        "content-type: application/x-www-form-urlencoded",
-                        "key: 0edd73978f86309eaf0ce71a7b4bcb41"
-                    ),
-                ));
-                $response = curl_exec($curl);
-                $err = curl_error($curl);
-    
-                if ($err) {
-                    $allResponses[] = [
-                        'vendorID' => $ID,
-                        'error' => "cURL Error: " . $err
-                    ];
+        if($VendorID){
+
+            foreach($VendorID as $ID) {
+                $vendor = Vendor::get()->filter('ID', $ID)->first();
+                if ($vendor) {
+                    $regencys = $vendor->RegencyID;
+        
+                    curl_setopt_array($curl, array(
+                        CURLOPT_URL => "https://api.rajaongkir.com/starter/cost",
+                        CURLOPT_RETURNTRANSFER => true,
+                        CURLOPT_ENCODING => "",
+                        CURLOPT_MAXREDIRS => 10,
+                        CURLOPT_TIMEOUT => 30,
+                        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                        CURLOPT_CUSTOMREQUEST => "POST",
+                        CURLOPT_POSTFIELDS => "origin=$regencys&destination=$regency&weight=$weight&courier=$courir",
+                        CURLOPT_HTTPHEADER => array(
+                            "content-type: application/x-www-form-urlencoded",
+                            "key: 0edd73978f86309eaf0ce71a7b4bcb41"
+                        ),
+                    ));
+                    $response = curl_exec($curl);
+                    $err = curl_error($curl);
+        
+                    if ($err) {
+                        $allResponses[] = [
+                            'vendorID' => $ID,
+                            'error' => "cURL Error: " . $err
+                        ];
+                    } else {
+                        $allResponses[] = [
+                            'vendorID' => $ID,
+                            'response' => json_decode($response, true) 
+                        ];
+                    }
                 } else {
                     $allResponses[] = [
                         'vendorID' => $ID,
-                        'response' => json_decode($response, true) 
+                        'error' => "Vendor not found"
                     ];
                 }
-            } else {
-                $allResponses[] = [
-                    'vendorID' => $ID,
-                    'error' => "Vendor not found"
-                ];
             }
         }
         curl_close($curl);
@@ -595,6 +597,7 @@ class ProductCheckoutPageController extends PageController{
     }
     public function manualpayment(HTTPRequest $request) {
         $id = $request->param('ID');
+        Debug::show($id);
         $member = Security::getCurrentUser();
         
         if ($member) {
@@ -616,6 +619,7 @@ class ProductCheckoutPageController extends PageController{
             }
 
             $checkoutHeader = ProductCheckoutHeaderObject::get()->filter('OrderID', $id)->first();
+            Debug::show($checkoutHeader);
             if ($checkoutHeader) {
     
                 $isDetail = $request->getVar('invoice');
@@ -633,6 +637,7 @@ class ProductCheckoutPageController extends PageController{
             // Debug::show($request);
             // die();
             $postData = json_decode($request->postVar('paymentDatas'), true);
+            Debug::show($postData);
             // Debug::show($postData);
             $finalPrice = $postData[0]['ProductFinalPriceNF'];
             $PaymentSelected = $postData[0]['Bank'];
@@ -648,6 +653,7 @@ class ProductCheckoutPageController extends PageController{
             // die();
             if ($postData) {
                 $products = $postData;
+                Debug::show($products);
                 if (!empty($products)) {
                     $results = [];
                     $firstItemProcessed = false;
@@ -662,6 +668,7 @@ class ProductCheckoutPageController extends PageController{
                         $ProductVariant = $product['ProductVariant'];
                         $ProductVariantID = $product['ProductVariantID'];
                         $ProductVariantWeight = $product['ProductVariantWeight'];
+                        // Debug::show($ProductVariantWeight);
                         $ProductPrice = $product['ProductPrice'];
                         $Diskon = $product['ProductDiskon'];
                         $ProductQuantity = $product['ProductQuantity'];

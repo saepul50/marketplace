@@ -8,7 +8,7 @@
                     <nav class="d-flex align-items-center">
                         <a href="{$BaseHref}">Home<span class="lnr lnr-arrow-right"></span></a>
                         <a href="{$BaseHref}/shopresult">Shop<span class="lnr lnr-arrow-right"></span></a>
-                        <a href="#">Fashon Category</a>
+                        <a href="#">Search Results</a>
                     </nav>
                 </div>
             </div>
