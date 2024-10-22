@@ -3164,109 +3164,139 @@ $('#searchForm').submit(function(e) {
     });
   }
   document.querySelectorAll('.singlecheckoutpervendor').forEach(vendor => {
-    let totalPerVendor = 0;
-    vendor.querySelectorAll('.listDataProduct').forEach(product => {
-      let priceElement = product.querySelector('.last[data-price]');
-      let quantityElement = product.querySelector('.last[data-quantity]');
-      let price = parseInt(priceElement ? priceElement.getAttribute('data-price').replace('Rp. ', '').replace(/\./g, '') : 0) || 0;
-      let quantity = parseInt(quantityElement ? quantityElement.getAttribute('data-quantity') : 1) || 1;
-      
-      totalPerVendor += (price * quantity);
-      // console.log(totalPerVendor)
+    let vendorID = vendor.querySelector('.vendorIDProductCheckout').getAttribute('data-vendor');
+    alert(vendorID);
+    function updateTotals(vendorID) {
+        let subtotalproduct = 0;
+
+        vendor.querySelectorAll(`.variantP-${vendorID}`).forEach(product => {
+            let productPrice = parseInt(product.getAttribute('data-price').replace('Rp. ', '').replace(/\./g, ''), 10);
+            subtotalproduct += productPrice;
+        });
+
+        let shippingCost = parseFloat($(`.TotalShippingPerVendor-${vendorID}`).text().replace('Rp. ', '').replace(/\./g, ''));
+
+        let totalWithShipping = subtotalproduct + (isNaN(shippingCost) ? 0 : shippingCost);
+        // console.log(totalWithShipping)
+        $(`.TotalPerVendor-${vendorID}`).text(`Rp. ${formatNumber(totalWithShipping)}`);
+        // $(`#TotalPerVendorNF-${vendorID}`).html(totalWithShipping);
+    }
+
+    updateTotals(vendorID);
+
+    $(document).on('change', `input[name='selectorCost-${vendorID}']`, function () {
+      fetchcost(vendorID);
+      updateTotals(vendorID);
+      updateFinalPrice(vendorID);
     });
     
-    const totalPerVendorElement = vendor.querySelector('#TotalPerVendor');
-    if (totalPerVendorElement) {
-      totalPerVendorElement.textContent = `Rp. ${totalPerVendor.toLocaleString('id-ID')}`; 
+    function fetchcost(vendorID) {
+      var cost = $(`input[name='selectorCost-${vendorID}']:checked`).next('label').data('opt');
+      $(`.TotalShippingPerVendor-${vendorID}`).text(`Rp. ${formatNumber(cost)}`);
+      updateTotals(vendorID);
     }
-  });
-  let subtotalproduct = 0;
-  let subtotalshipping = 0;
-  document.querySelectorAll('.singlecheckoutpervendor').forEach(vendor => {
-    let pricePerVendorElement = vendor.querySelector('#TotalPerVendor').textContent;
-    let pricePerVendor = parseInt(pricePerVendorElement.replace('Rp. ', '').replace(/\./g, ''), 10);
-    subtotalproduct  += pricePerVendor;
 
-    let pricePerVendorShippingElement = vendor.querySelector('#TotalShippingPerVendorNF').textContent;
-    let pricePerVendorShipping = parseInt(pricePerVendorShippingElement.replace('Rp. ', '').replace(/\./g, ''), 10);
-    subtotalshipping += pricePerVendorShipping;
-
-    $(document).on('change', "input[name='selectorCost']", function () {
-      fetchcost();
+    $(`input[name='selectorcourir-${vendorID}']`).on('change', function () {
+      fetchcourir(vendorID);
+      updateFinalPrice(vendorID);
     });
-    function fetchcost() {
-      var cost = $('input[name="selectorCost"]:checked').next('label').data('opt');
-      function formatNumber(number) {
+    fetchcourir(vendorID);
+
+    function fetchcourir(vendorID) {
+        var courir = $(`input[name='selectorcourir-${vendorID}']:checked`).next('label').data('opt');
+        let totalWeight = 0;
+        vendor.querySelectorAll(`.variantP-${vendorID}`).forEach(item => {
+            const weight = parseFloat(item.getAttribute('data-weight'));
+            if (!isNaN(weight)) {
+                totalWeight += weight;
+            }
+        });
+        var idRegency = $('#fulldata .regency').text();
+        var regencyID = vendor.querySelector('.vendorIDProductCheckout').getAttribute('data-origin');
+
+        $.ajax({
+            url: '/marketplace/productcheckout/rajoCost',
+            type: 'POST',
+            data: {
+                Courir: courir,
+                RegencyID: idRegency,
+                Weight: totalWeight,
+                Origin: regencyID
+            },
+            dataType: 'json',
+            success: function (data) {
+                var options = '';
+                var dataCost = data.rajaongkir.results[0].costs;
+                var courirName = $(`input[name='selectorcourir-${vendorID}']:checked`).next('label').text();
+                var OpsiCourir = null;
+                dataCost.forEach((element, index) => {
+                    let formattedCost = formatNumber(element.cost[0].value);
+                    options += `<div class="payment_item active">
+                                    <div class="radion_btn">
+                                        <input type="radio" id="${element.service}-${vendorID}" name="selectorCost-${vendorID}" ${index === 0 ? 'checked' : ''}>
+                                        <label class="rajoCostOptionLabel" data-opt="${element.cost[0].value}" for="${element.service}-${vendorID}">${element.description} (${formattedCost})</label>
+                                        <div class="check"></div>
+                                    </div>
+                                </div>`;
+                });
+                $(`.rajoCostOption-${vendorID}`).html(options);
+                OpsiCourir = courirName;
+                $(`#OpsiSelect-${vendorID}`).text(OpsiCourir);
+                // console.log(OpsiCourir)
+                fetchcost(vendorID);
+                updateFinalPrice();
+            },
+            error: function (jqXHR, textStatus, errorThrown) {}
+        });
+    }
+
+    function formatNumber(number) {
         let parts = number.toString().split('.');
         let integerPart = parts[0];
         let decimalPart = parts.length > 1 ? '.' + parts[1] : '';
-  
         let formattedIntegerPart = '';
         while (integerPart.length > 0) {
-          formattedIntegerPart = '.' + integerPart.slice(-3) + formattedIntegerPart;
-          integerPart = integerPart.slice(0, -3);
+            formattedIntegerPart = '.' + integerPart.slice(-3) + formattedIntegerPart;
+            integerPart = integerPart.slice(0, -3);
         }
-  
         return formattedIntegerPart.slice(1) + decimalPart;
-      }
-      $('#TotalShippingPerVendor').html(`Rp. ${formatNumber(cost)}`);
-      $('#TotalShippingPerVendorNF').html(cost);
-      updateFinalPrice();
-    };
-    $('input[name="selectorcourir"]').on('change', function () {
-      fetchcourir();
-    });
-    fetchcourir();
-    function fetchcourir() {
-      var courir = $('input[name="selectorcourir"]:checked').next('label').data('opt');
-      // console.log(idCourir)
-      let totalWeight = 0;
-      document.querySelectorAll('#variantP').forEach(item => {
-        const weight = parseFloat(item.getAttribute('data-weight'));
-  
-        if (!isNaN(weight)) {
-          totalWeight += weight;
-        }
-      });
-      var idRegency = $('#fulldata .regency').text();
-      var weight = $('#fulldata .weight').text();
-      // console.log(idRegency)
-      $.ajax({
-        url: '/marketplace/productcheckout/rajoCost',
-        type: 'POST',
-        data: {
-          Courir: courir,
-          RegencyID: idRegency,
-          Weight: totalWeight
-        },
-        dataType: 'json',
-        success: function (data) {
-          console.log(data)
-          return false;
-          // console.log(data.rajaongkir.results[0].costs)
-          var options = '';
-          var dataCost = data.rajaongkir.results[0].costs;
-          // console.log(dataCost);
-          dataCost.forEach((element, index) => {
-            let formattedCost = formatNumber(element.cost[0].value);
-            options += `<div class="payment_item active">
-                            <div class="radion_btn">
-                                <input type="radio" id="${element.service}" name="selectorCost" ${index === 0 ? 'checked' : ''}>
-                                <label class="rajoCostOptionLabel" data-opt="${element.cost[0].value}" for="${element.service}">${element.description} (${formattedCost})</label>
-                                <div class="check"></div>
-                            </div>
-                        </div>`;
-          });
-          $('.rajoCostOption').html(options);
-          fetchcost();
-        },
-        error: function (jqXHR, textStatus, errorThrown) {
-          // console.error('Error fetching provinces:', textStatus, errorThrown);
-        }
-      });
     }
+
   });
+  updateFinalPrice();
+  function updateFinalPrice() {
+    let totalFinalPrice = 0;
+    document.querySelectorAll('.TotalPerVendor').forEach(totalElement => {
+        const subTotalElement = totalElement.textContent.trim();
+        const subTotalInt = parseInt(subTotalElement.replace('Rp. ', '').replace(/\./g, ''), 10);
+        if (!isNaN(subTotalInt)) {
+            totalFinalPrice += subTotalInt;
+        }
+    });
+    const finalElement = $('#finalPriceProduct');
+    finalElement.text(`Rp. ${formatNumber(totalFinalPrice)}`);
+    
+    let totalShippingPrice = 0;
+    document.querySelectorAll('.TotalShippingPerVendor').forEach(totalElement => {
+      const subTotalElement = totalElement.textContent.trim();
+      const subTotalInt = parseInt(subTotalElement.replace('Rp. ', '').replace(/\./g, ''), 10);
+      if (!isNaN(subTotalInt)) {
+        totalShippingPrice += subTotalInt;
+      }
+    });
+    const finalShippingElement = $('#shippingProduct');
+    finalShippingElement.text(`Rp. ${formatNumber(totalShippingPrice)}`);
+    
+    const finalElementMinus = $('#finalPriceProduct').text();
+    const finalShippingElementMinus = $('#shippingProduct').text();
+    const subTotalProduct = $('#subTotalPriceProduct');
+    let subTotalPriceProduct = parseInt(finalElementMinus.replace('Rp. ', '').replace(/\./g, ''), 10) - parseInt(finalShippingElementMinus.replace('Rp. ', '').replace(/\./g, ''), 10);
+    console.log(subTotalPriceProduct)
+    subTotalProduct.text(`Rp. ${formatNumber(subTotalPriceProduct)}`);
+  }
+  let subtotal = 0;
   $('#subTotalPriceProduct').text(`Rp. ${subtotal.toLocaleString('id-ID')}`);
+
 
   function formatNumber(number) {
     let parts = number.toString().split('.');
@@ -3310,8 +3340,10 @@ $('#searchForm').submit(function(e) {
 
     const subtotalElement = document.querySelector('#subTotalPriceCheckout');
     const subtotalElementNF = document.querySelector('#subTotalPriceNFCheckout');
-    subtotalElement.textContent = `Rp. ${formatNumber(subtotal.toString())}`;
-    subtotalElementNF.textContent = subtotal;
+    if(subtotalElement || subtotalElementNF){
+      subtotalElement.textContent = `Rp. ${formatNumber(subtotal.toString())}`;
+      subtotalElementNF.textContent = subtotal;
+    }
   }
   document.querySelectorAll('.cartProduct').forEach(item => {
     const decrementButton = item.querySelector('#decrementButton');
@@ -3372,38 +3404,8 @@ $('#searchForm').submit(function(e) {
     });
     updateTotalPrice(quantityInput, priceElement, totalPriceElement, totalPriceElementNF);
   });
-  function updateFinalPrice() {
-    const subTotal = document.querySelector('#subTotalPriceProduct').textContent;
-    const subShipping = document.querySelector('#shippingProduct').textContent;
-    const  Diskon = document.querySelector('#Diskon').textContent;
-    // console.log(Diskon);
-    const subTotalInt = parseFloat(subTotal.replace('Rp. ', '').replace(/\./g, ''));
-    const subShippingInt = parseFloat(subShipping.replace('Rp. ', '').replace(/\./g, ''));
-    // console.log(subTotalInt)
-    // console.log(subShipping)
-    const TotalPrice = subTotalInt + subShippingInt ;
-    
-    let FinalPrice;
-
-    if(Diskon){
-      const DiskonInt = parseFloat(Diskon.replace('%', '').trim());
-      if(!isNaN(DiskonInt) && DiskonInt > 0){
-          const Discountamount = (DiskonInt / 100) * TotalPrice;
-          FinalPrice = TotalPrice - Discountamount;
-        } else {
-        FinalPrice = TotalPrice;
-        };
-    } else{
-      FinalPrice = TotalPrice;
-    }
-    const FinalElement = document.querySelector('#finalPriceProduct');
-    const FinalNFElement = document.querySelector('#finalPriceNFProduct');
-    FinalElement.textContent = `Rp. ${formatNumber(FinalPrice)}`;
-    FinalNFElement.textContent = FinalPrice;
-  }
   updateSubtotal();
-  updateFinalPrice();
-  });
+});
   const events = document.querySelector('.event');
 function saveSelectionAndSubmit() {
   const ratingFilter = document.getElementById('rating-filter');
