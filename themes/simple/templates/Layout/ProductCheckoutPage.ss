@@ -1,12 +1,18 @@
-   <!-- Start Banner Area -->
-  <section class="banner-area organic-breadcrumb" style ="background: url($SiteConfig.Background.getURL()) center no-repeat;background-size: cover; position: relative ">
+<style>
+    .textarea:focus{
+        box-shadow: none !important;
+        border-color:black !important;
+    }
+</style>
+<!-- Start Banner Area -->
+<section class="banner-area organic-breadcrumb" style ="background: url($SiteConfig.Background.getURL()) center no-repeat;background-size: cover; position: relative ">
     <div class="container">
         <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
             <div class="col-first">
                 <h1>Checkout</h1>
                 <nav class="d-flex align-items-center">
                     <a href="{$BaseHref}">Home<span class="lnr lnr-arrow-right"></span></a>
-                    <a href="{$BaseHref}/productcheckout">Checkout</a>
+                    <a href="{$BaseHref}/productdetails">Checkout</a>
                 </nav>
             </div>
         </div>
@@ -142,18 +148,12 @@
                                                 <p class="d-none" id="productTotalPrice">$ProductTotalPrice</p>
                                                 <p class="d-none" id="productSubTotalPrice">$ProductSubTotalPrice</p>
                                                 <p class="d-none" id="productSubTotalPriceNF">$ProductSubTotalNFPrice</p>
-                                                <a data-toggle="modal" data-target="#OpsiPengiriman-$Vendor.ID" style="cursor: pointer; position: relative;" class="pl-3">Opsi Pengiriman<i class='bx bx-dots-vertical-rounded' style="position: absolute; top: 11px; left: 0px;"></i>
-                                                    <span class="m-0" id="OpsiSelect-$Vendor.ID">&nbsp;</span>
-                                                </a>
-                                                <a>Pengiriman
-                                                <span class="last TotalShippingPerVendor TotalShippingPerVendor-$Vendor.ID" data-weight="$ProductVariantWeight">&nbsp;&nbsp; $ProductPrice</span>
-                                                </a>
-                                                <a style="border-bottom: none;">Total Pesanan
-                                                    <span class="last TotalPerVendor TotalPerVendor-$Vendor.ID" data-weight="$ProductVariantWeight">&nbsp;&nbsp; $ProductPrice</span>
-                                                </a>
                                             </li>
                                         <% end_loop %>
-                                        <%-- <li class="listDataProduct">
+                                        <li class="listDataProduct">
+                                            <a data-toggle="modal" data-target="#Notes-{$Vendor.ID}" style="cursor: pointer; position: relative;" class="">Notes
+                                                <span class="m-0" id="Notes-message-{$Vendor.ID}">&nbsp;</span>
+                                            </a>
                                             <a data-toggle="modal" data-target="#OpsiPengiriman-$Vendor.ID" style="cursor: pointer; position: relative;" class="pl-3">Opsi Pengiriman<i class='bx bx-dots-vertical-rounded' style="position: absolute; top: 11px; left: 0px;"></i>
                                                 <span class="m-0" id="OpsiSelect-$Vendor.ID">&nbsp;</span>
                                             </a>
@@ -164,18 +164,19 @@
                                             </a>
                                             <a style="border-bottom: none;">Total Pesanan
                                                 <span class="last TotalPerVendor TotalPerVendor-$Vendor.ID" data-weight="$ProductVariantWeight">&nbsp;&nbsp; $ProductPrice</span>
-                                            </a>
-                                        </li>  --%>
+                                            </a> 
+
+                                        </li> 
                                         <div class="modal fade" id="OpsiPengiriman-$Vendor.ID" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel" aria-hidden="true">
                                             <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-                                                <div class="modal-content">
+                                                <div class="modal-content p-2">
                                                     <div class="modal-header" style="border-bottom: none;">
                                                         <h5 class="modal-title">Opsi Pengiriman</h5>
                                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                             <span aria-hidden="true">&times;</span>
                                                         </button>
                                                     </div>
-                                                    <div class="modal-body d-flex">
+                                                    <div class="modal-body d-flex" style="height: 20rem;">
                                                         <div class="">
                                                             <div class="payment_item active">
                                                                 <div class="radion_btn">
@@ -200,12 +201,30 @@
                                                             </div>
                                                         </div>
                                                         <div class="payment_item">
-                                                            <p class="m-0 p-0">Courir Option<span class="d-flex flex-wrap rajoCostOption-$Vendor.ID p-0 m-0 pt-2"></span></p>
+                                                            <p class="m-0 p-0">Courir Option<span class="rajoCostOption-$Vendor.ID p-0 m-0 pt-2"></span></p>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="modal fade" id="Notes-{$Vendor.ID}" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                                                <div class="modal-content p-2">
+                                                    <div class="modal-header" style="border-bottom: none;">
+                                                        <h5 class="modal-title">Notes Product</h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body" style="height: 20rem;">
+                                                        <form method="post" class="note-form" data-vendor-id="{$Vendor.ID}">
+                                                            <textarea class="textarea form-control mb-2" style="height:15rem;" name="Notes" id="Notes-product-{$Vendor.ID}" rows="1" placeholder="Notes Product"></textarea>
+                                                            <button type="submit" style="border:none; border-radius: 0; font-size: 12px; padding: .8rem; line-height: .5rem" class="primary-btn saveNote" data-vendor-id="{$Vendor.ID}">Add Notes</button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>                                       
                                     </div>
                                 <% end_loop %>
                             </ul>

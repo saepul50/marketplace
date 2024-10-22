@@ -2028,7 +2028,10 @@ $('#searchForm').submit(function(e) {
           alert('Terjadi kesalahan.');
       });
     });
-  });
+  }); 
+
+   
+ 
   $("#proceedCheckout").on('click', function (e) {
     // console.log("ha");
     e.preventDefault();
@@ -2140,6 +2143,7 @@ $('#searchForm').submit(function(e) {
     var customerHandphone = $('#fulldata .customerHandphone').text();
     var customerAddress = $('#fulldata .customerAddress').text();
     var customerNotes = $('.form-group #message').val();
+    console.log(customerNotes);
     var shippingCost = $('.list_2 #shippingProduct').text();
     var shippingCostNF = $('.list_2 #shippingNFProduct').text();
     var finalPrice = $('.list_2 #finalPriceProduct').text();
@@ -2188,7 +2192,8 @@ $('#searchForm').submit(function(e) {
         // console.log(timeCheckout)
         // console.log(orderID)
         // return false;
-        for (const item of $(".listDataProduct")) {
+        console.log(shippingCost);
+        for (const item of $(".singlecheckoutpervendor")) {
           var productData = {
             ProductID: $(item).find('#productID').text(),
             VendorID: $(item).find('#vendorID').text(),
@@ -2197,14 +2202,14 @@ $('#searchForm').submit(function(e) {
             ProductImage: $(item).find('#productImage').text(),
             ProductVariant: $(item).find('#productVariant').text(),
             ProductVariantID: $(item).find('#productVariantID').text(),
-            ProductVariantWeight: $(item).find('#variantP').data('weight'),
+            ProductVariantWeight: $(item).find('.last').data('weight'),
             ProductPrice: $(item).find('#productPrice').text(),
             ProductQuantity: $(item).find('#productQuantity').text(),
             ProductTotalPrice: $(item).find('#productTotalPrice').text(),
             ProductSubTotalPrice: $(item).find('#productSubTotalPrice').text(),
             ProductSubTotalPriceNF: $(item).find('#productSubTotalPriceNF').text(),
             Diskon: $(item).find('#Diskon').text(),
-            ProductCostShipping: shippingCost,
+            ProductCostShipping: $(item).find('.TotalShippingPerVendor').text(),
             ProductFinalPrice: finalPrice,
             ProductFinalPriceNF: finalPriceNF,
             CustomerName: customerName.replace('Nama: ', ''),
@@ -2219,7 +2224,7 @@ $('#searchForm').submit(function(e) {
             OrderID: orderID
           };
           selectedProductss.push(productData);
-          // console.log(selectedProductss)
+          console.log(selectedProductss);
           formData.append('paymentDatas', JSON.stringify(selectedProductss));
         }
         $.ajax({
@@ -2529,6 +2534,7 @@ $('#searchForm').submit(function(e) {
     var regency = parseInt($('.regency_select .list .selected').data('value'));
     var street = $('#add1').val();
     var postal =  $('#zip').val();
+    var notes = $('#message').val();
     // console.log(address)
     // console.log(regency)
     if (numberInput.length < 12 || numberInput.length > 14) {
@@ -2547,7 +2553,8 @@ $('#searchForm').submit(function(e) {
       AddressDetail: street,
       Province: province,
       Regency: regency,
-      Postal: postal
+      Postal: postal,
+      Notes : notes
     })
       .done(function (data) {
         var response = JSON.parse(data);
@@ -2655,7 +2662,9 @@ $('#searchForm').submit(function(e) {
   }
   function generateOrderID() {
     const timestamp = Date.now().toString(36);
+    console.log(timestamp);
     const randomStr = Math.random().toString(36).substring(2, 10);
+    console.log(randomStr);
     return `SHOESTORE${timestamp}${randomStr}`;
   }
 
@@ -3162,9 +3171,18 @@ $('#searchForm').submit(function(e) {
         this.style.height = (this.scrollHeight) + 'px';
     });
   }
+  $(document).on('submit', '.note-form', function(event) {
+    event.preventDefault();
+    
+    var vendorID = $(this).data('vendor-id');
+    var noteContent = $("#Notes-product-" + vendorID).val();
+    $("#Notes-message-" + vendorID).text(noteContent);
+    $("#Notes-" + vendorID).modal('hide');
+});
+
   document.querySelectorAll('.singlecheckoutpervendor').forEach(vendor => {
     let vendorID = vendor.querySelector('.vendorIDProductCheckout').getAttribute('data-vendor');
-    alert(vendorID);
+    // alert(vendorID);
     function updateTotals(vendorID) {
         let subtotalproduct = 0;
 
@@ -3192,6 +3210,7 @@ $('#searchForm').submit(function(e) {
     function fetchcost(vendorID) {
       var cost = $(`input[name='selectorCost-${vendorID}']:checked`).next('label').data('opt');
       $(`.TotalShippingPerVendor-${vendorID}`).text(`Rp. ${formatNumber(cost)}`);
+      
       updateTotals(vendorID);
     }
 
@@ -3290,7 +3309,7 @@ $('#searchForm').submit(function(e) {
     const finalShippingElementMinus = $('#shippingProduct').text();
     const subTotalProduct = $('#subTotalPriceProduct');
     let subTotalPriceProduct = parseInt(finalElementMinus.replace('Rp. ', '').replace(/\./g, ''), 10) - parseInt(finalShippingElementMinus.replace('Rp. ', '').replace(/\./g, ''), 10);
-    console.log(subTotalPriceProduct)
+    // console.log(subTotalPriceProduct)
     subTotalProduct.text(`Rp. ${formatNumber(subTotalPriceProduct)}`);
   }
   let subtotal = 0;

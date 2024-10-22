@@ -74,15 +74,15 @@ class BlogPageController extends PageController
         $categoriesWithCounts = null;
         if ($categori) {
             $categoriesWithCounts = BlogCategory::getCategoriesWithCounts();
+            $popularcategori = $categori->sort('Count', 'DESC')->filter('Count:GreaterThan', 0) ?? null;
         }
-
       
         return [
             'BlogCategoriesWithCounts' => $categoriesWithCounts,
             'Result' => $paginated,
             'Latestpost' => BlogAdd::get()->sort('Created', 'DESC'),
             'ActiveFilter' => $activeFilters ?? null,
-            'Categori' => $categori->sort('Count', 'DESC')->filter('Count:GreaterThan', 0) ?? null,
+            'Categori' => $popularcategori,
             'Popularpost' => BlogAdd::get()->sort('ViewCount', 'DESC'),
             'Content' => $contents
         ];
@@ -92,7 +92,7 @@ class BlogPageController extends PageController
     public function filter(HTTPRequest $request){
         $p = $request->param('ID');
         $categori = BlogCategory::get()->filter('Title' , $p)->first();
-        $categoris = BlogCategory::get();
+        $categoris = BlogCategory::get() ?? null;
         if($categori){
         $object = $categori->BlogAdds();
         // Debug::show($object);

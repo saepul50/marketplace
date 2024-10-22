@@ -31,10 +31,10 @@ class ProductCheckoutPageController extends PageController{
             $checkoutData = $request->getSession()->get('CheckoutProductData');
             $AddressData = $request->getSession()->get('AddressData');
             $Coupon = $request->getSession()->get('Coupon');
-            // Debug::show($checkoutData);
+            
             // die($checkoutData);
             $diskon = PromoToko::get()->filter('Code', $Coupon);
-
+            
             $groupedData = [];
             
             if ($checkoutData && is_array($checkoutData)) {
@@ -60,7 +60,7 @@ class ProductCheckoutPageController extends PageController{
                 ]));
             }
             // Debug::show($listDataCheckoutGrouped);
-            // die();
+            // die();  
             return $this->customise([
                 'CheckoutProductData' => $listDataCheckoutGrouped,
                 'AddressData' => $AddressData,
@@ -621,9 +621,10 @@ class ProductCheckoutPageController extends PageController{
         if ($request->isPOST()) {
             // Debug::show($request);
             // die();
+          
             $postData = json_decode($request->postVar('paymentDatas'), true);
             Debug::show($postData);
-            // Debug::show($postData);
+            die();
             $finalPrice = $postData[0]['ProductFinalPriceNF'];
             $PaymentSelected = $postData[0]['Bank'];
             $PaymentMethode = $postData[0]['PaymentMethod'];
@@ -638,11 +639,13 @@ class ProductCheckoutPageController extends PageController{
             // die();
             if ($postData) {
                 $products = $postData;
-                Debug::show($products);
+                // Debug::show($products);
+                // die();
                 if (!empty($products)) {
                     $results = [];
                     $firstItemProcessed = false;
-                    
+                    $currentvendorID = null;
+
                     foreach ($products as $product) {
                         $OrderID = $product['OrderID'];
                         $ProductID = $product['ProductID'];
@@ -655,7 +658,9 @@ class ProductCheckoutPageController extends PageController{
                         $ProductVariantWeight = $product['ProductVariantWeight'];
                         // Debug::show($ProductVariantWeight);
                         $ProductPrice = $product['ProductPrice'];
-                        $Diskon = $product['ProductDiskon'];
+                        if($product['Diskon']){
+                            $Diskon = $product['Diskon'];
+                        }
                         $ProductQuantity = $product['ProductQuantity'];
                         $ProductTotalPrice = $product['ProductTotalPrice'];
                         $ProductSubTotalPrice = $product['ProductSubTotalPrice'];
@@ -671,27 +676,6 @@ class ProductCheckoutPageController extends PageController{
                         $Bank = $product['Bank'];
                         $TimeCheckout = $product['TimeCheckout'];
                         $PaymentMethod = $product['PaymentMethod'];
-                        $debugData = [
-                            'ProductID' => $product['ProductID'],
-                            'CartID' => $product['ProductCartID'],
-                            'ProductTitle' => $product['ProductTitle'],
-                            'ProductImage' => $product['ProductImage'],
-                            'VariantName' => $product['ProductVariant'],
-                            'VariantID' => $product['ProductVariantID'],
-                            'Price' => $product['ProductPrice'],
-                            'SubTotalPrice' => $product['ProductSubTotalPrice'],
-                            'Quantity' => $product['ProductQuantity'],
-                            'F' => $product['ProductCostShipping'],
-                            'FinalPrice' => $product['ProductFinalPrice'],
-                            'Name' => $product['CustomerName'],
-                            'Number' => $product['CustomerHandphone'],
-                            'Address' => $product['CustomerAddress'],
-                            'AddressDetail' => $product['CustomerNotes'],
-                            'OrderID' => $merchantOrderId,
-                            'Bank' => $product['Bank'],
-                            'Comments' => $product['CustomerNotes'],
-                            'TimeCheckout' => $product['TimeCheckout']
-                        ];  
                         // Debug::show($debugData);
                         // die();
                         
@@ -700,7 +684,9 @@ class ProductCheckoutPageController extends PageController{
                             $checkoutItem->ProductID = $ProductID;
                             $checkoutItem->VendorID = $VendorID;
                             $checkoutItem->ProductCartID = $ProductCartID;
-                            $checkoutItem->Diskon = $Diskon;
+                            if($product['Diskon']){
+                                $checkoutItem->Diskon = $Diskon;
+                            }
                             $checkoutItem->ProductTitle = $ProductTitle;
                             $checkoutItem->ProductImage = $ProductImage;
                             $checkoutItem->ProductVariant = $ProductVariant;
@@ -717,9 +703,12 @@ class ProductCheckoutPageController extends PageController{
                             if ($member) {
                                 $checkoutItem->MemberID = $member->ID;
                             }
-                            if (!$firstItemProcessed) {
+                            // Debug::show($VendorID);
+                            if (!$firstItemProcessed || $VendorID !== $currentvendorID) {
+                                $s = substr(str_shuffle(str_repeat("0123456789abcdefghijklmnopqrstuvwxyz", 16)), 0, 16);
+                                $OrderID = "SHOESTORE{$s}";
                                 $checkoutHeader = ProductCheckoutHeaderObject::create();
-                                $checkoutHeader->OrderID = $merchantOrderId;
+                                $checkoutHeader->OrderID = $OrderID;
                                 $checkoutHeader->CustomerName = $CustomerName;
                                 $checkoutHeader->CustomerFullName = $CustomerFullName;
                                 $checkoutHeader->CustomerEmail = $CustomerEmail;
@@ -732,6 +721,7 @@ class ProductCheckoutPageController extends PageController{
                                 $checkoutHeader->PaymentMethod = $PaymentMethode;
                                 $checkoutHeader->write();
                                 $firstItemProcessed = true;
+                                $currentvendorID = $VendorID;
 
                                 $checkoutHeader->write();
                                 $firstItemProcessed = true;
