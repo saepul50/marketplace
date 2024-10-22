@@ -537,6 +537,7 @@ $(document).ready(function () {
             position: 'bottomRight',
              onClosed: function () {
               window.location.href = "/marketplace/venn/" + vendorName;
+             }
           });
         } else {
           iziToast.error({
