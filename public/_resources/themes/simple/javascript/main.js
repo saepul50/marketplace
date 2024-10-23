@@ -3465,6 +3465,23 @@ document.querySelectorAll('.singlecheckoutpervendor').forEach(vendor => {
     updateTotalPrice(quantityInput, priceElement, totalPriceElement, totalPriceElementNF);
   });
   updateSubtotal();
+
+
+  let subhistorytotal = 0;
+  document.querySelectorAll('.items').forEach(item => {
+    const quantityElement = item.querySelector('#quantity');
+    const TotalPriceProduct = item.querySelector('#totalprice');
+    const priceElement = item.querySelector('#price');
+    var quantityAmount = parseInt(quantityElement.textContent.replace("x", "").trim(), 10);
+    var price = parseInt(priceElement.textContent.replace('Rp. ', '').replace(/\./g, ''), 10);
+    var totalpriceproduct = price * quantityAmount;
+    TotalPriceProduct.textContent = `Rp. ${formatNumber(totalpriceproduct)}`;
+    subhistorytotal += totalpriceproduct;
+  });
+
+  document.querySelector('#SubTotal').textContent = `Rp. ${formatNumber(subhistorytotal)}`;
+
+
 });
   const events = document.querySelector('.event');
 function saveSelectionAndSubmit() {
