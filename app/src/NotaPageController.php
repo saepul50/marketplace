@@ -9,7 +9,7 @@ class NotaPageController extends PageController{
     public function for(HTTPRequest $request){
         $data = $request->param('ID');
         $header = ProductCheckoutHeaderObject::get()->filter('OrderId', $data)->first();
-
+        // Debug::show($header);
         return $this->customise([
             'Header' =>  $header,
         ])->renderWith(["NotaPage", "Page"]);

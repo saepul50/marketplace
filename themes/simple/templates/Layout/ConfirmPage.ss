@@ -57,7 +57,7 @@
             <h5 id="navCanceled" class="navi-item" style="cursor: pointer;">Dibatalkan</h5>
          </nav>
       <div class="container Semua" id="semua">
-         <% loop $HistoryData %>
+         <% loop $HistoryData.Sort('LastEdited', DESC) %>
             <% if $Status=='Selesai' %>
                   <div class="order_details_table">
                      <a href="{$BaseHref}/confirm/order/$OrderID?detailOrder=true" style="text-decoration: none; color: inherit;">
@@ -203,7 +203,7 @@
                                        <p>$ProductTitle</p>
                                     </td>
                                     <td class="col-4">
-                                       <h5>x $ProductQuantity</h5>
+                                       <h5>x $Up.TimeCheckout</h5>
                                     </td>
                                     <%-- <td class="col">
                                        </td> --%>
@@ -405,6 +405,7 @@
          <% end_loop %>
       </div>
       </div>
+      
       <% loop $CheckoutHeader %>
          <% if $Status=='Selesai' %>
             <% if $PaymentMethod == 'manualtf' %>

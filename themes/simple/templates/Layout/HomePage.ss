@@ -170,8 +170,8 @@
 				</div>
 				<div class="row">
 					<!-- single product -->
-					<% loop $ProductObjects.Limit(8) %>
-						<% if $ProductCategoryID = 1 %>
+					<% loop $ProductObjects.sort('Created', DESC).Limit(8) %>
+						<% if $ProductCategoryID %>
 							<div class="col-lg-3 col-md-6">
 								<div class="single-product">
 									<% with $ProductImages.First %>
@@ -227,8 +227,8 @@
 					</div>
 				</div>
 				<div class="row">
-					<% loop $ProductObjects.Limit(8) %>
-							<% if $ProductCategoryID = 2 %>
+					<% loop $ProductObjects.sort('Created', ASC).Limit(8) %>
+							<% if $ProductCategoryID %>
 								<div class="col-lg-3 col-md-6">
 									<div class="single-product">
 										<% with $ProductImages.First %>

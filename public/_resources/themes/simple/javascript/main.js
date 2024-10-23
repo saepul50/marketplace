@@ -535,10 +535,9 @@ $(document).ready(function () {
             title: 'Sukses',
             message: 'Registrasi vendor berhasil!',
             position: 'bottomRight',
-            onClosed: function () {
-              return false;
-              // window.location.href = "/marketplace/ ";
-            }
+             onClosed: function () {
+              window.location.href = "/marketplace/venn/" + vendorName;
+             }
           });
         } else {
           iziToast.error({
@@ -2029,7 +2028,10 @@ $('#searchForm').submit(function(e) {
           alert('Terjadi kesalahan.');
       });
     });
-  });
+  }); 
+
+   
+ 
   $("#proceedCheckout").on('click', function (e) {
     // console.log("ha");
     e.preventDefault();
@@ -2141,6 +2143,7 @@ $('#searchForm').submit(function(e) {
     var customerHandphone = $('#fulldata .customerHandphone').text();
     var customerAddress = $('#fulldata .customerAddress').text();
     var customerNotes = $('.form-group #message').val();
+    console.log(customerNotes);
     var shippingCost = $('.list_2 #shippingProduct').text();
     var shippingCostNF = $('.list_2 #shippingNFProduct').text();
     var finalPrice = $('.list_2 #finalPriceProduct').text();
@@ -2197,7 +2200,7 @@ $('#searchForm').submit(function(e) {
             VendorName: $(vendor).find(".vendorIDProductCheckout").text(),
             ProductShippingPrice: $(vendor).find('.TotalShippingPerVendor').text(),
             ProductTotalPrice: $(vendor).find('.TotalPerVendor').text(),
-            CustomerNotes: customerNotes,
+            CustomerNotes: $(vendor).find('.NotesMessage').text(),
             CustomerName: customerName.replace('Nama: ', ''),
             CustomerFullName: customerFullName.replace('Nama lengkap: ', ''),
             CustomerEmail: customerEmail.replace('Email: ', ''),
@@ -2245,9 +2248,12 @@ $('#searchForm').submit(function(e) {
               title: 'Pembayaran, ',
               message: 'Segera lakukan pembayaran pesanan',
               position: 'bottomRight',
-              onClosed: function () {
-                window.location.href = "/marketplace/history";
-              }
+              // onClosed: function () {
+              //   window.location.href = "/marketplace/history";
+              // }
+              // onClosed: function () {
+              //   window.location.href = "/marketplace/productcheckout/manualpayment/" + orderID + '?invoice=true';
+              // }
             });
           },
           error: function (xhr, status, error) {
@@ -2556,6 +2562,7 @@ $('#searchForm').submit(function(e) {
     var regency = parseInt($('.regency_select .list .selected').data('value'));
     var street = $('#add1').val();
     var postal =  $('#zip').val();
+    var notes = $('#message').val();
     // console.log(address)
     // console.log(regency)
     if (numberInput.length < 12 || numberInput.length > 14) {
@@ -2574,7 +2581,8 @@ $('#searchForm').submit(function(e) {
       AddressDetail: street,
       Province: province,
       Regency: regency,
-      Postal: postal
+      Postal: postal,
+      Notes : notes
     })
       .done(function (data) {
         var response = JSON.parse(data);
@@ -2682,7 +2690,9 @@ $('#searchForm').submit(function(e) {
   }
   function generateOrderID() {
     const timestamp = Date.now().toString(36);
+    console.log(timestamp);
     const randomStr = Math.random().toString(36).substring(2, 10);
+    console.log(randomStr);
     return `SHOESTORE${timestamp}${randomStr}`;
   }
 
@@ -3189,6 +3199,15 @@ $('#searchForm').submit(function(e) {
         this.style.height = (this.scrollHeight) + 'px';
     });
   }
+  $(document).on('submit', '.note-form', function(event) {
+    event.preventDefault();
+    
+    var vendorID = $(this).data('vendor-id');
+    var noteContent = $("#Notes-product-" + vendorID).val();
+    $("#Notes-message-" + vendorID).text(noteContent);
+    $("#Notes-" + vendorID).modal('hide');
+});
+
   document.querySelectorAll('.singlecheckoutpervendor').forEach(vendor => {
     let vendorID = vendor.querySelector('.vendorIDProductCheckout').getAttribute('data-vendor');
     // alert(vendorID);
@@ -3219,6 +3238,7 @@ $('#searchForm').submit(function(e) {
     function fetchcost(vendorID) {
       var cost = $(`input[name='selectorCost-${vendorID}']:checked`).next('label').data('opt');
       $(`.TotalShippingPerVendor-${vendorID}`).text(`Rp. ${formatNumber(cost)}`);
+      
       updateTotals(vendorID);
     }
 

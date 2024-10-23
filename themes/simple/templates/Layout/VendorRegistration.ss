@@ -82,7 +82,7 @@
                 <h1>Registration</h1>
                 <nav class="d-flex align-items-center">
                     <a href="{$BaseHref}">Home<span class="lnr lnr-arrow-right"></span></a>
-                    <a href="{$BaseHref}/tracking">Registration</a>
+                    <a href="{$BaseHref}/vendorregistration">Registration</a>
                 </nav>
             </div>
         </div>

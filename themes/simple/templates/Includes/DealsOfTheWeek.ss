@@ -41,9 +41,7 @@
                 </div>
                 <div class="col-lg-3">
                     <div class="ctg-right">
-                        <a href="#" target="_blank">
                             <img class="img-fluid w-100" src="$ResourceURL('themes/simple/images/category/c5.jpg')">
-                        </a>
                     </div>
                 </div>
             </div>

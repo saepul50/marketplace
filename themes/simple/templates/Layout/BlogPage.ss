@@ -83,24 +83,26 @@
 <section class="blog_categorie_area">
     <div class="container">
         <div class="row">
-            <% loop $Categori.Limit(3) %>
-                <div class="col-lg-4 mt-2">
-                    <div class="categories_post">
-                        <a href="/marketplace/blog/filter/$Title">
-                            <img src="$Image.URL" alt="post" height="214" width="350">
-                            <a href="/marketplace/blog/filter/$Title" style="color:white;">
-                                <div class="categories_details">
-                                    <div class="categories_text">
-                                            <h5>$Title</h5>
-                                        <div class="border_line"></div>
-                                        <p>$Deskripsi</p>
+            <% if $Categori %>
+                <% loop $Categori.Limit(3) %>
+                    <div class="col-lg-4 mt-2">
+                        <div class="categories_post">
+                            <a href="/marketplace/blog/filter/$Title">
+                                <img src="$Image.URL"  height="214" width="350">
+                                <a href="/marketplace/blog/filter/$Title" style="color:white;">
+                                    <div class="categories_details">
+                                        <div class="categories_text">
+                                                <h5>$Title</h5>
+                                            <div class="border_line"></div>
+                                            <p>$Deskripsi</p>
+                                        </div>
                                     </div>
-                                </div>
+                                </a>
                             </a>
-                        </a>
+                        </div>
                     </div>
-                </div>
-            <% end_loop %>
+                <% end_loop %>
+            <% end_if %>
         </div>
     </div>
 </section>

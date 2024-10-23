@@ -31,10 +31,10 @@ class ProductCheckoutPageController extends PageController{
             $checkoutData = $request->getSession()->get('CheckoutProductData');
             $AddressData = $request->getSession()->get('AddressData');
             $Coupon = $request->getSession()->get('Coupon');
-            // Debug::show($checkoutData);
+            
             // die($checkoutData);
             $diskon = PromoToko::get()->filter('Code', $Coupon);
-
+            
             $groupedData = [];
             
             if ($checkoutData && is_array($checkoutData)) {
@@ -60,7 +60,7 @@ class ProductCheckoutPageController extends PageController{
                 ]));
             }
             // Debug::show($listDataCheckoutGrouped);
-            // die();
+            // die();  
             return $this->customise([
                 'CheckoutProductData' => $listDataCheckoutGrouped,
                 'AddressData' => $AddressData,
@@ -582,6 +582,7 @@ class ProductCheckoutPageController extends PageController{
     }
     public function manualpayment(HTTPRequest $request) {
         $id = $request->param('ID');
+        Debug::show($id);
         $member = Security::getCurrentUser();
         
         if ($member) {
@@ -603,6 +604,7 @@ class ProductCheckoutPageController extends PageController{
             }
 
             $checkoutHeader = ProductCheckoutHeaderObject::get()->filter('OrderID', $id)->first();
+            Debug::show($checkoutHeader);
             if ($checkoutHeader) {
     
                 $isDetail = $request->getVar('invoice');
@@ -619,6 +621,7 @@ class ProductCheckoutPageController extends PageController{
         $member = Security::getCurrentUser();
         if ($request->isPOST()) {
             $postData = json_decode($request->postVar('paymentDatas'), true);
+            Debug::show($postData);
             if ($postData) {
                 $results = [];
                 foreach ($postData as $checkoutData) {
@@ -657,6 +660,7 @@ class ProductCheckoutPageController extends PageController{
                         
                         $productCheckout->write();
                     }
+                    Debug::show($checkoutData['Products']);
                     
                     $results[] = [
                         'VendorID' => $checkoutData['VendorID'],

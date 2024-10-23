@@ -1,5 +1,11 @@
-   <!-- Start Banner Area -->
-  <section class="banner-area organic-breadcrumb" style ="background: url($SiteConfig.Background.getURL()) center no-repeat;background-size: cover; position: relative ">
+<style>
+    .textarea:focus{
+        box-shadow: none !important;
+        border-color:black !important;
+    }
+</style>
+<!-- Start Banner Area -->
+<section class="banner-area organic-breadcrumb" style ="background: url($SiteConfig.Background.getURL()) center no-repeat;background-size: cover; position: relative ">
     <div class="container">
         <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
             <div class="col-first">
@@ -145,6 +151,9 @@
                                             </li>
                                         <% end_loop %>
                                         <li class="listDataProduct">
+                                            <a data-toggle="modal" data-target="#Notes-{$Vendor.ID}" style="cursor: pointer; position: relative;" class="">Notes
+                                                <span class="m-0 NotesMessage" id="Notes-message-{$Vendor.ID}">&nbsp;</span>
+                                            </a>
                                             <a data-toggle="modal" data-target="#OpsiPengiriman-$Vendor.ID" style="cursor: pointer; position: relative;" class="pl-3">Opsi Pengiriman<i class='bx bx-dots-vertical-rounded' style="position: absolute; top: 11px; left: 0px;"></i>
                                                 <span class="m-0" id="OpsiSelect-$Vendor.ID">&nbsp;</span>
                                             </a>
@@ -155,7 +164,8 @@
                                             </a>
                                             <a style="border-bottom: none;">Total Pesanan
                                                 <span class="last TotalPerVendor TotalPerVendor-$Vendor.ID" data-weight="$ProductVariantWeight">&nbsp;&nbsp; $ProductPrice</span>
-                                            </a>
+                                            </a> 
+
                                         </li> 
                                         <div class="modal fade" id="OpsiPengiriman-$Vendor.ID" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel" aria-hidden="true">
                                             <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
@@ -197,6 +207,24 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="modal fade" id="Notes-{$Vendor.ID}" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                                                <div class="modal-content p-2">
+                                                    <div class="modal-header" style="border-bottom: none;">
+                                                        <h5 class="modal-title">Notes Product</h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body" style="height: 20rem;">
+                                                        <form method="post" class="note-form" data-vendor-id="{$Vendor.ID}">
+                                                            <textarea class="textarea form-control mb-2" style="height:15rem;" name="Notes" id="Notes-product-{$Vendor.ID}" rows="1" placeholder="Notes Product"></textarea>
+                                                            <button type="submit" style="border:none; border-radius: 0; font-size: 12px; padding: .8rem; line-height: .5rem" class="primary-btn saveNote" data-vendor-id="{$Vendor.ID}">Add Notes</button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>                                       
                                     </div>
                                 <% end_loop %>
                             </ul>
