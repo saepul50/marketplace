@@ -2185,6 +2185,7 @@ $('#searchForm').submit(function(e) {
         // console.log(formData)
         var paymentGate = $("input[name='selectorpaymentgate']:checked").val();
         var timeCheckout = $(".list_2").find('#time').text();
+        var paymentMethod = "Manual Transfer";
         // var orderID = $(".list_2").find('#orderID').text();
         // console.log(timeCheckout)
         // console.log(orderID)
@@ -2255,39 +2256,48 @@ $('#searchForm').submit(function(e) {
         });
       } else if (paymentMethod === "duitku") {
         var formData = new FormData();
+        var paymentMethod = "Duitku";
         var paymentGate = $("input[name='selectorpaymentgate']:checked").val();
         var timeCheckout = $(".list_2").find('#time').text();
-        for (const item of $(".listDataProduct")) {
-          var productData = {
-            ProductID: $(item).find('#productID').text(),
-            VendorID: $(item).find('#vendorID').text(),
-            ProductTitle: $(item).find('#productTitle').text(),
-            ProductCartID: $(item).find('#productCartID').text(),
-            ProductImage: $(item).find('#productImage').text(),
-            ProductVariant: $(item).find('#productVariant').text(),
-            ProductVariantID: $(item).find('#productVariantID').text(),
-            ProductVariantWeight: $(item).find('#variantP').data('weight'),
-            ProductPrice: $(item).find('#productPrice').text(),
-            ProductQuantity: $(item).find('#productQuantity').text(),
-            ProductTotalPrice: $(item).find('#productTotalPrice').text(),
-            ProductSubTotalPrice: $(item).find('#productSubTotalPrice').text(),
-            ProductSubTotalPriceNF: $(item).find('#productSubTotalPriceNF').text(),
-            ProductCostShipping: shippingCost,
-            ProductFinalPrice: finalPrice,
-            ProductFinalPriceNF: finalPriceNF,
+        $(".singlecheckoutpervendor").each(function(index, vendor) {
+          var vendorID = $(vendor).find(".vendorIDProductCheckout").data('vendor');
+          var vendorData = {
+            VendorID: vendorID,
+            VendorName: $(vendor).find(".vendorIDProductCheckout").text(),
+            ProductShippingPrice: $(vendor).find('.TotalShippingPerVendor').text(),
+            ProductTotalPrice: $(vendor).find('.TotalPerVendor').text(),
+            CustomerNotes: customerNotes,
             CustomerName: customerName.replace('Nama: ', ''),
             CustomerFullName: customerFullName.replace('Nama lengkap: ', ''),
             CustomerEmail: customerEmail.replace('Email: ', ''),
             CustomerHandphone: customerHandphone.replace('Handphone: ', ''),
             CustomerAddress: customerAddress.replace('Alamat: ', ''),
-            CustomerNotes: customerNotes,
             Bank: paymentGate,
             PaymentMethod: paymentMethod,
-            TimeCheckout: timeCheckout
+            TimeCheckout: timeCheckout,
+            Products: []
           };
-          selectedProductss.push(productData);
-          formData.append('paymentDatas', JSON.stringify(selectedProductss));
-        }
+          
+          $(vendor).find(".listDataProduct").each(function(index, product) {
+              var productVendorID = $(product).find('#vendorID').text();
+              if (productVendorID === vendorID.toString()) {
+                  var productData = {
+                      ProductID: $(product).find('#productID').text(),
+                      ProductTitle: $(product).find('#productTitle').text(),
+                      ProductCartID: $(product).find('#productCartID').text(),
+                      ProductImage: $(product).find('#productImage').text(),
+                      ProductVariant: $(product).find('#productVariant').text(),
+                      ProductVariantID: $(product).find('#productVariantID').text(),
+                      ProductVariantWeight: $(product).find('.variantP').data('weight'),
+                      ProductPrice: $(product).find('#productPrice').text(),
+                      ProductQuantity: $(product).find('#productQuantity').text(),
+                      VendorID: productVendorID,
+                  };
+                  vendorData.Products.push(productData);
+              }
+          });
+          selectedVendors.push(vendorData);
+        });
         $.ajax({
           url: "/marketplace/productcheckout/transaction",
           type: "POST",
@@ -2320,6 +2330,7 @@ $('#searchForm').submit(function(e) {
         });
       } else {
         var formData = new FormData();
+        var paymentMethod = "Cash On Delivery";
         var paymentGate = '';
         var timeCheckout = $(".list_2").find('#time').text();
         // var orderID = $(".list_2").find('#orderID').text();
