@@ -23,7 +23,8 @@ use SilverStripe\Security\Member;
             'Bank' => 'Text',
             'Status' => 'Enum("Dikemas,Dikirim,Selesai,Dibatalkan", "Dikemas")',
             'TimeCheckout'=> 'Text',
-            'PaymentMethod' => 'Text'
+            'PaymentMethod' => 'Text',
+            'PaymentUrl'=>'Varchar(255)'
         ];
         private static $has_many = [
             'Items'=> ProductCheckoutObject::class,

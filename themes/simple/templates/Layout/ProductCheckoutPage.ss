@@ -134,7 +134,7 @@
                                         <% loop $Products %>
                                             <li class="listDataProduct">
                                                 <a>$ProductTitle <% if $ProductVariant %>($ProductVariant)<% end_if %> 
-                                                    <span class="last variantP variantP-$Up.Vendor.ID" data-weight="$ProductVariantWeight" data-price="$ProductPrice">x $ProductQuantity &nbsp;&nbsp; $ProductPrice</span>
+                                                    <span class="last variantP variantP-$Up.Vendor.ID" data-quantity="$ProductQuantity" data-weight="$ProductVariantWeight" data-price="$ProductPrice">x $ProductQuantity &nbsp;&nbsp; $ProductPrice</span>
                                                 </a>
                                                 <p class="d-none" id="productID">$ProductID</p>
                                                 <p class="d-none" id="vendorID">$VendorID</p>
