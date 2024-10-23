@@ -626,6 +626,7 @@ class ProductCheckoutPageController extends PageController{
                     $s = substr(str_shuffle(str_repeat("0123456789abcdefghijklmnopqrstuvwxyz", 16)), 0, 16);
                     $OrderID = "SHOESTORE{$s}";
                     $headerCheckout->OrderID = $OrderID;
+                    $headerCheckout->MemberID = $member->ID;
                     $headerCheckout->CustomerName = $checkoutData['CustomerName'];
                     $headerCheckout->CustomerFullName = $checkoutData['CustomerFullName'];
                     $headerCheckout->CustomerEmail = $checkoutData['CustomerEmail'];
@@ -642,7 +643,6 @@ class ProductCheckoutPageController extends PageController{
                     
                     foreach ($checkoutData['Products'] as $productData) {
                         $productCheckout = ProductCheckoutObject::create();
-                        $productCheckout->MemberID = $member->ID;
                         $productCheckout->ProductID = $productData['ProductID'];
                         $productCheckout->ProductTitle = $productData['ProductTitle'];
                         $productCheckout->ProductImage = $productData['ProductImage'];
