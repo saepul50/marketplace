@@ -7,6 +7,7 @@ use SilverStripe\Forms\DropdownField;
 use SilverStripe\Forms\LiteralField;
 use SilverStripe\ORM\DataObject;
 use SilverStripe\ORM\FieldType\DBHTMLText;
+use SilverStripe\Security\Member;
 
     class ProductCheckoutHeaderObject extends DataObject{
         private static $db = [
@@ -28,6 +29,7 @@ use SilverStripe\ORM\FieldType\DBHTMLText;
             'Items'=> ProductCheckoutObject::class,
         ];
         private static $has_one = [
+            'Member' => Member::class,
             'ProofImage' => Image::class
         ];
         private static $summary_fields = [

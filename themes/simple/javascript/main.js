@@ -535,10 +535,9 @@ $(document).ready(function () {
             title: 'Sukses',
             message: 'Registrasi vendor berhasil!',
             position: 'bottomRight',
-            onClosed: function () {
-              return false;
-              // window.location.href = "/marketplace/ ";
-            }
+             onClosed: function () {
+              window.location.href = "/marketplace/venn/" + vendorName;
+             }
           });
         } else {
           iziToast.error({
@@ -2029,7 +2028,10 @@ $('#searchForm').submit(function(e) {
           alert('Terjadi kesalahan.');
       });
     });
-  });
+  }); 
+
+   
+ 
   $("#proceedCheckout").on('click', function (e) {
     // console.log("ha");
     e.preventDefault();
@@ -2141,6 +2143,7 @@ $('#searchForm').submit(function(e) {
     var customerHandphone = $('#fulldata .customerHandphone').text();
     var customerAddress = $('#fulldata .customerAddress').text();
     var customerNotes = $('.form-group #message').val();
+    console.log(customerNotes);
     var shippingCost = $('.list_2 #shippingProduct').text();
     var shippingCostNF = $('.list_2 #shippingNFProduct').text();
     var finalPrice = $('.list_2 #finalPriceProduct').text();
@@ -2185,7 +2188,8 @@ $('#searchForm').submit(function(e) {
         // console.log(formData)
         var paymentGate = $("input[name='selectorpaymentgate']:checked").val();
         var timeCheckout = $(".list_2").find('#time').text();
-        var orderID = $(".list_2").find('#orderID').text();
+        var paymentMethod = "Manual Transfer";
+        // var orderID = $(".list_2").find('#orderID').text();
         // console.log(timeCheckout)
         // console.log(orderID)
         // return false;
@@ -2194,10 +2198,9 @@ $('#searchForm').submit(function(e) {
           var vendorData = {
             VendorID: vendorID,
             VendorName: $(vendor).find(".vendorIDProductCheckout").text(),
-            OrderID: orderID,
             ProductShippingPrice: $(vendor).find('.TotalShippingPerVendor').text(),
             ProductTotalPrice: $(vendor).find('.TotalPerVendor').text(),
-            CustomerNotes: customerNotes,
+            CustomerNotes: $(vendor).find('.NotesMessage').text(),
             CustomerName: customerName.replace('Nama: ', ''),
             CustomerFullName: customerFullName.replace('Nama lengkap: ', ''),
             CustomerEmail: customerEmail.replace('Email: ', ''),
@@ -2245,9 +2248,12 @@ $('#searchForm').submit(function(e) {
               title: 'Pembayaran, ',
               message: 'Segera lakukan pembayaran pesanan',
               position: 'bottomRight',
-              onClosed: function () {
-                window.location.href = "/marketplace/history";
-              }
+              // onClosed: function () {
+              //   window.location.href = "/marketplace/history";
+              // }
+              // onClosed: function () {
+              //   window.location.href = "/marketplace/productcheckout/manualpayment/" + orderID + '?invoice=true';
+              // }
             });
           },
           error: function (xhr, status, error) {
@@ -2256,39 +2262,48 @@ $('#searchForm').submit(function(e) {
         });
       } else if (paymentMethod === "duitku") {
         var formData = new FormData();
+        var paymentMethod = "Duitku";
         var paymentGate = $("input[name='selectorpaymentgate']:checked").val();
         var timeCheckout = $(".list_2").find('#time').text();
-        for (const item of $(".listDataProduct")) {
-          var productData = {
-            ProductID: $(item).find('#productID').text(),
-            VendorID: $(item).find('#vendorID').text(),
-            ProductTitle: $(item).find('#productTitle').text(),
-            ProductCartID: $(item).find('#productCartID').text(),
-            ProductImage: $(item).find('#productImage').text(),
-            ProductVariant: $(item).find('#productVariant').text(),
-            ProductVariantID: $(item).find('#productVariantID').text(),
-            ProductVariantWeight: $(item).find('#variantP').data('weight'),
-            ProductPrice: $(item).find('#productPrice').text(),
-            ProductQuantity: $(item).find('#productQuantity').text(),
-            ProductTotalPrice: $(item).find('#productTotalPrice').text(),
-            ProductSubTotalPrice: $(item).find('#productSubTotalPrice').text(),
-            ProductSubTotalPriceNF: $(item).find('#productSubTotalPriceNF').text(),
-            ProductCostShipping: shippingCost,
-            ProductFinalPrice: finalPrice,
-            ProductFinalPriceNF: finalPriceNF,
+        $(".singlecheckoutpervendor").each(function(index, vendor) {
+          var vendorID = $(vendor).find(".vendorIDProductCheckout").data('vendor');
+          var vendorData = {
+            VendorID: vendorID,
+            VendorName: $(vendor).find(".vendorIDProductCheckout").text(),
+            ProductShippingPrice: $(vendor).find('.TotalShippingPerVendor').text(),
+            ProductTotalPrice: $(vendor).find('.TotalPerVendor').text(),
+            CustomerNotes: customerNotes,
             CustomerName: customerName.replace('Nama: ', ''),
             CustomerFullName: customerFullName.replace('Nama lengkap: ', ''),
             CustomerEmail: customerEmail.replace('Email: ', ''),
             CustomerHandphone: customerHandphone.replace('Handphone: ', ''),
             CustomerAddress: customerAddress.replace('Alamat: ', ''),
-            CustomerNotes: customerNotes,
             Bank: paymentGate,
             PaymentMethod: paymentMethod,
-            TimeCheckout: timeCheckout
+            TimeCheckout: timeCheckout,
+            Products: []
           };
-          selectedProductss.push(productData);
-          formData.append('paymentDatas', JSON.stringify(selectedProductss));
-        }
+          
+          $(vendor).find(".listDataProduct").each(function(index, product) {
+              var productVendorID = $(product).find('#vendorID').text();
+              if (productVendorID === vendorID.toString()) {
+                  var productData = {
+                      ProductID: $(product).find('#productID').text(),
+                      ProductTitle: $(product).find('#productTitle').text(),
+                      ProductCartID: $(product).find('#productCartID').text(),
+                      ProductImage: $(product).find('#productImage').text(),
+                      ProductVariant: $(product).find('#productVariant').text(),
+                      ProductVariantID: $(product).find('#productVariantID').text(),
+                      ProductVariantWeight: $(product).find('.variantP').data('weight'),
+                      ProductPrice: $(product).find('#productPrice').text(),
+                      ProductQuantity: $(product).find('#productQuantity').text(),
+                      VendorID: productVendorID,
+                  };
+                  vendorData.Products.push(productData);
+              }
+          });
+          selectedVendors.push(vendorData);
+        });
         $.ajax({
           url: "/marketplace/productcheckout/transaction",
           type: "POST",
@@ -2321,41 +2336,49 @@ $('#searchForm').submit(function(e) {
         });
       } else {
         var formData = new FormData();
+        var paymentMethod = "Cash On Delivery";
         var paymentGate = '';
         var timeCheckout = $(".list_2").find('#time').text();
-        var orderID = $(".list_2").find('#orderID').text();
-        for (const item of $(".listDataProduct")) {
-          var productData = {
-            ProductID: $(item).find('#productID').text(),
-            VendorID: $(item).find('#vendorID').text(),
-            ProductTitle: $(item).find('#productTitle').text(),
-            ProductCartID: $(item).find('#productCartID').text(),
-            ProductImage: $(item).find('#productImage').text(),
-            ProductVariant: $(item).find('#productVariant').text(),
-            ProductVariantID: $(item).find('#productVariantID').text(),
-            ProductVariantWeight: $(item).find('#variantP').data('weight'),
-            ProductPrice: $(item).find('#productPrice').text(),
-            ProductQuantity: $(item).find('#productQuantity').text(),
-            ProductTotalPrice: $(item).find('#productTotalPrice').text(),
-            ProductSubTotalPrice: $(item).find('#productSubTotalPrice').text(),
-            ProductSubTotalPriceNF: $(item).find('#productSubTotalPriceNF').text(),
-            ProductCostShipping: shippingCost,
-            ProductFinalPrice: finalPrice,
-            ProductFinalPriceNF: finalPriceNF,
+        // var orderID = $(".list_2").find('#orderID').text();
+        $(".singlecheckoutpervendor").each(function(index, vendor) {
+          var vendorID = $(vendor).find(".vendorIDProductCheckout").data('vendor');
+          var vendorData = {
+            VendorID: vendorID,
+            VendorName: $(vendor).find(".vendorIDProductCheckout").text(),
+            ProductShippingPrice: $(vendor).find('.TotalShippingPerVendor').text(),
+            ProductTotalPrice: $(vendor).find('.TotalPerVendor').text(),
+            CustomerNotes: customerNotes,
             CustomerName: customerName.replace('Nama: ', ''),
             CustomerFullName: customerFullName.replace('Nama lengkap: ', ''),
             CustomerEmail: customerEmail.replace('Email: ', ''),
             CustomerHandphone: customerHandphone.replace('Handphone: ', ''),
             CustomerAddress: customerAddress.replace('Alamat: ', ''),
-            CustomerNotes: customerNotes,
             Bank: paymentGate,
             PaymentMethod: paymentMethod,
             TimeCheckout: timeCheckout,
-            OrderID: orderID
+            Products: []
           };
-          selectedProductss.push(productData);
-          formData.append('paymentDatas', JSON.stringify(selectedProductss));
-        }
+          
+          $(vendor).find(".listDataProduct").each(function(index, product) {
+              var productVendorID = $(product).find('#vendorID').text();
+              if (productVendorID === vendorID.toString()) {
+                  var productData = {
+                      ProductID: $(product).find('#productID').text(),
+                      ProductTitle: $(product).find('#productTitle').text(),
+                      ProductCartID: $(product).find('#productCartID').text(),
+                      ProductImage: $(product).find('#productImage').text(),
+                      ProductVariant: $(product).find('#productVariant').text(),
+                      ProductVariantID: $(product).find('#productVariantID').text(),
+                      ProductVariantWeight: $(product).find('.variantP').data('weight'),
+                      ProductPrice: $(product).find('#productPrice').text(),
+                      ProductQuantity: $(product).find('#productQuantity').text(),
+                      VendorID: productVendorID,
+                  };
+                  vendorData.Products.push(productData);
+              }
+          });
+          selectedVendors.push(vendorData);
+        });
         $.ajax({
           url: '/marketplace/productcheckout/cash',
           type: 'POST',
@@ -2539,6 +2562,7 @@ $('#searchForm').submit(function(e) {
     var regency = parseInt($('.regency_select .list .selected').data('value'));
     var street = $('#add1').val();
     var postal =  $('#zip').val();
+    var notes = $('#message').val();
     // console.log(address)
     // console.log(regency)
     if (numberInput.length < 12 || numberInput.length > 14) {
@@ -2557,7 +2581,8 @@ $('#searchForm').submit(function(e) {
       AddressDetail: street,
       Province: province,
       Regency: regency,
-      Postal: postal
+      Postal: postal,
+      Notes : notes
     })
       .done(function (data) {
         var response = JSON.parse(data);
@@ -2665,7 +2690,9 @@ $('#searchForm').submit(function(e) {
   }
   function generateOrderID() {
     const timestamp = Date.now().toString(36);
+    console.log(timestamp);
     const randomStr = Math.random().toString(36).substring(2, 10);
+    console.log(randomStr);
     return `SHOESTORE${timestamp}${randomStr}`;
   }
 
@@ -3172,6 +3199,15 @@ $('#searchForm').submit(function(e) {
         this.style.height = (this.scrollHeight) + 'px';
     });
   }
+  $(document).on('submit', '.note-form', function(event) {
+    event.preventDefault();
+    
+    var vendorID = $(this).data('vendor-id');
+    var noteContent = $("#Notes-product-" + vendorID).val();
+    $("#Notes-message-" + vendorID).text(noteContent);
+    $("#Notes-" + vendorID).modal('hide');
+});
+
   document.querySelectorAll('.singlecheckoutpervendor').forEach(vendor => {
     let vendorID = vendor.querySelector('.vendorIDProductCheckout').getAttribute('data-vendor');
     // alert(vendorID);
@@ -3202,6 +3238,7 @@ $('#searchForm').submit(function(e) {
     function fetchcost(vendorID) {
       var cost = $(`input[name='selectorCost-${vendorID}']:checked`).next('label').data('opt');
       $(`.TotalShippingPerVendor-${vendorID}`).text(`Rp. ${formatNumber(cost)}`);
+      
       updateTotals(vendorID);
     }
 
