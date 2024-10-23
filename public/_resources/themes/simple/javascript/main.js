@@ -2142,10 +2142,6 @@ $('#searchForm').submit(function(e) {
     var customerEmail = $('#fulldata .customerEmail').text();
     var customerHandphone = $('#fulldata .customerHandphone').text();
     var customerAddress = $('#fulldata .customerAddress').text();
-    var customerNotes = $('.form-group #message').val();
-    console.log(customerNotes);
-    var shippingCost = $('.list_2 #shippingProduct').text();
-    var shippingCostNF = $('.list_2 #shippingNFProduct').text();
     var finalPrice = $('.list_2 #finalPriceProduct').text();
     var Diskon = $('.list_2 #Diskon').text();
     // console.log(Diskon);
@@ -2272,7 +2268,7 @@ $('#searchForm').submit(function(e) {
             VendorName: $(vendor).find(".vendorIDProductCheckout").text(),
             ProductShippingPrice: $(vendor).find('.TotalShippingPerVendor').text(),
             ProductTotalPrice: $(vendor).find('.TotalPerVendor').text(),
-            CustomerNotes: customerNotes,
+            CustomerNotes: $(vendor).find('.NotesMessage').text(),
             CustomerName: customerName.replace('Nama: ', ''),
             CustomerFullName: customerFullName.replace('Nama lengkap: ', ''),
             CustomerEmail: customerEmail.replace('Email: ', ''),
@@ -2304,6 +2300,7 @@ $('#searchForm').submit(function(e) {
           });
           selectedVendors.push(vendorData);
         });
+        formData.append('paymentDatas', JSON.stringify(selectedVendors));
         $.ajax({
           url: "/marketplace/productcheckout/transaction",
           type: "POST",
@@ -2347,7 +2344,7 @@ $('#searchForm').submit(function(e) {
             VendorName: $(vendor).find(".vendorIDProductCheckout").text(),
             ProductShippingPrice: $(vendor).find('.TotalShippingPerVendor').text(),
             ProductTotalPrice: $(vendor).find('.TotalPerVendor').text(),
-            CustomerNotes: customerNotes,
+            CustomerNotes: $(vendor).find('.NotesMessage').text(),
             CustomerName: customerName.replace('Nama: ', ''),
             CustomerFullName: customerFullName.replace('Nama lengkap: ', ''),
             CustomerEmail: customerEmail.replace('Email: ', ''),
@@ -2379,6 +2376,7 @@ $('#searchForm').submit(function(e) {
           });
           selectedVendors.push(vendorData);
         });
+        formData.append('paymentDatas', JSON.stringify(selectedVendors));
         $.ajax({
           url: '/marketplace/productcheckout/cash',
           type: 'POST',
@@ -2562,7 +2560,6 @@ $('#searchForm').submit(function(e) {
     var regency = parseInt($('.regency_select .list .selected').data('value'));
     var street = $('#add1').val();
     var postal =  $('#zip').val();
-    var notes = $('#message').val();
     // console.log(address)
     // console.log(regency)
     if (numberInput.length < 12 || numberInput.length > 14) {
@@ -2582,7 +2579,6 @@ $('#searchForm').submit(function(e) {
       Province: province,
       Regency: regency,
       Postal: postal,
-      Notes : notes
     })
       .done(function (data) {
         var response = JSON.parse(data);
@@ -3220,8 +3216,9 @@ document.querySelectorAll('.singlecheckoutpervendor').forEach(vendor => {
         let subtotalproduct = 0;
 
         vendor.querySelectorAll(`.variantP-${vendorID}`).forEach(product => {
+            let productQuantity = parseInt(product.getAttribute('data-quantity'), 10);
             let productPrice = parseInt(product.getAttribute('data-price').replace('Rp. ', '').replace(/\./g, ''), 10);
-            subtotalproduct += productPrice;
+            subtotalproduct += productPrice * productQuantity;
         });
 
         let shippingCost = parseFloat($(`.TotalShippingPerVendor-${vendorID}`).text().replace('Rp. ', '').replace(/\./g, ''));
@@ -3380,7 +3377,6 @@ document.querySelectorAll('.singlecheckoutpervendor').forEach(vendor => {
     let priceText = priceElement.textContent.replace('Rp. ', '').replace('.', '').replace('.', '');
     let priceNumber = parseInt(priceText);
     const quantity = parseInt(quantityInput.value, 10);
-
     if (isNaN(priceNumber)) priceNumber = 0;
     if (isNaN(quantity) || quantity < 1) quantity = 1;
 
@@ -3447,7 +3443,6 @@ document.querySelectorAll('.singlecheckoutpervendor').forEach(vendor => {
       let currentQuantity = parseInt(quantityInput.value, 10);
 
       if (currentQuantity < quantitymax) {
-        console.log(quantitymax);
         quantityInput.value = currentQuantity + 1;
         updateTotalPrice(quantityInput, priceElement, totalPriceElement, totalPriceElementNF);
         updateSubtotal();
