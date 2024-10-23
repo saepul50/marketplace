@@ -2134,7 +2134,7 @@ $('#searchForm').submit(function(e) {
     TimeCheckout();
     callOrderID();
     var form = $("#checkout-form")[0];
-    var selectedProductss = [];
+    var selectedVendors = [];
     var numberInput = $("#numberinput").val();
     var regency = $('#fulldata .regency').text().trim();
     var customerName = $('#fulldata .customerName').text();
@@ -2148,7 +2148,7 @@ $('#searchForm').submit(function(e) {
     var shippingCostNF = $('.list_2 #shippingNFProduct').text();
     var finalPrice = $('.list_2 #finalPriceProduct').text();
     var Diskon = $('.list_2 #Diskon').text();
-    console.log(Diskon);
+    // console.log(Diskon);
     var finalPriceNF = $('.list_2 #finalPriceNFProduct').text();
     var finalprice = $("#finalPriceProduct").text().trim();
     var selectordata = $("input[name='selectordata']:checked").length > 0;
@@ -2192,41 +2192,48 @@ $('#searchForm').submit(function(e) {
         // console.log(timeCheckout)
         // console.log(orderID)
         // return false;
-        console.log(shippingCost);
-        for (const item of $(".singlecheckoutpervendor")) {
-          var productData = {
-            ProductID: $(item).find('#productID').text(),
-            VendorID: $(item).find('#vendorID').text(),
-            ProductTitle: $(item).find('#productTitle').text(),
-            ProductCartID: $(item).find('#productCartID').text(),
-            ProductImage: $(item).find('#productImage').text(),
-            ProductVariant: $(item).find('#productVariant').text(),
-            ProductVariantID: $(item).find('#productVariantID').text(),
-            ProductVariantWeight: $(item).find('.last').data('weight'),
-            ProductPrice: $(item).find('#productPrice').text(),
-            ProductQuantity: $(item).find('#productQuantity').text(),
-            ProductTotalPrice: $(item).find('#productTotalPrice').text(),
-            ProductSubTotalPrice: $(item).find('#productSubTotalPrice').text(),
-            ProductSubTotalPriceNF: $(item).find('#productSubTotalPriceNF').text(),
-            Diskon: $(item).find('#Diskon').text(),
-            ProductCostShipping: $(item).find('.TotalShippingPerVendor').text(),
-            ProductFinalPrice: finalPrice,
-            ProductFinalPriceNF: finalPriceNF,
+        $(".singlecheckoutpervendor").each(function(index, vendor) {
+          var vendorID = $(vendor).find(".vendorIDProductCheckout").data('vendor');
+          var vendorData = {
+            VendorID: vendorID,
+            VendorName: $(vendor).find(".vendorIDProductCheckout").text(),
+            OrderID: orderID,
+            ProductShippingPrice: $(vendor).find('.TotalShippingPerVendor').text(),
+            ProductTotalPrice: $(vendor).find('.TotalPerVendor').text(),
+            CustomerNotes: $(vendor).find('.NotesMessage').text(),
             CustomerName: customerName.replace('Nama: ', ''),
             CustomerFullName: customerFullName.replace('Nama lengkap: ', ''),
             CustomerEmail: customerEmail.replace('Email: ', ''),
             CustomerHandphone: customerHandphone.replace('Handphone: ', ''),
             CustomerAddress: customerAddress.replace('Alamat: ', ''),
-            CustomerNotes: customerNotes,
             Bank: paymentGate,
             PaymentMethod: paymentMethod,
             TimeCheckout: timeCheckout,
-            OrderID: orderID
+            Products: []
           };
-          selectedProductss.push(productData);
-          console.log(selectedProductss);
-          formData.append('paymentDatas', JSON.stringify(selectedProductss));
-        }
+          
+          $(vendor).find(".listDataProduct").each(function(index, product) {
+              var productVendorID = $(product).find('#vendorID').text();
+              if (productVendorID === vendorID.toString()) {
+                  var productData = {
+                      ProductID: $(product).find('#productID').text(),
+                      ProductTitle: $(product).find('#productTitle').text(),
+                      ProductCartID: $(product).find('#productCartID').text(),
+                      ProductImage: $(product).find('#productImage').text(),
+                      ProductVariant: $(product).find('#productVariant').text(),
+                      ProductVariantID: $(product).find('#productVariantID').text(),
+                      ProductVariantWeight: $(product).find('.variantP').data('weight'),
+                      ProductPrice: $(product).find('#productPrice').text(),
+                      ProductQuantity: $(product).find('#productQuantity').text(),
+                      VendorID: productVendorID,
+                  };
+                  vendorData.Products.push(productData);
+              }
+          });
+          selectedVendors.push(vendorData);
+        });
+        // console.log(selectedVendors);
+        formData.append('paymentDatas', JSON.stringify(selectedVendors));
         $.ajax({
           url: '/marketplace/productcheckout/manualTF',
           type: 'POST',
@@ -2234,12 +2241,16 @@ $('#searchForm').submit(function(e) {
           processData: false,
           contentType: false,
           success: function (results) {
+            // return false;
             iziToast.success({
               icon: 'fas fa-shipping-fast',
-              timeout: 1500,
-              title: 'Tunggu sebentar, ',
-              message: 'sedang membuka laman pembayaran',
+              timeout: 3500,
+              title: 'Pembayaran, ',
+              message: 'Segera lakukan pembayaran pesanan',
               position: 'bottomRight',
+              // onClosed: function () {
+              //   window.location.href = "/marketplace/history";
+              // }
               // onClosed: function () {
               //   window.location.href = "/marketplace/productcheckout/manualpayment/" + orderID + '?invoice=true';
               // }

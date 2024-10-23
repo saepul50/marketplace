@@ -17,6 +17,7 @@ use SilverStripe\ORM\FieldType\DBHTMLText;
             'CustomerHandphone'=> 'Varchar',
             'CustomerAddress'=> 'Text',
             'CustomerNotes'=> 'Text',
+            'ProductCostShipping' => 'Text',
             'FinalPrice'=> 'Text',
             'Bank' => 'Text',
             'Status' => 'Enum("Dikemas,Dikirim,Selesai,Dibatalkan", "Dikemas")',

@@ -95,7 +95,7 @@
 								<% if $Notification %>
 									<% loop $Notification.Limit(8) %>
 												<a href="{$BaseHref}/confirm/order/$HeaderCheckout.OrderID?detailOrder=true" style="color: #000;">
-													<div class="notifs d-flex align-items-center justify-content-between p-2"  style="border-bottom: 1px solid #ddd; background-color: rgba(255, 165, 0, 0.04);">
+													<div class="notifs d-flex align-items-center justify-content-between py-3 p-2"  style="background-color: rgba(255, 165, 0, 0.04);">
 														<div class="d-flex align-items-center">
 															<div class="col-3">
 																<% if $HeaderCheckout.Items.First %>
@@ -119,7 +119,7 @@
 									<% end_loop %>
 								<% end_if %>
 								<a href="{$BaseHref}/notification" class="text-center " style="color:black;">
-									<div class="text-center" style="border-top: 1px solid rgba(0, 0, 0, .09);border-bottom: 1px solid rgba(0, 0, 0, .09);padding: 5px;">
+									<div class="text-center py-2" style="border-bottom: 1px solid rgba(0, 0, 0, .09);padding: 5px;">
 										Tampilkan Semua
 									</div>
 								</a>

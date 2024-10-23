@@ -134,7 +134,7 @@
                                         <% loop $Products %>
                                             <li class="listDataProduct">
                                                 <a>$ProductTitle <% if $ProductVariant %>($ProductVariant)<% end_if %> 
-                                                    <span class="last variantP-$Up.Vendor.ID" data-weight="$ProductVariantWeight" data-price="$ProductPrice">x $ProductQuantity &nbsp;&nbsp; $ProductPrice</span>
+                                                    <span class="last variantP variantP-$Up.Vendor.ID" data-weight="$ProductVariantWeight" data-price="$ProductPrice">x $ProductQuantity &nbsp;&nbsp; $ProductPrice</span>
                                                 </a>
                                                 <p class="d-none" id="productID">$ProductID</p>
                                                 <p class="d-none" id="vendorID">$VendorID</p>
@@ -152,7 +152,7 @@
                                         <% end_loop %>
                                         <li class="listDataProduct">
                                             <a data-toggle="modal" data-target="#Notes-{$Vendor.ID}" style="cursor: pointer; position: relative;" class="">Notes
-                                                <span class="m-0" id="Notes-message-{$Vendor.ID}">&nbsp;</span>
+                                                <span class="m-0 NotesMessage" id="Notes-message-{$Vendor.ID}">&nbsp;</span>
                                             </a>
                                             <a data-toggle="modal" data-target="#OpsiPengiriman-$Vendor.ID" style="cursor: pointer; position: relative;" class="pl-3">Opsi Pengiriman<i class='bx bx-dots-vertical-rounded' style="position: absolute; top: 11px; left: 0px;"></i>
                                                 <span class="m-0" id="OpsiSelect-$Vendor.ID">&nbsp;</span>

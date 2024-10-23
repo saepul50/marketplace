@@ -6,9 +6,6 @@ use SilverStripe\Security\Member;
 
     class ProductCheckoutObject extends DataObject{
         private static $db = [
-            'OrderID'=>'Varchar(255)',
-            'ProductCartID' => 'Int',
-            'Diskon' => 'Int',
             'ProductID' => 'Int',
             'ProductTitle' => 'Text',
             'ProductImage' => 'Varchar(255)',
@@ -17,10 +14,6 @@ use SilverStripe\Security\Member;
             'ProductVariantWeight' => 'Float',
             'ProductPrice' => 'Text',
             'ProductQuantity' => 'Int',
-            'ProductTotalPrice' => 'Text',
-            'ProductSubTotalPrice' => 'Text',
-            'ProductCostShipping' => 'Text',
-            'ProductFinalPrice' => 'Text',
             'VendorID' => 'Int',
         ];
         private static $has_one = [
