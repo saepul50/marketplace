@@ -2268,6 +2268,7 @@ $('#searchForm').submit(function(e) {
             VendorName: $(vendor).find(".vendorIDProductCheckout").text(),
             ProductShippingPrice: $(vendor).find('.TotalShippingPerVendor').text(),
             ProductTotalPrice: $(vendor).find('.TotalPerVendor').text(),
+            ProductTotalPriceNF: parseInt($(vendor).find('.TotalPerVendor').text().replace('Rp. ', '').replace(/\./g, ''), 10),
             CustomerNotes: $(vendor).find('.NotesMessage').text(),
             CustomerName: customerName.replace('Nama: ', ''),
             CustomerFullName: customerFullName.replace('Nama lengkap: ', ''),
@@ -2308,27 +2309,15 @@ $('#searchForm').submit(function(e) {
           contentType: false,
           processData: false,
           success: function (results) {
-            try {
-              var response = JSON.parse(results);
-              if (response && response.paymentUrl) {
-                iziToast.success({
-                  timeout: 2000,
-                  title: 'Tunggu Sebentar',
-                  message: 'Memproses Pembayaran',
-                  position: 'bottomRight',
-                  onClosed: function () {
-                    window.location.href = response.paymentUrl;
-                  }
-                });
-              } else {
-                iziToast.error({ title: 'Error', message: 'URL pembayaran tidak ditemukan dalam respons.', position: 'bottomRight' });
+            iziToast.success({
+              timeout: 3500,
+              title: 'Pembayaran',
+              message: 'Segera lakukan pembayaran pesanan',
+              position: 'bottomRight',
+              onClosed: function () {
+                window.location.href = '/marketplace/history';
               }
-            } catch (e) {
-              iziToast.error({ title: 'Error' + e.message, position: 'bottomRight' });
-            }
-          },
-          error: function () {
-            iziToast.error({ title: 'Error', position: 'bottomRight' });
+            });
           }
         });
       } else {

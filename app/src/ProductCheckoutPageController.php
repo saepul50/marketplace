@@ -358,6 +358,7 @@ class ProductCheckoutPageController extends PageController{
                 $headerCheckout->OrderID = $OrderID;
                 $headerCheckout->MemberID = $member->ID;
                 $headerCheckout->CustomerName = $checkoutData['CustomerName'];
+                $headerCheckout->CustomerFullName = $checkoutData['CustomerFullName'];
                 $headerCheckout->CustomerEmail = $checkoutData['CustomerEmail'];
                 $headerCheckout->CustomerHandphone = $checkoutData['CustomerHandphone'];
                 $headerCheckout->CustomerAddress = $checkoutData['CustomerAddress'];
@@ -370,10 +371,13 @@ class ProductCheckoutPageController extends PageController{
                 $headerCheckout->write();
     
                 $paymentData = $this->preparePaymentData($checkoutData);
+                $merchantOrderId = $paymentData['merchantOrderId'];
+                $headerCheckout->DuitkuOrderID = $merchantOrderId;
+
+                $headerCheckout->write();
                 $paymentResponse = $this->sendPaymentRequest($paymentData);
-                Debug::show($paymentResponse);
-                die();
-    
+                // Debug::show($paymentResponse);
+                // die();
                 if ($paymentResponse && isset($paymentResponse['paymentUrl'])) {
                     $headerCheckout->PaymentUrl = $paymentResponse['paymentUrl'];
                     $headerCheckout->write();
@@ -409,9 +413,7 @@ class ProductCheckoutPageController extends PageController{
         $merchantCode = 'DS20031';
         $apiKey = '8c98ceb5b29429b26bfcd384d5f76d02';
         $merchantOrderId = time() . '';
-        $paymentAmount = $checkoutData['ProductTotalPrice'];
-        Debug::show($paymentAmount);
-        die();
+        $paymentAmount = $checkoutData['ProductTotalPriceNF'];
         $paymentMethod = $checkoutData['Bank'];
         $productDetails = 'Tes pembayaran menggunakan Duitku';
         $email = $checkoutData['CustomerEmail'];
@@ -482,9 +484,9 @@ class ProductCheckoutPageController extends PageController{
         
         $request = curl_exec($ch);
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        Debug::show($request);
-        Debug::show($httpCode);
-        die();
+        // Debug::show($request);
+        // Debug::show($httpCode);
+        // die();
         
         if ($httpCode == 200) {
             return json_decode($request, true);

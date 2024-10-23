@@ -2268,6 +2268,7 @@ $('#searchForm').submit(function(e) {
             VendorName: $(vendor).find(".vendorIDProductCheckout").text(),
             ProductShippingPrice: $(vendor).find('.TotalShippingPerVendor').text(),
             ProductTotalPrice: $(vendor).find('.TotalPerVendor').text(),
+            ProductTotalPriceNF: parseInt($(vendor).find('.TotalPerVendor').text().replace('Rp. ', '').replace(/\./g, ''), 10),
             CustomerNotes: $(vendor).find('.NotesMessage').text(),
             CustomerName: customerName.replace('Nama: ', ''),
             CustomerFullName: customerFullName.replace('Nama lengkap: ', ''),
@@ -2308,27 +2309,15 @@ $('#searchForm').submit(function(e) {
           contentType: false,
           processData: false,
           success: function (results) {
-            try {
-              var response = JSON.parse(results);
-              if (response && response.paymentUrl) {
-                iziToast.success({
-                  timeout: 2000,
-                  title: 'Tunggu Sebentar',
-                  message: 'Memproses Pembayaran',
-                  position: 'bottomRight',
-                  onClosed: function () {
-                    window.location.href = response.paymentUrl;
-                  }
-                });
-              } else {
-                iziToast.error({ title: 'Error', message: 'URL pembayaran tidak ditemukan dalam respons.', position: 'bottomRight' });
+            iziToast.success({
+              timeout: 3500,
+              title: 'Pembayaran',
+              message: 'Segera lakukan pembayaran pesanan',
+              position: 'bottomRight',
+              onClosed: function () {
+                window.location.href = '/marketplace/history';
               }
-            } catch (e) {
-              iziToast.error({ title: 'Error' + e.message, position: 'bottomRight' });
-            }
-          },
-          error: function () {
-            iziToast.error({ title: 'Error', position: 'bottomRight' });
+            });
           }
         });
       } else {
@@ -3204,9 +3193,7 @@ $('#searchForm').submit(function(e) {
     $("#Notes-" + vendorID).modal('hide');
 });
 $('#loading').show();
-if($('#loading').show()){
-    document.body.style.overflow = 'hidden';
-}
+document.body.style.overflow = 'hidden';
 let ajaxPromises = [];
 
 document.querySelectorAll('.singlecheckoutpervendor').forEach(vendor => {
@@ -3314,7 +3301,6 @@ document.querySelectorAll('.singlecheckoutpervendor').forEach(vendor => {
     }
 
 });
-
   Promise.all(ajaxPromises).then(() => {
       $('#loading').hide();
       if($('#loading').hide()){
@@ -3325,37 +3311,60 @@ document.querySelectorAll('.singlecheckoutpervendor').forEach(vendor => {
       $('#loading').hide(); 
   });
 
+
+  
   updateFinalPrice();
   function updateFinalPrice() {
     let totalFinalPrice = 0;
     document.querySelectorAll('.TotalPerVendor').forEach(totalElement => {
         const subTotalElement = totalElement.textContent.trim();
-        const subTotalInt = parseInt(subTotalElement.replace('Rp. ', '').replace(/\./g, ''), 10);
+        const subTotalInt = parseFloat(subTotalElement.replace('Rp. ', '').replace(/\./g, ''), 10);
         if (!isNaN(subTotalInt)) {
             totalFinalPrice += subTotalInt;
         }
     });
+    
+ 
     const finalElement = $('#finalPriceProduct');
     finalElement.text(`Rp. ${formatNumber(totalFinalPrice)}`);
-    
     let totalShippingPrice = 0;
+
+
     document.querySelectorAll('.TotalShippingPerVendor').forEach(totalElement => {
-      const subTotalElement = totalElement.textContent.trim();
-      const subTotalInt = parseInt(subTotalElement.replace('Rp. ', '').replace(/\./g, ''), 10);
-      if (!isNaN(subTotalInt)) {
-        totalShippingPrice += subTotalInt;
-      }
+        const subTotalElement = totalElement.textContent.trim();
+        const subTotalInt = parseFloat(subTotalElement.replace('Rp. ', '').replace(/\./g, ''), 10);
+        if (!isNaN(subTotalInt)) {
+            totalShippingPrice += subTotalInt;
+        }
     });
     const finalShippingElement = $('#shippingProduct');
     finalShippingElement.text(`Rp. ${formatNumber(totalShippingPrice)}`);
-    
-    const finalElementMinus = $('#finalPriceProduct').text();
-    const finalShippingElementMinus = $('#shippingProduct').text();
+
+    const finalElementMinus = finalElement.text();
+    const finalShippingElementMinus = finalShippingElement.text();
     const subTotalProduct = $('#subTotalPriceProduct');
-    let subTotalPriceProduct = parseInt(finalElementMinus.replace('Rp. ', '').replace(/\./g, ''), 10) - parseInt(finalShippingElementMinus.replace('Rp. ', '').replace(/\./g, ''), 10);
-    // console.log(subTotalPriceProduct)
+    let subTotalPriceProduct = parseFloat(finalElementMinus.replace('Rp. ', '').replace(/\./g, ''), 10) - totalShippingPrice; 
+
+    let FinalPrice;
+    const Diskon = document.querySelector('#Diskon');
+    if (Diskon) {
+      const DiskonInt = parseFloat(Diskon.textContent.replace('%', '').trim());
+        if (!isNaN(DiskonInt) && DiskonInt > 0) {
+            const Discountamount = Math.round((DiskonInt / 100) * subTotalPriceProduct);
+            FinalPrice = Math.round(subTotalPriceProduct - Discountamount);
+            // console.log(Discountamount);
+            // console.log(FinalPrice);
+        } else {
+            FinalPrice = subTotalPriceProduct;
+        }
+    } else {
+        FinalPrice = subTotalPriceProduct;
+    }
+    console.log(FinalPrice)
+    finalElement.text(`Rp. ${formatNumber(FinalPrice)}`);
     subTotalProduct.text(`Rp. ${formatNumber(subTotalPriceProduct)}`);
   }
+
   let subtotal = 0;
   $('#subTotalPriceProduct').text(`Rp. ${subtotal.toLocaleString('id-ID')}`);
 
