@@ -208,7 +208,7 @@ class ProductCheckoutPageController extends PageController{
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => "GET",
             CURLOPT_HTTPHEADER => array(
-                "key: 0edd73978f86309eaf0ce71a7b4bcb41"
+                "key: c9ba6f9ee619e3eae6b2b65d64fac437"
             ),
         ));
 
@@ -239,7 +239,7 @@ class ProductCheckoutPageController extends PageController{
         CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
         CURLOPT_CUSTOMREQUEST => "GET",
         CURLOPT_HTTPHEADER => array(
-            "key: 0edd73978f86309eaf0ce71a7b4bcb41"
+            "key: c9ba6f9ee619e3eae6b2b65d64fac437"
         ),
         ));
 
@@ -277,7 +277,7 @@ class ProductCheckoutPageController extends PageController{
         CURLOPT_POSTFIELDS => "origin=$origin&destination=$regency&weight=$weight&courier=$courir",
         CURLOPT_HTTPHEADER => array(
             "content-type: application/x-www-form-urlencoded",
-            "key: 0edd73978f86309eaf0ce71a7b4bcb41"
+            "key: c9ba6f9ee619e3eae6b2b65d64fac437"
         ),
         ));
 
