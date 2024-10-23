@@ -446,7 +446,7 @@
                                     <tr>
                                        <th scope="col">Product</th>
                                        <th></th>
-                                       <th></th>
+                                       <th>Product Price</th>
                                        <th scope="col">Quantity</th>
                                        <th scope="col">Total</th>
                                     </tr>
@@ -554,7 +554,7 @@
                               <div class="col-4 d-flex flex-column align-items-end">
                                  <p class="m-0">$PaymentMethod</p>
                               </div>
-                              
+
                            </div>
                         </div>
                      <a class="pr-2" href="{$BaseHref}/nota/for/$OrderID"><button type="button" class="genric-btn primary-border showModalButton" style="">Cetak</button></a>
@@ -598,30 +598,38 @@
                                  <tr>
                                     <th scope="col">Product</th>
                                     <th></th>
-                                    <th></th>
+                                    <th>Product Price</th>
                                     <th scope="col">Quantity</th>
                                     <th scope="col">Total</th>
                                  </tr>
                               </thead>
                               <tbody>
-                                 <% loop $items %>
-                                    <tr>
-                                       <td class="col-1">
-                                          <img src="$ProductImage" class="img-fluid">
-                                       </td>
-                                       <td>
-                                          <p>$ProductTitle ($ProductVariant)</p>
-                                       </td>
-                                       <td>
-                                          <p>$ProductPrice</p>
-                                       </td>
-                                       <td>
-                                          <h5>x $ProductQuantity</h5>
-                                       </td>
-                                       <td>
-                                          <p>$ProductTotalPrice</p>
-                                       </td>
-                                    </tr>
+                                 <% loop $Up.ItemsByVendor %>
+                                       <tr>
+                                          <th></th>
+                                       </tr>
+                                       <tr style="background-color: #fff;">
+                                          <th colspan="5" style="border-top: none; border-bottom: 1px solid #dee2e6; border-radius: 10px 10px 0 0;"><i class='bx bx-store'></i> $Vendor.Name</th>
+                                       </tr>
+                                    <% loop $Items %>
+                                       <tr style="background-color: #fff;">
+                                             <td class="col-1" style="border-top: none; border-radius: 0 0 0 10px;">
+                                                <img src="$ProductImage" class="img-fluid">
+                                             </td>
+                                             <td style="border-top: none;">
+                                                <p>$ProductTitle ($ProductVariant)</p>
+                                             </td>
+                                             <td style="border-top: none;">
+                                                <p>$ProductPrice</p>
+                                             </td>
+                                             <td style="border-top: none;">
+                                                <h5>x $ProductQuantity</h5>
+                                             </td>
+                                             <td style="border-top: none; border-radius: 0 0 10px 0;">
+                                                <p>$ProductTotalPrice</p>
+                                             </td>
+                                       </tr>
+                                    <% end_loop %>
                                  <% end_loop %>
                                     <tr>
                                        <td></td>
@@ -744,30 +752,38 @@
                                     <tr>
                                        <th scope="col">Product</th>
                                        <th></th>
-                                       <th></th>
+                                       <th>Product Price</th>
                                        <th scope="col">Quantity</th>
                                        <th scope="col">Total</th>
                                     </tr>
                                  </thead>
                                  <tbody>
-                                    <% loop $items %>
-                                       <tr>
-                                          <td class="col-1">
-                                             <img src="$ProductImage" class="img-fluid">
-                                          </td>
-                                          <td>
-                                             <p>$ProductTitle ($ProductVariant)</p>
-                                          </td>
-                                          <td>
-                                             <p>$ProductPrice</p>
-                                          </td>
-                                          <td>
-                                             <h5>x $ProductQuantity</h5>
-                                          </td>
-                                          <td>
-                                             <p>$ProductTotalPrice</p>
-                                          </td>
-                                       </tr>
+                                    <% loop $Up.ItemsByVendor %>
+                                          <tr>
+                                             <th></th>
+                                          </tr>
+                                          <tr style="background-color: #fff;">
+                                             <th colspan="5" style="border-top: none; border-bottom: 1px solid #dee2e6; border-radius: 10px 10px 0 0;"><i class='bx bx-store'></i> $Vendor.Name</th>
+                                          </tr>
+                                       <% loop $Items %>
+                                          <tr style="background-color: #fff;">
+                                                <td class="col-1" style="border-top: none; border-radius: 0 0 0 10px;">
+                                                   <img src="$ProductImage" class="img-fluid">
+                                                </td>
+                                                <td style="border-top: none;">
+                                                   <p>$ProductTitle ($ProductVariant)</p>
+                                                </td>
+                                                <td style="border-top: none;">
+                                                   <p>$ProductPrice</p>
+                                                </td>
+                                                <td style="border-top: none;">
+                                                   <h5>x $ProductQuantity</h5>
+                                                </td>
+                                                <td style="border-top: none; border-radius: 0 0 10px 0;">
+                                                   <p>$ProductTotalPrice</p>
+                                                </td>
+                                          </tr>
+                                       <% end_loop %>
                                     <% end_loop %>
                                        <tr>
                                           <td></td>
@@ -794,8 +810,7 @@
                                              <h4>Shipping</h4>
                                           </td>
                                           <td>
-                                             <p><% loop $Items.First %>$ProductCostShipping<% end_loop %>
-                                             </p>
+                                             <p>$ProductCostShipping</p>
                                           </td>
                                        </tr>
                                        <% if $Items.First.Diskon %>
@@ -895,30 +910,38 @@
                                  <tr>
                                     <th scope="col">Product</th>
                                     <th></th>
-                                    <th></th>
+                                    <th>Product Price</th>
                                     <th scope="col">Quantity</th>
                                     <th scope="col">Total</th>
                                  </tr>
                               </thead>
                               <tbody>
-                                 <% loop $items %>
-                                    <tr>
-                                       <td class="col-1">
-                                          <img src="$ProductImage" class="img-fluid">
-                                       </td>
-                                       <td>
-                                          <p>$ProductTitle ($ProductVariant)</p>
-                                       </td>
-                                       <td>
-                                          <p>$ProductPrice</p>
-                                       </td>
-                                       <td>
-                                          <h5>x $ProductQuantity</h5>
-                                       </td>
-                                       <td>
-                                          <p>$ProductTotalPrice</p>
-                                       </td>
-                                    </tr>
+                                 <% loop $Up.ItemsByVendor %>
+                                       <tr>
+                                          <th></th>
+                                       </tr>
+                                       <tr style="background-color: #fff;">
+                                          <th colspan="5" style="border-top: none; border-bottom: 1px solid #dee2e6; border-radius: 10px 10px 0 0;"><i class='bx bx-store'></i> $Vendor.Name</th>
+                                       </tr>
+                                    <% loop $Items %>
+                                       <tr style="background-color: #fff;">
+                                             <td class="col-1" style="border-top: none; border-radius: 0 0 0 10px;">
+                                                <img src="$ProductImage" class="img-fluid">
+                                             </td>
+                                             <td style="border-top: none;">
+                                                <p>$ProductTitle ($ProductVariant)</p>
+                                             </td>
+                                             <td style="border-top: none;">
+                                                <p>$ProductPrice</p>
+                                             </td>
+                                             <td style="border-top: none;">
+                                                <h5>x $ProductQuantity</h5>
+                                             </td>
+                                             <td style="border-top: none; border-radius: 0 0 10px 0;">
+                                                <p>$ProductTotalPrice</p>
+                                             </td>
+                                       </tr>
+                                    <% end_loop %>
                                  <% end_loop %>
                                     <tr>
                                        <td></td>
@@ -945,8 +968,7 @@
                                           <h4>Shipping</h4>
                                        </td>
                                        <td>
-                                          <p><% loop $Items.First %>$ProductCostShipping<% end_loop %>
-                                          </p>
+                                          <p>$ProductCostShipping</p>
                                        </td>
                                     </tr>
                                     <% if $Items.First.Diskon %>
@@ -1048,30 +1070,38 @@
                                     <tr>
                                        <th scope="col">Product</th>
                                        <th></th>
-                                       <th></th>
+                                       <th>Product Price</th>
                                        <th scope="col">Quantity</th>
                                        <th scope="col">Total</th>
                                     </tr>
                                  </thead>
                                  <tbody>
-                                    <% loop $items %>
-                                       <tr>
-                                          <td class="col-1">
-                                             <img src="$ProductImage" class="img-fluid">
-                                          </td>
-                                          <td>
-                                             <p>$ProductTitle ($ProductVariant)</p>
-                                          </td>
-                                          <td>
-                                             <p>$ProductPrice</p>
-                                          </td>
-                                          <td>
-                                             <h5>x $ProductQuantity</h5>
-                                          </td>
-                                          <td>
-                                             <p>$ProductTotalPrice</p>
-                                          </td>
-                                       </tr>
+                                    <% loop $Up.ItemsByVendor %>
+                                          <tr>
+                                             <th></th>
+                                          </tr>
+                                          <tr style="background-color: #fff;">
+                                             <th colspan="5" style="border-top: none; border-bottom: 1px solid #dee2e6; border-radius: 10px 10px 0 0;"><i class='bx bx-store'></i> $Vendor.Name</th>
+                                          </tr>
+                                       <% loop $Items %>
+                                          <tr style="background-color: #fff;">
+                                                <td class="col-1" style="border-top: none; border-radius: 0 0 0 10px;">
+                                                   <img src="$ProductImage" class="img-fluid">
+                                                </td>
+                                                <td style="border-top: none;">
+                                                   <p>$ProductTitle ($ProductVariant)</p>
+                                                </td>
+                                                <td style="border-top: none;">
+                                                   <p>$ProductPrice</p>
+                                                </td>
+                                                <td style="border-top: none;">
+                                                   <h5>x $ProductQuantity</h5>
+                                                </td>
+                                                <td style="border-top: none; border-radius: 0 0 10px 0;">
+                                                   <p>$ProductTotalPrice</p>
+                                                </td>
+                                          </tr>
+                                       <% end_loop %>
                                     <% end_loop %>
                                        <tr>
                                           <td></td>
@@ -1098,8 +1128,7 @@
                                              <h4>Shipping</h4>
                                           </td>
                                           <td>
-                                             <p><% loop $Items.First %>$ProductCostShipping<% end_loop %>
-                                             </p>
+                                             <p>$ProductCostShipping</p>
                                           </td>
                                        </tr>
                                        <% if $Items.First.Diskon %>
@@ -1195,30 +1224,38 @@
                                  <tr>
                                     <th scope="col">Product</th>
                                     <th></th>
-                                    <th></th>
+                                    <th>Product Price</th>
                                     <th scope="col">Quantity</th>
                                     <th scope="col">Total</th>
                                  </tr>
                               </thead>
                               <tbody>
-                                 <% loop $items %>
-                                    <tr>
-                                       <td class="col-1">
-                                          <img src="$ProductImage" class="img-fluid">
-                                       </td>
-                                       <td>
-                                          <p>$ProductTitle ($ProductVariant)</p>
-                                       </td>
-                                       <td>
-                                          <p>$ProductPrice</p>
-                                       </td>
-                                       <td>
-                                          <h5>x $ProductQuantity</h5>
-                                       </td>
-                                       <td>
-                                          <p>$ProductTotalPrice</p>
-                                       </td>
-                                    </tr>
+                                 <% loop $Up.ItemsByVendor %>
+                                       <tr>
+                                          <th></th>
+                                       </tr>
+                                       <tr style="background-color: #fff;">
+                                          <th colspan="5" style="border-top: none; border-bottom: 1px solid #dee2e6; border-radius: 10px 10px 0 0;"><i class='bx bx-store'></i> $Vendor.Name</th>
+                                       </tr>
+                                    <% loop $Items %>
+                                       <tr style="background-color: #fff;">
+                                             <td class="col-1" style="border-top: none; border-radius: 0 0 0 10px;">
+                                                <img src="$ProductImage" class="img-fluid">
+                                             </td>
+                                             <td style="border-top: none;">
+                                                <p>$ProductTitle ($ProductVariant)</p>
+                                             </td>
+                                             <td style="border-top: none;">
+                                                <p>$ProductPrice</p>
+                                             </td>
+                                             <td style="border-top: none;">
+                                                <h5>x $ProductQuantity</h5>
+                                             </td>
+                                             <td style="border-top: none; border-radius: 0 0 10px 0;">
+                                                <p>$ProductTotalPrice</p>
+                                             </td>
+                                       </tr>
+                                    <% end_loop %>
                                  <% end_loop %>
                                     <tr>
                                        <td></td>
@@ -1245,24 +1282,25 @@
                                           <h4>Shipping</h4>
                                        </td>
                                        <td>
-                                          <p><% loop $Items.First %>$ProductCostShipping<% end_loop %>
-                                          </p>
+                                          <p>$ProductCostShipping</p>
                                        </td>
                                     </tr>
-                                    <tr>
-                                       <td></td>
-                                       <td></td>
-                                       <td>
-                                          <h5></h5>
-                                       </td>
-                                       <td>
-                                          <h4>Diskon</h4>
-                                       </td>
-                                       <td>
-                                          <p><% loop $Items.First %>$Diskon%<% end_loop %>
-                                          </p>
-                                       </td>
-                                    </tr>
+                                    <% if $Items.First.Diskon %>
+                                       <tr>
+                                          <td></td>
+                                          <td></td>
+                                          <td>
+                                             <h5></h5>
+                                          </td>
+                                          <td>
+                                             <h4>Diskon</h4>
+                                          </td>
+                                          <td>
+                                             <p><% loop $Items.First %>$Diskon%<% end_loop %>
+                                             </p>
+                                          </td>
+                                       </tr>
+                                    <% end_if %>
                                     <tr>
                                        <td></td>
                                        <td></td>
@@ -1343,30 +1381,38 @@
                                     <tr>
                                        <th scope="col">Product</th>
                                        <th></th>
-                                       <th></th>
+                                       <th>Product Price</th>
                                        <th scope="col">Quantity</th>
                                        <th scope="col">Total</th>
                                     </tr>
                                  </thead>
                                  <tbody>
-                                    <% loop $items %>
-                                       <tr>
-                                          <td class="col-1">
-                                             <img src="$ProductImage" class="img-fluid">
-                                          </td>
-                                          <td>
-                                             <p>$ProductTitle ($ProductVariant)</p>
-                                          </td>
-                                          <td>
-                                             <p>$ProductPrice</p>
-                                          </td>
-                                          <td>
-                                             <h5>x $ProductQuantity</h5>
-                                          </td>
-                                          <td>
-                                             <p>$ProductTotalPrice</p>
-                                          </td>
-                                       </tr>
+                                    <% loop $Up.ItemsByVendor %>
+                                          <tr>
+                                             <th></th>
+                                          </tr>
+                                          <tr style="background-color: #fff;">
+                                             <th colspan="5" style="border-top: none; border-bottom: 1px solid #dee2e6; border-radius: 10px 10px 0 0;"><i class='bx bx-store'></i> $Vendor.Name</th>
+                                          </tr>
+                                       <% loop $Items %>
+                                          <tr style="background-color: #fff;">
+                                                <td class="col-1" style="border-top: none; border-radius: 0 0 0 10px;">
+                                                   <img src="$ProductImage" class="img-fluid">
+                                                </td>
+                                                <td style="border-top: none;">
+                                                   <p>$ProductTitle ($ProductVariant)</p>
+                                                </td>
+                                                <td style="border-top: none;">
+                                                   <p>$ProductPrice</p>
+                                                </td>
+                                                <td style="border-top: none;">
+                                                   <h5>x $ProductQuantity</h5>
+                                                </td>
+                                                <td style="border-top: none; border-radius: 0 0 10px 0;">
+                                                   <p>$ProductTotalPrice</p>
+                                                </td>
+                                          </tr>
+                                       <% end_loop %>
                                     <% end_loop %>
                                        <tr>
                                           <td></td>
@@ -1393,8 +1439,7 @@
                                              <h4>Shipping</h4>
                                           </td>
                                           <td>
-                                             <p><% loop $Items.First %>$ProductCostShipping<% end_loop %>
-                                             </p>
+                                             <p>$ProductCostShipping</p>
                                           </td>
                                        </tr>
                                        <% if $Items.First.Diskon %>
@@ -1408,8 +1453,7 @@
                                                 <h4>Diskon</h4>
                                              </td>
                                              <td>
-                                                <p><% loop $Items.First %>$Diskon%<% end_loop %>
-                                                </p>
+                                                <p>$Diskon%</p>
                                              </td>
                                           </tr>
                                        <% end_if %>
@@ -1489,30 +1533,38 @@
                                  <tr>
                                     <th scope="col">Product</th>
                                     <th></th>
-                                    <th></th>
+                                    <th>Product Price</th>
                                     <th scope="col">Quantity</th>
                                     <th scope="col">Total</th>
                                  </tr>
                               </thead>
                               <tbody>
-                                 <% loop $items %>
-                                    <tr>
-                                       <td class="col-1">
-                                          <img src="$ProductImage" class="img-fluid">
-                                       </td>
-                                       <td>
-                                          <p>$ProductTitle ($ProductVariant)</p>
-                                       </td>
-                                       <td>
-                                          <p>$ProductPrice</p>
-                                       </td>
-                                       <td>
-                                          <h5>x $ProductQuantity</h5>
-                                       </td>
-                                       <td>
-                                          <p>$ProductTotalPrice</p>
-                                       </td>
-                                    </tr>
+                                 <% loop $Up.ItemsByVendor %>
+                                       <tr>
+                                          <th></th>
+                                       </tr>
+                                       <tr style="background-color: #fff;">
+                                          <th colspan="5" style="border-top: none; border-bottom: 1px solid #dee2e6; border-radius: 10px 10px 0 0;"><i class='bx bx-store'></i> $Vendor.Name</th>
+                                       </tr>
+                                    <% loop $Items %>
+                                       <tr style="background-color: #fff;">
+                                             <td class="col-1" style="border-top: none; border-radius: 0 0 0 10px;">
+                                                <img src="$ProductImage" class="img-fluid">
+                                             </td>
+                                             <td style="border-top: none;">
+                                                <p>$ProductTitle ($ProductVariant)</p>
+                                             </td>
+                                             <td style="border-top: none;">
+                                                <p>$ProductPrice</p>
+                                             </td>
+                                             <td style="border-top: none;">
+                                                <h5>x $ProductQuantity</h5>
+                                             </td>
+                                             <td style="border-top: none; border-radius: 0 0 10px 0;">
+                                                <p>$ProductTotalPrice</p>
+                                             </td>
+                                       </tr>
+                                    <% end_loop %>
                                  <% end_loop %>
                                     <tr>
                                        <td></td>
@@ -1539,8 +1591,7 @@
                                           <h4>Shipping</h4>
                                        </td>
                                        <td>
-                                          <p><% loop $Items.First %>$ProductCostShipping<% end_loop %>
-                                          </p>
+                                          <p>$ProductCostShipping</p>
                                        </td>
                                     </tr>
                                     <% if $Items.First.Diskon %>
