@@ -16,14 +16,9 @@ class ConfirmPageController extends PageController{
     public function HistoryData() {
         $member = Security::getCurrentUser();
         if ($member) {
-            $checkoutObjects = ProductCheckoutObject::get()->filter('MemberID', $member->ID);
-            $headerCheckoutIDs = $checkoutObjects->column('HeaderCheckoutID');
-            $status = ProductCheckoutHeaderObject::get()->filter(['Status'=> 'Completed']);
-            $HeaderID = $status->column('ID');
-            // Debug::show($filter);
-
-            if (!empty($headerCheckoutIDs)) {
-                return ProductCheckoutHeaderObject::get()->filter('ID', $headerCheckoutIDs);
+            $checkoutHeader = ProductCheckoutHeaderObject::get()->filter('MemberID', $member->ID);
+            if ($checkoutHeader) {
+                return $checkoutHeader;
             }
         }
         return null;
@@ -34,10 +29,11 @@ class ConfirmPageController extends PageController{
         
         if ($member) {
             $checkoutHeader = ProductCheckoutHeaderObject::get()
-                ->filter('OrderID', $id)
-                ->filter('Items.MemberID', $member->ID)
-                ->first();
-    
+            ->filter('OrderID', $id)
+            ->filter('MemberID', $member->ID)
+            ->first();
+            // Debug::show($id);
+            // die();
             if ($checkoutHeader && $checkoutHeader->exists()) {
                 $itemsByVendor = [];
                 

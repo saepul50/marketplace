@@ -92,8 +92,8 @@ use SilverStripe\Security\Member;
             if ($proofImageField = $fields->fieldByName('Root.Main.ProofImage')) {
                 $proofImageField->setReadonly(false);
             }
-            if ($this->PaymentMethod === 'Duitku Transfer') {
-                $link = '<a href="duitkupayment/checkTransaction?orderid=' . $this->OrderID . '" target="_blank">Cek Status Duitku</a>';
+            if ($this->PaymentMethod === 'Duitku') {
+                $link = '<a href="/productcheckout/checkTransaction?orderid=' . $this->DuitkuOrderID . '" target="_blank">Cek Status Duitku</a>';
                 $fields->replaceField('OrderID', LiteralField::create('OrderID', $link));
             }
             return $fields;

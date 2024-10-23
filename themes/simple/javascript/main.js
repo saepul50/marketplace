@@ -3105,7 +3105,6 @@ $('#searchForm').submit(function(e) {
   const urlParams = new URLSearchParams(window.location.search);
   const urlPath = window.location.pathname.split('/');
   const urlOrder = urlPath[3];
-  // console.log(urlParams);
   // console.log(urlPath);
   // console.log(urlOrder);
   if(urlOrder == 'order'){
@@ -3159,6 +3158,7 @@ $('#searchForm').submit(function(e) {
   }
   function manualPayment(showPayment) {
     if (showPayment) {
+      // console.log('d')
       $('#checkout_area').hide();
       $('#invoice_payment').show();
     } else {
@@ -3468,9 +3468,10 @@ document.querySelectorAll('.singlecheckoutpervendor').forEach(vendor => {
     subhistorytotal += totalpriceproduct;
   });
 
-  document.querySelector('#SubTotal').textContent = `Rp. ${formatNumber(subhistorytotal)}`;
-
-
+  const subTotalElement = document.querySelector('#SubTotal');
+  if (subTotalElement) {
+      subTotalElement.textContent = `Rp. ${formatNumber(subhistorytotal)}`;
+  }
 });
   const events = document.querySelector('.event');
 function saveSelectionAndSubmit() {

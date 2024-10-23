@@ -408,7 +408,7 @@
       
       <% loop $CheckoutHeader %>
          <% if $Status=='Selesai' %>
-            <% if $PaymentMethod == 'manualtf' %>
+            <% if $PaymentMethod == 'Manual Transfer' %>
                <div class="detailOrder order_details_table w-100" id="detailOrder">
                   <div class="detailContain">
                      <div class="navtop d-flex justify-content-between px-3 py-2">
@@ -451,34 +451,64 @@
                                        <th scope="col">Total</th>
                                     </tr>
                                  </thead>
-                                 <% loop $Up.ItemsByVendor %>
-                                    <tbody>
-                                             <tr>
-                                                <th></th>
-                                             </tr>
-                                             <tr style="background-color: #fff;">
-                                                <th colspan="5" style="border-top: none; border-bottom: 1px solid #dee2e6; border-radius: 10px 10px 0 0;"><i class='bx bx-store'></i> $Vendor.Name</th>
-                                             </tr>
-                                          <% loop $Items %>
-                                             <tr style="background-color: #fff;" class="items">
-                                                   <td class="col-1" style="border-top: none; border-radius: 0 0 0 10px;">
-                                                      <img src="$ProductImage" class="img-fluid">
-                                                   </td>
-                                                   <td style="border-top: none;">
-                                                      <p style="margin-top: 1.25rem;">$ProductTitle ($ProductVariant)</p>
-                                                   </td>
-                                                   <td style="border-top: none;">
-                                                   <p id="price" style="margin-top: 1.25rem;">$ProductPrice</p>
-                                                   </td>
-                                                   <td style="border-top: none;">
-                                                      <h5 id="quantity" style="margin-top: 1.25rem;">x $ProductQuantity</h5>
-                                                   </td>
-                                                   <td style="border-top: none; border-radius: 0 0 10px 0;">
-                                                      <p id="totalprice"style="margin-top: 1.25rem;"> </p>
-                                                   </td>
-                                             </tr>
-                                          <% end_loop %>
-                                    
+                                    <% loop $Up.ItemsByVendor %>
+                                    <tbody style="border-top: none;">
+                                       <tr>
+                                          <th></th>
+                                       </tr>
+                                       <tr style="background-color: #fff;">
+                                          <th colspan="5" style="border-top: none; border-bottom: 1px solid #dee2e6; border-radius: 10px 10px 0 0;"><i class='bx bx-store pt-2'></i> $Vendor.Name</th>
+                                       </tr>
+                                       <% loop $Items %>
+                                          <tr style="background-color: #fff;" class="items">
+                                                <td class="col-1" style="border-top: none;">
+                                                   <img src="$ProductImage" class="img-fluid">
+                                                </td>
+                                                <td style="border-top: none;">
+                                                   <p style="margin-top: 1.25rem;">$ProductTitle ($ProductVariant)</p>
+                                                </td>
+                                                <td style="border-top: none;">
+                                                <p id="price" style="margin-top: 1.25rem;">$ProductPrice</p>
+                                                </td>
+                                                <td style="border-top: none;">
+                                                   <h5 id="quantity" style="margin-top: 1.25rem;">x $ProductQuantity</h5>
+                                                </td>
+                                                <td style="border-top: none;">
+                                                   <p id="totalprice"style="margin-top: 1.25rem;"> </p>
+                                                </td>
+                                          </tr>
+                                       <% end_loop %>
+                                       <tr style="background-color: #fff;">
+                                          <th colspan="5" style="border-top: none; border-bottom: 1px solid #dee2e6; border-radius: 0 0 10px 10px;"></th>
+                                       </tr>
+                                 
+                                       <tr>
+                                          <td></td>
+                                          <td></td>
+                                          <td>
+                                             <h5></h5>
+                                          </td>
+                                          <td>
+                                             <h4>Subtotal</h4>
+                                          </td>
+                                          <td>
+                                             <p id="SubTotal"></p>
+                                          </td>
+                                       </tr>
+                                       <tr>
+                                          <td></td>
+                                          <td></td>
+                                          <td>
+                                             <h5></h5>
+                                          </td>
+                                          <td>
+                                             <h4>Shipping</h4>
+                                          </td>
+                                          <td>
+                                             <p>$Up.ProductCostShipping</p>
+                                          </td>
+                                       </tr>
+                                       <% if $Up.Items.First.Diskon %>
                                           <tr>
                                              <td></td>
                                              <td></td>
@@ -486,54 +516,27 @@
                                                 <h5></h5>
                                              </td>
                                              <td>
-                                                <h4>Subtotal</h4>
+                                                <h4>Diskon</h4>
                                              </td>
                                              <td>
-                                                <p id="SubTotal"></p>
+                                                <p><% loop $Up.Items.First %>$Diskon%<% end_loop %>
+                                                </p>
                                              </td>
                                           </tr>
-                                          <tr>
-                                             <td></td>
-                                             <td></td>
-                                             <td>
-                                                <h5></h5>
-                                             </td>
-                                             <td>
-                                                <h4>Shipping</h4>
-                                             </td>
-                                             <td>
-                                                <p>$Up.ProductCostShipping</p>
-                                             </td>
-                                          </tr>
-                                          <% if $Up.Items.First.Diskon %>
-                                             <tr>
-                                                <td></td>
-                                                <td></td>
-                                                <td>
-                                                   <h5></h5>
-                                                </td>
-                                                <td>
-                                                   <h4>Diskon</h4>
-                                                </td>
-                                                <td>
-                                                   <p><% loop $Up.Items.First %>$Diskon%<% end_loop %>
-                                                   </p>
-                                                </td>
-                                             </tr>
-                                          <% end_if %>
-                                          <tr>
-                                             <td></td>
-                                             <td></td>
-                                             <td>
-                                                <h5></h5>
-                                             </td>
-                                             <td>
-                                                <h4>Total</h4>
-                                             </td>
-                                             <td>
-                                                <p>$Up.FinalPrice</p>
-                                             </td>
-                                          </tr>
+                                       <% end_if %>
+                                       <tr>
+                                          <td></td>
+                                          <td></td>
+                                          <td>
+                                             <h5></h5>
+                                          </td>
+                                          <td>
+                                             <h4>Total</h4>
+                                          </td>
+                                          <td>
+                                             <p>$Up.FinalPrice</p>
+                                          </td>
+                                       </tr>
                                     </tbody>
                                  <% end_loop %>
                               </table>
@@ -602,16 +605,171 @@
                                  </tr>
                               </thead>
                               <% loop $Up.ItemsByVendor %>
-                                 <tbody>
-                                          <tr>
-                                             <th></th>
-                                          </tr>
-                                          <tr style="background-color: #fff;">
-                                             <th colspan="5" style="border-top: none; border-bottom: 1px solid #dee2e6; border-radius: 10px 10px 0 0;"><i class='bx bx-store'></i> $Vendor.Name</th>
-                                          </tr>
+                                 <tbody style="border-top: none;">
+                                    <tr>
+                                       <th></th>
+                                    </tr>
+                                    <tr style="background-color: #fff;">
+                                       <th colspan="5" style="border-top: none; border-bottom: 1px solid #dee2e6; border-radius: 10px 10px 0 0;"><i class='bx bx-store pt-2'></i> $Vendor.Name</th>
+                                    </tr>
+                                    <% loop $Items %>
+                                       <tr style="background-color: #fff;" class="items">
+                                             <td class="col-1" style="border-top: none;">
+                                                <img src="$ProductImage" class="img-fluid">
+                                             </td>
+                                             <td style="border-top: none;">
+                                                <p style="margin-top: 1.25rem;">$ProductTitle ($ProductVariant)</p>
+                                             </td>
+                                             <td style="border-top: none;">
+                                             <p id="price" style="margin-top: 1.25rem;">$ProductPrice</p>
+                                             </td>
+                                             <td style="border-top: none;">
+                                                <h5 id="quantity" style="margin-top: 1.25rem;">x $ProductQuantity</h5>
+                                             </td>
+                                             <td style="border-top: none;">
+                                                <p id="totalprice"style="margin-top: 1.25rem;"> </p>
+                                             </td>
+                                       </tr>
+                                    <% end_loop %>
+                                    <tr style="background-color: #fff;">
+                                       <th colspan="5" style="border-top: none; border-bottom: 1px solid #dee2e6; border-radius: 0 0 10px 10px;"></th>
+                                    </tr>
+                              
+                                    <tr>
+                                       <td></td>
+                                       <td></td>
+                                       <td>
+                                          <h5></h5>
+                                       </td>
+                                       <td>
+                                          <h4>Subtotal</h4>
+                                       </td>
+                                       <td>
+                                          <p id="SubTotal"></p>
+                                       </td>
+                                    </tr>
+                                    <tr>
+                                       <td></td>
+                                       <td></td>
+                                       <td>
+                                          <h5></h5>
+                                       </td>
+                                       <td>
+                                          <h4>Shipping</h4>
+                                       </td>
+                                       <td>
+                                          <p>$Up.ProductCostShipping</p>
+                                       </td>
+                                    </tr>
+                                    <% if $Up.Items.First.Diskon %>
+                                       <tr>
+                                          <td></td>
+                                          <td></td>
+                                          <td>
+                                             <h5></h5>
+                                          </td>
+                                          <td>
+                                             <h4>Diskon</h4>
+                                          </td>
+                                          <td>
+                                             <p><% loop $Up.Items.First %>$Diskon%<% end_loop %>
+                                             </p>
+                                          </td>
+                                       </tr>
+                                    <% end_if %>
+                                    <tr>
+                                       <td></td>
+                                       <td></td>
+                                       <td>
+                                          <h5></h5>
+                                       </td>
+                                       <td>
+                                          <h4>Total</h4>
+                                       </td>
+                                       <td>
+                                          <p>$Up.FinalPrice</p>
+                                       </td>
+                                    </tr>
+                                 </tbody>
+                              <% end_loop %>
+                           </table>
+                        </div>
+                        <div class="d-flex paymentinfo py-2" style="border-top: 1px solid #cdcdcd;">
+                           <div class="d-flex align-items-center py-2 px-3 w-100"
+                              style="background-color: #FFFEFB; border: 1px solid #F3DB97;">
+                              <i class='bx bx-bell pr-3'></i>
+                              <p class="m-0 ps-3 d-flex">Terimakasih telah berbelanja di ShoeStore</p>
+                           </div>
+                        </div>
+                        <div class="d-flex payment py-2" style="border-top: 1px solid #cdcdcd;">
+                           <div class="col-8 d-flex flex-column align-items-end">
+                              <p class="m-0">Metode Pembayaran</p>
+                           </div>
+                           <div class="col-4 d-flex flex-column align-items-end">
+                           <p class="m-0">$PaymentMethod</p>
+                        </div>
+                     </div>
+                     <a class="pr-2" href="{$BaseHref}/nota/for/$OrderID"><button type="button" class="genric-btn primary-border showModalButton" style="">Cetak</button></a>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         <% end_if %>
+         <% else_if $Status=='Dikemas' %>
+            <% if $PaymentMethod == 'Manual Transfer' %>
+               <div class="detailOrder order_details_table w-100" id="detailOrder">
+                  <div class="detailContain">
+                     <div class="navtop d-flex justify-content-between px-3 py-2">
+                        <a href="{$BaseHref}/confirm" style="text-decoration: none; color: inherit;">
+                           <div class="textleft d-flex align-items-center" style="cursor: pointer">
+                              <span class="fs-4">﹤</span>
+                              <p class="m-0">Kembali</p>
+                           </div>
+                        </a>
+                        <div class="textright d-flex align-items-center">
+                           <p class="m-0 pr-4">No. Pesanan &nbsp; <span style="font-weight: 600;">$OrderID</span></p>
+                           <p class="m-0" style="color: darkorange; font-weight: 500; text-transform: uppercase;">
+                              Pesanan $Status</p>
+                        </div>
+                     </div>
+                     <div class="text1" style="margin-top: .1rem;">
+                        <div class="d-flex justify-content-between align-items-center py-3 px-3">
+                           <h5 class="m-0">Terimakasih telah berbelanja di SS!</h5>
+                           <a href="/marketplace/productcheckout/manualpayment/$OrderID?invoice=true" class="m-0" style="font-weight: 600;">Lihat Bukti Pembayaran</a>
+                        </div>
+                     </div>
+                     <div class="Orders">
+                        <div class="delivery d-flex flex-column py-3 px-3">
+                           <div class="col-8 col-md-6">
+                              <h6>Alamat Pengiriman</h6>
+                              <p class="m-0 py-1">$CustomerName</p>
+                              <p class="m-0">$CustomerHandphone</p>
+                              <p class="m-0">$CustomerAddress</p>
+                           </div>
+                        </div>
+                        <div class="allproduct d-flex flex-column py-3 px-3">
+                           <div class="table-responsive">
+                              <table class="table">
+                                 <thead>
+                                    <tr>
+                                       <th scope="col">Product</th>
+                                       <th></th>
+                                       <th>Product Price</th>
+                                       <th scope="col">Quantity</th>
+                                       <th scope="col">Total</th>
+                                    </tr>
+                                 </thead>
+                                 <% loop $Up.ItemsByVendor %>
+                                    <tbody style="border-top: none;">
+                                       <tr>
+                                          <th></th>
+                                       </tr>
+                                       <tr style="background-color: #fff;">
+                                          <th colspan="5" style="border-top: none; border-bottom: 1px solid #dee2e6; border-radius: 10px 10px 0 0;"><i class='bx bx-store pt-2'></i> $Vendor.Name</th>
+                                       </tr>
                                        <% loop $Items %>
                                           <tr style="background-color: #fff;" class="items">
-                                                <td class="col-1" style="border-top: none; border-radius: 0 0 0 10px;">
+                                                <td class="col-1" style="border-top: none;">
                                                    <img src="$ProductImage" class="img-fluid">
                                                 </td>
                                                 <td style="border-top: none;">
@@ -623,11 +781,14 @@
                                                 <td style="border-top: none;">
                                                    <h5 id="quantity" style="margin-top: 1.25rem;">x $ProductQuantity</h5>
                                                 </td>
-                                                <td style="border-top: none; border-radius: 0 0 10px 0;">
+                                                <td style="border-top: none;">
                                                    <p id="totalprice"style="margin-top: 1.25rem;"> </p>
                                                 </td>
                                           </tr>
                                        <% end_loop %>
+                                       <tr style="background-color: #fff;">
+                                          <th colspan="5" style="border-top: none; border-bottom: 1px solid #dee2e6; border-radius: 0 0 10px 10px;"></th>
+                                       </tr>
                                  
                                        <tr>
                                           <td></td>
@@ -684,158 +845,6 @@
                                              <p>$Up.FinalPrice</p>
                                           </td>
                                        </tr>
-                                 </tbody>
-                              <% end_loop %>
-                           </table>
-                        </div>
-                        <div class="d-flex paymentinfo py-2" style="border-top: 1px solid #cdcdcd;">
-                           <div class="d-flex align-items-center py-2 px-3 w-100"
-                              style="background-color: #FFFEFB; border: 1px solid #F3DB97;">
-                              <i class='bx bx-bell pr-3'></i>
-                              <p class="m-0 ps-3 d-flex">Terimakasih telah berbelanja di ShoeStore</p>
-                           </div>
-                        </div>
-                        <div class="d-flex payment py-2" style="border-top: 1px solid #cdcdcd;">
-                           <div class="col-8 d-flex flex-column align-items-end">
-                              <p class="m-0">Metode Pembayaran</p>
-                           </div>
-                           <div class="col-4 d-flex flex-column align-items-end">
-                           <p class="m-0">$PaymentMethod</p>
-                        </div>
-                     </div>
-                     <a class="pr-2" href="{$BaseHref}/nota/for/$OrderID"><button type="button" class="genric-btn primary-border showModalButton" style="">Cetak</button></a>
-                     </div>
-                  </div>
-               </div>
-            </div>
-         <% end_if %>
-         <% else_if $Status=='Dikemas' %>
-            <% if $PaymentMethod == 'manualtf' %>
-               <div class="detailOrder order_details_table w-100" id="detailOrder">
-                  <div class="detailContain">
-                     <div class="navtop d-flex justify-content-between px-3 py-2">
-                        <a href="{$BaseHref}/confirm" style="text-decoration: none; color: inherit;">
-                           <div class="textleft d-flex align-items-center" style="cursor: pointer">
-                              <span class="fs-4">﹤</span>
-                              <p class="m-0">Kembali</p>
-                           </div>
-                        </a>
-                        <div class="textright d-flex align-items-center">
-                           <p class="m-0 pr-4">No. Pesanan &nbsp; <span style="font-weight: 600;">$OrderID</span></p>
-                           <p class="m-0" style="color: darkorange; font-weight: 500; text-transform: uppercase;">
-                              Pesanan $Status</p>
-                        </div>
-                     </div>
-                     <div class="text1" style="margin-top: .1rem;">
-                        <div class="d-flex justify-content-between align-items-center py-3 px-3">
-                           <h5 class="m-0">Terimakasih telah berbelanja di SS!</h5>
-                           <a href="/marketplace/productcheckout/manualpayment/$OrderID?invoice=true" class="m-0" style="font-weight: 600;">Lihat Bukti Pembayaran</a>
-                        </div>
-                     </div>
-                     <div class="Orders">
-                        <div class="delivery d-flex flex-column py-3 px-3">
-                           <div class="col-8 col-md-6">
-                              <h6>Alamat Pengiriman</h6>
-                              <p class="m-0 py-1">$CustomerName</p>
-                              <p class="m-0">$CustomerHandphone</p>
-                              <p class="m-0">$CustomerAddress</p>
-                           </div>
-                        </div>
-                        <div class="allproduct d-flex flex-column py-3 px-3">
-                           <div class="table-responsive">
-                              <table class="table">
-                                 <thead>
-                                    <tr>
-                                       <th scope="col">Product</th>
-                                       <th></th>
-                                       <th>Product Price</th>
-                                       <th scope="col">Quantity</th>
-                                       <th scope="col">Total</th>
-                                    </tr>
-                                 </thead>
-                                 <% loop $Up.ItemsByVendor %>
-                                    <tbody>
-                                             <tr>
-                                                <th></th>
-                                             </tr>
-                                             <tr style="background-color: #fff;">
-                                                <th colspan="5" style="border-top: none; border-bottom: 1px solid #dee2e6; border-radius: 10px 10px 0 0;"><i class='bx bx-store'></i> $Vendor.Name</th>
-                                             </tr>
-                                          <% loop $Items %>
-                                             <tr style="background-color: #fff;" class="items">
-                                                   <td class="col-1" style="border-top: none; border-radius: 0 0 0 10px;">
-                                                      <img src="$ProductImage" class="img-fluid">
-                                                   </td>
-                                                   <td style="border-top: none;">
-                                                      <p style="margin-top: 1.25rem;">$ProductTitle ($ProductVariant)</p>
-                                                   </td>
-                                                   <td style="border-top: none;">
-                                                   <p id="price" style="margin-top: 1.25rem;">$ProductPrice</p>
-                                                   </td>
-                                                   <td style="border-top: none;">
-                                                      <h5 id="quantity" style="margin-top: 1.25rem;">x $ProductQuantity</h5>
-                                                   </td>
-                                                   <td style="border-top: none; border-radius: 0 0 10px 0;">
-                                                      <p id="totalprice"style="margin-top: 1.25rem;"> </p>
-                                                   </td>
-                                             </tr>
-                                          <% end_loop %>
-                                    
-                                          <tr>
-                                             <td></td>
-                                             <td></td>
-                                             <td>
-                                                <h5></h5>
-                                             </td>
-                                             <td>
-                                                <h4>Subtotal</h4>
-                                             </td>
-                                             <td>
-                                                <p id="SubTotal"></p>
-                                             </td>
-                                          </tr>
-                                          <tr>
-                                             <td></td>
-                                             <td></td>
-                                             <td>
-                                                <h5></h5>
-                                             </td>
-                                             <td>
-                                                <h4>Shipping</h4>
-                                             </td>
-                                             <td>
-                                                <p>$Up.ProductCostShipping</p>
-                                             </td>
-                                          </tr>
-                                          <% if $Up.Items.First.Diskon %>
-                                             <tr>
-                                                <td></td>
-                                                <td></td>
-                                                <td>
-                                                   <h5></h5>
-                                                </td>
-                                                <td>
-                                                   <h4>Diskon</h4>
-                                                </td>
-                                                <td>
-                                                   <p><% loop $Up.Items.First %>$Diskon%<% end_loop %>
-                                                   </p>
-                                                </td>
-                                             </tr>
-                                          <% end_if %>
-                                          <tr>
-                                             <td></td>
-                                             <td></td>
-                                             <td>
-                                                <h5></h5>
-                                             </td>
-                                             <td>
-                                                <h4>Total</h4>
-                                             </td>
-                                             <td>
-                                                <p>$Up.FinalPrice</p>
-                                             </td>
-                                          </tr>
                                     </tbody>
                                  <% end_loop %>
                               </table>
@@ -911,16 +920,178 @@
                                  </tr>
                               </thead>
                               <% loop $Up.ItemsByVendor %>
-                                 <tbody>
-                                          <tr>
-                                             <th></th>
-                                          </tr>
-                                          <tr style="background-color: #fff;">
-                                             <th colspan="5" style="border-top: none; border-bottom: 1px solid #dee2e6; border-radius: 10px 10px 0 0;"><i class='bx bx-store'></i> $Vendor.Name</th>
-                                          </tr>
+                                 <tbody style="border-top: none;">
+                                    <tr>
+                                       <th></th>
+                                    </tr>
+                                    <tr style="background-color: #fff;">
+                                       <th colspan="5" style="border-top: none; border-bottom: 1px solid #dee2e6; border-radius: 10px 10px 0 0;"><i class='bx bx-store pt-2'></i> $Vendor.Name</th>
+                                    </tr>
+                                    <% loop $Items %>
+                                       <tr style="background-color: #fff;" class="items">
+                                             <td class="col-1" style="border-top: none;">
+                                                <img src="$ProductImage" class="img-fluid">
+                                             </td>
+                                             <td style="border-top: none;">
+                                                <p style="margin-top: 1.25rem;">$ProductTitle ($ProductVariant)</p>
+                                             </td>
+                                             <td style="border-top: none;">
+                                             <p id="price" style="margin-top: 1.25rem;">$ProductPrice</p>
+                                             </td>
+                                             <td style="border-top: none;">
+                                                <h5 id="quantity" style="margin-top: 1.25rem;">x $ProductQuantity</h5>
+                                             </td>
+                                             <td style="border-top: none;">
+                                                <p id="totalprice"style="margin-top: 1.25rem;"> </p>
+                                             </td>
+                                       </tr>
+                                    <% end_loop %>
+                                    <tr style="background-color: #fff;">
+                                       <th colspan="5" style="border-top: none; border-bottom: 1px solid #dee2e6; border-radius: 0 0 10px 10px;"></th>
+                                    </tr>
+                              
+                                    <tr>
+                                       <td></td>
+                                       <td></td>
+                                       <td>
+                                          <h5></h5>
+                                       </td>
+                                       <td>
+                                          <h4>Subtotal</h4>
+                                       </td>
+                                       <td>
+                                          <p id="SubTotal"></p>
+                                       </td>
+                                    </tr>
+                                    <tr>
+                                       <td></td>
+                                       <td></td>
+                                       <td>
+                                          <h5></h5>
+                                       </td>
+                                       <td>
+                                          <h4>Shipping</h4>
+                                       </td>
+                                       <td>
+                                          <p>$Up.ProductCostShipping</p>
+                                       </td>
+                                    </tr>
+                                    <% if $Up.Items.First.Diskon %>
+                                       <tr>
+                                          <td></td>
+                                          <td></td>
+                                          <td>
+                                             <h5></h5>
+                                          </td>
+                                          <td>
+                                             <h4>Diskon</h4>
+                                          </td>
+                                          <td>
+                                             <p><% loop $Up.Items.First %>$Diskon%<% end_loop %>
+                                             </p>
+                                          </td>
+                                       </tr>
+                                    <% end_if %>
+                                    <tr>
+                                       <td></td>
+                                       <td></td>
+                                       <td>
+                                          <h5></h5>
+                                       </td>
+                                       <td>
+                                          <h4>Total</h4>
+                                       </td>
+                                       <td>
+                                          <p>$Up.FinalPrice</p>
+                                       </td>
+                                    </tr>
+                                 </tbody>
+                              <% end_loop %>
+                           </table>
+                        </div>
+                        <div class="d-flex paymentinfo py-2" style="border-top: 1px solid #cdcdcd;">
+                           <div class="d-flex align-items-center py-2 px-3 w-100"
+                              style="background-color: #FFFEFB; border: 1px solid #F3DB97;">
+                              <i class='bx bx-bell pr-3'></i>
+                              <p class="m-0 ps-3 d-flex">Barang sedang dikemas oleh penjual dan akan dikirim secepatnya</p>
+                           </div>
+                        </div>
+                        <div class="d-flex payment py-2" style="border-top: 1px solid #cdcdcd;">
+                           <div class="col-8 d-flex flex-column align-items-end">
+                              <p class="m-0">Metode Pembayaran</p>
+                           </div>
+                           <div class="col-4 d-flex flex-column align-items-end">
+                              <p class="m-0">$PaymentMethod</p>
+                           </div>
+                        </div>
+                        <div class="d-flex justify-content-end pt-4">
+                        <a class="pr-2" href="{$BaseHref}/nota/for/$OrderID"><button type="button" class="genric-btn primary-border showModalButton" style="">Cetak</button></a>
+                           <button type="button" class="genric-btn danger-border showModalButton" style=""
+                              data-toggle="modal" data-target="#cancelbtn"
+                              data-title="$ProductTitle" data-get="$Up.OrderID" data-image="$ProductImage"
+                              data-variant="$ProductVariant" data-id="$ProductID"
+                              data-quantity="$ProductQuantity">Batalkan Pesanan</button>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         <% end_if %>
+         <% else_if $Status=='Dikirim' %>
+            <% if $PaymentMethod == 'Manual Transfer' %>
+               <div class="detailOrder order_details_table w-100" id="detailOrder">
+                  <div class="detailContain">
+                     <div class="navtop d-flex justify-content-between px-3 py-2">
+                        <a href="{$BaseHref}/confirm" style="text-decoration: none; color: inherit;">
+                           <div class="textleft d-flex align-items-center" style="cursor: pointer">
+                              <span class="fs-4">﹤</span>
+                              <p class="m-0">Kembali</p>
+                           </div>
+                        </a>
+                        <div class="textright d-flex align-items-center">
+                           <p class="m-0 pr-4">No. Pesanan &nbsp; <span style="font-weight: 600;">$OrderID</span></p>
+                           <p class="m-0" style="color: darkorange; font-weight: 500; text-transform: uppercase;">
+                              Pesanan $Status</p>
+                        </div>
+                     </div>
+                     <div class="text1" style="margin-top: .1rem;">
+                        <div class="d-flex justify-content-between align-items-center py-3 px-3">
+                           <h5 class="m-0">Terimakasih telah berbelanja di SS!</h5>
+                           <a href="/marketplace/productcheckout/manualpayment/$OrderID?invoice=true" class="m-0" style="font-weight: 600;">Lihat Bukti Pembayaran</a>
+                        </div>
+                     </div>
+                     <div class="Orders">
+                        <div class="delivery d-flex flex-column py-3 px-3">
+                           <div class="col-8 col-md-6">
+                              <h6>Alamat Pengiriman</h6>
+                              <p class="m-0 py-1">$CustomerName</p>
+                              <p class="m-0">$CustomerHandphone</p>
+                              <p class="m-0">$CustomerAddress</p>
+                           </div>
+                        </div>
+                        <div class="allproduct d-flex flex-column py-3 px-3">
+                           <div class="table-responsive">
+                              <table class="table">
+                                 <thead>
+                                    <tr>
+                                       <th scope="col">Product</th>
+                                       <th></th>
+                                       <th>Product Price</th>
+                                       <th scope="col">Quantity</th>
+                                       <th scope="col">Total</th>
+                                    </tr>
+                                 </thead>
+                                 <% loop $Up.ItemsByVendor %>
+                                    <tbody style="border-top: none;">
+                                       <tr>
+                                          <th></th>
+                                       </tr>
+                                       <tr style="background-color: #fff;">
+                                          <th colspan="5" style="border-top: none; border-bottom: 1px solid #dee2e6; border-radius: 10px 10px 0 0;"><i class='bx bx-store pt-2'></i> $Vendor.Name</th>
+                                       </tr>
                                        <% loop $Items %>
                                           <tr style="background-color: #fff;" class="items">
-                                                <td class="col-1" style="border-top: none; border-radius: 0 0 0 10px;">
+                                                <td class="col-1" style="border-top: none;">
                                                    <img src="$ProductImage" class="img-fluid">
                                                 </td>
                                                 <td style="border-top: none;">
@@ -932,11 +1103,14 @@
                                                 <td style="border-top: none;">
                                                    <h5 id="quantity" style="margin-top: 1.25rem;">x $ProductQuantity</h5>
                                                 </td>
-                                                <td style="border-top: none; border-radius: 0 0 10px 0;">
+                                                <td style="border-top: none;">
                                                    <p id="totalprice"style="margin-top: 1.25rem;"> </p>
                                                 </td>
                                           </tr>
                                        <% end_loop %>
+                                       <tr style="background-color: #fff;">
+                                          <th colspan="5" style="border-top: none; border-bottom: 1px solid #dee2e6; border-radius: 0 0 10px 10px;"></th>
+                                       </tr>
                                  
                                        <tr>
                                           <td></td>
@@ -993,165 +1167,6 @@
                                              <p>$Up.FinalPrice</p>
                                           </td>
                                        </tr>
-                                 </tbody>
-                              <% end_loop %>
-                           </table>
-                        </div>
-                        <div class="d-flex paymentinfo py-2" style="border-top: 1px solid #cdcdcd;">
-                           <div class="d-flex align-items-center py-2 px-3 w-100"
-                              style="background-color: #FFFEFB; border: 1px solid #F3DB97;">
-                              <i class='bx bx-bell pr-3'></i>
-                              <p class="m-0 ps-3 d-flex">Barang sedang dikemas oleh penjual dan akan dikirim secepatnya</p>
-                           </div>
-                        </div>
-                        <div class="d-flex payment py-2" style="border-top: 1px solid #cdcdcd;">
-                           <div class="col-8 d-flex flex-column align-items-end">
-                              <p class="m-0">Metode Pembayaran</p>
-                           </div>
-                           <div class="col-4 d-flex flex-column align-items-end">
-                              <p class="m-0">$PaymentMethod</p>
-                           </div>
-                        </div>
-                        <div class="d-flex justify-content-end pt-4">
-                        <a class="pr-2" href="{$BaseHref}/nota/for/$OrderID"><button type="button" class="genric-btn primary-border showModalButton" style="">Cetak</button></a>
-                           <button type="button" class="genric-btn danger-border showModalButton" style=""
-                              data-toggle="modal" data-target="#cancelbtn"
-                              data-title="$ProductTitle" data-get="$Up.OrderID" data-image="$ProductImage"
-                              data-variant="$ProductVariant" data-id="$ProductID"
-                              data-quantity="$ProductQuantity">Batalkan Pesanan</button>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-            </div>
-         <% end_if %>
-         <% else_if $Status=='Dikirim' %>
-            <% if $PaymentMethod == 'manualtf' %>
-               <div class="detailOrder order_details_table w-100" id="detailOrder">
-                  <div class="detailContain">
-                     <div class="navtop d-flex justify-content-between px-3 py-2">
-                        <a href="{$BaseHref}/confirm" style="text-decoration: none; color: inherit;">
-                           <div class="textleft d-flex align-items-center" style="cursor: pointer">
-                              <span class="fs-4">﹤</span>
-                              <p class="m-0">Kembali</p>
-                           </div>
-                        </a>
-                        <div class="textright d-flex align-items-center">
-                           <p class="m-0 pr-4">No. Pesanan &nbsp; <span style="font-weight: 600;">$OrderID</span></p>
-                           <p class="m-0" style="color: darkorange; font-weight: 500; text-transform: uppercase;">
-                              Pesanan $Status</p>
-                        </div>
-                     </div>
-                     <div class="text1" style="margin-top: .1rem;">
-                        <div class="d-flex justify-content-between align-items-center py-3 px-3">
-                           <h5 class="m-0">Terimakasih telah berbelanja di SS!</h5>
-                           <a href="/marketplace/productcheckout/manualpayment/$OrderID?invoice=true" class="m-0" style="font-weight: 600;">Lihat Bukti Pembayaran</a>
-                        </div>
-                     </div>
-                     <div class="Orders">
-                        <div class="delivery d-flex flex-column py-3 px-3">
-                           <div class="col-8 col-md-6">
-                              <h6>Alamat Pengiriman</h6>
-                              <p class="m-0 py-1">$CustomerName</p>
-                              <p class="m-0">$CustomerHandphone</p>
-                              <p class="m-0">$CustomerAddress</p>
-                           </div>
-                        </div>
-                        <div class="allproduct d-flex flex-column py-3 px-3">
-                           <div class="table-responsive">
-                              <table class="table">
-                                 <thead>
-                                    <tr>
-                                       <th scope="col">Product</th>
-                                       <th></th>
-                                       <th>Product Price</th>
-                                       <th scope="col">Quantity</th>
-                                       <th scope="col">Total</th>
-                                    </tr>
-                                 </thead>
-                                 <% loop $Up.ItemsByVendor %>
-                                    <tbody>
-                                             <tr>
-                                                <th></th>
-                                             </tr>
-                                             <tr style="background-color: #fff;">
-                                                <th colspan="5" style="border-top: none; border-bottom: 1px solid #dee2e6; border-radius: 10px 10px 0 0;"><i class='bx bx-store'></i> $Vendor.Name</th>
-                                             </tr>
-                                          <% loop $Items %>
-                                             <tr style="background-color: #fff;" class="items">
-                                                   <td class="col-1" style="border-top: none; border-radius: 0 0 0 10px;">
-                                                      <img src="$ProductImage" class="img-fluid">
-                                                   </td>
-                                                   <td style="border-top: none;">
-                                                      <p style="margin-top: 1.25rem;">$ProductTitle ($ProductVariant)</p>
-                                                   </td>
-                                                   <td style="border-top: none;">
-                                                   <p id="price" style="margin-top: 1.25rem;">$ProductPrice</p>
-                                                   </td>
-                                                   <td style="border-top: none;">
-                                                      <h5 id="quantity" style="margin-top: 1.25rem;">x $ProductQuantity</h5>
-                                                   </td>
-                                                   <td style="border-top: none; border-radius: 0 0 10px 0;">
-                                                      <p id="totalprice"style="margin-top: 1.25rem;"> </p>
-                                                   </td>
-                                             </tr>
-                                          <% end_loop %>
-                                    
-                                          <tr>
-                                             <td></td>
-                                             <td></td>
-                                             <td>
-                                                <h5></h5>
-                                             </td>
-                                             <td>
-                                                <h4>Subtotal</h4>
-                                             </td>
-                                             <td>
-                                                <p id="SubTotal"></p>
-                                             </td>
-                                          </tr>
-                                          <tr>
-                                             <td></td>
-                                             <td></td>
-                                             <td>
-                                                <h5></h5>
-                                             </td>
-                                             <td>
-                                                <h4>Shipping</h4>
-                                             </td>
-                                             <td>
-                                                <p>$Up.ProductCostShipping</p>
-                                             </td>
-                                          </tr>
-                                          <% if $Up.Items.First.Diskon %>
-                                             <tr>
-                                                <td></td>
-                                                <td></td>
-                                                <td>
-                                                   <h5></h5>
-                                                </td>
-                                                <td>
-                                                   <h4>Diskon</h4>
-                                                </td>
-                                                <td>
-                                                   <p><% loop $Up.Items.First %>$Diskon%<% end_loop %>
-                                                   </p>
-                                                </td>
-                                             </tr>
-                                          <% end_if %>
-                                          <tr>
-                                             <td></td>
-                                             <td></td>
-                                             <td>
-                                                <h5></h5>
-                                             </td>
-                                             <td>
-                                                <h4>Total</h4>
-                                             </td>
-                                             <td>
-                                                <p>$Up.FinalPrice</p>
-                                             </td>
-                                          </tr>
                                     </tbody>
                                  <% end_loop %>
                               </table>
@@ -1223,16 +1238,175 @@
                                  </tr>
                               </thead>
                               <% loop $Up.ItemsByVendor %>
-                                 <tbody>
-                                          <tr>
-                                             <th></th>
-                                          </tr>
-                                          <tr style="background-color: #fff;">
-                                             <th colspan="5" style="border-top: none; border-bottom: 1px solid #dee2e6; border-radius: 10px 10px 0 0;"><i class='bx bx-store'></i> $Vendor.Name</th>
-                                          </tr>
+                                 <tbody style="border-top: none;">
+                                    <tr>
+                                       <th></th>
+                                    </tr>
+                                    <tr style="background-color: #fff;">
+                                       <th colspan="5" style="border-top: none; border-bottom: 1px solid #dee2e6; border-radius: 10px 10px 0 0;"><i class='bx bx-store pt-2'></i> $Vendor.Name</th>
+                                    </tr>
+                                    <% loop $Items %>
+                                       <tr style="background-color: #fff;" class="items">
+                                             <td class="col-1" style="border-top: none;">
+                                                <img src="$ProductImage" class="img-fluid">
+                                             </td>
+                                             <td style="border-top: none;">
+                                                <p style="margin-top: 1.25rem;">$ProductTitle ($ProductVariant)</p>
+                                             </td>
+                                             <td style="border-top: none;">
+                                             <p id="price" style="margin-top: 1.25rem;">$ProductPrice</p>
+                                             </td>
+                                             <td style="border-top: none;">
+                                                <h5 id="quantity" style="margin-top: 1.25rem;">x $ProductQuantity</h5>
+                                             </td>
+                                             <td style="border-top: none;">
+                                                <p id="totalprice"style="margin-top: 1.25rem;"> </p>
+                                             </td>
+                                       </tr>
+                                    <% end_loop %>
+                                    <tr style="background-color: #fff;">
+                                       <th colspan="5" style="border-top: none; border-bottom: 1px solid #dee2e6; border-radius: 0 0 10px 10px;"></th>
+                                    </tr>
+                              
+                                    <tr>
+                                       <td></td>
+                                       <td></td>
+                                       <td>
+                                          <h5></h5>
+                                       </td>
+                                       <td>
+                                          <h4>Subtotal</h4>
+                                       </td>
+                                       <td>
+                                          <p id="SubTotal"></p>
+                                       </td>
+                                    </tr>
+                                    <tr>
+                                       <td></td>
+                                       <td></td>
+                                       <td>
+                                          <h5></h5>
+                                       </td>
+                                       <td>
+                                          <h4>Shipping</h4>
+                                       </td>
+                                       <td>
+                                          <p>$Up.ProductCostShipping</p>
+                                       </td>
+                                    </tr>
+                                    <% if $Up.Items.First.Diskon %>
+                                       <tr>
+                                          <td></td>
+                                          <td></td>
+                                          <td>
+                                             <h5></h5>
+                                          </td>
+                                          <td>
+                                             <h4>Diskon</h4>
+                                          </td>
+                                          <td>
+                                             <p><% loop $Up.Items.First %>$Diskon%<% end_loop %>
+                                             </p>
+                                          </td>
+                                       </tr>
+                                    <% end_if %>
+                                    <tr>
+                                       <td></td>
+                                       <td></td>
+                                       <td>
+                                          <h5></h5>
+                                       </td>
+                                       <td>
+                                          <h4>Total</h4>
+                                       </td>
+                                       <td>
+                                          <p>$Up.FinalPrice</p>
+                                       </td>
+                                    </tr>
+                                 </tbody>
+                              <% end_loop %>
+                           </table>
+                        </div>
+                        <div class="d-flex paymentinfo py-2" style="border-top: 1px solid #cdcdcd;">
+                           <div class="d-flex align-items-center py-2 px-3 w-100"
+                              style="background-color: #FFFEFB; border: 1px solid #F3DB97;">
+                              <i class='bx bx-bell pr-3'></i>
+                              <p class="m-0 ps-3 d-flex">Produk telah dikirim, tunggu produk yang anda pesan sampai ke tujuan</p>
+                           </div>
+                        </div>
+                        <div class="d-flex payment py-2" style="border-top: 1px solid #cdcdcd;">
+                           <div class="col-8 d-flex flex-column align-items-end">
+                              <p class="m-0">Metode Pembayaran</p>
+                           </div>
+                           <div class="col-4 d-flex flex-column align-items-end">
+                              <p class="m-0">$PaymentMethod</p>
+                           </div>
+                        </div>
+                        <div class="d-flex justify-content-end pt-4">
+                        <a class="pr-2" href="{$BaseHref}/nota/for/$OrderID"><button type="button" class="genric-btn primary-border showModalButton" style="">Cetak</button></a>
+                           <button type="button" class="genric-btn primary-border" id="receivedBtn"
+                              data-orderid="$OrderID">Pesanan Diterima</button>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         <% end_if %>
+         <% else_if $Status=='Dibatalkan' %>
+            <% if $PaymentMethod == 'Manual Transfer' %>
+               <div class="detailOrder order_details_table w-100" id="detailOrder">
+                  <div class="detailContain">
+                     <div class="navtop d-flex justify-content-between px-3 py-2">
+                        <a href="{$BaseHref}/confirm" style="text-decoration: none; color: inherit;">
+                           <div class="textleft d-flex align-items-center" style="cursor: pointer">
+                              <span class="fs-4">﹤</span>
+                              <p class="m-0">Kembali</p>
+                           </div>
+                        </a>
+                        <div class="textright d-flex align-items-center">
+                           <p class="m-0 pr-4">No. Pesanan &nbsp; <span style="font-weight: 600;">$OrderID</span></p>
+                           <p class="m-0" style="color: darkorange; font-weight: 500; text-transform: uppercase;">
+                              Pesanan $Status</p>
+                        </div>
+                     </div>
+                     <div class="text1" style="margin-top: .1rem;">
+                        <div class="d-flex justify-content-between align-items-center py-3 px-3">
+                           <h5 class="m-0">Terimakasih telah berbelanja di SS!</h5>
+                           <a href="/marketplace/productcheckout/manualpayment/$OrderID?invoice=true" class="m-0" style="font-weight: 600;">Lihat Bukti Pembayaran</a>
+                        </div>
+                     </div>
+                     <div class="Orders">
+                        <div class="delivery d-flex flex-column py-3 px-3">
+                           <div class="col-8 col-md-6">
+                              <h6>Alamat Pengiriman</h6>
+                              <p class="m-0 py-1">$CustomerName</p>
+                              <p class="m-0">$CustomerHandphone</p>
+                              <p class="m-0">$CustomerAddress</p>
+                           </div>
+                        </div>
+                        <div class="allproduct d-flex flex-column py-3 px-3">
+                           <div class="table-responsive">
+                              <table class="table">
+                                 <thead>
+                                    <tr>
+                                       <th scope="col">Product</th>
+                                       <th></th>
+                                       <th>Product Price</th>
+                                       <th scope="col">Quantity</th>
+                                       <th scope="col">Total</th>
+                                    </tr>
+                                 </thead>
+                                 <% loop $Up.ItemsByVendor %>
+                                    <tbody style="border-top: none;">
+                                       <tr>
+                                          <th></th>
+                                       </tr>
+                                       <tr style="background-color: #fff;">
+                                          <th colspan="5" style="border-top: none; border-bottom: 1px solid #dee2e6; border-radius: 10px 10px 0 0;"><i class='bx bx-store pt-2'></i> $Vendor.Name</th>
+                                       </tr>
                                        <% loop $Items %>
                                           <tr style="background-color: #fff;" class="items">
-                                                <td class="col-1" style="border-top: none; border-radius: 0 0 0 10px;">
+                                                <td class="col-1" style="border-top: none;">
                                                    <img src="$ProductImage" class="img-fluid">
                                                 </td>
                                                 <td style="border-top: none;">
@@ -1244,11 +1418,14 @@
                                                 <td style="border-top: none;">
                                                    <h5 id="quantity" style="margin-top: 1.25rem;">x $ProductQuantity</h5>
                                                 </td>
-                                                <td style="border-top: none; border-radius: 0 0 10px 0;">
+                                                <td style="border-top: none;">
                                                    <p id="totalprice"style="margin-top: 1.25rem;"> </p>
                                                 </td>
                                           </tr>
                                        <% end_loop %>
+                                       <tr style="background-color: #fff;">
+                                          <th colspan="5" style="border-top: none; border-bottom: 1px solid #dee2e6; border-radius: 0 0 10px 10px;"></th>
+                                       </tr>
                                  
                                        <tr>
                                           <td></td>
@@ -1305,162 +1482,6 @@
                                              <p>$Up.FinalPrice</p>
                                           </td>
                                        </tr>
-                                 </tbody>
-                              <% end_loop %>
-                           </table>
-                        </div>
-                        <div class="d-flex paymentinfo py-2" style="border-top: 1px solid #cdcdcd;">
-                           <div class="d-flex align-items-center py-2 px-3 w-100"
-                              style="background-color: #FFFEFB; border: 1px solid #F3DB97;">
-                              <i class='bx bx-bell pr-3'></i>
-                              <p class="m-0 ps-3 d-flex">Produk telah dikirim, tunggu produk yang anda pesan sampai ke tujuan</p>
-                           </div>
-                        </div>
-                        <div class="d-flex payment py-2" style="border-top: 1px solid #cdcdcd;">
-                           <div class="col-8 d-flex flex-column align-items-end">
-                              <p class="m-0">Metode Pembayaran</p>
-                           </div>
-                           <div class="col-4 d-flex flex-column align-items-end">
-                              <p class="m-0">$PaymentMethod</p>
-                           </div>
-                        </div>
-                        <div class="d-flex justify-content-end pt-4">
-                        <a class="pr-2" href="{$BaseHref}/nota/for/$OrderID"><button type="button" class="genric-btn primary-border showModalButton" style="">Cetak</button></a>
-                           <button type="button" class="genric-btn primary-border" id="receivedBtn"
-                              data-orderid="$OrderID">Pesanan Diterima</button>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-            </div>
-         <% end_if %>
-         <% else_if $Status=='Dibatalkan' %>
-            <% if $PaymentMethod == 'manualtf' %>
-               <div class="detailOrder order_details_table w-100" id="detailOrder">
-                  <div class="detailContain">
-                     <div class="navtop d-flex justify-content-between px-3 py-2">
-                        <a href="{$BaseHref}/confirm" style="text-decoration: none; color: inherit;">
-                           <div class="textleft d-flex align-items-center" style="cursor: pointer">
-                              <span class="fs-4">﹤</span>
-                              <p class="m-0">Kembali</p>
-                           </div>
-                        </a>
-                        <div class="textright d-flex align-items-center">
-                           <p class="m-0 pr-4">No. Pesanan &nbsp; <span style="font-weight: 600;">$OrderID</span></p>
-                           <p class="m-0" style="color: darkorange; font-weight: 500; text-transform: uppercase;">
-                              Pesanan $Status</p>
-                        </div>
-                     </div>
-                     <div class="text1" style="margin-top: .1rem;">
-                        <div class="d-flex justify-content-between align-items-center py-3 px-3">
-                           <h5 class="m-0">Terimakasih telah berbelanja di SS!</h5>
-                           <a href="/marketplace/productcheckout/manualpayment/$OrderID?invoice=true" class="m-0" style="font-weight: 600;">Lihat Bukti Pembayaran</a>
-                        </div>
-                     </div>
-                     <div class="Orders">
-                        <div class="delivery d-flex flex-column py-3 px-3">
-                           <div class="col-8 col-md-6">
-                              <h6>Alamat Pengiriman</h6>
-                              <p class="m-0 py-1">$CustomerName</p>
-                              <p class="m-0">$CustomerHandphone</p>
-                              <p class="m-0">$CustomerAddress</p>
-                           </div>
-                        </div>
-                        <div class="allproduct d-flex flex-column py-3 px-3">
-                           <div class="table-responsive">
-                              <table class="table">
-                                 <thead>
-                                    <tr>
-                                       <th scope="col">Product</th>
-                                       <th></th>
-                                       <th>Product Price</th>
-                                       <th scope="col">Quantity</th>
-                                       <th scope="col">Total</th>
-                                    </tr>
-                                 </thead>
-                                 <% loop $Up.ItemsByVendor %>
-                                    <tbody>
-                                             <tr>
-                                                <th></th>
-                                             </tr>
-                                             <tr style="background-color: #fff;">
-                                                <th colspan="5" style="border-top: none; border-bottom: 1px solid #dee2e6; border-radius: 10px 10px 0 0;"><i class='bx bx-store'></i> $Vendor.Name</th>
-                                             </tr>
-                                          <% loop $Items %>
-                                             <tr style="background-color: #fff;" class="items">
-                                                   <td class="col-1" style="border-top: none; border-radius: 0 0 0 10px;">
-                                                      <img src="$ProductImage" class="img-fluid">
-                                                   </td>
-                                                   <td style="border-top: none;">
-                                                      <p style="margin-top: 1.25rem;">$ProductTitle ($ProductVariant)</p>
-                                                   </td>
-                                                   <td style="border-top: none;">
-                                                   <p id="price" style="margin-top: 1.25rem;">$ProductPrice</p>
-                                                   </td>
-                                                   <td style="border-top: none;">
-                                                      <h5 id="quantity" style="margin-top: 1.25rem;">x $ProductQuantity</h5>
-                                                   </td>
-                                                   <td style="border-top: none; border-radius: 0 0 10px 0;">
-                                                      <p id="totalprice"style="margin-top: 1.25rem;"> </p>
-                                                   </td>
-                                             </tr>
-                                          <% end_loop %>
-                                    
-                                          <tr>
-                                             <td></td>
-                                             <td></td>
-                                             <td>
-                                                <h5></h5>
-                                             </td>
-                                             <td>
-                                                <h4>Subtotal</h4>
-                                             </td>
-                                             <td>
-                                                <p id="SubTotal"></p>
-                                             </td>
-                                          </tr>
-                                          <tr>
-                                             <td></td>
-                                             <td></td>
-                                             <td>
-                                                <h5></h5>
-                                             </td>
-                                             <td>
-                                                <h4>Shipping</h4>
-                                             </td>
-                                             <td>
-                                                <p>$Up.ProductCostShipping</p>
-                                             </td>
-                                          </tr>
-                                          <% if $Up.Items.First.Diskon %>
-                                             <tr>
-                                                <td></td>
-                                                <td></td>
-                                                <td>
-                                                   <h5></h5>
-                                                </td>
-                                                <td>
-                                                   <h4>Diskon</h4>
-                                                </td>
-                                                <td>
-                                                   <p><% loop $Up.Items.First %>$Diskon%<% end_loop %>
-                                                   </p>
-                                                </td>
-                                             </tr>
-                                          <% end_if %>
-                                          <tr>
-                                             <td></td>
-                                             <td></td>
-                                             <td>
-                                                <h5></h5>
-                                             </td>
-                                             <td>
-                                                <h4>Total</h4>
-                                             </td>
-                                             <td>
-                                                <p>$Up.FinalPrice</p>
-                                             </td>
-                                          </tr>
                                     </tbody>
                                  <% end_loop %>
                               </table>
@@ -1531,33 +1552,63 @@
                                  </tr>
                               </thead>
                               <% loop $Up.ItemsByVendor %>
-                                 <tbody>
-                                          <tr>
-                                             <th></th>
-                                          </tr>
-                                          <tr style="background-color: #fff;">
-                                             <th colspan="5" style="border-top: none; border-bottom: 1px solid #dee2e6; border-radius: 10px 10px 0 0;"><i class='bx bx-store'></i> $Vendor.Name</th>
-                                          </tr>
-                                       <% loop $Items %>
-                                          <tr style="background-color: #fff;" class="items">
-                                                <td class="col-1" style="border-top: none; border-radius: 0 0 0 10px;">
-                                                   <img src="$ProductImage" class="img-fluid">
-                                                </td>
-                                                <td style="border-top: none;">
-                                                   <p style="margin-top: 1.25rem;">$ProductTitle ($ProductVariant)</p>
-                                                </td>
-                                                <td style="border-top: none;">
-                                                <p id="price" style="margin-top: 1.25rem;">$ProductPrice</p>
-                                                </td>
-                                                <td style="border-top: none;">
-                                                   <h5 id="quantity" style="margin-top: 1.25rem;">x $ProductQuantity</h5>
-                                                </td>
-                                                <td style="border-top: none; border-radius: 0 0 10px 0;">
-                                                   <p id="totalprice"style="margin-top: 1.25rem;"> </p>
-                                                </td>
-                                          </tr>
-                                       <% end_loop %>
-                                 
+                                 <tbody style="border-top: none;">
+                                    <tr>
+                                       <th></th>
+                                    </tr>
+                                    <tr style="background-color: #fff;">
+                                       <th colspan="5" style="border-top: none; border-bottom: 1px solid #dee2e6; border-radius: 10px 10px 0 0;"><i class='bx bx-store pt-2'></i> $Vendor.Name</th>
+                                    </tr>
+                                    <% loop $Items %>
+                                       <tr style="background-color: #fff;" class="items">
+                                             <td class="col-1" style="border-top: none;">
+                                                <img src="$ProductImage" class="img-fluid">
+                                             </td>
+                                             <td style="border-top: none;">
+                                                <p style="margin-top: 1.25rem;">$ProductTitle ($ProductVariant)</p>
+                                             </td>
+                                             <td style="border-top: none;">
+                                             <p id="price" style="margin-top: 1.25rem;">$ProductPrice</p>
+                                             </td>
+                                             <td style="border-top: none;">
+                                                <h5 id="quantity" style="margin-top: 1.25rem;">x $ProductQuantity</h5>
+                                             </td>
+                                             <td style="border-top: none;">
+                                                <p id="totalprice"style="margin-top: 1.25rem;"> </p>
+                                             </td>
+                                       </tr>
+                                    <% end_loop %>
+                                    <tr style="background-color: #fff;">
+                                       <th colspan="5" style="border-top: none; border-bottom: 1px solid #dee2e6; border-radius: 0 0 10px 10px;"></th>
+                                    </tr>
+                              
+                                    <tr>
+                                       <td></td>
+                                       <td></td>
+                                       <td>
+                                          <h5></h5>
+                                       </td>
+                                       <td>
+                                          <h4>Subtotal</h4>
+                                       </td>
+                                       <td>
+                                          <p id="SubTotal"></p>
+                                       </td>
+                                    </tr>
+                                    <tr>
+                                       <td></td>
+                                       <td></td>
+                                       <td>
+                                          <h5></h5>
+                                       </td>
+                                       <td>
+                                          <h4>Shipping</h4>
+                                       </td>
+                                       <td>
+                                          <p>$Up.ProductCostShipping</p>
+                                       </td>
+                                    </tr>
+                                    <% if $Up.Items.First.Diskon %>
                                        <tr>
                                           <td></td>
                                           <td></td>
@@ -1565,54 +1616,27 @@
                                              <h5></h5>
                                           </td>
                                           <td>
-                                             <h4>Subtotal</h4>
+                                             <h4>Diskon</h4>
                                           </td>
                                           <td>
-                                             <p id="SubTotal"></p>
+                                             <p><% loop $Up.Items.First %>$Diskon%<% end_loop %>
+                                             </p>
                                           </td>
                                        </tr>
-                                       <tr>
-                                          <td></td>
-                                          <td></td>
-                                          <td>
-                                             <h5></h5>
-                                          </td>
-                                          <td>
-                                             <h4>Shipping</h4>
-                                          </td>
-                                          <td>
-                                             <p>$Up.ProductCostShipping</p>
-                                          </td>
-                                       </tr>
-                                       <% if $Up.Items.First.Diskon %>
-                                          <tr>
-                                             <td></td>
-                                             <td></td>
-                                             <td>
-                                                <h5></h5>
-                                             </td>
-                                             <td>
-                                                <h4>Diskon</h4>
-                                             </td>
-                                             <td>
-                                                <p><% loop $Up.Items.First %>$Diskon%<% end_loop %>
-                                                </p>
-                                             </td>
-                                          </tr>
-                                       <% end_if %>
-                                       <tr>
-                                          <td></td>
-                                          <td></td>
-                                          <td>
-                                             <h5></h5>
-                                          </td>
-                                          <td>
-                                             <h4>Total</h4>
-                                          </td>
-                                          <td>
-                                             <p>$Up.FinalPrice</p>
-                                          </td>
-                                       </tr>
+                                    <% end_if %>
+                                    <tr>
+                                       <td></td>
+                                       <td></td>
+                                       <td>
+                                          <h5></h5>
+                                       </td>
+                                       <td>
+                                          <h4>Total</h4>
+                                       </td>
+                                       <td>
+                                          <p>$Up.FinalPrice</p>
+                                       </td>
+                                    </tr>
                                  </tbody>
                               <% end_loop %>
                            </table>
