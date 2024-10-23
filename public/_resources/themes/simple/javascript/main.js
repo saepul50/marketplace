@@ -3191,12 +3191,12 @@ $('#searchForm').submit(function(e) {
     var noteContent = $("#Notes-product-" + vendorID).val();
     $("#Notes-message-" + vendorID).text(noteContent);
     $("#Notes-" + vendorID).modal('hide');
-});
-$('#loading').show();
-document.body.style.overflow = 'hidden';
-let ajaxPromises = [];
+  });
+  $('#loading').show();
+  document.body.style.overflow = 'hidden';
+  let ajaxPromises = [];
 
-document.querySelectorAll('.singlecheckoutpervendor').forEach(vendor => {
+  document.querySelectorAll('.singlecheckoutpervendor').forEach(vendor => {
     let vendorID = vendor.querySelector('.vendorIDProductCheckout').getAttribute('data-vendor');
     
     function updateTotals(vendorID) {
@@ -3246,6 +3246,12 @@ document.querySelectorAll('.singlecheckoutpervendor').forEach(vendor => {
                 }
             });
             var idRegency = $('#fulldata .regency').text();
+            if (!idRegency) {
+                $('#loading').hide();
+                document.body.style.overflow = 'auto';
+                return reject("Regency ID tidak ada.");
+            }
+
             var regencyID = vendor.querySelector('.vendorIDProductCheckout').getAttribute('data-origin');
 
             $.ajax({
@@ -3300,7 +3306,7 @@ document.querySelectorAll('.singlecheckoutpervendor').forEach(vendor => {
         return formattedIntegerPart.slice(1) + decimalPart;
     }
 
-});
+  });
   Promise.all(ajaxPromises).then(() => {
       $('#loading').hide();
       if($('#loading').hide()){
@@ -3310,8 +3316,6 @@ document.querySelectorAll('.singlecheckoutpervendor').forEach(vendor => {
       console.error("Error in one of the AJAX requests:", error);
       $('#loading').hide(); 
   });
-
-
   
   updateFinalPrice();
   function updateFinalPrice() {

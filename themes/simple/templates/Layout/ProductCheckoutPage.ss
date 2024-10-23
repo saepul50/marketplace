@@ -40,16 +40,16 @@
                         <h3>Billing Details</h3>
                         <form class="row contact_form" action="#" method="post" novalidate="novalidate" id="checkout-form">
                             <div class="col-md-6 form-group p_star">
-                                <input type="text" class="form-control" id="first" name="name" placeholder="First Name" value="<% if $CheckoutProductData %>$Member.FirstName<% end_if %>">
+                                <input type="text" class="form-control" id="first" name="name" placeholder="First Name" <% if $CheckoutProductData %>value=$Member.FirstName<% end_if %>>
                             </div>
                             <div class="col-md-6 form-group p_star">
-                                <input type="text" class="form-control" id="last" name="name"  placeholder="Last Name" value="<% if $CheckoutProductData %>$Member.Surname<% end_if %>">
+                                <input type="text" class="form-control" id="last" name="name"  placeholder="Last Name" <% if $CheckoutProductData %>value=$Member.Surname<% end_if %>>
                             </div>
                             <div class="col-md-6 form-group p_star">
                                 <input type="text" class="form-control" id="numberinput" name="numberinput" placeholder="Phone" required maxlength="14" minlength="12" value="<% if $AddressData %><% loop $AddressData %>$Number<% end_loop %><% end_if %>">
                             </div>
                             <div class="col-md-6 form-group p_star">
-                                <input type="text" class="form-control" id="email" name="compemailany"  placeholder="Email" value="<% if $CheckoutProductData %>$Member.Email<% end_if %>">
+                                <input type="text" class="form-control" id="email" name="compemailany"  placeholder="Email" <% if $CheckoutProductData %>value=$Member.Email<% end_if %>>
                             </div>
                             <div class="col-md-12 form-group p_star">
                                 <select class="country_select province_select">
@@ -204,7 +204,6 @@
                                         <% loop $Diskon %> 
                                             $Diskon %
                                         <% end_loop %>
-                                    <% else %>
                                     <% else %>
                                         0%
                                     <% end_if %>
@@ -449,7 +448,7 @@
         <% end_if %>
     <% end_with %>
 </section>
-<div id="loading" scroll="no" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 9999; display: flex; justify-content: center; align-items: center; overflow:hidden;">
+<div id="loading"  style="display: flex; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 9999;  justify-content: center; align-items: center; overflow:hidden;">
     <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script> 
     <dotlottie-player src="https://lottie.host/b08c7610-119e-4cce-9012-d6090e49248d/rQgFzzs9P8.json" background="transparent" speed="1" style="width: 500px; height: 500px;" loop autoplay></dotlottie-player>
 </div>
