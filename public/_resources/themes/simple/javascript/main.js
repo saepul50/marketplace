@@ -3207,10 +3207,15 @@ $('#searchForm').submit(function(e) {
     $("#Notes-message-" + vendorID).text(noteContent);
     $("#Notes-" + vendorID).modal('hide');
 });
+$('#loading').show();
+if($('#loading').show()){
+    document.body.style.overflow = 'hidden';
+}
+let ajaxPromises = [];
 
-  document.querySelectorAll('.singlecheckoutpervendor').forEach(vendor => {
+document.querySelectorAll('.singlecheckoutpervendor').forEach(vendor => {
     let vendorID = vendor.querySelector('.vendorIDProductCheckout').getAttribute('data-vendor');
-    // alert(vendorID);
+    
     function updateTotals(vendorID) {
         let subtotalproduct = 0;
 
@@ -3220,79 +3225,82 @@ $('#searchForm').submit(function(e) {
         });
 
         let shippingCost = parseFloat($(`.TotalShippingPerVendor-${vendorID}`).text().replace('Rp. ', '').replace(/\./g, ''));
-
         let totalWithShipping = subtotalproduct + (isNaN(shippingCost) ? 0 : shippingCost);
-        // console.log(totalWithShipping)
+
         $(`.TotalPerVendor-${vendorID}`).text(`Rp. ${formatNumber(totalWithShipping)}`);
-        // $(`#TotalPerVendorNF-${vendorID}`).html(totalWithShipping);
     }
 
     updateTotals(vendorID);
 
     $(document).on('change', `input[name='selectorCost-${vendorID}']`, function () {
-      fetchcost(vendorID);
-      updateTotals(vendorID);
-      updateFinalPrice(vendorID);
+        fetchcost(vendorID);
+        updateTotals(vendorID);
+        updateFinalPrice(vendorID);
     });
     
     function fetchcost(vendorID) {
-      var cost = $(`input[name='selectorCost-${vendorID}']:checked`).next('label').data('opt');
-      $(`.TotalShippingPerVendor-${vendorID}`).text(`Rp. ${formatNumber(cost)}`);
-      
-      updateTotals(vendorID);
+        var cost = $(`input[name='selectorCost-${vendorID}']:checked`).next('label').data('opt');
+        $(`.TotalShippingPerVendor-${vendorID}`).text(`Rp. ${formatNumber(cost)}`);
+        
+        updateTotals(vendorID);
     }
 
     $(`input[name='selectorcourir-${vendorID}']`).on('change', function () {
-      fetchcourir(vendorID);
-      updateFinalPrice(vendorID);
+        fetchcourir(vendorID);
+        updateFinalPrice(vendorID);
     });
-    fetchcourir(vendorID);
+    ajaxPromises.push(fetchcourir(vendorID));
 
     function fetchcourir(vendorID) {
-        var courir = $(`input[name='selectorcourir-${vendorID}']:checked`).next('label').data('opt');
-        let totalWeight = 0;
-        vendor.querySelectorAll(`.variantP-${vendorID}`).forEach(item => {
-            const weight = parseFloat(item.getAttribute('data-weight'));
-            if (!isNaN(weight)) {
-                totalWeight += weight;
-            }
-        });
-        var idRegency = $('#fulldata .regency').text();
-        var regencyID = vendor.querySelector('.vendorIDProductCheckout').getAttribute('data-origin');
+        return new Promise((resolve, reject) => {
+            var courir = $(`input[name='selectorcourir-${vendorID}']:checked`).next('label').data('opt');
+            let totalWeight = 0;
+            vendor.querySelectorAll(`.variantP-${vendorID}`).forEach(item => {
+                const weight = parseFloat(item.getAttribute('data-weight'));
+                if (!isNaN(weight)) {
+                    totalWeight += weight;
+                }
+            });
+            var idRegency = $('#fulldata .regency').text();
+            var regencyID = vendor.querySelector('.vendorIDProductCheckout').getAttribute('data-origin');
 
-        $.ajax({
-            url: '/marketplace/productcheckout/rajoCost',
-            type: 'POST',
-            data: {
-                Courir: courir,
-                RegencyID: idRegency,
-                Weight: totalWeight,
-                Origin: regencyID
-            },
-            dataType: 'json',
-            success: function (data) {
-                var options = '';
-                var dataCost = data.rajaongkir.results[0].costs;
-                var courirName = $(`input[name='selectorcourir-${vendorID}']:checked`).next('label').text();
-                var OpsiCourir = null;
-                dataCost.forEach((element, index) => {
-                    let formattedCost = formatNumber(element.cost[0].value);
-                    options += `<div class="payment_item active">
-                                    <div class="radion_btn">
-                                        <input type="radio" id="${element.service}-${vendorID}" name="selectorCost-${vendorID}" ${index === 0 ? 'checked' : ''}>
-                                        <label class="rajoCostOptionLabel" data-opt="${element.cost[0].value}" for="${element.service}-${vendorID}">${element.description} (${formattedCost})</label>
-                                        <div class="check"></div>
-                                    </div>
-                                </div>`;
-                });
-                $(`.rajoCostOption-${vendorID}`).html(options);
-                OpsiCourir = courirName;
-                $(`#OpsiSelect-${vendorID}`).text(OpsiCourir);
-                // console.log(OpsiCourir)
-                fetchcost(vendorID);
-                updateFinalPrice();
-            },
-            error: function (jqXHR, textStatus, errorThrown) {}
+            $.ajax({
+                url: '/marketplace/productcheckout/rajoCost',
+                type: 'POST',
+                data: {
+                    Courir: courir,
+                    RegencyID: idRegency,
+                    Weight: totalWeight,
+                    Origin: regencyID
+                },
+                dataType: 'json',
+                success: function (data) {
+                    var options = '';
+                    var dataCost = data.rajaongkir.results[0].costs;
+                    var courirName = $(`input[name='selectorcourir-${vendorID}']:checked`).next('label').text();
+                    var OpsiCourir = null;
+                    dataCost.forEach((element, index) => {
+                        let formattedCost = formatNumber(element.cost[0].value);
+                        options += `<div class="payment_item active">
+                                        <div class="radion_btn">
+                                            <input type="radio" id="${element.service}-${vendorID}" name="selectorCost-${vendorID}" ${index === 0 ? 'checked' : ''}>
+                                            <label class="rajoCostOptionLabel" data-opt="${element.cost[0].value}" for="${element.service}-${vendorID}">${element.description} (${formattedCost})</label>
+                                            <div class="check"></div>
+                                        </div>
+                                    </div>`;
+                    });
+                    $(`.rajoCostOption-${vendorID}`).html(options);
+                    OpsiCourir = courirName;
+                    $(`#OpsiSelect-${vendorID}`).text(OpsiCourir);
+                    
+                    fetchcost(vendorID);
+                    updateFinalPrice();
+                    resolve();
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    reject(errorThrown);
+                }
+            });
         });
     }
 
@@ -3308,7 +3316,18 @@ $('#searchForm').submit(function(e) {
         return formattedIntegerPart.slice(1) + decimalPart;
     }
 
+});
+
+  Promise.all(ajaxPromises).then(() => {
+      $('#loading').hide();
+      if($('#loading').hide()){
+        document.body.style.overflow = 'auto';
+      }
+  }).catch((error) => {
+      console.error("Error in one of the AJAX requests:", error);
+      $('#loading').hide(); 
   });
+
   updateFinalPrice();
   function updateFinalPrice() {
     let totalFinalPrice = 0;

@@ -17,6 +17,7 @@ use SilverStripe\Security\Member;
             'VendorID' => 'Int',
         ];
         private static $has_one = [
+            'Member' => Member::class,
             'HeaderCheckout' => ProductCheckoutHeaderObject::class
         ];
         private static $summary_fields = [
