@@ -203,7 +203,7 @@
                                        <p>$ProductTitle</p>
                                     </td>
                                     <td class="col-4">
-                                       <h5>x $Up.TimeCheckout</h5>
+                                       <h5>x $ProductQuantity</h5>
                                     </td>
                                     <%-- <td class="col">
                                        </td> --%>
@@ -446,69 +446,39 @@
                                     <tr>
                                        <th scope="col">Product</th>
                                        <th></th>
-                                       <th></th>
+                                       <th>Product Price</th>
                                        <th scope="col">Quantity</th>
                                        <th scope="col">Total</th>
                                     </tr>
                                  </thead>
-                                 <tbody>
-                                    <% loop $Up.ItemsByVendor %>
-                                          <tr>
-                                             <th></th>
-                                          </tr>
-                                          <tr style="background-color: #fff;">
-                                             <th colspan="5" style="border-top: none; border-bottom: 1px solid #dee2e6; border-radius: 10px 10px 0 0;"><i class='bx bx-store'></i> $Vendor.Name</th>
-                                          </tr>
-                                       <% loop $Items %>
-                                          <tr style="background-color: #fff;">
-                                                <td class="col-1" style="border-top: none; border-radius: 0 0 0 10px;">
-                                                   <img src="$ProductImage" class="img-fluid">
-                                                </td>
-                                                <td style="border-top: none;">
-                                                   <p>$ProductTitle ($ProductVariant)</p>
-                                                </td>
-                                                <td style="border-top: none;">
-                                                   <p>$ProductPrice</p>
-                                                </td>
-                                                <td style="border-top: none;">
-                                                   <h5>x $ProductQuantity</h5>
-                                                </td>
-                                                <td style="border-top: none; border-radius: 0 0 10px 0;">
-                                                   <p>$ProductTotalPrice</p>
-                                                </td>
-                                          </tr>
-                                       <% end_loop %>
-                                    <% end_loop %>
-                                       <tr>
-                                          <td></td>
-                                          <td></td>
-                                          <td>
-                                             <h5></h5>
-                                          </td>
-                                          <td>
-                                             <h4>Subtotal</h4>
-                                          </td>
-                                          <td>
-                                             <p>
-                                                <% loop $Items.First %>$ProductSubTotalPrice<% end_loop %>
-                                             </p>
-                                          </td>
-                                       </tr>
-                                       <tr>
-                                          <td></td>
-                                          <td></td>
-                                          <td>
-                                             <h5></h5>
-                                          </td>
-                                          <td>
-                                             <h4>Shipping</h4>
-                                          </td>
-                                          <td>
-                                             <p><% loop $Items.First %>$ProductCostShipping<% end_loop %>
-                                             </p>
-                                          </td>
-                                       </tr>
-                                       <% if $Items.First.Diskon %>
+                                 <% loop $Up.ItemsByVendor %>
+                                    <tbody>
+                                             <tr>
+                                                <th></th>
+                                             </tr>
+                                             <tr style="background-color: #fff;">
+                                                <th colspan="5" style="border-top: none; border-bottom: 1px solid #dee2e6; border-radius: 10px 10px 0 0;"><i class='bx bx-store'></i> $Vendor.Name</th>
+                                             </tr>
+                                          <% loop $Items %>
+                                             <tr style="background-color: #fff;" class="items">
+                                                   <td class="col-1" style="border-top: none; border-radius: 0 0 0 10px;">
+                                                      <img src="$ProductImage" class="img-fluid">
+                                                   </td>
+                                                   <td style="border-top: none;">
+                                                      <p style="margin-top: 1.25rem;">$ProductTitle ($ProductVariant)</p>
+                                                   </td>
+                                                   <td style="border-top: none;">
+                                                   <p id="price" style="margin-top: 1.25rem;">$ProductPrice</p>
+                                                   </td>
+                                                   <td style="border-top: none;">
+                                                      <h5 id="quantity" style="margin-top: 1.25rem;">x $ProductQuantity</h5>
+                                                   </td>
+                                                   <td style="border-top: none; border-radius: 0 0 10px 0;">
+                                                      <p id="totalprice"style="margin-top: 1.25rem;"> </p>
+                                                   </td>
+                                             </tr>
+                                          <% end_loop %>
+                                    
                                           <tr>
                                              <td></td>
                                              <td></td>
@@ -516,28 +486,56 @@
                                                 <h5></h5>
                                              </td>
                                              <td>
-                                                <h4>Diskon</h4>
+                                                <h4>Subtotal</h4>
                                              </td>
                                              <td>
-                                                <p><% loop $Items.First %>$Diskon%<% end_loop %>
-                                                </p>
+                                                <p id="SubTotal"></p>
                                              </td>
                                           </tr>
-                                       <% end_if %>
-                                       <tr>
-                                          <td></td>
-                                          <td></td>
-                                          <td>
-                                             <h5></h5>
-                                          </td>
-                                          <td>
-                                             <h4>Total</h4>
-                                          </td>
-                                          <td>
-                                             <p>$FinalPrice</p>
-                                          </td>
-                                       </tr>
-                                 </tbody>
+                                          <tr>
+                                             <td></td>
+                                             <td></td>
+                                             <td>
+                                                <h5></h5>
+                                             </td>
+                                             <td>
+                                                <h4>Shipping</h4>
+                                             </td>
+                                             <td>
+                                                <p>$Up.ProductCostShipping</p>
+                                             </td>
+                                          </tr>
+                                          <% if $Up.Items.First.Diskon %>
+                                             <tr>
+                                                <td></td>
+                                                <td></td>
+                                                <td>
+                                                   <h5></h5>
+                                                </td>
+                                                <td>
+                                                   <h4>Diskon</h4>
+                                                </td>
+                                                <td>
+                                                   <p><% loop $Up.Items.First %>$Diskon%<% end_loop %>
+                                                   </p>
+                                                </td>
+                                             </tr>
+                                          <% end_if %>
+                                          <tr>
+                                             <td></td>
+                                             <td></td>
+                                             <td>
+                                                <h5></h5>
+                                             </td>
+                                             <td>
+                                                <h4>Total</h4>
+                                             </td>
+                                             <td>
+                                                <p>$Up.FinalPrice</p>
+                                             </td>
+                                          </tr>
+                                    </tbody>
+                                 <% end_loop %>
                               </table>
                            </div>
                            <div class="d-flex paymentinfo py-2" style="border-top: 1px solid #cdcdcd;">
@@ -598,61 +596,39 @@
                                  <tr>
                                     <th scope="col">Product</th>
                                     <th></th>
-                                    <th></th>
+                                    <th>Product Price</th>
                                     <th scope="col">Quantity</th>
                                     <th scope="col">Total</th>
                                  </tr>
                               </thead>
-                              <tbody>
-                                 <% loop $items %>
-                                    <tr>
-                                       <td class="col-1">
-                                          <img src="$ProductImage" class="img-fluid">
-                                       </td>
-                                       <td>
-                                          <p>$ProductTitle ($ProductVariant)</p>
-                                       </td>
-                                       <td>
-                                          <p>$ProductPrice</p>
-                                       </td>
-                                       <td>
-                                          <h5>x $ProductQuantity</h5>
-                                       </td>
-                                       <td>
-                                          <p>$ProductTotalPrice</p>
-                                       </td>
-                                    </tr>
-                                 <% end_loop %>
-                                    <tr>
-                                       <td></td>
-                                       <td></td>
-                                       <td>
-                                          <h5></h5>
-                                       </td>
-                                       <td>
-                                          <h4>Subtotal</h4>
-                                       </td>
-                                       <td>
-                                          <p>
-                                             <% loop $Items.First %>$ProductSubTotalPrice<% end_loop %>
-                                          </p>
-                                       </td>
-                                    </tr>
-                                    <tr>
-                                       <td></td>
-                                       <td></td>
-                                       <td>
-                                          <h5></h5>
-                                       </td>
-                                       <td>
-                                          <h4>Shipping</h4>
-                                       </td>
-                                       <td>
-                                          <p><% loop $Items.First %>$ProductCostShipping<% end_loop %>
-                                          </p>
-                                       </td>
-                                    </tr>
-                                    <% if $Items.First.Diskon %>
+                              <% loop $Up.ItemsByVendor %>
+                                 <tbody>
+                                          <tr>
+                                             <th></th>
+                                          </tr>
+                                          <tr style="background-color: #fff;">
+                                             <th colspan="5" style="border-top: none; border-bottom: 1px solid #dee2e6; border-radius: 10px 10px 0 0;"><i class='bx bx-store'></i> $Vendor.Name</th>
+                                          </tr>
+                                       <% loop $Items %>
+                                          <tr style="background-color: #fff;" class="items">
+                                                <td class="col-1" style="border-top: none; border-radius: 0 0 0 10px;">
+                                                   <img src="$ProductImage" class="img-fluid">
+                                                </td>
+                                                <td style="border-top: none;">
+                                                   <p style="margin-top: 1.25rem;">$ProductTitle ($ProductVariant)</p>
+                                                </td>
+                                                <td style="border-top: none;">
+                                                <p id="price" style="margin-top: 1.25rem;">$ProductPrice</p>
+                                                </td>
+                                                <td style="border-top: none;">
+                                                   <h5 id="quantity" style="margin-top: 1.25rem;">x $ProductQuantity</h5>
+                                                </td>
+                                                <td style="border-top: none; border-radius: 0 0 10px 0;">
+                                                   <p id="totalprice"style="margin-top: 1.25rem;"> </p>
+                                                </td>
+                                          </tr>
+                                       <% end_loop %>
+                                 
                                        <tr>
                                           <td></td>
                                           <td></td>
@@ -660,28 +636,56 @@
                                              <h5></h5>
                                           </td>
                                           <td>
-                                             <h4>Diskon</h4>
+                                             <h4>Subtotal</h4>
                                           </td>
                                           <td>
-                                             <p><% loop $Items.First %>$Diskon%<% end_loop %>
-                                             </p>
+                                             <p id="SubTotal"></p>
                                           </td>
                                        </tr>
-                                    <% end_if %>
-                                    <tr>
-                                       <td></td>
-                                       <td></td>
-                                       <td>
-                                          <h5></h5>
-                                       </td>
-                                       <td>
-                                          <h4>Total</h4>
-                                       </td>
-                                       <td>
-                                          <p>$FinalPrice</p>
-                                       </td>
-                                    </tr>
-                              </tbody>
+                                       <tr>
+                                          <td></td>
+                                          <td></td>
+                                          <td>
+                                             <h5></h5>
+                                          </td>
+                                          <td>
+                                             <h4>Shipping</h4>
+                                          </td>
+                                          <td>
+                                             <p>$Up.ProductCostShipping</p>
+                                          </td>
+                                       </tr>
+                                       <% if $Up.Items.First.Diskon %>
+                                          <tr>
+                                             <td></td>
+                                             <td></td>
+                                             <td>
+                                                <h5></h5>
+                                             </td>
+                                             <td>
+                                                <h4>Diskon</h4>
+                                             </td>
+                                             <td>
+                                                <p><% loop $Up.Items.First %>$Diskon%<% end_loop %>
+                                                </p>
+                                             </td>
+                                          </tr>
+                                       <% end_if %>
+                                       <tr>
+                                          <td></td>
+                                          <td></td>
+                                          <td>
+                                             <h5></h5>
+                                          </td>
+                                          <td>
+                                             <h4>Total</h4>
+                                          </td>
+                                          <td>
+                                             <p>$Up.FinalPrice</p>
+                                          </td>
+                                       </tr>
+                                 </tbody>
+                              <% end_loop %>
                            </table>
                         </div>
                         <div class="d-flex paymentinfo py-2" style="border-top: 1px solid #cdcdcd;">
@@ -744,61 +748,39 @@
                                     <tr>
                                        <th scope="col">Product</th>
                                        <th></th>
-                                       <th></th>
+                                       <th>Product Price</th>
                                        <th scope="col">Quantity</th>
                                        <th scope="col">Total</th>
                                     </tr>
                                  </thead>
-                                 <tbody>
-                                    <% loop $items %>
-                                       <tr>
-                                          <td class="col-1">
-                                             <img src="$ProductImage" class="img-fluid">
-                                          </td>
-                                          <td>
-                                             <p>$ProductTitle ($ProductVariant)</p>
-                                          </td>
-                                          <td>
-                                             <p>$ProductPrice</p>
-                                          </td>
-                                          <td>
-                                             <h5>x $ProductQuantity</h5>
-                                          </td>
-                                          <td>
-                                             <p>$ProductTotalPrice</p>
-                                          </td>
-                                       </tr>
-                                    <% end_loop %>
-                                       <tr>
-                                          <td></td>
-                                          <td></td>
-                                          <td>
-                                             <h5></h5>
-                                          </td>
-                                          <td>
-                                             <h4>Subtotal</h4>
-                                          </td>
-                                          <td>
-                                             <p>
-                                                <% loop $Items.First %>$ProductSubTotalPrice<% end_loop %>
-                                             </p>
-                                          </td>
-                                       </tr>
-                                       <tr>
-                                          <td></td>
-                                          <td></td>
-                                          <td>
-                                             <h5></h5>
-                                          </td>
-                                          <td>
-                                             <h4>Shipping</h4>
-                                          </td>
-                                          <td>
-                                             <p><% loop $Items.First %>$ProductCostShipping<% end_loop %>
-                                             </p>
-                                          </td>
-                                       </tr>
-                                       <% if $Items.First.Diskon %>
+                                 <% loop $Up.ItemsByVendor %>
+                                    <tbody>
+                                             <tr>
+                                                <th></th>
+                                             </tr>
+                                             <tr style="background-color: #fff;">
+                                                <th colspan="5" style="border-top: none; border-bottom: 1px solid #dee2e6; border-radius: 10px 10px 0 0;"><i class='bx bx-store'></i> $Vendor.Name</th>
+                                             </tr>
+                                          <% loop $Items %>
+                                             <tr style="background-color: #fff;" class="items">
+                                                   <td class="col-1" style="border-top: none; border-radius: 0 0 0 10px;">
+                                                      <img src="$ProductImage" class="img-fluid">
+                                                   </td>
+                                                   <td style="border-top: none;">
+                                                      <p style="margin-top: 1.25rem;">$ProductTitle ($ProductVariant)</p>
+                                                   </td>
+                                                   <td style="border-top: none;">
+                                                   <p id="price" style="margin-top: 1.25rem;">$ProductPrice</p>
+                                                   </td>
+                                                   <td style="border-top: none;">
+                                                      <h5 id="quantity" style="margin-top: 1.25rem;">x $ProductQuantity</h5>
+                                                   </td>
+                                                   <td style="border-top: none; border-radius: 0 0 10px 0;">
+                                                      <p id="totalprice"style="margin-top: 1.25rem;"> </p>
+                                                   </td>
+                                             </tr>
+                                          <% end_loop %>
+                                    
                                           <tr>
                                              <td></td>
                                              <td></td>
@@ -806,28 +788,56 @@
                                                 <h5></h5>
                                              </td>
                                              <td>
-                                                <h4>Diskon</h4>
+                                                <h4>Subtotal</h4>
                                              </td>
                                              <td>
-                                                <p><% loop $Items.First %>$Diskon%<% end_loop %>
-                                                </p>
+                                                <p id="SubTotal"></p>
                                              </td>
                                           </tr>
-                                       <% end_if %>
-                                       <tr>
-                                          <td></td>
-                                          <td></td>
-                                          <td>
-                                             <h5></h5>
-                                          </td>
-                                          <td>
-                                             <h4>Total</h4>
-                                          </td>
-                                          <td>
-                                             <p>$FinalPrice</p>
-                                          </td>
-                                       </tr>
-                                 </tbody>
+                                          <tr>
+                                             <td></td>
+                                             <td></td>
+                                             <td>
+                                                <h5></h5>
+                                             </td>
+                                             <td>
+                                                <h4>Shipping</h4>
+                                             </td>
+                                             <td>
+                                                <p>$Up.ProductCostShipping</p>
+                                             </td>
+                                          </tr>
+                                          <% if $Up.Items.First.Diskon %>
+                                             <tr>
+                                                <td></td>
+                                                <td></td>
+                                                <td>
+                                                   <h5></h5>
+                                                </td>
+                                                <td>
+                                                   <h4>Diskon</h4>
+                                                </td>
+                                                <td>
+                                                   <p><% loop $Up.Items.First %>$Diskon%<% end_loop %>
+                                                   </p>
+                                                </td>
+                                             </tr>
+                                          <% end_if %>
+                                          <tr>
+                                             <td></td>
+                                             <td></td>
+                                             <td>
+                                                <h5></h5>
+                                             </td>
+                                             <td>
+                                                <h4>Total</h4>
+                                             </td>
+                                             <td>
+                                                <p>$Up.FinalPrice</p>
+                                             </td>
+                                          </tr>
+                                    </tbody>
+                                 <% end_loop %>
                               </table>
                            </div>
                            <div class="d-flex paymentinfo py-2" style="border-top: 1px solid #cdcdcd;">
@@ -857,7 +867,7 @@
                      </div>
                   </div>
                </div>
-               <% else %>
+         <% else %>
                   
             <div class="detailOrder order_details_table w-100" id="detailOrder">
                <div class="detailContain">
@@ -895,61 +905,39 @@
                                  <tr>
                                     <th scope="col">Product</th>
                                     <th></th>
-                                    <th></th>
+                                    <th>Product Price</th>
                                     <th scope="col">Quantity</th>
                                     <th scope="col">Total</th>
                                  </tr>
                               </thead>
-                              <tbody>
-                                 <% loop $items %>
-                                    <tr>
-                                       <td class="col-1">
-                                          <img src="$ProductImage" class="img-fluid">
-                                       </td>
-                                       <td>
-                                          <p>$ProductTitle ($ProductVariant)</p>
-                                       </td>
-                                       <td>
-                                          <p>$ProductPrice</p>
-                                       </td>
-                                       <td>
-                                          <h5>x $ProductQuantity</h5>
-                                       </td>
-                                       <td>
-                                          <p>$ProductTotalPrice</p>
-                                       </td>
-                                    </tr>
-                                 <% end_loop %>
-                                    <tr>
-                                       <td></td>
-                                       <td></td>
-                                       <td>
-                                          <h5></h5>
-                                       </td>
-                                       <td>
-                                          <h4>Subtotal</h4>
-                                       </td>
-                                       <td>
-                                          <p>
-                                             <% loop $Items.First %>$ProductSubTotalPrice<% end_loop %>
-                                          </p>
-                                       </td>
-                                    </tr>
-                                    <tr>
-                                       <td></td>
-                                       <td></td>
-                                       <td>
-                                          <h5></h5>
-                                       </td>
-                                       <td>
-                                          <h4>Shipping</h4>
-                                       </td>
-                                       <td>
-                                          <p><% loop $Items.First %>$ProductCostShipping<% end_loop %>
-                                          </p>
-                                       </td>
-                                    </tr>
-                                    <% if $Items.First.Diskon %>
+                              <% loop $Up.ItemsByVendor %>
+                                 <tbody>
+                                          <tr>
+                                             <th></th>
+                                          </tr>
+                                          <tr style="background-color: #fff;">
+                                             <th colspan="5" style="border-top: none; border-bottom: 1px solid #dee2e6; border-radius: 10px 10px 0 0;"><i class='bx bx-store'></i> $Vendor.Name</th>
+                                          </tr>
+                                       <% loop $Items %>
+                                          <tr style="background-color: #fff;" class="items">
+                                                <td class="col-1" style="border-top: none; border-radius: 0 0 0 10px;">
+                                                   <img src="$ProductImage" class="img-fluid">
+                                                </td>
+                                                <td style="border-top: none;">
+                                                   <p style="margin-top: 1.25rem;">$ProductTitle ($ProductVariant)</p>
+                                                </td>
+                                                <td style="border-top: none;">
+                                                <p id="price" style="margin-top: 1.25rem;">$ProductPrice</p>
+                                                </td>
+                                                <td style="border-top: none;">
+                                                   <h5 id="quantity" style="margin-top: 1.25rem;">x $ProductQuantity</h5>
+                                                </td>
+                                                <td style="border-top: none; border-radius: 0 0 10px 0;">
+                                                   <p id="totalprice"style="margin-top: 1.25rem;"> </p>
+                                                </td>
+                                          </tr>
+                                       <% end_loop %>
+                                 
                                        <tr>
                                           <td></td>
                                           <td></td>
@@ -957,28 +945,56 @@
                                              <h5></h5>
                                           </td>
                                           <td>
-                                             <h4>Diskon</h4>
+                                             <h4>Subtotal</h4>
                                           </td>
                                           <td>
-                                             <p><% loop $Items.First %>$Diskon%<% end_loop %>
-                                             </p>
+                                             <p id="SubTotal"></p>
                                           </td>
                                        </tr>
-                                    <% end_if %>
-                                    <tr>
-                                       <td></td>
-                                       <td></td>
-                                       <td>
-                                          <h5></h5>
-                                       </td>
-                                       <td>
-                                          <h4>Total</h4>
-                                       </td>
-                                       <td>
-                                          <p>$FinalPrice</p>
-                                       </td>
-                                    </tr>
-                              </tbody>
+                                       <tr>
+                                          <td></td>
+                                          <td></td>
+                                          <td>
+                                             <h5></h5>
+                                          </td>
+                                          <td>
+                                             <h4>Shipping</h4>
+                                          </td>
+                                          <td>
+                                             <p>$Up.ProductCostShipping</p>
+                                          </td>
+                                       </tr>
+                                       <% if $Up.Items.First.Diskon %>
+                                          <tr>
+                                             <td></td>
+                                             <td></td>
+                                             <td>
+                                                <h5></h5>
+                                             </td>
+                                             <td>
+                                                <h4>Diskon</h4>
+                                             </td>
+                                             <td>
+                                                <p><% loop $Up.Items.First %>$Diskon%<% end_loop %>
+                                                </p>
+                                             </td>
+                                          </tr>
+                                       <% end_if %>
+                                       <tr>
+                                          <td></td>
+                                          <td></td>
+                                          <td>
+                                             <h5></h5>
+                                          </td>
+                                          <td>
+                                             <h4>Total</h4>
+                                          </td>
+                                          <td>
+                                             <p>$Up.FinalPrice</p>
+                                          </td>
+                                       </tr>
+                                 </tbody>
+                              <% end_loop %>
                            </table>
                         </div>
                         <div class="d-flex paymentinfo py-2" style="border-top: 1px solid #cdcdcd;">
@@ -1048,61 +1064,39 @@
                                     <tr>
                                        <th scope="col">Product</th>
                                        <th></th>
-                                       <th></th>
+                                       <th>Product Price</th>
                                        <th scope="col">Quantity</th>
                                        <th scope="col">Total</th>
                                     </tr>
                                  </thead>
-                                 <tbody>
-                                    <% loop $items %>
-                                       <tr>
-                                          <td class="col-1">
-                                             <img src="$ProductImage" class="img-fluid">
-                                          </td>
-                                          <td>
-                                             <p>$ProductTitle ($ProductVariant)</p>
-                                          </td>
-                                          <td>
-                                             <p>$ProductPrice</p>
-                                          </td>
-                                          <td>
-                                             <h5>x $ProductQuantity</h5>
-                                          </td>
-                                          <td>
-                                             <p>$ProductTotalPrice</p>
-                                          </td>
-                                       </tr>
-                                    <% end_loop %>
-                                       <tr>
-                                          <td></td>
-                                          <td></td>
-                                          <td>
-                                             <h5></h5>
-                                          </td>
-                                          <td>
-                                             <h4>Subtotal</h4>
-                                          </td>
-                                          <td>
-                                             <p>
-                                                <% loop $Items.First %>$ProductSubTotalPrice<% end_loop %>
-                                             </p>
-                                          </td>
-                                       </tr>
-                                       <tr>
-                                          <td></td>
-                                          <td></td>
-                                          <td>
-                                             <h5></h5>
-                                          </td>
-                                          <td>
-                                             <h4>Shipping</h4>
-                                          </td>
-                                          <td>
-                                             <p><% loop $Items.First %>$ProductCostShipping<% end_loop %>
-                                             </p>
-                                          </td>
-                                       </tr>
-                                       <% if $Items.First.Diskon %>
+                                 <% loop $Up.ItemsByVendor %>
+                                    <tbody>
+                                             <tr>
+                                                <th></th>
+                                             </tr>
+                                             <tr style="background-color: #fff;">
+                                                <th colspan="5" style="border-top: none; border-bottom: 1px solid #dee2e6; border-radius: 10px 10px 0 0;"><i class='bx bx-store'></i> $Vendor.Name</th>
+                                             </tr>
+                                          <% loop $Items %>
+                                             <tr style="background-color: #fff;" class="items">
+                                                   <td class="col-1" style="border-top: none; border-radius: 0 0 0 10px;">
+                                                      <img src="$ProductImage" class="img-fluid">
+                                                   </td>
+                                                   <td style="border-top: none;">
+                                                      <p style="margin-top: 1.25rem;">$ProductTitle ($ProductVariant)</p>
+                                                   </td>
+                                                   <td style="border-top: none;">
+                                                   <p id="price" style="margin-top: 1.25rem;">$ProductPrice</p>
+                                                   </td>
+                                                   <td style="border-top: none;">
+                                                      <h5 id="quantity" style="margin-top: 1.25rem;">x $ProductQuantity</h5>
+                                                   </td>
+                                                   <td style="border-top: none; border-radius: 0 0 10px 0;">
+                                                      <p id="totalprice"style="margin-top: 1.25rem;"> </p>
+                                                   </td>
+                                             </tr>
+                                          <% end_loop %>
+                                    
                                           <tr>
                                              <td></td>
                                              <td></td>
@@ -1110,28 +1104,56 @@
                                                 <h5></h5>
                                              </td>
                                              <td>
-                                                <h4>Diskon</h4>
+                                                <h4>Subtotal</h4>
                                              </td>
                                              <td>
-                                                <p><% loop $Items.First %>$Diskon%<% end_loop %>
-                                                </p>
+                                                <p id="SubTotal"></p>
                                              </td>
                                           </tr>
-                                       <% end_if %>
-                                       <tr>
-                                          <td></td>
-                                          <td></td>
-                                          <td>
-                                             <h5></h5>
-                                          </td>
-                                          <td>
-                                             <h4>Total</h4>
-                                          </td>
-                                          <td>
-                                             <p>$FinalPrice</p>
-                                          </td>
-                                       </tr>
-                                 </tbody>
+                                          <tr>
+                                             <td></td>
+                                             <td></td>
+                                             <td>
+                                                <h5></h5>
+                                             </td>
+                                             <td>
+                                                <h4>Shipping</h4>
+                                             </td>
+                                             <td>
+                                                <p>$Up.ProductCostShipping</p>
+                                             </td>
+                                          </tr>
+                                          <% if $Up.Items.First.Diskon %>
+                                             <tr>
+                                                <td></td>
+                                                <td></td>
+                                                <td>
+                                                   <h5></h5>
+                                                </td>
+                                                <td>
+                                                   <h4>Diskon</h4>
+                                                </td>
+                                                <td>
+                                                   <p><% loop $Up.Items.First %>$Diskon%<% end_loop %>
+                                                   </p>
+                                                </td>
+                                             </tr>
+                                          <% end_if %>
+                                          <tr>
+                                             <td></td>
+                                             <td></td>
+                                             <td>
+                                                <h5></h5>
+                                             </td>
+                                             <td>
+                                                <h4>Total</h4>
+                                             </td>
+                                             <td>
+                                                <p>$Up.FinalPrice</p>
+                                             </td>
+                                          </tr>
+                                    </tbody>
+                                 <% end_loop %>
                               </table>
                            </div>
                            <div class="d-flex paymentinfo py-2" style="border-top: 1px solid #cdcdcd;">
@@ -1195,88 +1217,96 @@
                                  <tr>
                                     <th scope="col">Product</th>
                                     <th></th>
-                                    <th></th>
+                                    <th>Product Price</th>
                                     <th scope="col">Quantity</th>
                                     <th scope="col">Total</th>
                                  </tr>
                               </thead>
-                              <tbody>
-                                 <% loop $items %>
-                                    <tr>
-                                       <td class="col-1">
-                                          <img src="$ProductImage" class="img-fluid">
-                                       </td>
-                                       <td>
-                                          <p>$ProductTitle ($ProductVariant)</p>
-                                       </td>
-                                       <td>
-                                          <p>$ProductPrice</p>
-                                       </td>
-                                       <td>
-                                          <h5>x $ProductQuantity</h5>
-                                       </td>
-                                       <td>
-                                          <p>$ProductTotalPrice</p>
-                                       </td>
-                                    </tr>
-                                 <% end_loop %>
-                                    <tr>
-                                       <td></td>
-                                       <td></td>
-                                       <td>
-                                          <h5></h5>
-                                       </td>
-                                       <td>
-                                          <h4>Subtotal</h4>
-                                       </td>
-                                       <td>
-                                          <p>
-                                             <% loop $Items.First %>$ProductSubTotalPrice<% end_loop %>
-                                          </p>
-                                       </td>
-                                    </tr>
-                                    <tr>
-                                       <td></td>
-                                       <td></td>
-                                       <td>
-                                          <h5></h5>
-                                       </td>
-                                       <td>
-                                          <h4>Shipping</h4>
-                                       </td>
-                                       <td>
-                                          <p><% loop $Items.First %>$ProductCostShipping<% end_loop %>
-                                          </p>
-                                       </td>
-                                    </tr>
-                                    <tr>
-                                       <td></td>
-                                       <td></td>
-                                       <td>
-                                          <h5></h5>
-                                       </td>
-                                       <td>
-                                          <h4>Diskon</h4>
-                                       </td>
-                                       <td>
-                                          <p><% loop $Items.First %>$Diskon%<% end_loop %>
-                                          </p>
-                                       </td>
-                                    </tr>
-                                    <tr>
-                                       <td></td>
-                                       <td></td>
-                                       <td>
-                                          <h5></h5>
-                                       </td>
-                                       <td>
-                                          <h4>Total</h4>
-                                       </td>
-                                       <td>
-                                          <p>$FinalPrice</p>
-                                       </td>
-                                    </tr>
-                              </tbody>
+                              <% loop $Up.ItemsByVendor %>
+                                 <tbody>
+                                          <tr>
+                                             <th></th>
+                                          </tr>
+                                          <tr style="background-color: #fff;">
+                                             <th colspan="5" style="border-top: none; border-bottom: 1px solid #dee2e6; border-radius: 10px 10px 0 0;"><i class='bx bx-store'></i> $Vendor.Name</th>
+                                          </tr>
+                                       <% loop $Items %>
+                                          <tr style="background-color: #fff;" class="items">
+                                                <td class="col-1" style="border-top: none; border-radius: 0 0 0 10px;">
+                                                   <img src="$ProductImage" class="img-fluid">
+                                                </td>
+                                                <td style="border-top: none;">
+                                                   <p style="margin-top: 1.25rem;">$ProductTitle ($ProductVariant)</p>
+                                                </td>
+                                                <td style="border-top: none;">
+                                                <p id="price" style="margin-top: 1.25rem;">$ProductPrice</p>
+                                                </td>
+                                                <td style="border-top: none;">
+                                                   <h5 id="quantity" style="margin-top: 1.25rem;">x $ProductQuantity</h5>
+                                                </td>
+                                                <td style="border-top: none; border-radius: 0 0 10px 0;">
+                                                   <p id="totalprice"style="margin-top: 1.25rem;"> </p>
+                                                </td>
+                                          </tr>
+                                       <% end_loop %>
+                                 
+                                       <tr>
+                                          <td></td>
+                                          <td></td>
+                                          <td>
+                                             <h5></h5>
+                                          </td>
+                                          <td>
+                                             <h4>Subtotal</h4>
+                                          </td>
+                                          <td>
+                                             <p id="SubTotal"></p>
+                                          </td>
+                                       </tr>
+                                       <tr>
+                                          <td></td>
+                                          <td></td>
+                                          <td>
+                                             <h5></h5>
+                                          </td>
+                                          <td>
+                                             <h4>Shipping</h4>
+                                          </td>
+                                          <td>
+                                             <p>$Up.ProductCostShipping</p>
+                                          </td>
+                                       </tr>
+                                       <% if $Up.Items.First.Diskon %>
+                                          <tr>
+                                             <td></td>
+                                             <td></td>
+                                             <td>
+                                                <h5></h5>
+                                             </td>
+                                             <td>
+                                                <h4>Diskon</h4>
+                                             </td>
+                                             <td>
+                                                <p><% loop $Up.Items.First %>$Diskon%<% end_loop %>
+                                                </p>
+                                             </td>
+                                          </tr>
+                                       <% end_if %>
+                                       <tr>
+                                          <td></td>
+                                          <td></td>
+                                          <td>
+                                             <h5></h5>
+                                          </td>
+                                          <td>
+                                             <h4>Total</h4>
+                                          </td>
+                                          <td>
+                                             <p>$Up.FinalPrice</p>
+                                          </td>
+                                       </tr>
+                                 </tbody>
+                              <% end_loop %>
                            </table>
                         </div>
                         <div class="d-flex paymentinfo py-2" style="border-top: 1px solid #cdcdcd;">
@@ -1343,61 +1373,39 @@
                                     <tr>
                                        <th scope="col">Product</th>
                                        <th></th>
-                                       <th></th>
+                                       <th>Product Price</th>
                                        <th scope="col">Quantity</th>
                                        <th scope="col">Total</th>
                                     </tr>
                                  </thead>
-                                 <tbody>
-                                    <% loop $items %>
-                                       <tr>
-                                          <td class="col-1">
-                                             <img src="$ProductImage" class="img-fluid">
-                                          </td>
-                                          <td>
-                                             <p>$ProductTitle ($ProductVariant)</p>
-                                          </td>
-                                          <td>
-                                             <p>$ProductPrice</p>
-                                          </td>
-                                          <td>
-                                             <h5>x $ProductQuantity</h5>
-                                          </td>
-                                          <td>
-                                             <p>$ProductTotalPrice</p>
-                                          </td>
-                                       </tr>
-                                    <% end_loop %>
-                                       <tr>
-                                          <td></td>
-                                          <td></td>
-                                          <td>
-                                             <h5></h5>
-                                          </td>
-                                          <td>
-                                             <h4>Subtotal</h4>
-                                          </td>
-                                          <td>
-                                             <p>
-                                                <% loop $Items.First %>$ProductSubTotalPrice<% end_loop %>
-                                             </p>
-                                          </td>
-                                       </tr>
-                                       <tr>
-                                          <td></td>
-                                          <td></td>
-                                          <td>
-                                             <h5></h5>
-                                          </td>
-                                          <td>
-                                             <h4>Shipping</h4>
-                                          </td>
-                                          <td>
-                                             <p><% loop $Items.First %>$ProductCostShipping<% end_loop %>
-                                             </p>
-                                          </td>
-                                       </tr>
-                                       <% if $Items.First.Diskon %>
+                                 <% loop $Up.ItemsByVendor %>
+                                    <tbody>
+                                             <tr>
+                                                <th></th>
+                                             </tr>
+                                             <tr style="background-color: #fff;">
+                                                <th colspan="5" style="border-top: none; border-bottom: 1px solid #dee2e6; border-radius: 10px 10px 0 0;"><i class='bx bx-store'></i> $Vendor.Name</th>
+                                             </tr>
+                                          <% loop $Items %>
+                                             <tr style="background-color: #fff;" class="items">
+                                                   <td class="col-1" style="border-top: none; border-radius: 0 0 0 10px;">
+                                                      <img src="$ProductImage" class="img-fluid">
+                                                   </td>
+                                                   <td style="border-top: none;">
+                                                      <p style="margin-top: 1.25rem;">$ProductTitle ($ProductVariant)</p>
+                                                   </td>
+                                                   <td style="border-top: none;">
+                                                   <p id="price" style="margin-top: 1.25rem;">$ProductPrice</p>
+                                                   </td>
+                                                   <td style="border-top: none;">
+                                                      <h5 id="quantity" style="margin-top: 1.25rem;">x $ProductQuantity</h5>
+                                                   </td>
+                                                   <td style="border-top: none; border-radius: 0 0 10px 0;">
+                                                      <p id="totalprice"style="margin-top: 1.25rem;"> </p>
+                                                   </td>
+                                             </tr>
+                                          <% end_loop %>
+                                    
                                           <tr>
                                              <td></td>
                                              <td></td>
@@ -1405,28 +1413,56 @@
                                                 <h5></h5>
                                              </td>
                                              <td>
-                                                <h4>Diskon</h4>
+                                                <h4>Subtotal</h4>
                                              </td>
                                              <td>
-                                                <p><% loop $Items.First %>$Diskon%<% end_loop %>
-                                                </p>
+                                                <p id="SubTotal"></p>
                                              </td>
                                           </tr>
-                                       <% end_if %>
-                                       <tr>
-                                          <td></td>
-                                          <td></td>
-                                          <td>
-                                             <h5></h5>
-                                          </td>
-                                          <td>
-                                             <h4>Total</h4>
-                                          </td>
-                                          <td>
-                                             <p>$FinalPrice</p>
-                                          </td>
-                                       </tr>
-                                 </tbody>
+                                          <tr>
+                                             <td></td>
+                                             <td></td>
+                                             <td>
+                                                <h5></h5>
+                                             </td>
+                                             <td>
+                                                <h4>Shipping</h4>
+                                             </td>
+                                             <td>
+                                                <p>$Up.ProductCostShipping</p>
+                                             </td>
+                                          </tr>
+                                          <% if $Up.Items.First.Diskon %>
+                                             <tr>
+                                                <td></td>
+                                                <td></td>
+                                                <td>
+                                                   <h5></h5>
+                                                </td>
+                                                <td>
+                                                   <h4>Diskon</h4>
+                                                </td>
+                                                <td>
+                                                   <p><% loop $Up.Items.First %>$Diskon%<% end_loop %>
+                                                   </p>
+                                                </td>
+                                             </tr>
+                                          <% end_if %>
+                                          <tr>
+                                             <td></td>
+                                             <td></td>
+                                             <td>
+                                                <h5></h5>
+                                             </td>
+                                             <td>
+                                                <h4>Total</h4>
+                                             </td>
+                                             <td>
+                                                <p>$Up.FinalPrice</p>
+                                             </td>
+                                          </tr>
+                                    </tbody>
+                                 <% end_loop %>
                               </table>
                            </div>
                            <div class="d-flex paymentinfo py-2" style="border-top: 1px solid #cdcdcd;">
@@ -1489,61 +1525,39 @@
                                  <tr>
                                     <th scope="col">Product</th>
                                     <th></th>
-                                    <th></th>
+                                    <th>Product Price</th>
                                     <th scope="col">Quantity</th>
                                     <th scope="col">Total</th>
                                  </tr>
                               </thead>
-                              <tbody>
-                                 <% loop $items %>
-                                    <tr>
-                                       <td class="col-1">
-                                          <img src="$ProductImage" class="img-fluid">
-                                       </td>
-                                       <td>
-                                          <p>$ProductTitle ($ProductVariant)</p>
-                                       </td>
-                                       <td>
-                                          <p>$ProductPrice</p>
-                                       </td>
-                                       <td>
-                                          <h5>x $ProductQuantity</h5>
-                                       </td>
-                                       <td>
-                                          <p>$ProductTotalPrice</p>
-                                       </td>
-                                    </tr>
-                                 <% end_loop %>
-                                    <tr>
-                                       <td></td>
-                                       <td></td>
-                                       <td>
-                                          <h5></h5>
-                                       </td>
-                                       <td>
-                                          <h4>Subtotal</h4>
-                                       </td>
-                                       <td>
-                                          <p>
-                                             <% loop $Items.First %>$ProductSubTotalPrice<% end_loop %>
-                                          </p>
-                                       </td>
-                                    </tr>
-                                    <tr>
-                                       <td></td>
-                                       <td></td>
-                                       <td>
-                                          <h5></h5>
-                                       </td>
-                                       <td>
-                                          <h4>Shipping</h4>
-                                       </td>
-                                       <td>
-                                          <p><% loop $Items.First %>$ProductCostShipping<% end_loop %>
-                                          </p>
-                                       </td>
-                                    </tr>
-                                    <% if $Items.First.Diskon %>
+                              <% loop $Up.ItemsByVendor %>
+                                 <tbody>
+                                          <tr>
+                                             <th></th>
+                                          </tr>
+                                          <tr style="background-color: #fff;">
+                                             <th colspan="5" style="border-top: none; border-bottom: 1px solid #dee2e6; border-radius: 10px 10px 0 0;"><i class='bx bx-store'></i> $Vendor.Name</th>
+                                          </tr>
+                                       <% loop $Items %>
+                                          <tr style="background-color: #fff;" class="items">
+                                                <td class="col-1" style="border-top: none; border-radius: 0 0 0 10px;">
+                                                   <img src="$ProductImage" class="img-fluid">
+                                                </td>
+                                                <td style="border-top: none;">
+                                                   <p style="margin-top: 1.25rem;">$ProductTitle ($ProductVariant)</p>
+                                                </td>
+                                                <td style="border-top: none;">
+                                                <p id="price" style="margin-top: 1.25rem;">$ProductPrice</p>
+                                                </td>
+                                                <td style="border-top: none;">
+                                                   <h5 id="quantity" style="margin-top: 1.25rem;">x $ProductQuantity</h5>
+                                                </td>
+                                                <td style="border-top: none; border-radius: 0 0 10px 0;">
+                                                   <p id="totalprice"style="margin-top: 1.25rem;"> </p>
+                                                </td>
+                                          </tr>
+                                       <% end_loop %>
+                                 
                                        <tr>
                                           <td></td>
                                           <td></td>
@@ -1551,28 +1565,56 @@
                                              <h5></h5>
                                           </td>
                                           <td>
-                                             <h4>Diskon</h4>
+                                             <h4>Subtotal</h4>
                                           </td>
                                           <td>
-                                             <p><% loop $Items.First %>$Diskon%<% end_loop %>
-                                             </p>
+                                             <p id="SubTotal"></p>
                                           </td>
                                        </tr>
-                                    <% end_if %>
-                                    <tr>
-                                       <td></td>
-                                       <td></td>
-                                       <td>
-                                          <h5></h5>
-                                       </td>
-                                       <td>
-                                          <h4>Total</h4>
-                                       </td>
-                                       <td>
-                                          <p>$FinalPrice</p>
-                                       </td>
-                                    </tr>
-                              </tbody>
+                                       <tr>
+                                          <td></td>
+                                          <td></td>
+                                          <td>
+                                             <h5></h5>
+                                          </td>
+                                          <td>
+                                             <h4>Shipping</h4>
+                                          </td>
+                                          <td>
+                                             <p>$Up.ProductCostShipping</p>
+                                          </td>
+                                       </tr>
+                                       <% if $Up.Items.First.Diskon %>
+                                          <tr>
+                                             <td></td>
+                                             <td></td>
+                                             <td>
+                                                <h5></h5>
+                                             </td>
+                                             <td>
+                                                <h4>Diskon</h4>
+                                             </td>
+                                             <td>
+                                                <p><% loop $Up.Items.First %>$Diskon%<% end_loop %>
+                                                </p>
+                                             </td>
+                                          </tr>
+                                       <% end_if %>
+                                       <tr>
+                                          <td></td>
+                                          <td></td>
+                                          <td>
+                                             <h5></h5>
+                                          </td>
+                                          <td>
+                                             <h4>Total</h4>
+                                          </td>
+                                          <td>
+                                             <p>$Up.FinalPrice</p>
+                                          </td>
+                                       </tr>
+                                 </tbody>
+                              <% end_loop %>
                            </table>
                         </div>
                         <div class="d-flex paymentinfo py-2" style="border-top: 1px solid #cdcdcd;">

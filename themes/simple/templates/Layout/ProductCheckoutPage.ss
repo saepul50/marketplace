@@ -22,6 +22,12 @@
 
 <!--================Checkout Area =================-->
 <section class="checkout_area section_gap" id="checkout_area">
+    <div id="loading" scroll="no" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 9999; display: flex; justify-content: center; align-items: center; overflow:hidden;">
+        <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script> 
+        <dotlottie-player src="https://lottie.host/b08c7610-119e-4cce-9012-d6090e49248d/rQgFzzs9P8.json" background="transparent" speed="1" style="width: 500px; height: 500px;" loop autoplay></dotlottie-player>
+    </div>
+
+
     <div class="container">
         <% if $CheckoutProductData %>
             <%-- <div class="returning_customer">

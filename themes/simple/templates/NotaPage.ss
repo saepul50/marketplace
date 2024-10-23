@@ -60,9 +60,7 @@ Change it, enhance it and most importantly enjoy it!
 	<% require themedCSS('ion.rangeSlider.skinFlat') %>
 	<% require themedCSS('magnific-popup') %>
       
-<div class="text-center mt-2">
-<button class="genric-btn primary-border">Cetak Pdf</button>
-</div>
+
 <div class="Struk " id="struk" style="max-width: 600px; margin: 40px auto; background-color: #f7f7f7; border: 1px solid #e0e0e0; border-radius: 12px; padding: 25px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
     <% with $Header %>
         <p>No.Pesanan : $OrderID</p> 
@@ -95,14 +93,14 @@ Change it, enhance it and most importantly enjoy it!
             <hr>
             <p>Rincian Pesanan</p>  
             <% loop $items %>
-            <div class="d-flex justify-content-between">
+            <div class="d-flex justify-content-between items">
                     <div>
                         <p>$ProductTitle</P>
                         <p>$ProductVariant</p> 
                     </div>
                     <div>
-                        <p class="">$ProductQuantity x</p>
-                        <p class="harga">$ProductPrice</p>
+                        <p id="quantity">x$ProductQuantity</p>
+                        <p id="harga">$ProductPrice</p>
                     </div>
                     
                 </div>
@@ -116,17 +114,19 @@ Change it, enhance it and most importantly enjoy it!
                     <p style="font-weight:bold;">Total</p>
                 </div>
                 <div>
-                    <p><% loop $Items.First %>$ProductSubTotalPrice<% end_loop %></p>
-                    <p  class="text-muted"><% loop $Items.First %>$ProductCostShipping<% end_loop %></p>
-                    <p  class="text-muted"><% if $$Items.First.Diskon %><% loop $Items.First %>$Diskon%<% end_loop %></p><% else %>0 %<% end_if %>
-                    <p style="font-weight:bold;"><% loop $Items.First %>$ProductFinalPrice<% end_loop %></p>
+                    <p id="SubTotal"></p>
+                    <p  class="text-muted">$ProductCostShipping</p>
+                    <p  class="text-muted"><% if $Items.First.Diskon %><% loop $Items.First %>$Diskon%<% end_loop %></p><% else %>0 %<% end_if %>
+                    <p style="font-weight:bold;">$FinalPrice</p>
                 </div>
                 
             </div>
         <input class="d-none" id="order" value="$OrderID">
         <% end_with %>
 </div>  
-
+<div class="text-center mt-2">
+<button class="genric-btn primary-border">Cetak Pdf</button>
+</div>
 
 
 
@@ -180,5 +180,32 @@ Change it, enhance it and most importantly enjoy it!
                 html2pdf().set(opt).from(element).save();
               
             });
+
+
+            function formatNumber(number) {
+                let parts = number.toString().split('.');
+                let integerPart = parts[0];
+                let decimalPart = parts.length > 1 ? '.' + parts[1] : '';
+                let formattedIntegerPart = '';
+                while (integerPart.length > 0) {
+                    formattedIntegerPart = '.' + integerPart.slice(-3) + formattedIntegerPart;
+                    integerPart = integerPart.slice(0, -3);
+                }
+                return formattedIntegerPart.slice(1) + decimalPart;
+            }
+
+            let subhistorytotal = 0;
+            document.querySelectorAll('.items').forEach(item => {
+                const quantityElement = item.querySelector('#quantity');
+                const priceElement = item.querySelector('#harga');
+                var quantityAmount = parseInt(quantityElement.textContent.replace("x", "").trim(), 10);
+                var price = priceElement.textContent.replace('Rp. ', '').replace('.', '').replace('.', '').replace('.', '').replace('.', '').replace('.', '').replace('.', '');
+                var totalpriceproduct = price * quantityAmount;
+                subhistorytotal += totalpriceproduct;
+            });
+
+            document.querySelector('#SubTotal').textContent = `Rp. ${formatNumber(subhistorytotal)}`;
+
+
         });
     </script>
