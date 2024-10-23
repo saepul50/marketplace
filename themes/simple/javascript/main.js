@@ -2169,14 +2169,14 @@ $('#searchForm').submit(function(e) {
     //   iziToast.warning({position: "bottomRight", title: 'Caution', message: 'Pilih ongkir!'});
     //   return;
     // }
-    // if (finalprice === '') {
-    //   iziToast.warning({position: "bottomRight", title: 'Caution', message: 'Lengkapi data pengiriman!'});
-    //   return;
-    // }
-    // if (!terms) {
-    //   iziToast.warning({position: "bottomRight", title: 'Caution', message: 'Check terms & conditions!'});
-    //   return;
-    // }
+    if (finalprice === '') {
+      iziToast.warning({position: "bottomRight", title: 'Caution', message: 'Lengkapi data pengiriman!'});
+      return;
+    }
+    if (!terms) {
+      iziToast.warning({position: "bottomRight", title: 'Caution', message: 'Check terms & conditions!'});
+      return;
+    }
     else {
       var paymentMethod = $("input[name='selectorpayment']:checked").val();
       if (paymentMethod === "manualtf") {
