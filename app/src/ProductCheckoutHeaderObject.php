@@ -25,7 +25,8 @@ use SilverStripe\Security\Member;
             'TimeCheckout'=> 'Text',
             'PaymentMethod' => 'Text',
             'PaymentUrl'=>'Varchar(255)',
-            'DuitkuOrderID'=>'Varchar(255)'
+            'DuitkuOrderID'=>'Varchar(255)',
+            'Diskon' => 'Int',
         ];
         private static $has_many = [
             'Items'=> ProductCheckoutObject::class,

@@ -505,7 +505,7 @@
                                                 <p>$Up.ProductCostShipping</p>
                                              </td>
                                           </tr>
-                                          <% if $Up.Items.First.Diskon %>
+                                          <% if $Up.Diskon %>
                                              <tr>
                                                 <td></td>
                                                 <td></td>
@@ -516,7 +516,7 @@
                                                    <h4>Diskon</h4>
                                                 </td>
                                                 <td>
-                                                   <p><% loop $Up.Items.First %>$Diskon%<% end_loop %>
+                                                   <p>$Up.Diskon%
                                                    </p>
                                                 </td>
                                              </tr>
@@ -655,7 +655,7 @@
                                              <p>$Up.ProductCostShipping</p>
                                           </td>
                                        </tr>
-                                       <% if $Up.Items.First.Diskon %>
+                                       <% if $Up.Diskon %>
                                           <tr>
                                              <td></td>
                                              <td></td>
@@ -666,7 +666,7 @@
                                                 <h4>Diskon</h4>
                                              </td>
                                              <td>
-                                                <p><% loop $Up.Items.First %>$Diskon%<% end_loop %>
+                                                <p>$Up.Diskon%
                                                 </p>
                                              </td>
                                           </tr>
@@ -807,7 +807,7 @@
                                                 <p>$Up.ProductCostShipping</p>
                                              </td>
                                           </tr>
-                                          <% if $Up.Items.First.Diskon %>
+                                          <% if $Up.Diskon %>
                                              <tr>
                                                 <td></td>
                                                 <td></td>
@@ -818,7 +818,7 @@
                                                    <h4>Diskon</h4>
                                                 </td>
                                                 <td>
-                                                   <p><% loop $Up.Items.First %>$Diskon%<% end_loop %>
+                                                   <p>$Up.Diskon%
                                                    </p>
                                                 </td>
                                              </tr>
@@ -964,7 +964,7 @@
                                              <p>$Up.ProductCostShipping</p>
                                           </td>
                                        </tr>
-                                       <% if $Up.Items.First.Diskon %>
+                                       <% if $Up.Diskon %>
                                           <tr>
                                              <td></td>
                                              <td></td>
@@ -975,7 +975,7 @@
                                                 <h4>Diskon</h4>
                                              </td>
                                              <td>
-                                                <p><% loop $Up.Items.First %>$Diskon%<% end_loop %>
+                                                <p>$Up.Diskon%
                                                 </p>
                                              </td>
                                           </tr>
@@ -1123,7 +1123,7 @@
                                                 <p>$Up.ProductCostShipping</p>
                                              </td>
                                           </tr>
-                                          <% if $Up.Items.First.Diskon %>
+                                          <% if $Up.Diskon %>
                                              <tr>
                                                 <td></td>
                                                 <td></td>
@@ -1134,7 +1134,7 @@
                                                    <h4>Diskon</h4>
                                                 </td>
                                                 <td>
-                                                   <p><% loop $Up.Items.First %>$Diskon%<% end_loop %>
+                                                   <p>$Up.Diskon%
                                                    </p>
                                                 </td>
                                              </tr>
@@ -1276,7 +1276,7 @@
                                              <p>$Up.ProductCostShipping</p>
                                           </td>
                                        </tr>
-                                       <% if $Up.Items.First.Diskon %>
+                                       <% if $Up.Diskon %>
                                           <tr>
                                              <td></td>
                                              <td></td>
@@ -1287,7 +1287,7 @@
                                                 <h4>Diskon</h4>
                                              </td>
                                              <td>
-                                                <p><% loop $Up.Items.First %>$Diskon%<% end_loop %>
+                                                <p>$Up.Diskon%
                                                 </p>
                                              </td>
                                           </tr>
@@ -1432,7 +1432,7 @@
                                                 <p>$Up.ProductCostShipping</p>
                                              </td>
                                           </tr>
-                                          <% if $Up.Items.First.Diskon %>
+                                          <% if $Up.Diskon %>
                                              <tr>
                                                 <td></td>
                                                 <td></td>
@@ -1443,7 +1443,7 @@
                                                    <h4>Diskon</h4>
                                                 </td>
                                                 <td>
-                                                   <p><% loop $Up.Items.First %>$Diskon%<% end_loop %>
+                                                   <p>$Up.Diskon%
                                                    </p>
                                                 </td>
                                              </tr>
@@ -1584,7 +1584,7 @@
                                              <p>$Up.ProductCostShipping</p>
                                           </td>
                                        </tr>
-                                       <% if $Up.Items.First.Diskon %>
+                                       <% if $Up.Diskon %>
                                           <tr>
                                              <td></td>
                                              <td></td>
@@ -1595,7 +1595,7 @@
                                                 <h4>Diskon</h4>
                                              </td>
                                              <td>
-                                                <p><% loop $Up.Items.First %>$Diskon%<% end_loop %>
+                                                <p>$Up.Diskon%
                                                 </p>
                                              </td>
                                           </tr>

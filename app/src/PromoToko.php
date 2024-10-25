@@ -6,6 +6,7 @@ use SilverStripe\Forms\NumericField;
 use SilverStripe\Forms\ReadonlyField;
 use SilverStripe\Forms\TextField;
 use SilverStripe\ORM\DataObject;
+use SilverStripe\Security\Member;
 use SilverStripe\Security\Security;
 
 
@@ -20,6 +21,11 @@ class PromoToko extends DataObject{
     private static $has_one = [
         'Vendor' => Vendor::class
     ];
+
+    private static $many_many = [
+        'Members'=> Member::class
+    ]; 
+   
 
     public function summaryFields(){
         return  [

@@ -116,7 +116,7 @@ Change it, enhance it and most importantly enjoy it!
                 <div>
                     <p id="SubTotal"></p>
                     <p  class="text-muted">$ProductCostShipping</p>
-                    <p  class="text-muted"><% if $Items.First.Diskon %><% loop $Items.First %>$Diskon%<% end_loop %></p><% else %>0 %<% end_if %>
+                    <p  class="text-muted"><% if $Diskon %>$Diskon%<% else %>0 %<% end_if %></p>
                     <p style="font-weight:bold;">$FinalPrice</p>
                 </div>
                 

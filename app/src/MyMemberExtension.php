@@ -25,6 +25,10 @@ class MyMemberExtension extends DataExtension
         'ForgetPassword' => ForgetPassword::class
 
     ];
+
+    private static $belongs_many_many = [
+        'PromoTokos' => PromoToko::class
+    ];
     private static $owns = [
         'ProfileImage'
     ];

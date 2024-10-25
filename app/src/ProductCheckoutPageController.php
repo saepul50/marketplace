@@ -23,53 +23,77 @@ class ProductCheckoutPageController extends PageController{
         'manualTF',
         'cash',
         'coupon',
+        'couponuser',
     ];
-    public function index(HTTPRequest $request)
-    {
+    public function index(HTTPRequest $request) {
         $member = Security::getCurrentUser();
+    
         if ($member) {
             $checkoutData = $request->getSession()->get('CheckoutProductData');
             $AddressData = $request->getSession()->get('AddressData');
-            $Coupon = $request->getSession()->get('Coupon');
-            
-            // die($checkoutData);
-            $diskon = PromoToko::get()->filter('Code', $Coupon);
-            
+            $coupons = $member->PromoTokos()->filter('ExpDate:GreaterThan', date('Y-m-d H:i:s'));
+            // Debug::show($coupons);
             $groupedData = [];
-            
-            if ($checkoutData && is_array($checkoutData)) {
-                foreach ($checkoutData as $data) {
-                    $vendorID = $data['VendorID'];
-                    // Debug::show($vendorID);
-                    $vendor = Vendor::get()->byID($vendorID);
-                    if (!isset($groupedData[$vendorID])) {
-                        $groupedData[$vendorID] = [
-                            'Vendor' => $vendor,
-                            'Products' => new ArrayList()
-                        ];
-                    }
+            $validasi = false;
+           
+        if ($checkoutData && is_array($checkoutData)) {
+            foreach ($checkoutData as $data) {
+                $vendorID = $data['VendorID'];
+                $vendor = Vendor::get()->byID($vendorID);
+
+                if (!isset($groupedData[$vendorID])) {
+                    $groupedData[$vendorID] = [
+                        'Vendor' => $vendor,
+                        'Products' => new ArrayList(),
+                        'Discounts' => new ArrayList()
+                    ];
+                }
+            }
+
+            foreach ($checkoutData as $data) {
+                $vendorID = $data['VendorID'];
+
+                if (isset($groupedData[$vendorID])) {
                     $groupedData[$vendorID]['Products']->push($data);
                 }
             }
 
+            foreach ($coupons as $coupon) {
+                $vendorID = $coupon->VendorID;
+
+                if (isset($groupedData[$vendorID])) {
+                    $groupedData[$vendorID]['Discounts'][] = [
+                        'Code' => $coupon->Code,
+                        'Diskon' => $coupon->Diskon,
+                        'ExpDate' => $coupon->ExpDate,
+                        'VendorID'=> $coupon->VendorID,
+                        'ID' => $coupon->ID,
+                    ];
+                }
+            }
+        }
+            
+        
             $listDataCheckoutGrouped = new ArrayList();
             foreach ($groupedData as $vendorID => $group) {
                 $listDataCheckoutGrouped->push(new ArrayData([
                     'Vendor' => $group['Vendor'],
-                    'Products' => $group['Products']
+                    'Products' => $group['Products'],
+                    'Discounts' => $group['Discounts'], 
                 ]));
             }
             // Debug::show($listDataCheckoutGrouped);
-            // die();  
             return $this->customise([
                 'CheckoutProductData' => $listDataCheckoutGrouped,
                 'AddressData' => $AddressData,
-                'Diskon' => $diskon,
-                'Member' => $member
+                'Member' => $member,
+                'Coupons' => $coupons
             ])->renderWith(['ProductCheckoutPage', 'Page']);
         }
+    
         return $this->redirect('login');
     }
+
 
     public function coupon(HTTPRequest $request){
         $data = $request->postVar('Coupon'); 
@@ -111,6 +135,50 @@ class ProductCheckoutPageController extends PageController{
 
         
     }
+
+
+    public function couponuser(HTTPRequest $request) {
+            $Code = $request->postVar('Code');
+            $VendorID = $request->postVar('VendorID');
+            // Debug::show($Code);
+            // Debug::show($VendorID);
+            $member = Security::getCurrentUser();
+            $Coupon = PromoToko::get()->filter('Code', $Code)->filter('VendorID', $VendorID)->first();
+            if($Coupon){
+                $max = $Coupon->MaximumUse;
+                $time = strtotime($Coupon->ExpDate);
+                if ($Coupon && $member && $time >= time() && $max !== 0  ) {
+                    if ($Coupon->MaximumUse > 0  && !$Coupon->Members()->byID($member->ID) && ! $member->PromoTokos()->add($Coupon->ID)) {
+                        $member->PromoTokos()->add($Coupon->ID);
+                        $Coupon->Members()->add($member->ID);
+                        $Coupon->MaximumUse -= 1;
+                        $Coupon->write();
+                        return json_encode([
+                            'success' => true,
+                            'message' => "Success! Promo added to your account."
+                        ]);
+                    } else {
+                        return json_encode([
+                            'success' => false,
+                            'message' => "Coupon Already Exists In your Account"
+                        ]);
+                    }
+                    
+                } else {
+                    return json_encode([
+                        'success' => false,
+                        'message' => "Your coupon has reached limit usage or has expired "
+                    ]);
+                }
+            } else {
+                return json_encode([
+                    'success' => false,
+                    'message' => "No coupon found for the code and vendor you entered."
+                ]);  
+            }
+       
+    }
+    
     public function address(HTTPRequest $request){
         if ($request) {
             $Number = $request->postVar('Number');
@@ -121,6 +189,7 @@ class ProductCheckoutPageController extends PageController{
             $Regency = $request->postVar('Regency');
             $Province = $request->postVar('Province');
             $Postal = $request->postVar('Postal');
+            $Email = $request->postVar('Email');
 
             if (!empty($Number) && !empty($FName) && !empty($Address) && !empty($AddressDetail) && !empty($Regency)) {
                 $data = [
@@ -132,6 +201,7 @@ class ProductCheckoutPageController extends PageController{
                     'Regency' => $Regency,
                     'Province' => $Province,
                     'Postal' => $Postal,
+                    'Email' => $Email,
                 ];
                     // Debug::show($data);
                     // die();      
@@ -535,6 +605,7 @@ class ProductCheckoutPageController extends PageController{
         $member = Security::getCurrentUser();
         if ($request->isPOST()) {
             $postData = json_decode($request->postVar('paymentDatas'), true);
+            Debug::show($postData);
             if ($postData) {
                 $results = [];
                 foreach ($postData as $checkoutData) {
@@ -551,6 +622,7 @@ class ProductCheckoutPageController extends PageController{
                     $headerCheckout->ProductCostShipping = $checkoutData['ProductShippingPrice'];
                     $headerCheckout->FinalPrice = $checkoutData['ProductTotalPrice'];
                     $headerCheckout->Bank = $checkoutData['Bank'];
+                    $headerCheckout->Diskon = $checkoutData['Diskon'];
                     $headerCheckout->PaymentMethod = $checkoutData['PaymentMethod'];
                     $headerCheckout->TimeCheckout = $checkoutData['TimeCheckout'];
                     
@@ -568,6 +640,7 @@ class ProductCheckoutPageController extends PageController{
                         $productCheckout->ProductPrice = $productData['ProductPrice'];
                         $productCheckout->ProductQuantity = $productData['ProductQuantity'];
                         $productCheckout->VendorID = $productData['VendorID'];
+
                         
                         $productCheckout->HeaderCheckoutID = $headerCheckout->ID;
                         
