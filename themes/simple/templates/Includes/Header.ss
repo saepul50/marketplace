@@ -88,12 +88,12 @@
 						<li class="nav-item submenu dropdown">
 							<div class="notif" style="cursor: pointer;">
 								<span class="notif" style=" outline: none !important; box-shadow: none;"></span>
-								<i class='bx bx-bell' style="font-size: 18px;"><% if $Notification %><span class="notification-count">$Notification.Count</span> <% else %><% end_if %></i>
+								<i class='bx bx-bell' style="font-size: 18px;"><% if $Notification %><span class="notification-count">$Notification.GroupedNotifs.Count</span> <% else %><% end_if %></i>
 							</div>
 							<div class="dropdown-menu dropdown-menu-right" id="fate" style=" width: 30rem;  padding-bottom: 0 !important;">
 								<h5 class="text-muted m-0 py-2 pt-0 pl-4 pb-4">Notifikasi Baru Diterima</h5>
-								<% if $Notification %>
-									<% loop $Notification.Limit(8) %>
+								<% if $GroupedNotifs %>
+									<% loop $GroupedNotifs.Limit(8) %>
 												<a href="{$BaseHref}/confirm/order/$HeaderCheckout.OrderID?detailOrder=true" style="color: #000;">
 													<div class="notifs d-flex align-items-center justify-content-between py-3 p-2"  style="background-color: rgba(255, 165, 0, 0.04);">
 														<div class="d-flex align-items-center">
@@ -104,12 +104,15 @@
 																	<% end_loop %>
 																<% end_if %>
 															</div>
-															<div class="content ml-4 d-flex ">
-																<div style="inline-size: 100%; overflow-wrap: break-word;">
-																	<h6 class="header fw-bold" style="font-weight: bold;">$Title</h6>
-																	<p class="deskripsi m-0" style="font-size: 14px;">$Message</p>
+															<% loop $Notifications.First %>
+																<div class="content ml-4 d-flex ">
+																	<div style="inline-size: 100%; overflow-wrap: break-word;">
+																		<h5 class="header fw-bold" style="font-weight:bold;">$Title</h5>
+																		<p class="deskripsi m-0">$Message</p>
+																		<p>$Date $Time</p>
+																	</div>
 																</div>
-															</div>
+															<% end_loop %>
 														</div>
 														<div class="">
 															<a href="{$BaseHref}/confirm/order/$HeaderCheckout.OrderID?detailOrder=true" style="color: #000"><i class='bx bx-chevron-down' style="font-size: 40px;"></i></a>

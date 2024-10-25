@@ -75,26 +75,34 @@ use SilverStripe\Dev\Debug;
             // die();
             if ($member) {
                 $Notification = NotificationObject::get();
-                if($Notification){
-                    $UnreadNotifs = NotificationObject::get()->filter([
-                        'Read' => 'Unread',
-                    ])->sort('Created', 'DESC');
-                    
-                    $ownsUnreadNotif = [];
-                    foreach ($UnreadNotifs as $Unnotif) {
-                        $headerCheckout = $Unnotif->HeaderCheckout();
-                        if ($headerCheckout) {
-                            $firstItem = $headerCheckout->Items()->first();
-                            if ($firstItem && $firstItem->MemberID == $member->ID) {
-                                $ownsUnreadNotif[] = $Unnotif;
+                if ($Notification) {
+                    $AllNotifs = NotificationObject::get()->sort('Created', 'DESC');
+                    $groupedNotifs = [];
+            
+                    foreach ($AllNotifs as $notif) {
+                        $headerCheckout = $notif->HeaderCheckout();
+                        if ($headerCheckout && $headerCheckout->MemberID == $member->ID) {
+                            $orderID = $headerCheckout->OrderID;
+            
+                            if (!isset($groupedNotifs[$orderID])) {
+                                $groupedNotifs[$orderID] = [
+                                    'HeaderCheckout' => $headerCheckout,
+                                    'Notifications' => new ArrayList()
+                                ];
                             }
+            
+                            $groupedNotifs[$orderID]['Notifications']->push($notif);
                         }
                     }
-                    $ownsUnreadNotif = ArrayList::create($ownsUnreadNotif);
-                    return $ownsUnreadNotif;
+                    
+                    $groupedNotifs = ArrayList::create($groupedNotifs);
+                    // Debug::show($groupedNotifs);
+                    // die();
+                    return $this->customise([
+                        'GroupedNotifs' => $groupedNotifs
+                    ]);
                 }
-                return null;
-            }
+            } 
             return null;
         }
 
