@@ -440,6 +440,7 @@ class ProductCheckoutPageController extends PageController{
                 $headerCheckout->ProductCostShipping = $checkoutData['ProductShippingPrice'];
                 $headerCheckout->FinalPrice = $checkoutData['ProductTotalPrice'];
                 $headerCheckout->Bank = $checkoutData['Bank'];
+                $headerCheckout->Diskon = $checkoutData['Diskon'];
                 $headerCheckout->PaymentMethod = $checkoutData['PaymentMethod'];
                 $headerCheckout->TimeCheckout = $checkoutData['TimeCheckout'];
                 $headerCheckout->write();
@@ -762,6 +763,7 @@ class ProductCheckoutPageController extends PageController{
                     $headerCheckout->ProductCostShipping = $checkoutData['ProductShippingPrice'];
                     $headerCheckout->FinalPrice = $checkoutData['ProductTotalPrice'];
                     $headerCheckout->Bank = $checkoutData['Bank'];
+                    $headerCheckout->Diskon = $checkoutData['Diskon'];
                     $headerCheckout->PaymentMethod = $checkoutData['PaymentMethod'];
                     $headerCheckout->TimeCheckout = $checkoutData['TimeCheckout'];
                     

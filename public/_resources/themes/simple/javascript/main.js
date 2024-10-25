@@ -21,8 +21,6 @@ $(document).ready(function () {
   document.querySelectorAll('input[name="selectedCoupon"]').forEach(function(radio) {
     var lmao = `setdata-${radio.getAttribute('data-coupon-id')}`;
     const SelectedDiskon = localStorage.getItem(lmao);
-    console.log(lmao);
-    console.log(SelectedDiskon);
     if(radio.getAttribute('id') === SelectedDiskon){
       radio.checked = true;
       let selectedCouponID = radio.getAttribute('data-coupon-id');
@@ -35,7 +33,6 @@ $(document).ready(function () {
         let Diskon = this.getAttribute('data-diskon');
         $("#Diskon-" + selectedCouponID).text(Diskon);
         localStorage.setItem(`setdata-${selectedCouponID}`, idlocal);
-        console.log('Selected Coupon ID:', selectedCouponID);
         window.location.reload();  
       });
   });
@@ -656,7 +653,6 @@ $(document).ready(function () {
     })
     .done(function (data) {
       var response = JSON.parse(data);
-      console.log(response);
       if (response.success) {
         iziToast.success({
           title: 'Link Sudah Diberikan Ke Alamat Email Anda',
@@ -685,7 +681,6 @@ $(document).ready(function () {
       })
       .done(function (data) {
         var response = JSON.parse(data);
-        console.log(response);
         if (response.success) {
           iziToast.success({
             title: 'Password Anda Berhasil Diganti Silahkan Kembali Ke hal.Login',
@@ -710,7 +705,6 @@ $(document).ready(function () {
 
   $("#replycomment").submit(function (event) {
     event.preventDefault();
-    console.log('kdkaskd');
     $.post("/marketplace/blog/handelreply", {
       Send: $("#nama-reply").val(),
       Message: $("#message-reply").val(),
@@ -1349,7 +1343,7 @@ $('#searchForm').submit(function(e) {
           submit.attr("style", "display: none !important");; // reset submit button text
         },
         error: function (e) {
-          console.log(e)
+          // console.log(e)
         }
       });
     });
@@ -1508,7 +1502,7 @@ $('#searchForm').submit(function(e) {
   function increaseValue(quantityAmount) {
     value = parseInt(quantityAmount.value, 10);
 
-    console.log(quantityAmount, quantityAmount.value);
+    // console.log(quantityAmount, quantityAmount.value);
 
     value = isNaN(value) ? 0 : value;
     value++;
@@ -2270,7 +2264,7 @@ $('#searchForm').submit(function(e) {
                   vendorData.Products.push(productData);
               }
           });
-          console.log(vendorData);
+          // console.log(vendorData);
           selectedVendors.push(vendorData);
         });
         // console.log(selectedVendors);
@@ -2289,9 +2283,9 @@ $('#searchForm').submit(function(e) {
               title: 'Pembayaran, ',
               message: 'Segera lakukan pembayaran pesanan',
               position: 'bottomRight',
-              // onClosed: function () {
-              //   window.location.href = "/marketplace/history";
-              // }
+              onClosed: function () {
+                window.location.href = "/marketplace/history";
+              }
               // onClosed: function () {
               //   window.location.href = "/marketplace/productcheckout/manualpayment/" + orderID + '?invoice=true';
               // }
@@ -2309,6 +2303,7 @@ $('#searchForm').submit(function(e) {
         $(".singlecheckoutpervendor").each(function(index, vendor) {
           var vendorID = $(vendor).find(".vendorIDProductCheckout").data('vendor');
           const Diskon = document.querySelector(`#Diskon-${vendorID}`).textContent;
+          // console.log(Diskon);
           var vendorData = {
             VendorID: vendorID,
             VendorName: $(vendor).find(".vendorIDProductCheckout").text(),
@@ -2361,9 +2356,9 @@ $('#searchForm').submit(function(e) {
               title: 'Pembayaran (60 Menit)',
               message: 'Segera lakukan pembayaran pesanan, pembayaran akan Expired selama 60 menit',
               position: 'bottomRight',
-              onClosed: function () {
-                window.location.href = '/marketplace/history';
-              }
+                onClosed: function () {
+                  window.location.href = '/marketplace/history';
+                }
             });
           }
         });
@@ -2600,7 +2595,7 @@ $('#searchForm').submit(function(e) {
         })
         .done(function(data) {
             var response = JSON.parse(data);
-            console.log('Response:', response);
+            // console.log('Response:', response);
 
             if (response.success) {
               iziToast.success({
@@ -2628,7 +2623,11 @@ $('#searchForm').submit(function(e) {
             });
         });
     } else {
-        console.log('Please enter a coupon code.');
+      iziToast.warning({
+        position: "bottomRight",
+        title: 'Caution',
+        message: 'Please enter a coupon code.'
+      });
     }
   });
   $('#saveData').on('click', function (e) {
@@ -2769,9 +2768,9 @@ $('#searchForm').submit(function(e) {
   }
   function generateOrderID() {
     const timestamp = Date.now().toString(36);
-    console.log(timestamp);
+    // console.log(timestamp);
     const randomStr = Math.random().toString(36).substring(2, 10);
-    console.log(randomStr);
+    // console.log(randomStr);
     return `SHOESTORE${timestamp}${randomStr}`;
   }
 
@@ -2859,7 +2858,7 @@ $('#searchForm').submit(function(e) {
     
     incrementButtonDetails.on('click', function() {
       let currentQuantity = parseInt(quantityInputDetails.val(), 10);
-      console.log(maxStok)
+      // console.log(maxStok)
       if (currentQuantity < maxStok) {
         quantityInputDetails.val(currentQuantity + 1);
       }
@@ -3322,7 +3321,7 @@ $('#searchForm').submit(function(e) {
             if (!isNaN(DiskonInt) && DiskonInt > 0) {
                 const Discountamount = Math.round((DiskonInt / 100) * totalWithShipping);
                 FinalPrice = Math.round(totalWithShipping - Discountamount);
-                console.log(Discountamount);
+                // console.log(Discountamount);
                 // console.log(FinalPrice);
             } else {
                 FinalPrice = totalWithShipping;
@@ -3330,7 +3329,7 @@ $('#searchForm').submit(function(e) {
         } else {
             FinalPrice = totalWithShipping;
         }
-        console.log(FinalPrice);
+        // console.log(FinalPrice);
 
         $(`.TotalPerVendor-${vendorID}`).text(`Rp. ${formatNumber(FinalPrice)}`);
     }
@@ -3368,7 +3367,11 @@ $('#searchForm').submit(function(e) {
             });
             var idRegency = $('#fulldata .regency').text();
             var regencyID = vendor.querySelector('.vendorIDProductCheckout').getAttribute('data-origin');
-
+            if (!idRegency) {
+              $('#loading').hide();
+              document.body.style.overflow = 'auto';
+              return reject("Regency ID tidak ada.");
+            }
 
             $.ajax({
                 url: '/marketplace/productcheckout/rajoCost',

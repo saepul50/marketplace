@@ -511,7 +511,6 @@
                                           <p>$Up.ProductCostShipping</p>
                                        </td>
                                     </tr>
-                                    <% if $Up.Items.First.Diskon %>
                                        <tr>
                                           <td></td>
                                           <td></td>
@@ -522,11 +521,10 @@
                                              <h4>Diskon</h4>
                                           </td>
                                           <td>
-                                             <p><% loop $Up.Items.First %>$Diskon%<% end_loop %>
+                                             <p>$Up.Diskon%
                                              </p>
                                           </td>
                                        </tr>
-                                    <% end_if %>
                                     <tr>
                                        <td></td>
                                        <td></td>
@@ -668,7 +666,6 @@
                                           <p>$Up.ProductCostShipping</p>
                                        </td>
                                     </tr>
-                                    <% if $Up.Items.First.Diskon %>
                                        <tr>
                                           <td></td>
                                           <td></td>
@@ -679,11 +676,10 @@
                                              <h4>Diskon</h4>
                                           </td>
                                           <td>
-                                             <p><% loop $Up.Items.First %>$Diskon%<% end_loop %>
+                                             <p>$Up.Diskon%
                                              </p>
                                           </td>
                                        </tr>
-                                    <% end_if %>
                                     <tr>
                                        <td></td>
                                        <td></td>
@@ -832,7 +828,6 @@
                                           <p>$Up.ProductCostShipping</p>
                                        </td>
                                     </tr>
-                                    <% if $Up.Items.First.Diskon %>
                                        <tr>
                                           <td></td>
                                           <td></td>
@@ -843,11 +838,10 @@
                                              <h4>Diskon</h4>
                                           </td>
                                           <td>
-                                             <p><% loop $Up.Items.First %>$Diskon%<% end_loop %>
+                                             <p>$Up.Diskon%
                                              </p>
                                           </td>
                                        </tr>
-                                    <% end_if %>
                                     <tr>
                                        <td></td>
                                        <td></td>
@@ -993,7 +987,6 @@
                                           <p>$Up.ProductCostShipping</p>
                                        </td>
                                     </tr>
-                                    <% if $Up.Items.First.Diskon %>
                                        <tr>
                                           <td></td>
                                           <td></td>
@@ -1004,11 +997,10 @@
                                              <h4>Diskon</h4>
                                           </td>
                                           <td>
-                                             <p><% loop $Up.Items.First %>$Diskon%<% end_loop %>
+                                             <p>$Up.Diskon%
                                              </p>
                                           </td>
                                        </tr>
-                                    <% end_if %>
                                     <tr>
                                        <td></td>
                                        <td></td>
