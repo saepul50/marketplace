@@ -36,9 +36,9 @@ class NotificationController extends PageController{
                 $groupedNotifs = ArrayList::create($groupedNotifs);
                 // Debug::show($groupedNotifs);
                 // die();
-                return [
+                return $this->customise([
                     'GroupedNotifs' => $groupedNotifs
-                ];
+                ]);
             }
         }        
         return $this->redirect('login');

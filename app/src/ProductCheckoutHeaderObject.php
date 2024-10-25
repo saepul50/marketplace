@@ -50,13 +50,13 @@ use SilverStripe\Security\Security;
             parent::onAfterWrite();
             
             if ($this->isChanged('Status')) {
-                $currentUser = Security::getCurrentUser();
-                if ($currentUser && Permission::check('CMS_ACCESS_OrderAdmin')) {
-                    $this->StatusChangeBy = 'Seller';
-                } else {
+                if ($this->StatusChangeBy === 'User') {
+                    // Service method updates
                     $this->StatusChangeBy = 'User';
+                } else {
+                    // CMS updates
+                    $this->StatusChangeBy = 'Seller';
                 }
-                $this->write();
                 $this->handleStatusChange();
             }
         }
