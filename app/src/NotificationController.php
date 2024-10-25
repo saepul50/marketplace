@@ -11,61 +11,47 @@ class NotificationController extends PageController{
     ];
     public function index(){
         $member = Security::getCurrentUser();
-        if($member){
+        if ($member) {
             $Notification = NotificationObject::get();
-            if($Notification){
-                
-                // $UnreadNotifs = NotificationObject::get()->filter([
-                //     'Read' => 'Unread',
-                // ])->sort('Created', 'DESC');
-                
-                // $ownsUnreadNotif = [];
-                // foreach ($UnreadNotifs as $Unnotif) {
-                //     $headerCheckout = $Unnotif->HeaderCheckout();
-                //     if ($headerCheckout) {
-                //         $firstItem = $headerCheckout->Items()->first();
-                //         if ($firstItem && $firstItem->MemberID == $member->ID) {
-                //             $ownsUnreadNotif[] = $Unnotif;
-                //         }
-                //     }
-                // }
-                
+            if ($Notification) {
                 $AllNotifs = NotificationObject::get()->sort('Created', 'DESC');
-                $ownsNotif = [];
-                $uniqueNotif = [];
-                
+                $groupedNotifs = [];
+        
                 foreach ($AllNotifs as $notif) {
                     $headerCheckout = $notif->HeaderCheckout();
-                    if ($headerCheckout) {
-                        $firstItem = $headerCheckout->Items()->first();
-                        if ($firstItem && $firstItem->MemberID == $member->ID) {
-
-                            $orderID = $headerCheckout->OrderID;
-                            if (!in_array($orderID, $uniqueNotif)) {
-                                $uniqueNotif[] = $orderID;
-                                $ownsNotif[] = $notif; 
-                            }
+                    if ($headerCheckout && $headerCheckout->MemberID == $member->ID) {
+                        $orderID = $headerCheckout->OrderID;
+        
+                        if (!isset($groupedNotifs[$orderID])) {
+                            $groupedNotifs[$orderID] = [
+                                'HeaderCheckout' => $headerCheckout,
+                                'Notifications' => new ArrayList()
+                            ];
                         }
+        
+                        $groupedNotifs[$orderID]['Notifications']->push($notif);
                     }
                 }
-                $ownsNotif = ArrayList::create($ownsNotif);
-                // Debug::show($ownsNotif);
+                
+                $groupedNotifs = ArrayList::create($groupedNotifs);
+                // Debug::show($groupedNotifs);
+                // die();
                 return [
-                    'AllNotifs' => $ownsNotif,
+                    'GroupedNotifs' => $groupedNotifs
                 ];
             }
-        }
+        }        
         return $this->redirect('login');
     }
     public function NotificationRead(HTTPRequest $request){
         $OrderID = $request->postVar('OrderID');
-        Debug::show($OrderID);
+        // Debug::show($OrderID);
         if($OrderID){
             // Debug::show($OrderID);
             // die();
             $HeaderCheckout = ProductCheckoutHeaderObject::get()->filter('OrderID', $OrderID)->first();
             $Notification = NotificationObject::get()->filter(['HeaderCheckoutID'=> $HeaderCheckout->ID , 'Read' => 'Unread'])->first();
-            Debug::show($Notification);
+            // Debug::show($Notification);
             if ($Notification && $Notification->Read == 'Unread') {
                 $Notification->Read = 'Read';
                 $Notification->write();

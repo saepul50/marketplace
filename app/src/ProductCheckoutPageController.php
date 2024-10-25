@@ -19,6 +19,7 @@ class ProductCheckoutPageController extends PageController{
         'address',
         'paymentmethod',
         'transaction',
+        'checktransaction',
         'manualpayment',
         'manualTF',
         'cash',
@@ -357,6 +358,7 @@ class ProductCheckoutPageController extends PageController{
                 $OrderID = "SHOESTORE{$s}";
                 $headerCheckout->OrderID = $OrderID;
                 $headerCheckout->MemberID = $member->ID;
+                $headerCheckout->VendorID = $checkoutData['VendorID'];
                 $headerCheckout->CustomerName = $checkoutData['CustomerName'];
                 $headerCheckout->CustomerFullName = $checkoutData['CustomerFullName'];
                 $headerCheckout->CustomerEmail = $checkoutData['CustomerEmail'];
@@ -429,7 +431,7 @@ class ProductCheckoutPageController extends PageController{
         $CustomerAddress = $checkoutData['CustomerAddress'];
         $callbackUrl = '{$BaseHref}/duitkupayment/callback';
         $returnUrl = '/marketplace';
-        $expiryPeriod = 30;
+        $expiryPeriod = 120;
         $signature = md5($merchantCode . $merchantOrderId . $paymentAmount . $apiKey);
         $alamat = $CustomerAddress;
         // $city = $addressDetCus;
@@ -499,11 +501,13 @@ class ProductCheckoutPageController extends PageController{
             return null;
         }
     }
-    public function checkTransaction(){
+    public function checktransaction(){
         $merchantCode = 'DS20031'; // dari duitku
         $apiKey = '8c98ceb5b29429b26bfcd384d5f76d02'; // dari duitku
         if (isset($_GET['orderid'])) {
             $merchantOrderId = $_GET['orderid'];
+            // Debug::show(val: $merchantOrderId);
+            // die();
         } else {
             Debug::show("Order ID tidak ditemukan.");
             return;
@@ -538,13 +542,20 @@ class ProductCheckoutPageController extends PageController{
         if($httpCode == 200)
         {
             $results = json_decode($request, true);
-            print_r($results, false);
-            echo "merchantOrderId :". $results['merchantOrderId'] . "<br />";
-            echo "reference :". $results['reference'] . "<br />";
-            echo "amount :". $results['amount'] . "<br />";
-            echo "fee :". $results['fee'] . "<br />";
-            echo "statusCode :". $results['statusCode'] . "<br />";
-            echo "statusMessage :". $results['statusMessage'] . "<br />";
+            // print_r($results, false);
+            $amount_rupiah = "Rp. " . number_format($results['amount'], 0, ',', '.');
+
+            echo "<div style='display: flex; justify-content: center; align-items: end; height: 60vh;'>";
+            echo "<table border='1' cellpadding='10' style='border-collapse: collapse;'>";
+            echo "<tr><th>Parameter</th><th>Nilai</th></tr>";
+            echo "<tr><td>Merchant Order ID</td><td>" . $results['merchantOrderId'] . "</td></tr>";
+            echo "<tr><td>Reference</td><td>" . $results['reference'] . "</td></tr>";
+            echo "<tr><td>Amount</td><td>" . $amount_rupiah . "</td></tr>";
+            // echo "<tr><td>Fee</td><td>" . $results['fee'] . "</td></tr>";
+            // echo "<tr><td>Status Code</td><td>" . $results['statusCode'] . "</td></tr>";
+            echo "<tr><td>Status Message</td><td>" . $results['statusMessage'] . "</td></tr>";
+            echo "</table>";
+            echo "</div>";
         }
         else
         {
@@ -601,6 +612,8 @@ class ProductCheckoutPageController extends PageController{
                     $s = substr(str_shuffle(str_repeat("0123456789abcdefghijklmnopqrstuvwxyz", 16)), 0, 16);
                     $OrderID = "SHOESTORE{$s}";
                     $headerCheckout->OrderID = $OrderID;
+                    $headerCheckout->MemberID = $member->ID;
+                    $headerCheckout->VendorID = $checkoutData['VendorID'];
                     $headerCheckout->CustomerName = $checkoutData['CustomerName'];
                     $headerCheckout->CustomerFullName = $checkoutData['CustomerFullName'];
                     $headerCheckout->CustomerEmail = $checkoutData['CustomerEmail'];
@@ -617,7 +630,6 @@ class ProductCheckoutPageController extends PageController{
                     
                     foreach ($checkoutData['Products'] as $productData) {
                         $productCheckout = ProductCheckoutObject::create();
-                        $productCheckout->MemberID = $member->ID;
                         $productCheckout->ProductID = $productData['ProductID'];
                         $productCheckout->ProductTitle = $productData['ProductTitle'];
                         $productCheckout->ProductImage = $productData['ProductImage'];
@@ -664,6 +676,8 @@ class ProductCheckoutPageController extends PageController{
                     $s = substr(str_shuffle(str_repeat("0123456789abcdefghijklmnopqrstuvwxyz", 16)), 0, 16);
                     $OrderID = "SHOESTORE{$s}";
                     $headerCheckout->OrderID = $OrderID;
+                    $headerCheckout->MemberID = $member->ID;
+                    $headerCheckout->VendorID = $checkoutData['VendorID'];
                     $headerCheckout->CustomerName = $checkoutData['CustomerName'];
                     $headerCheckout->CustomerFullName = $checkoutData['CustomerFullName'];
                     $headerCheckout->CustomerEmail = $checkoutData['CustomerEmail'];
@@ -680,7 +694,6 @@ class ProductCheckoutPageController extends PageController{
                     
                     foreach ($checkoutData['Products'] as $productData) {
                         $productCheckout = ProductCheckoutObject::create();
-                        $productCheckout->MemberID = $member->ID;
                         $productCheckout->ProductID = $productData['ProductID'];
                         $productCheckout->ProductTitle = $productData['ProductTitle'];
                         $productCheckout->ProductImage = $productData['ProductImage'];

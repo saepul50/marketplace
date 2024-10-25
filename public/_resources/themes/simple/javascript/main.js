@@ -2038,25 +2038,27 @@ $('#searchForm').submit(function(e) {
     var selectedProducts = [];
     var formData = new FormData();
     $(".productCheckbox:checked").each(function () {
-      var productData = {
-        ProductCartID: $(this).data("id"),
-        ProductID: $(this).closest('.cartProduct').find('#productCheckoutID').text(),
-        productCheckoutVendorID: $(this).closest('.cartProduct').find('#productCheckoutVendorID').text(),
-        ProductTitle: $(this).closest('.cartProduct').find('#productCheckoutTitle').text(),
-        ProductImage: $(this).closest('.cartProduct').find('#productCheckoutImage').attr("src"),
-        ProductVariant: $(this).closest('.cartProduct').find('#productCheckoutVariant').text(),
-        ProductVariantID: $(this).closest('.cartProduct').find('#productCheckoutVariant').data('id'),
-        ProductVariantWeight: $(this).closest('.cartProduct').find('#productCheckoutVariant').data('weight'),
-        ProductPrice: $(this).closest('.cartProduct').find('#itemPrice').text(),
-        ProductTotalPrice: $(this).closest('.cartProduct').find('#totalPriceCheckout').text(),
-        ProductQuantity: $(this).closest('.cartProduct').find('#quantityInput').val(),
-        ProductSubTotalPrice: $('#subTotalPriceCheckout').text(),
-        ProductSubTotalPriceNF: $('#subTotalPriceNFCheckout').text(),
-        MemberFirstName: $('#MemberFirstname').text(),
-        MemberLastName: $('#MemberLastname').text(),
-        MemberEmail: $('#MemberEmail').text(),
-      };
-      selectedProducts.push(productData);
+      if(!$(this).hasClass('masterVendorCheckbox')){
+        var productData = {
+          ProductCartID: $(this).data("id"),
+          ProductID: $(this).closest('.cartProduct').find('#productCheckoutID').text(),
+          productCheckoutVendorID: $(this).closest('.cartProduct').find('#productCheckoutVendorID').text(),
+          ProductTitle: $(this).closest('.cartProduct').find('#productCheckoutTitle').text(),
+          ProductImage: $(this).closest('.cartProduct').find('#productCheckoutImage').attr("src"),
+          ProductVariant: $(this).closest('.cartProduct').find('#productCheckoutVariant').text(),
+          ProductVariantID: $(this).closest('.cartProduct').find('#productCheckoutVariant').data('id'),
+          ProductVariantWeight: $(this).closest('.cartProduct').find('#productCheckoutVariant').data('weight'),
+          ProductPrice: $(this).closest('.cartProduct').find('#itemPrice').text(),
+          ProductTotalPrice: $(this).closest('.cartProduct').find('#totalPriceCheckout').text(),
+          ProductQuantity: $(this).closest('.cartProduct').find('#quantityInput').val(),
+          ProductSubTotalPrice: $('#subTotalPriceCheckout').text(),
+          ProductSubTotalPriceNF: $('#subTotalPriceNFCheckout').text(),
+          MemberFirstName: $('#MemberFirstname').text(),
+          MemberLastName: $('#MemberLastname').text(),
+          MemberEmail: $('#MemberEmail').text(),
+        };
+        selectedProducts.push(productData);
+      }
     });
     // console.log(selectedProducts)
     formData.append('ProductCheckoutDatas', JSON.stringify(selectedProducts));
@@ -2311,8 +2313,8 @@ $('#searchForm').submit(function(e) {
           success: function (results) {
             iziToast.success({
               timeout: 3500,
-              title: 'Pembayaran',
-              message: 'Segera lakukan pembayaran pesanan',
+              title: 'Pembayaran (60 Menit)',
+              message: 'Segera lakukan pembayaran pesanan, pembayaran akan Expired selama 60 menit',
               position: 'bottomRight',
               onClosed: function () {
                 window.location.href = '/marketplace/history';
@@ -2808,6 +2810,14 @@ $('#searchForm').submit(function(e) {
   $("#masterCheckbox, #bottomMasterCheckbox").on('change', function () {
     var isChecked = $(this).is(':checked');
     $(".productCheckbox").prop('checked', isChecked);
+    updateSubtotal();
+  });
+  $('.masterVendorCheckbox').on('change', function () {
+    var vendorId = $(this).data('vendor-id');
+    var isChecked = $(this).is(':checked');
+    
+    $(".productCheckbox[data-vendor-id='" + vendorId + "']").prop('checked', isChecked);
+    
     updateSubtotal();
   });
   $('.productCheckbox').on('change', function () {
