@@ -2601,7 +2601,15 @@ $('#searchForm').submit(function(e) {
             console.log('Response:', response);
 
             if (response.success) {
-                 
+              iziToast.success({
+                timeout: 2000,
+                title: 'Sukses',
+                position: 'bottomRight',
+                message: response.message,
+                onClosed: function () {
+                  location.reload();
+                }
+              });
             } else {
                 iziToast.warning({
                     position: "bottomRight",
