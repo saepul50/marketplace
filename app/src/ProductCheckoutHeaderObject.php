@@ -46,7 +46,20 @@ use SilverStripe\Security\Security;
             'PaymentMethod' => 'Pembayaran'
         ];
         private static $default_sort = 'Created DESC';
-
+        public function onAfterWrite() {
+            parent::onAfterWrite();
+            
+            if ($this->isChanged('Status')) {
+                if ($this->StatusChangeBy === 'User') {
+                    // Service method updates
+                    $this->StatusChangeBy = 'User';
+                } else {
+                    // CMS updates
+                    $this->StatusChangeBy = 'Seller';
+                }
+                $this->handleStatusChange();
+            }
+        }
         
         public function handleStatusChange() {
 

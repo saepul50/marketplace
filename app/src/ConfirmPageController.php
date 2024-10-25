@@ -79,11 +79,13 @@ class ConfirmPageController extends PageController{
         // die();
         if ($Request === 'batal'){
             $checkoutHeader->Status = 'Dibatalkan';
+            $checkoutHeader->StatusChangeBy = 'User';
             $checkoutHeader->write();
             return json_encode(['success' => true, 'message' => 'Success']);
         }
         if ($Request === 'diterima'){
             $checkoutHeader->Status = 'Selesai';
+            $checkoutHeader->StatusChangeBy = 'User';
             $checkoutHeader->write();
             return json_encode(['success' => true, 'message' => 'Success']);
         }
