@@ -24,6 +24,7 @@ use SilverStripe\Security\Security;
             'FinalPrice'=> 'Text',
             'Bank' => 'Text',
             'Status' => 'Enum("Dikemas,Dikirim,Selesai,Dibatalkan", "Dikemas")',
+            'StatusChangeBy' => 'Text',
             'TimeCheckout'=> 'Text',
             'PaymentMethod' => 'Text',
             'PaymentUrl'=>'Varchar(255)',
