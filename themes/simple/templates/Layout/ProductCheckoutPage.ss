@@ -3,6 +3,32 @@
         box-shadow: none !important;
         border-color:black !important;
     }
+    .coupon .kanan {
+        border-left: 1px dashed #ddd;
+        width: 40% !important;
+        position:relative;
+    }
+
+    .coupon .kanan .info::after, .coupon .kanan .info::before {
+        content: '';
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        background: white;
+        border-radius: 100%;
+    }
+    .coupon .kanan .info::before {
+        top: -10px;
+        left: -10px;
+    }
+
+    .coupon .kanan .info::after {
+        bottom: -10px;
+        left: -10px;
+    }
+    .coupon .time {
+        font-size: 1.6rem;
+    }
 </style>
 <!-- Start Banner Area -->
 <section class="banner-area organic-breadcrumb" style ="background: url($SiteConfig.Background.getURL()) center no-repeat;background-size: cover; position: relative ">
@@ -127,10 +153,66 @@
                                             <a>Pengiriman
                                                 <span class="last TotalShippingPerVendor TotalShippingPerVendor-$Vendor.ID" data-weight="$ProductVariantWeight">&nbsp;&nbsp; $ProductPrice</span>
                                             </a>
+                                            <a data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Diskon 
+                                                <span id="Diskon-$Vendor.ID">
+                                                </span>
+                                            </a>
+                                            <div class="dropdown-menu container" style="width:35rem;">
+                                                <h3 class="dropdown-header">Voucher Dari $Vendor.Name</h3>
+                                                <div class="container">
+                                                    <div class="search-code d-flex justify-content-around">
+                                                        <p class="mt-1">Tambah Voucher</p>
+                                                        <input type="text" name="code" class="code-coupon" placeholder="Kode Voucher Toko"
+                                                            style="border: 1px solid #ccc; border-radius: 4px; padding: 8px;">
+                                                        <input type="hidden" name="vendor" class="Vendor" id="Vendor" value="$Vendor.ID">
+                                                        <button type="button" class="genric-btn primary-border search-coupon">Pakai</button>
+                                                    </div>
+                                                    <% if $Discounts %>
+                                                    <%-- <p>$Discounts.Code</p> --%>
+                                                    <%-- <p>ksfka</p> --%>
+                                                    <div class="">
+                                                        <% loop $Discounts %>
+                                                            
+                                                            <div class="coupon rounded mb-3 d-flex justify-content-between mt-4" style="background-color:#E9EED9;">
+                                                                <div class="kiri p-3">
+                                                                    <div class="icon-container">
+                                                                        <div class="icon-container_box">
+                                                                            <img src="data:image/png;base64,..." width="85" alt="coupon-icon" class="" />
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="tengah py-3 d-flex w-100 justify-content-start">
+                                                                    <div>
+                                                                        <span class="badge badge-success">Valid</span>
+                                                                        <h3 class="lead pb-2 mb-0">$Diskon% Coupon</h3>
+                                                                        <p class="text-muted mb-0">This Coupon Have Exp Date (<span data-date="$ExpDate" class="since">$ExpDate</span>) And Maximum use. Go Use it!!</p>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="kanan">
+                                                                    <div class="info ml-3 mr-3 d-flex justify-content-center" style="margin-top: 2.7rem !important">
+                                                                            <div class="form-check">
+                                                                                <input class="form-check-input position-static" type="radio" 
+                                                                                name="selectedCoupon" 
+                                                                                id="blankRadio$ID"
+                                                                                data-coupon-id="$Up.Vendor.ID" 
+                                                                                data-diskon="$Diskon"
+                                                                                style="height: 2rem; scale: 1.5; accent-color: orange;"
+                                                                                aria-label="Coupon $Code" >
+                                                                            </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        <% end_loop %>
+                                                    </div>
+                                                    <% end_if %>
+                                                </div>
+                                                <%-- <div class=" container dropdown-footer d-flex justify-content-end">
+                                                    <button type="button" class="genric-btn primary-border " id="getDiskon">OK</button>
+                                                </div> --%>
+                                            </div>                                            
                                             <a style="border-bottom: none;">Total Pesanan
                                                 <span class="last TotalPerVendor TotalPerVendor-$Vendor.ID" data-weight="$ProductVariantWeight">&nbsp;&nbsp; $ProductPrice</span>
                                             </a> 
-
                                         </li> 
                                         <div class="modal fade" id="OpsiPengiriman-$Vendor.ID" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel" aria-hidden="true">
                                             <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
@@ -189,7 +271,8 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>                                       
+                                        </div> 
+                                                                           
                                     </div>
                                 <% end_loop %>
                             </ul>
@@ -197,9 +280,14 @@
                                 <label id="time" class="d-none"></label>
                                 <label id="orderID" class="d-none"></label>
                                 <li><a>Subtotal Produk <span id="subTotalPriceProduct"></span></a></li>
-                                <li>
-                                    <a>Diskon 
-                                        <span id="Diskon">
+                                <%-- <li><a>Subtotal <span><% loop $CheckoutProductData %><% if $Pos == 1 %>$ProductSubTotalNFPrice<% end_if %><% end_loop %></span></a></li> --%>
+                                <li><a>Shipping <span id="shippingProduct"></span></a></li>
+                                
+                                <li class="d-none"><a><span id="shippingNFProduct"></span></a></li>
+                                <li><a>Total <span id="finalPriceProduct"></span></a></li>
+                                <li class="d-none"><a>Total <span id="finalPriceNFProduct"></span></a></li>
+                                <%-- <li class="d-none"><a>Diskon 
+                                    <span id="Diskon">
                                     <% if $Diskon %>
                                         <% loop $Diskon %> 
                                             $Diskon %
@@ -207,14 +295,8 @@
                                     <% else %>
                                         0%
                                     <% end_if %>
-                                        </span>
-                                    </a>
-                                </li>
-                                <%-- <li><a>Subtotal <span><% loop $CheckoutProductData %><% if $Pos == 1 %>$ProductSubTotalNFPrice<% end_if %><% end_loop %></span></a></li> --%>
-                                <li><a>Shipping <span id="shippingProduct"></span></a></li>
-                                <li class="d-none"><a><span id="shippingNFProduct"></span></a></li>
-                                <li><a>Total <span id="finalPriceProduct"></span></a></li>
-                                <li class="d-none"><a>Total <span id="finalPriceNFProduct"></span></a></li>
+                                    </span>
+                                </a></li> --%>
                             </ul>
                             <div class="payment_item py-2">
                                 <div class="radion_btn">
@@ -225,7 +307,7 @@
                                 <div class="" id="fulldata">
                                     <p class="customerName m-0 p-0 px-3 pt-3">Nama: <span><% if $AddressData %><% loop $AddressData %>$FName<% end_loop %><% end_if %></span></p>
                                     <p class="customerFullName m-0 p-0 px-3">Nama lengkap: <span><% if $AddressData %><% loop $AddressData %>$FName $LName<% end_loop %><% end_if %></span></p>
-                                    <p class="customerEmail m-0 p-0 px-3">Email: <span><% if $CheckoutProductData %><% loop $CheckoutProductData %><% if $Pos == 1 %>$MemberEmail<% end_if %><% end_loop %><% end_if %></span></p>
+                                    <p class="customerEmail m-0 p-0 px-3">Email: <span><% if $AddressData %><% loop $AddressData %>$Email<% end_loop %><% end_if %></span></p>
                                     <p class="customerHandphone m-0 p-0 px-3">Handphone: <span><% if $AddressData %><% loop $AddressData %>$Number<% end_loop %><% end_if %></span></p>
                                     <p class="customerAddress m-0 p-0 px-3 pb-3">Alamat: <span><% if $AddressData %><% loop $AddressData %>$AddressDetail, $Address, $Postal<% end_loop %><% end_if %></span></p>
                                     <p class="regency d-none"><% if $AddressData %><% loop $AddressData %>$Regency<% end_loop %><% end_if %></p>
@@ -448,11 +530,51 @@
         <% end_if %>
     <% end_with %>
 </section>
-<div id="loading"  style="display: flex; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 9999;  justify-content: center; align-items: center; overflow:hidden;">
+<div id="loading"  style="display: none; position: fixed;display:flex; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 9999;  justify-content: center; align-items: center; overflow:hidden;">
     <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script> 
     <dotlottie-player src="https://lottie.host/b08c7610-119e-4cce-9012-d6090e49248d/rQgFzzs9P8.json" background="transparent" speed="1" style="width: 500px; height: 500px;" loop autoplay></dotlottie-player>
 </div>
 <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        function timeSince(date) {
+            const now = new Date();
+            const seconds = Math.floor((date - now) / 1000);
+            const intervals = {
+                tahun: 31536000,
+                bulan: 2592000,
+                hari: 86400,
+                jam: 3600,
+                menit: 60,
+            };
+            console.log(seconds);
+            for (const [unit, value] of Object.entries(intervals)) {
+                const timePassed = Math.floor(seconds / value);
+                if (timePassed >= 1) {
+                    return `${timePassed} ${unit} lagi`;
+                }
+            }
+            return "Sebentar Lagi";
+        }
+    
+        function updateTimeSince() {
+            const elements = document.querySelectorAll('.since');
+            console.log(elements);
+            elements.forEach((element) => {
+                const dateString = element.dataset.date;
+                const inputDate = new Date(dateString);
+                if (isNaN(inputDate.getTime())) {
+                    element.textContent = "Invalid date";
+                    return;
+                }
+                const timePassed = timeSince(inputDate) ;
+                element.textContent = `${timePassed} ` ;
+            });
+        }
+        updateTimeSince();
+    });
     $('.nav-item#shop').addClass('active');
+
+
+
 </script>
 <!--================End Checkout Area =================-->

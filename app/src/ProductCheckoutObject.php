@@ -46,7 +46,7 @@ use SilverStripe\Security\Member;
                 if ($variant->Stock >= $this->ProductQuantity) {
                     $variant->Stock -= $this->ProductQuantity;
                 } else {
-                    Debug::show('gagal');
+                    // Debug::show('gagal');
                 }
             
                 $variant->write();

@@ -87,7 +87,7 @@ use SilverStripe\Security\Security;
             $fields->addFieldToTab('Root.Main', ReadonlyField::create('Address'));
             $fields->addFieldToTab('Root.Main', TextField::create('AddressDetail'));
             $fields->addFieldToTab('Root.Main', ReadOnlyField::create('Postal'));
-            $fields->removeByName(array('Products','PromoToko','Chat','BannerPlaces'));
+            $fields->removeByName(array('Products','PromoToko','Chat','BannerPlaces','LogView'));
             
             return $fields;
         }

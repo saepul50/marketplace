@@ -28,7 +28,8 @@ use SilverStripe\Security\Security;
             'TimeCheckout'=> 'Text',
             'PaymentMethod' => 'Text',
             'PaymentUrl'=>'Varchar(255)',
-            'DuitkuOrderID'=>'Varchar(255)'
+            'DuitkuOrderID'=>'Varchar(255)',
+            'Diskon' => 'Int',
         ];
         private static $has_many = [
             'Items'=> ProductCheckoutObject::class,
@@ -62,6 +63,7 @@ use SilverStripe\Security\Security;
         }
         
         public function handleStatusChange() {
+
             if ($this->Status == 'Selesai') {
                 foreach ($this->Items() as $item) {
                     if ($item) {

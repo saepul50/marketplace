@@ -93,7 +93,7 @@
                                           <h5>x $ProductQuantity</h5>
                                        </td>
                                     <td class="col-1">
-                                       <button type="button" class="genric-btn primary-border showModalButton" style="" id="Nilai"
+                                       <button type="button" class="genric-btn primary-border showModalButton" style="" id="NilaiRating"
                                           data-toggle="modal" data-target="#exampleModalCenter"
                                           data-title="$ProductTitle" data-get="$Up.OrderID" data-image="$ProductImage"
                                           data-variant="$ProductVariant" data-id="$ProductID"
@@ -320,7 +320,7 @@
                                        <h5>x $ProductQuantity</h5>
                                     </td>
                                     <td class="col-1">
-                                       <button type="button" class="genric-btn primary-border showModalButton" style="" id="Nilai"
+                                       <button type="button" class="genric-btn primary-border showModalButton ss" style="" id="NilaiRating-$ProductID"
                                           data-toggle="modal" data-target="#exampleModalCenter"
                                           data-title="$ProductTitle" data-get="$Up.OrderID" data-image="$ProductImage"
                                           data-variant="$ProductVariant" data-id="$ProductID"
@@ -511,7 +511,6 @@
                                           <p>$Up.ProductCostShipping</p>
                                        </td>
                                     </tr>
-                                    <% if $Up.Items.First.Diskon %>
                                        <tr>
                                           <td></td>
                                           <td></td>
@@ -522,11 +521,10 @@
                                              <h4>Diskon</h4>
                                           </td>
                                           <td>
-                                             <p><% loop $Up.Items.First %>$Diskon%<% end_loop %>
+                                             <p>$Up.Diskon%
                                              </p>
                                           </td>
                                        </tr>
-                                    <% end_if %>
                                     <tr>
                                        <td></td>
                                        <td></td>
@@ -559,7 +557,7 @@
                            <p class="m-0">$PaymentMethod</p>
                         </div>
                      </div>
-                     <a class="pr-2" href="{$BaseHref}/nota/for/$OrderID"><button type="button" class="genric-btn primary-border showModalButton" style="">Cetak</button></a>
+                     <a class="pr-2" href="{$BaseHref}/nota/for/$OrderID"><button type="button" class="genric-btn primary-border " style="">Cetak</button></a>
                      </div>
                   </div>
                </div>
@@ -668,7 +666,6 @@
                                           <p>$Up.ProductCostShipping</p>
                                        </td>
                                     </tr>
-                                    <% if $Up.Items.First.Diskon %>
                                        <tr>
                                           <td></td>
                                           <td></td>
@@ -679,11 +676,10 @@
                                              <h4>Diskon</h4>
                                           </td>
                                           <td>
-                                             <p><% loop $Up.Items.First %>$Diskon%<% end_loop %>
+                                             <p>$Up.Diskon%
                                              </p>
                                           </td>
                                        </tr>
-                                    <% end_if %>
                                     <tr>
                                        <td></td>
                                        <td></td>
@@ -717,7 +713,7 @@
                            </div>
                         </div>
                         <div class="d-flex justify-content-end pt-4">
-                        <a class="pr-2" href="{$BaseHref}/nota/for/$OrderID"><button type="button" class="genric-btn primary-border showModalButton" style="">Cetak</button></a>
+                        <a class="pr-2" href="{$BaseHref}/nota/for/$OrderID"><button type="button" class="genric-btn primary-border " style="">Cetak</button></a>
                            <button type="button" class="genric-btn danger-border showModalButton" style=""
                               data-toggle="modal" data-target="#cancelbtn"
                               data-title="$ProductTitle" data-get="$Up.OrderID" data-image="$ProductImage"
@@ -832,7 +828,6 @@
                                           <p>$Up.ProductCostShipping</p>
                                        </td>
                                     </tr>
-                                    <% if $Up.Items.First.Diskon %>
                                        <tr>
                                           <td></td>
                                           <td></td>
@@ -843,11 +838,10 @@
                                              <h4>Diskon</h4>
                                           </td>
                                           <td>
-                                             <p><% loop $Up.Items.First %>$Diskon%<% end_loop %>
+                                             <p>$Up.Diskon%
                                              </p>
                                           </td>
                                        </tr>
-                                    <% end_if %>
                                     <tr>
                                        <td></td>
                                        <td></td>
@@ -881,7 +875,7 @@
                            </div>
                         </div>
                         <div class="d-flex justify-content-end pt-4">
-                        <a class="pr-2" href="{$BaseHref}/nota/for/$OrderID"><button type="button" class="genric-btn primary-border showModalButton" style="">Cetak</button></a>
+                        <a class="pr-2" href="{$BaseHref}/nota/for/$OrderID"><button type="button" class="genric-btn primary-border " style="">Cetak</button></a>
                            <button type="button" class="genric-btn primary-border" id="receivedBtn"
                               data-orderid="$OrderID">Pesanan Diterima</button>
                         </div>
@@ -993,7 +987,6 @@
                                           <p>$Up.ProductCostShipping</p>
                                        </td>
                                     </tr>
-                                    <% if $Up.Items.First.Diskon %>
                                        <tr>
                                           <td></td>
                                           <td></td>
@@ -1004,11 +997,10 @@
                                              <h4>Diskon</h4>
                                           </td>
                                           <td>
-                                             <p><% loop $Up.Items.First %>$Diskon%<% end_loop %>
+                                             <p>$Up.Diskon%
                                              </p>
                                           </td>
                                        </tr>
-                                    <% end_if %>
                                     <tr>
                                        <td></td>
                                        <td></td>
