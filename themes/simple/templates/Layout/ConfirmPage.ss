@@ -557,7 +557,7 @@
                            <p class="m-0">$PaymentMethod</p>
                         </div>
                      </div>
-                     <a class="pr-2" href="{$BaseHref}/nota/for/$OrderID"><button type="button" class="genric-btn primary-border showModalButton" style="">Cetak</button></a>
+                     <a class="pr-2" href="{$BaseHref}/nota/for/$OrderID"><button type="button" class="genric-btn primary-border " style="">Cetak</button></a>
                      </div>
                   </div>
                </div>
@@ -713,7 +713,7 @@
                            </div>
                         </div>
                         <div class="d-flex justify-content-end pt-4">
-                        <a class="pr-2" href="{$BaseHref}/nota/for/$OrderID"><button type="button" class="genric-btn primary-border showModalButton" style="">Cetak</button></a>
+                        <a class="pr-2" href="{$BaseHref}/nota/for/$OrderID"><button type="button" class="genric-btn primary-border " style="">Cetak</button></a>
                            <button type="button" class="genric-btn danger-border showModalButton" style=""
                               data-toggle="modal" data-target="#cancelbtn"
                               data-title="$ProductTitle" data-get="$Up.OrderID" data-image="$ProductImage"
@@ -875,7 +875,7 @@
                            </div>
                         </div>
                         <div class="d-flex justify-content-end pt-4">
-                        <a class="pr-2" href="{$BaseHref}/nota/for/$OrderID"><button type="button" class="genric-btn primary-border showModalButton" style="">Cetak</button></a>
+                        <a class="pr-2" href="{$BaseHref}/nota/for/$OrderID"><button type="button" class="genric-btn primary-border " style="">Cetak</button></a>
                            <button type="button" class="genric-btn primary-border" id="receivedBtn"
                               data-orderid="$OrderID">Pesanan Diterima</button>
                         </div>

@@ -24,7 +24,6 @@ use SilverStripe\Security\Security;
             'FinalPrice'=> 'Text',
             'Bank' => 'Text',
             'Status' => 'Enum("Dikemas,Dikirim,Selesai,Dibatalkan", "Dikemas")',
-            'StatusChangeBy' => 'Text',
             'TimeCheckout'=> 'Text',
             'PaymentMethod' => 'Text',
             'PaymentUrl'=>'Varchar(255)',
@@ -47,22 +46,10 @@ use SilverStripe\Security\Security;
             'PaymentMethod' => 'Pembayaran'
         ];
         private static $default_sort = 'Created DESC';
-        public function onAfterWrite() {
-            parent::onAfterWrite();
-            
-            if ($this->isChanged('Status')) {
-                $currentUser = Security::getCurrentUser();
-                if ($currentUser && Permission::check('CMS_ACCESS_OrderAdmin')) {
-                    $this->StatusChangeBy = 'Seller';
-                } else {
-                    $this->StatusChangeBy = 'User';
-                }
-                $this->write();
-                $this->handleStatusChange();
-            }
-        }
+
         
         public function handleStatusChange() {
+
             if ($this->Status == 'Selesai') {
                 foreach ($this->Items() as $item) {
                     if ($item) {

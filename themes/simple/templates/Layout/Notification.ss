@@ -22,11 +22,11 @@
                                 <% end_with %>
                             <% end_if %>
                         </div>
-                        <% loop $Notifications %>
+                        <% loop $Notifications.First %>
                             <div class="content ml-4 d-flex ">
                                 <div style="inline-size: 100%; overflow-wrap: break-word;">
                                     <h5 class="header fw-bold" style="font-weight:bold;">$Title</h5>
-                                    <p class="deskripsi m-0">$Message $Up.HeaderCheckout.Vendor.Name</p>
+                                    <p class="deskripsi m-0">$Message</p>
                                     <p>$Date $Time</p>
                                 </div>
                             </div>
@@ -41,18 +41,20 @@
                     <div class="d-flex">
                         <div class="col-2">
                             <% if $HeaderCheckout.Items.First %>
-                                <% loop $HeaderCheckout.Items.First %>
+                                <% with $HeaderCheckout.Items.First %>
                                     <img src="$ProductImage" class="img-fluid">
-                                <% end_loop %>
+                                <% end_with %>
                             <% end_if %>
                         </div>
-                        <div class="content ml-4 d-flex ">
-                            <div style="inline-size: 100%; overflow-wrap: break-word;">
-                                <h5 class="header fw-bold" style="font-weight:bold;">$Title</h5>
-                                <p class="deskripsi m-0">$Message</p>
-                                <p>$Date $Time</p>
+                        <% loop $Notifications.First %>
+                            <div class="content ml-4 d-flex ">
+                                <div style="inline-size: 100%; overflow-wrap: break-word;">
+                                    <h5 class="header fw-bold" style="font-weight:bold;">$Title</h5>
+                                    <p class="deskripsi m-0">$Message</p>
+                                    <p>$Date $Time</p>
+                                </div>
                             </div>
-                        </div>
+                        <% end_loop %>
                     </div>
                     <div class="">
                         <a href="{$BaseHref}/confirm/order/$HeaderCheckout.OrderID?detailOrder=true" style="color: #000"><i class='bx bx-chevron-down' style="font-size: 40px;"></i></a>

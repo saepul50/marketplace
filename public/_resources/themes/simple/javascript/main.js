@@ -778,7 +778,7 @@ $(document).ready(function () {
     $('#variants').html(variant);
     $('#image').attr('src', image);
     $('#OrderID').val(get);
-    $('#exampleModalCenter').modal('show');
+    // $('#exampleModalCenter').modal('show');
   });
   
     $("#reviewform").submit(function (event) {
