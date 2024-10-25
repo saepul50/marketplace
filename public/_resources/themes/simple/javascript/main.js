@@ -763,7 +763,8 @@ $(document).ready(function () {
   })
 
   //product
-  $('#Nilai').on('click', function(event) {
+
+ $(document).on('click', '.showModalButton', function(event) {
     event.preventDefault();
     var button = $(this); 
     var title = button.data('title');
@@ -771,15 +772,14 @@ $(document).ready(function () {
     var variant = button.data('variant');
     var get = button.data('get');
     var id = button.data('id');
-    var button = $('.showModalButton').data('id');
-    var Filter =  $("#ID").val();
+
     $('#ProductID').val(id);
     $('#title').html(title);
     $('#variants').html(variant);
     $('#image').attr('src', image);
     $('#OrderID').val(get);
     $('#exampleModalCenter').modal('show');
-    });
+  });
   
     $("#reviewform").submit(function (event) {
       event.preventDefault();

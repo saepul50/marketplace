@@ -93,7 +93,7 @@
                                           <h5>x $ProductQuantity</h5>
                                        </td>
                                     <td class="col-1">
-                                       <button type="button" class="genric-btn primary-border showModalButton" style="" id="Nilai"
+                                       <button type="button" class="genric-btn primary-border showModalButton" style="" id="NilaiRating"
                                           data-toggle="modal" data-target="#exampleModalCenter"
                                           data-title="$ProductTitle" data-get="$Up.OrderID" data-image="$ProductImage"
                                           data-variant="$ProductVariant" data-id="$ProductID"
@@ -320,7 +320,7 @@
                                        <h5>x $ProductQuantity</h5>
                                     </td>
                                     <td class="col-1">
-                                       <button type="button" class="genric-btn primary-border showModalButton" style="" id="Nilai"
+                                       <button type="button" class="genric-btn primary-border showModalButton ss" style="" id="NilaiRating-$ProductID"
                                           data-toggle="modal" data-target="#exampleModalCenter"
                                           data-title="$ProductTitle" data-get="$Up.OrderID" data-image="$ProductImage"
                                           data-variant="$ProductVariant" data-id="$ProductID"
