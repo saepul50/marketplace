@@ -2040,7 +2040,7 @@ $('#searchForm').submit(function(e) {
     $(".productCheckbox:checked").each(function () {
       if(!$(this).hasClass('masterVendorCheckbox')){
         var productData = {
-          ProductCartID: $(this).data("id"),
+          ProductCartID: $(this).data('vendor'),
           ProductID: $(this).closest('.cartProduct').find('#productCheckoutID').text(),
           productCheckoutVendorID: $(this).closest('.cartProduct').find('#productCheckoutVendorID').text(),
           ProductTitle: $(this).closest('.cartProduct').find('#productCheckoutTitle').text(),
@@ -2061,8 +2061,8 @@ $('#searchForm').submit(function(e) {
       }
     });
     // console.log(selectedProducts)
-    formData.append('ProductCheckoutDatas', JSON.stringify(selectedProducts));
     // return false;
+    formData.append('ProductCheckoutDatas', JSON.stringify(selectedProducts));
     $.ajax({
       url: "/marketplace/productcheckout/static",
       type: "POST",
@@ -2230,7 +2230,8 @@ $('#searchForm').submit(function(e) {
           });
           selectedVendors.push(vendorData);
         });
-        // console.log(selectedVendors);
+        console.log(selectedVendors);
+        return;
         formData.append('paymentDatas', JSON.stringify(selectedVendors));
         $.ajax({
           url: '/marketplace/productcheckout/manualTF',

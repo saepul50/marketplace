@@ -49,10 +49,10 @@ use SilverStripe\Dev\Debug;
         }
         public function CartData() {
             $member = Security::getCurrentUser();
-            // Debug::show($member);
-            // die();
             if ($member) {
                 $totalCart = CartObject::get()->filter('MemberID', $member->ID)->count();
+                // Debug::show(val: $totalCart);
+                // die();
                 return $totalCart;
             }
             return null;

@@ -84,7 +84,7 @@
                                         <td class="col-6">
                                             <%-- <p>$ProductID</p> --%>
                                             <div class="media d-flex align-items-center">
-                                                <input type="checkbox" class="productCheckbox" data-id="$Product.ID" data-vendor-id="$Up.ID">
+                                                <input type="checkbox" class="productCheckbox" data-id="$Product.ID" data-vendor="$ID">
                                                 <div class="d-flex col-10 col-md-4">
                                                     <a href="/marketplace/productdetails/$Product.ID" style="text-decoration: none;">
                                                         <img id="productCheckoutImage" src="$Product.ProductImages.First.URL" alt="" class="img-fluid">

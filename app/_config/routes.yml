@@ -8,3 +8,4 @@ SilverStripe\Control\Director:
   rules:
     'admin': 'Silverstripe\Admin\CMSMain'
     'venn/$ID': 'VendorPageController'
+    'apiShoeStore//$Action/$ID/$Name': 'marketplace\APIController'
