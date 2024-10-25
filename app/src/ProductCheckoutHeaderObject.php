@@ -103,6 +103,15 @@ use SilverStripe\Security\Security;
             if ($proofImageField = $fields->fieldByName('Root.Main.ProofImage')) {
                 $proofImageField->setReadonly(false);
             }
+
+            if ($memberField = $fields->fieldByName('Root.Main.MemberID')) {
+                $memberField->setReadonly(true);
+            }
+        
+            if ($vendorField = $fields->fieldByName('Root.Main.VendorID')) {
+                $vendorField->setReadonly(true);
+            }
+            
             if ($this->PaymentMethod === 'Duitku') {
                 $link = '<a href="/marketplace/productcheckout/checkTransaction?orderid=' . $this->DuitkuOrderID . '" target="_blank">Cek Status Duitku</a>';
                 $fields->replaceField('OrderID', LiteralField::create('OrderID', $link));
