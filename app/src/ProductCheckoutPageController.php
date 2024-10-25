@@ -19,6 +19,7 @@ class ProductCheckoutPageController extends PageController{
         'address',
         'paymentmethod',
         'transaction',
+        'checktransaction',
         'manualpayment',
         'manualTF',
         'cash',
@@ -30,6 +31,8 @@ class ProductCheckoutPageController extends PageController{
     
         if ($member) {
             $checkoutData = $request->getSession()->get('CheckoutProductData');
+            // Debug::show($checkoutData);
+            // die();  
             $AddressData = $request->getSession()->get('AddressData');
             $coupons = $member->PromoTokos()->filter('ExpDate:GreaterThan', date('Y-m-d H:i:s'));
             // Debug::show($coupons);
@@ -427,6 +430,7 @@ class ProductCheckoutPageController extends PageController{
                 $OrderID = "SHOESTORE{$s}";
                 $headerCheckout->OrderID = $OrderID;
                 $headerCheckout->MemberID = $member->ID;
+                $headerCheckout->VendorID = $checkoutData['VendorID'];
                 $headerCheckout->CustomerName = $checkoutData['CustomerName'];
                 $headerCheckout->CustomerFullName = $checkoutData['CustomerFullName'];
                 $headerCheckout->CustomerEmail = $checkoutData['CustomerEmail'];
@@ -466,6 +470,11 @@ class ProductCheckoutPageController extends PageController{
                     $productCheckout->VendorID = $productData['VendorID'];
                     $productCheckout->HeaderCheckoutID = $headerCheckout->ID;
                     $productCheckout->write();
+
+                    $cartItem = CartObject::get()->byID($productData['ProductCartID']);
+                    if ($cartItem) {
+                        $cartItem->delete();
+                    }
                 }
     
                 $results[] = [
@@ -494,7 +503,7 @@ class ProductCheckoutPageController extends PageController{
         $CustomerAddress = $checkoutData['CustomerAddress'];
         $callbackUrl = '{$BaseHref}/duitkupayment/callback';
         $returnUrl = '/marketplace';
-        $expiryPeriod = 30;
+        $expiryPeriod = 120;
         $signature = md5($merchantCode . $merchantOrderId . $paymentAmount . $apiKey);
         $alamat = $CustomerAddress;
         // $city = $addressDetCus;
@@ -563,10 +572,72 @@ class ProductCheckoutPageController extends PageController{
         } else {
             return null;
         }
-    }    
+    }
+    public function checktransaction(){
+        $merchantCode = 'DS20031'; // dari duitku
+        $apiKey = '8c98ceb5b29429b26bfcd384d5f76d02'; // dari duitku
+        if (isset($_GET['orderid'])) {
+            $merchantOrderId = $_GET['orderid'];
+            // Debug::show(val: $merchantOrderId);
+            // die();
+        } else {
+            Debug::show("Order ID tidak ditemukan.");
+            return;
+        }
+
+        $signature = md5($merchantCode . $merchantOrderId . $apiKey);
+
+        $params = array(
+            'merchantCode' => $merchantCode,
+            'merchantOrderId' => $merchantOrderId,
+            'signature' => $signature
+        );
+
+        $params_string = json_encode($params);
+        $url = 'https://sandbox.duitku.com/webapi/api/merchant/transactionStatus';
+        $ch = curl_init();
+
+        curl_setopt($ch, CURLOPT_URL, $url); 
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");                                                                     
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $params_string);                                                                  
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);                                                                      
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(                                                                          
+            'Content-Type: application/json',                                                                                
+            'Content-Length: ' . strlen($params_string))                                                                       
+        );   
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+
+        //execute post
+        $request = curl_exec($ch);
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+        if($httpCode == 200)
+        {
+            $results = json_decode($request, true);
+            // print_r($results, false);
+            $amount_rupiah = "Rp. " . number_format($results['amount'], 0, ',', '.');
+
+            echo "<div style='display: flex; justify-content: center; align-items: end; height: 60vh;'>";
+            echo "<table border='1' cellpadding='10' style='border-collapse: collapse;'>";
+            echo "<tr><th>Parameter</th><th>Nilai</th></tr>";
+            echo "<tr><td>Merchant Order ID</td><td>" . $results['merchantOrderId'] . "</td></tr>";
+            echo "<tr><td>Reference</td><td>" . $results['reference'] . "</td></tr>";
+            echo "<tr><td>Amount</td><td>" . $amount_rupiah . "</td></tr>";
+            // echo "<tr><td>Fee</td><td>" . $results['fee'] . "</td></tr>";
+            // echo "<tr><td>Status Code</td><td>" . $results['statusCode'] . "</td></tr>";
+            echo "<tr><td>Status Message</td><td>" . $results['statusMessage'] . "</td></tr>";
+            echo "</table>";
+            echo "</div>";
+        }
+        else
+        {
+            $request = json_decode($request);
+            $error_message = "Server Error " . $httpCode ." ". $request->Message;
+            echo $error_message;
+        }
+    }
     public function manualpayment(HTTPRequest $request) {
         $id = $request->param('ID');
-        // Debug::show($id);
         $member = Security::getCurrentUser();
         
         if ($member) {
@@ -586,16 +657,17 @@ class ProductCheckoutPageController extends PageController{
                     return json_encode(['success' => false, 'message' => 'Gagal menulis file']);
                 }
             }
-
+            
             $checkoutHeader = ProductCheckoutHeaderObject::get()->filter('OrderID', $id)->first();
             // Debug::show($checkoutHeader);
             if ($checkoutHeader) {
-    
                 $isDetail = $request->getVar('invoice');
-                return $this->customise([
+                // Debug::show($isDetail);
+                // die();
+                return [
                     'CheckoutHeader' => $checkoutHeader,
                     'Invoice' => $isDetail,
-                ])->renderWith(['ProductCheckoutPage', 'Page']);
+                ];
             }
         }        
         return $this->httpError(404, 'Page not found');
@@ -613,6 +685,8 @@ class ProductCheckoutPageController extends PageController{
                     $s = substr(str_shuffle(str_repeat("0123456789abcdefghijklmnopqrstuvwxyz", 16)), 0, 16);
                     $OrderID = "SHOESTORE{$s}";
                     $headerCheckout->OrderID = $OrderID;
+                    $headerCheckout->MemberID = $member->ID;
+                    $headerCheckout->VendorID = $checkoutData['VendorID'];
                     $headerCheckout->CustomerName = $checkoutData['CustomerName'];
                     $headerCheckout->CustomerFullName = $checkoutData['CustomerFullName'];
                     $headerCheckout->CustomerEmail = $checkoutData['CustomerEmail'];
@@ -630,7 +704,6 @@ class ProductCheckoutPageController extends PageController{
                     
                     foreach ($checkoutData['Products'] as $productData) {
                         $productCheckout = ProductCheckoutObject::create();
-                        $productCheckout->MemberID = $member->ID;
                         $productCheckout->ProductID = $productData['ProductID'];
                         $productCheckout->ProductTitle = $productData['ProductTitle'];
                         $productCheckout->ProductImage = $productData['ProductImage'];
@@ -645,8 +718,13 @@ class ProductCheckoutPageController extends PageController{
                         $productCheckout->HeaderCheckoutID = $headerCheckout->ID;
                         
                         $productCheckout->write();
+
+                        $cartItem = CartObject::get()->byID($productData['ProductCartID']);
+                        if ($cartItem) {
+                            $cartItem->delete();
+                        }
                     }
-                    Debug::show($checkoutData['Products']);
+                    // Debug::show($checkoutData['Products']);
                     
                     $results[] = [
                         'VendorID' => $checkoutData['VendorID'],
@@ -663,137 +741,65 @@ class ProductCheckoutPageController extends PageController{
         return json_encode(['success' => false, 'message' => 'No data received']);
     }
     public function cash(HTTPRequest $request){
+        $member = Security::getCurrentUser();
         if ($request->isPOST()) {
-            // Debug::show($request);
-            // die();
             $postData = json_decode($request->postVar('paymentDatas'), true);
-            // Debug::show($postData);
-            // die();
-            $finalPrice = $postData[0]['ProductFinalPriceNF'];
-            $PaymentSelected = $postData[0]['Bank'];
-            $PaymentMethode = $postData[0]['PaymentMethod'];
-            $TimeCheckout = $postData[0]['TimeCheckout'];
-            $CustomerName = $postData[0]['CustomerName'];
-            $CustomerEmail = $postData[0]['CustomerEmail'];
-            $CustomerHandphone = $postData[0]['CustomerHandphone'];
-            $CustomerAddress = $postData[0]['CustomerAddress'];
-            $CustomerNotes = $postData[0]['CustomerNotes'];
-            $merchantOrderId = $postData[0]['OrderID'];
             if ($postData) {
-                $products = $postData;
-                if (!empty($products)) {
-                    $results = [];
-                    $firstItemProcessed = false;
+                $results = [];
+                foreach ($postData as $checkoutData) {
+                    $headerCheckout = ProductCheckoutHeaderObject::create();
+                    $s = substr(str_shuffle(str_repeat("0123456789abcdefghijklmnopqrstuvwxyz", 16)), 0, 16);
+                    $OrderID = "SHOESTORE{$s}";
+                    $headerCheckout->OrderID = $OrderID;
+                    $headerCheckout->MemberID = $member->ID;
+                    $headerCheckout->VendorID = $checkoutData['VendorID'];
+                    $headerCheckout->CustomerName = $checkoutData['CustomerName'];
+                    $headerCheckout->CustomerFullName = $checkoutData['CustomerFullName'];
+                    $headerCheckout->CustomerEmail = $checkoutData['CustomerEmail'];
+                    $headerCheckout->CustomerHandphone = $checkoutData['CustomerHandphone'];
+                    $headerCheckout->CustomerAddress = $checkoutData['CustomerAddress'];
+                    $headerCheckout->CustomerNotes = $checkoutData['CustomerNotes'];
+                    $headerCheckout->ProductCostShipping = $checkoutData['ProductShippingPrice'];
+                    $headerCheckout->FinalPrice = $checkoutData['ProductTotalPrice'];
+                    $headerCheckout->Bank = $checkoutData['Bank'];
+                    $headerCheckout->PaymentMethod = $checkoutData['PaymentMethod'];
+                    $headerCheckout->TimeCheckout = $checkoutData['TimeCheckout'];
                     
-                    foreach ($products as $product) {
-                        $OrderID = $product['OrderID'];
-                        $ProductID = $product['ProductID'];
-                        $ProductCartID = $product['ProductCartID'];
-                        $ProductTitle = $product['ProductTitle'];
-                        $ProductImage = $product['ProductImage'];
-                        $ProductVariant = $product['ProductVariant'];
-                        $ProductVariantID = $product['ProductVariantID'];
-                        $ProductVariantWeight = $product['ProductVariantWeight'];
-                        $ProductPrice = $product['ProductPrice'];
-                        $ProductQuantity = $product['ProductQuantity'];
-                        $ProductTotalPrice = $product['ProductTotalPrice'];
-                        $ProductSubTotalPrice = $product['ProductSubTotalPrice'];
-                        $ProductCostShipping = $product['ProductCostShipping'];
-                        $ProductFinalPrice = $product['ProductFinalPrice'];
-                        $CustomerName = $product['CustomerName'];
-                        $CustomerFullName = $product['CustomerFullName'];
-                        $CustomerEmail = $product['CustomerEmail'];
-                        $CustomerHandphone = $product['CustomerHandphone'];
-                        $CustomerAddress = $product['CustomerAddress'];
-                        $CustomerNotes = $product['CustomerNotes'];
-                        // $OrderID = $merchantOrderId;
-                        $Bank = $product['Bank'];
-                        $TimeCheckout = $product['TimeCheckout'];
-                        $PaymentMethod = $product['PaymentMethod'];
-                        $debugData = [
-                            'ProductID' => $product['ProductID'],
-                            'CartID' => $product['ProductCartID'],
-                            'ProductTitle' => $product['ProductTitle'],
-                            'ProductImage' => $product['ProductImage'],
-                            'VariantName' => $product['ProductVariant'],
-                            'VariantID' => $product['ProductVariantID'],
-                            'Price' => $product['ProductPrice'],
-                            'SubTotalPrice' => $product['ProductSubTotalPrice'],
-                            'Quantity' => $product['ProductQuantity'],
-                            'F' => $product['ProductCostShipping'],
-                            'FinalPrice' => $product['ProductFinalPrice'],
-                            'Name' => $product['CustomerName'],
-                            'Number' => $product['CustomerHandphone'],
-                            'Address' => $product['CustomerAddress'],
-                            'AddressDetail' => $product['CustomerNotes'],
-                            'OrderID' => $merchantOrderId,
-                            'Bank' => $product['Bank'],
-                            'Comments' => $product['CustomerNotes'],
-                            'TimeCheckout' => $product['TimeCheckout']
-                        ];  
+                    $headerCheckout->write();
+                    
+                    foreach ($checkoutData['Products'] as $productData) {
+                        $productCheckout = ProductCheckoutObject::create();
+                        $productCheckout->ProductID = $productData['ProductID'];
+                        $productCheckout->ProductTitle = $productData['ProductTitle'];
+                        $productCheckout->ProductImage = $productData['ProductImage'];
+                        $productCheckout->ProductVariant = $productData['ProductVariant'];
+                        $productCheckout->ProductVariantID = $productData['ProductVariantID'];
+                        $productCheckout->ProductVariantWeight = $productData['ProductVariantWeight'];
+                        $productCheckout->ProductPrice = $productData['ProductPrice'];
+                        $productCheckout->ProductQuantity = $productData['ProductQuantity'];
+                        $productCheckout->VendorID = $productData['VendorID'];
                         
-                        try {
-                            $checkoutItem = ProductCheckoutObject::create();
-                            $checkoutItem->ProductID = $ProductID;
-                            $checkoutItem->ProductCartID = $ProductCartID;
-                            $checkoutItem->ProductTitle = $ProductTitle;
-                            $checkoutItem->ProductImage = $ProductImage;
-                            $checkoutItem->ProductVariant = $ProductVariant;
-                            $checkoutItem->ProductVariantID = $ProductVariantID;
-                            $checkoutItem->ProductVariantWeight = $ProductVariantWeight;
-                            $checkoutItem->ProductPrice = $ProductPrice;
-                            $checkoutItem->ProductQuantity = $ProductQuantity;
-                            $checkoutItem->ProductTotalPrice = $ProductTotalPrice;
-                            $checkoutItem->ProductSubTotalPrice = $ProductSubTotalPrice;
-                            $checkoutItem->ProductCostShipping = $ProductCostShipping;
-                            $checkoutItem->ProductFinalPrice = $ProductFinalPrice;
-                            $checkoutItem->OrderId = $merchantOrderId;
-                            $member = Security::getCurrentUser();
-                            if ($member) {
-                                $checkoutItem->MemberID = $member->ID;
-                            }
-                            if (!$firstItemProcessed) {
-                                $checkoutHeader = ProductCheckoutHeaderObject::create();
-                                $checkoutHeader->OrderID = $merchantOrderId;
-                                $checkoutHeader->CustomerName = $CustomerName;
-                                $checkoutHeader->CustomerFullName = $CustomerFullName;
-                                $checkoutHeader->CustomerEmail = $CustomerEmail;
-                                $checkoutHeader->CustomerHandphone = $CustomerHandphone;
-                                $checkoutHeader->CustomerAddress = $CustomerAddress;
-                                $checkoutHeader->CustomerNotes = $CustomerNotes;
-                                $checkoutHeader->FinalPrice = $ProductFinalPrice;
-                                $checkoutHeader->Bank = $PaymentSelected;
-                                $checkoutHeader->TimeCheckout = $TimeCheckout;
-                                $checkoutHeader->PaymentMethod = $PaymentMethode;
-                                $checkoutHeader->write();
-                                $firstItemProcessed = true;
-                            }
-                            $checkoutItem->HeaderCheckoutID = $checkoutHeader->ID;
-                            $checkoutItem->write();
-                            // Debug::show($checkoutItem);
-                            $cartItem = CartObject::get()->byID($ProductCartID);
-                            if ($cartItem) {
-                                $cartItem->delete();
-                            }
-                            $results[] = ['success' => true, 'productID' => $ProductID];
-                        } catch (ValidationException $e) {
-                            $results[] = ['success' => false, 'productID' => $ProductID, 'message' => $e->getMessage()];
+                        $productCheckout->HeaderCheckoutID = $headerCheckout->ID;
+                        
+                        $productCheckout->write();
+
+                        $cartItem = CartObject::get()->byID($productData['ProductCartID']);
+                        if ($cartItem) {
+                            $cartItem->delete();
                         }
                     }
-    
-                    if (count($results) === count($products)) {
-                        return json_encode(['success' => true, 'results' => $results]);
-                    } else {
-                        return json_encode(['success' => false, 'results' => $results]);
-                    }
-                } else {
-                    return json_encode(['success' => false, 'message' => 'Empty data received']);
+                    
+                    $results[] = [
+                        'VendorID' => $checkoutData['VendorID'],
+                        'OrderID' => $headerCheckout->OrderID,
+                        'ProductsSaved' => count($checkoutData['Products'])
+                    ];
                 }
+                return json_encode(['success' => true, 'results' => $results]);
             } else {
                 return json_encode(['success' => false, 'message' => 'Invalid data format']);
             }
         }
-    
         return json_encode(['success' => false, 'message' => 'No data received']);
     }
 }

@@ -48,35 +48,8 @@
 
 <!--================Checkout Area =================-->
 <section class="checkout_area section_gap" id="checkout_area">
-  
-
-
     <div class="container">
         <% if $CheckoutProductData %>
-            <%-- <div class="returning_customer">
-                <div class="check_title">
-                    <h2>Returning Customer? <a href="{$BaseHref}/login">Click here to login</a></h2>
-                </div>
-                <p>If you have shopped with us before, please enter your details in the boxes below. If you are a new
-                    customer, please proceed to the Billing & Shipping section.</p>
-                <form class="row contact_form" action="#" method="post" novalidate="novalidate">
-                    <div class="col-md-6 form-group p_star">
-                        <input type="text" class="form-control" id="name" name="name" placeholder="Email">
-
-                    </div>
-                    <div class="col-md-6 form-group p_star">
-                        <input type="password" class="form-control" id="password" name="password"  placeholder="Password">
-                    </div>
-                    <div class="col-md-12 form-group">
-                        <button type="submit" value="submit" class="primary-btn">login</button>
-                        <div class="creat_account">
-                            <input type="checkbox" id="f-option" name="selector">
-                            <label for="f-option">Remember me</label>
-                        </div>
-                        <a class="lost_pass" href="#">Lost your password?</a>
-                    </div>
-                </form>
-            </div> --%>
             <div class="cupon_area">
                 <div class="check_title">
                     <h2>Have a coupon? <a>Enter your code below</a></h2>
@@ -98,9 +71,6 @@
                             <div class="col-md-6 form-group p_star">
                                 <input type="text" class="form-control" id="last" name="name"  placeholder="Last Name" <% if $CheckoutProductData %>value=$Member.Surname<% end_if %>>
                             </div>
-                            <%-- <div class="col-md-12 form-group">
-                                <input type="text" class="form-control" id="company" name="company" placeholder="Company name">
-                            </div> --%>
                             <div class="col-md-6 form-group p_star">
                                 <input type="text" class="form-control" id="numberinput" name="numberinput" placeholder="Phone" required maxlength="14" minlength="12" value="<% if $AddressData %><% loop $AddressData %>$Number<% end_loop %><% end_if %>">
                             </div>
@@ -348,7 +318,6 @@
                                 <div class="radion_btn">
                                     <input type="radio" id="f-option6" value="manualtf" name="selectorpayment" checked>
                                     <label for="f-option6">Manual Transfer </label>
-                                    <img src="img/product/card.jpg" alt="">
                                     <div class="check"></div>
                                 </div>
                                 <p class="nooption nooptionmanualtf">Pay via manual transfer with bank.</p>
@@ -361,7 +330,6 @@
                                 <div class="radion_btn">
                                     <input type="radio" id="f-option7" value="duitku" name="selectorpayment">
                                     <label for="f-option7">Duitku </label>
-                                    <img src="img/product/card.jpg" alt="">
                                     <div class="check"></div>
                                 </div>
                                 <p class="nooption nooptionduitku">Pay via duitku with many payment method</p>
@@ -375,7 +343,6 @@
                                 <div class="radion_btn">
                                     <input type="radio" id="f-option8" value="cod" name="selectorpayment">
                                     <label for="f-option8">Cash on Delivery </label>
-                                    <img src="img/product/card.jpg" alt="">
                                     <div class="check"></div>
                                 </div>
                                 <p>Pay via Cash On Delivery</p>
@@ -396,7 +363,6 @@
     </div>
 </section>
 <section class="invoice_payment" id="invoice_payment" style="max-width: 600px; margin: 40px auto; background-color: #f7f7f7; border: 1px solid #e0e0e0; border-radius: 12px; padding: 25px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
-    <p>sdsdfsdfsdfss</p>
     <% with $CheckoutHeader %>
         <% if $ProofImage.exists %>
             <h2 style="text-align: center; color: #333; font-size: 24px; font-weight: bold; margin-bottom: 20px;">Pembayaran</h2>

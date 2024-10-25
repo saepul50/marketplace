@@ -10,25 +10,27 @@
 
 <div class="container p-0">
     <div class="content py-4">
-    <% if $AllNotifs %>
-        <% loop $AllNotifs %>
+    <% if $GroupedNotifs %>
+        <% loop $GroupedNotifs %>
             <% if $Read == 'Unread' %>
                 <div class="notifs d-flex align-items-center justify-content-between px-4 py-3"  style="border-bottom: 1px solid #ddd; background-color: rgba(255, 165, 0, 0.04);">
                     <div class="d-flex">
                         <div class="col-2">
                             <% if $HeaderCheckout.Items.First %>
-                                <% loop $HeaderCheckout.Items.First %>
+                                <% with $HeaderCheckout.Items.First %>
                                     <img src="$ProductImage" class="img-fluid">
-                                <% end_loop %>
+                                <% end_with %>
                             <% end_if %>
                         </div>
-                        <div class="content ml-4 d-flex ">
-                            <div style="inline-size: 100%; overflow-wrap: break-word;">
-                                <h5 class="header fw-bold" style="font-weight:bold;">$Title</h5>
-                                <p class="deskripsi m-0">$Message</p>
-                                <p>$Date $Time</p>
+                        <% loop $Notifications %>
+                            <div class="content ml-4 d-flex ">
+                                <div style="inline-size: 100%; overflow-wrap: break-word;">
+                                    <h5 class="header fw-bold" style="font-weight:bold;">$Title</h5>
+                                    <p class="deskripsi m-0">$Message $Up.HeaderCheckout.Vendor.Name</p>
+                                    <p>$Date $Time</p>
+                                </div>
                             </div>
-                        </div>
+                        <% end_loop %>
                     </div>
                     <div class="">
                         <a href="{$BaseHref}/confirm/order/$HeaderCheckout.OrderID?detailOrder=true" style="color: #000"><i class='bx bx-chevron-down' style="font-size: 40px;"></i></a>

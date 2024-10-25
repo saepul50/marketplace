@@ -186,7 +186,7 @@
     </div>
 
     <div class="mainchat col-8 d-flex flex-column justify-content-between px-0">
-        <div class="listchat py-1 pl-3 pt-4 d-flex align-items-center" style="box-shadow: 0px 5px 5px #eee; z-index: 1;">
+        <div class="listchat py-1 pl-3 py-3 d-flex align-items-center" style="box-shadow: 0px 5px 5px #eee; z-index: 1;">
             <% if $chatMain %>
                 <% if $SenderVendor %>
                     <img src="$Vendor.ProfilImage.URL" class="img-fluid mr-3 " style="border-radius: 50%; width: 60px; height: 60px; object-fit: cover;">

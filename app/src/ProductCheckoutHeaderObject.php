@@ -8,6 +8,8 @@ use SilverStripe\Forms\LiteralField;
 use SilverStripe\ORM\DataObject;
 use SilverStripe\ORM\FieldType\DBHTMLText;
 use SilverStripe\Security\Member;
+use SilverStripe\Security\Permission;
+use SilverStripe\Security\Security;
 
     class ProductCheckoutHeaderObject extends DataObject{
         private static $db = [
@@ -22,6 +24,7 @@ use SilverStripe\Security\Member;
             'FinalPrice'=> 'Text',
             'Bank' => 'Text',
             'Status' => 'Enum("Dikemas,Dikirim,Selesai,Dibatalkan", "Dikemas")',
+            'StatusChangeBy' => 'Text',
             'TimeCheckout'=> 'Text',
             'PaymentMethod' => 'Text',
             'PaymentUrl'=>'Varchar(255)',
@@ -33,6 +36,7 @@ use SilverStripe\Security\Member;
         ];
         private static $has_one = [
             'Member' => Member::class,
+            'Vendor' => Vendor::class,
             'ProofImage' => Image::class
         ];
         private static $summary_fields = [
@@ -47,6 +51,13 @@ use SilverStripe\Security\Member;
             parent::onAfterWrite();
             
             if ($this->isChanged('Status')) {
+                $currentUser = Security::getCurrentUser();
+                if ($currentUser && Permission::check('CMS_ACCESS_OrderAdmin')) {
+                    $this->StatusChangeBy = 'Seller';
+                } else {
+                    $this->StatusChangeBy = 'User';
+                }
+                $this->write();
                 $this->handleStatusChange();
             }
         }
@@ -93,8 +104,8 @@ use SilverStripe\Security\Member;
             if ($proofImageField = $fields->fieldByName('Root.Main.ProofImage')) {
                 $proofImageField->setReadonly(false);
             }
-            if ($this->PaymentMethod === 'Duitku Transfer') {
-                $link = '<a href="duitkupayment/checkTransaction?orderid=' . $this->OrderID . '" target="_blank">Cek Status Duitku</a>';
+            if ($this->PaymentMethod === 'Duitku') {
+                $link = '<a href="/marketplace/productcheckout/checkTransaction?orderid=' . $this->DuitkuOrderID . '" target="_blank">Cek Status Duitku</a>';
                 $fields->replaceField('OrderID', LiteralField::create('OrderID', $link));
             }
             return $fields;

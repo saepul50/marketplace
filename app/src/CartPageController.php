@@ -5,6 +5,7 @@ use SilverStripe\Dev\Debug;
 use SilverStripe\ORM\ArrayList;
 use SilverStripe\ORM\ValidationException;
 use SilverStripe\Security\Security;
+use SilverStripe\View\ArrayData;
 
 class CartPageController extends PageController{
     // protected function init() {
@@ -23,28 +24,51 @@ class CartPageController extends PageController{
         'variantChange',
     ];
     
-    public function getCart(){
-        // die();
+    public function getCart() {
         $member = Security::getCurrentUser();
         if ($member) {
-            $cart = CartObject::get()->filter('MemberID', $member->ID);
+            $cart = CartObject::get()->filter('MemberID', $member->ID)->sort('LastEdited', 'DESC');
             $cartProducts = [];
-            foreach($cart as $cartProduct){
+            
+            foreach ($cart as $cartProduct) {
                 $product = ProductObject::get()->byID($cartProduct->ProductID);
                 $variant = ProductVariantObject::get()->byID($cartProduct->ProductVariantID);
-                if ($product) {
+                if ($variant && $variant->Stock > 0) {
                     $cartProduct->Product = $product;
                     $cartProduct->Variant = $variant;
                     $cartProducts[] = $cartProduct;
                 }
             }
-            // Debug::show($cart);
+    
+            $groupedProducts = [];
+            if ($cartProducts && is_array($cartProducts)) {
+                foreach ($cartProducts as $cartProduct) {
+                    $vendorID = $cartProduct->Product->VendorID;
+                    if (!isset($groupedProducts[$vendorID])) {
+                        $groupedProducts[$vendorID] = [
+                            'Vendor' => $cartProduct->Product->Vendor,
+                            'Products' => new ArrayList()
+                        ];
+                    }
+                    $groupedProducts[$vendorID]['Products']->push($cartProduct);
+                }
+            }
+    
+            $listDataCartGrouped = new ArrayList();
+            foreach ($groupedProducts as $vendorID => $group) {
+                $listDataCartGrouped->push(new ArrayData([
+                    'Vendor' => $group['Vendor'],
+                    'Products' => $group['Products']
+                ]));
+            }
+            // Debug::show($listDataCartGrouped);
             // die();
-            $cartProducts = new ArrayList($cartProducts);
-            return $cartProducts;
+            return $listDataCartGrouped;
         }
         return null;
     }
+    
+    
     public function getMember() {
         $member = Security::getCurrentUser();
         if ($member) {
